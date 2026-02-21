@@ -24,6 +24,8 @@ namespace memory {
 class MemoryUtils final {
  public:
   static StatusOr<bool> hitsHighWatermark();
+  static bool hitsOneQueryMemoryLimit(uint64_t* usedBytes = nullptr,
+                                      uint64_t* maxBytes = nullptr);
 
   static std::atomic_bool kHitMemoryHighWatermark;
 

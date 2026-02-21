@@ -4,6 +4,8 @@
 
 #include "graph/executor/query/IndexScanExecutor.h"
 
+#include <algorithm>
+
 #include "graph/service/GraphFlags.h"
 #include "graph/util/OptimizerUtils.h"
 
@@ -102,7 +104,12 @@ Status IndexScanExecutor::handleResp(storage::StorageRpcResponse<Resp> &&rpcResp
   }
   auto state = std::move(completeness).value();
   nebula::DataSet v;
-  for (auto &resp : rpcResp.responses()) {
+  auto checkEvery = static_cast<size_t>(std::max(1, FLAGS_num_rows_to_check_memory));
+  for (size_t i = 0; i < rpcResp.responses().size(); ++i) {
+    if (UNLIKELY(i % checkEvery == 0)) {
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
+    auto &resp = rpcResp.responses()[i];
     if (resp.data_ref().has_value()) {
       nebula::DataSet &data = *resp.data_ref();
       // TODO: convert the column name to alias.

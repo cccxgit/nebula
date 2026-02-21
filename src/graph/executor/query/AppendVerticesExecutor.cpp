@@ -4,6 +4,7 @@
 
 #include "graph/executor/query/AppendVerticesExecutor.h"
 
+#include <algorithm>
 #include <iterator>
 
 using nebula::storage::StorageClient;
@@ -84,8 +85,14 @@ Status AppendVerticesExecutor::handleNullProp(const AppendVertices *av) {
 
   QueryExpressionContext ctx(ectx_);
   bool canBeMoved = movable(av->inputVars().front());
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
 
   for (; iter->valid(); iter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     const auto &vid = src->eval(ctx(iter.get()));
     if (vid.empty()) {
       continue;
@@ -120,11 +127,21 @@ Status AppendVerticesExecutor::handleResp(
   DataSet ds;
   ds.colNames = av->colNames();
   ds.rows.reserve(inputIter->size());
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
 
   for (auto &resp : rpcResp.responses()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     if (resp.props_ref().has_value()) {
       auto iter = PropIter(std::make_shared<Value>(std::move(*resp.props_ref())));
       for (; iter.valid(); iter.next()) {
+        if (UNLIKELY(++checkCounter >= checkEvery)) {
+          checkCounter = 0;
+          NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+        }
         if (vFilter != nullptr) {
           auto &vFilterVal = vFilter->eval(ctx(&iter));
           if (!vFilterVal.isBool() || !vFilterVal.getBool()) {
@@ -149,6 +166,10 @@ Status AppendVerticesExecutor::handleResp(
   auto *src = av->src();
   bool mv = movable(av->inputVars().front());
   for (; inputIter->valid(); inputIter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     auto dstFound = map.find(src->eval(ctx(inputIter.get())));
     if (dstFound != map.end()) {
       Row row = mv ? inputIter->moveRow() : *inputIter->row();
@@ -197,15 +218,16 @@ folly::Future<Status> AppendVerticesExecutor::handleRespMultiJobs(
 
     return runMultiJobs(std::move(scatter), std::move(gather), &propIter);
   } else {
-    auto scatter = [this](size_t begin, size_t end, Iterator *tmpIter) mutable -> folly::Unit {
-      buildMap(begin, end, tmpIter);
-      return folly::unit;
+    auto scatter = [this](size_t begin, size_t end, Iterator *tmpIter) mutable -> Status {
+      return buildMap(begin, end, tmpIter);
     };
 
     auto gather =
         [this, inputIterNew = std::move(inputIter)](auto &&prepareResult) -> folly::Future<Status> {
       memory::MemoryCheckGuard guard1;
-      UNUSED(prepareResult);
+      for (auto &status : prepareResult) {
+        NG_RETURN_IF_ERROR(status);
+      }
 
       auto scatterInput =
           [this](size_t begin, size_t end, Iterator *tmpIter) mutable -> StatusOr<DataSet> {
@@ -229,14 +251,22 @@ folly::Future<Status> AppendVerticesExecutor::handleRespMultiJobs(
   }
 }
 
-DataSet AppendVerticesExecutor::buildVerticesResult(size_t begin, size_t end, Iterator *iter) {
+StatusOr<DataSet> AppendVerticesExecutor::buildVerticesResult(size_t begin,
+                                                              size_t end,
+                                                              Iterator *iter) {
   auto *av = asNode<AppendVertices>(node());
   auto vFilter = av->vFilter() ? av->vFilter()->clone() : nullptr;
   DataSet ds;
   ds.colNames = av->colNames();
   ds.rows.reserve(end - begin);
   QueryExpressionContext ctx(qctx()->ectx());
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
   for (; iter->valid() && begin++ < end; iter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     if (vFilter != nullptr) {
       auto &vFilterVal = vFilter->eval(ctx(iter));
       if (!vFilterVal.isBool() || !vFilterVal.getBool()) {
@@ -251,11 +281,17 @@ DataSet AppendVerticesExecutor::buildVerticesResult(size_t begin, size_t end, It
   return ds;
 }
 
-void AppendVerticesExecutor::buildMap(size_t begin, size_t end, Iterator *iter) {
+Status AppendVerticesExecutor::buildMap(size_t begin, size_t end, Iterator *iter) {
   auto *av = asNode<AppendVertices>(node());
   auto vFilter = av->vFilter() ? av->vFilter()->clone() : nullptr;
   QueryExpressionContext ctx(qctx()->ectx());
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
   for (; iter->valid() && begin++ < end; iter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     if (vFilter != nullptr) {
       auto &vFilterVal = vFilter->eval(ctx(iter));
       if (!vFilterVal.isBool() || !vFilterVal.getBool()) {
@@ -264,16 +300,23 @@ void AppendVerticesExecutor::buildMap(size_t begin, size_t end, Iterator *iter) 
     }
     dsts_.emplace(iter->getColumn(kVid), iter->getVertex());
   }
+  return Status::OK();
 }
 
-DataSet AppendVerticesExecutor::handleJob(size_t begin, size_t end, Iterator *iter) {
+StatusOr<DataSet> AppendVerticesExecutor::handleJob(size_t begin, size_t end, Iterator *iter) {
   auto *av = asNode<AppendVertices>(node());
   DataSet ds;
   ds.colNames = av->colNames();
   ds.rows.reserve(end - begin);
   auto src = av->src()->clone();
   QueryExpressionContext ctx(qctx()->ectx());
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
   for (; iter->valid() && begin++ < end; iter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     auto dstFound = dsts_.find(src->eval(ctx(iter)));
     if (dstFound != dsts_.end()) {
       Row row = *iter->row();

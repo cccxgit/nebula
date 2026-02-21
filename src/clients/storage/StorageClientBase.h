@@ -19,6 +19,7 @@
 
 DECLARE_int32(storage_client_timeout_ms);
 DECLARE_uint32(storage_client_retry_interval_ms);
+DECLARE_uint32(max_storage_inflight_per_query);
 
 namespace nebula {
 namespace storage {

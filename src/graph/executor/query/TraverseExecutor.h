@@ -63,11 +63,12 @@ class TraverseExecutor final : public StorageAccessExecutor {
 
   size_t numRowsOfRpcResp(const RpcResponse& resps) const;
 
-  void expand(GetNeighborsIter* iter);
-  void buildAdjList(DataSet& dataset,
-                    std::vector<Value>& initVertices,
-                    VidHashSet& vids,
-                    VertexMap<Value>& adjList) const;
+
+  Status expand(GetNeighborsIter* iter);
+  Status buildAdjList(DataSet& dataset,
+                      std::vector<Value>& initVertices,
+                      VidHashSet& vids,
+                      VertexMap<Value>& adjList) const;
   folly::Future<Status> expandOneStep(RpcResponse&& resps);
   folly::Future<Status> asyncExpandOneStep(RpcResponse&& resps);
   folly::Future<Status> handleResponse(RpcResponse&& resps);

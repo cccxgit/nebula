@@ -77,6 +77,9 @@ DEFINE_bool(enable_experimental_feature, false, "Whether to enable experimental 
 DEFINE_bool(enable_data_balance, true, "Whether to enable data balance feature");
 
 DEFINE_int32(num_rows_to_check_memory, 1024, "number rows to check memory");
+DEFINE_bool(test_force_graph_memory_guard_trigger,
+            false,
+            "force trigger graph memory guard check path for test validation");
 DEFINE_int32(max_sessions_per_ip_per_user,
              300,
              "Maximum number of sessions that can be created per IP and per user");

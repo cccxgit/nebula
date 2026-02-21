@@ -8,7 +8,6 @@
 #include "common/memory/MemoryUtils.h"
 
 DECLARE_int32(num_rows_to_check_memory);
-DECLARE_double(system_memory_high_watermark_ratio);
 
 namespace nebula {
 namespace graph {
@@ -19,10 +18,15 @@ bool Iterator::hitsSysMemoryHighWatermark() const {
       numRowsModN_ -= FLAGS_num_rows_to_check_memory;
     }
     if (UNLIKELY(numRowsModN_ == 0)) {
-      if (memory::MemoryUtils::kHitMemoryHighWatermark.load()) {
+      uint64_t usedBytes = 0;
+      uint64_t maxBytes = 0;
+      if (memory::MemoryUtils::hitsOneQueryMemoryLimit()) {
+        LOG(WARNING) << "===============in hitsSysMemoryHighWatermark";
+
         throw std::runtime_error(
-            folly::sformat("Used memory hits the high watermark({}) of total system memory.",
-                           FLAGS_system_memory_high_watermark_ratio));
+            folly::sformat("Used memory({} bytes) exceeds one_query_max_memory_usage({} bytes).",
+                           usedBytes,
+                           maxBytes));
       }
     }
   }

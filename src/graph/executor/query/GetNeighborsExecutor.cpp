@@ -4,6 +4,8 @@
 
 #include "graph/executor/query/GetNeighborsExecutor.h"
 
+#include <algorithm>
+
 #include "graph/service/GraphFlags.h"
 #include "graph/util/Utils.h"
 
@@ -66,6 +68,9 @@ folly::Future<Status> GetNeighborsExecutor::execute() {
         SCOPED_TIMER(&execTime_);
         auto& hostLatency = resp.hostLatency();
         for (size_t i = 0; i < hostLatency.size(); ++i) {
+          if (UNLIKELY(i % static_cast<size_t>(std::max(1, FLAGS_num_rows_to_check_memory)) == 0)) {
+            NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+          }
           size_t size = 0u;
           auto& result = resp.responses()[i];
           if (result.vertices_ref().has_value()) {
@@ -86,7 +91,11 @@ Status GetNeighborsExecutor::handleResponse(RpcResponse& resps) {
 
   auto& responses = resps.responses();
   List list;
-  for (auto& resp : responses) {
+  for (size_t i = 0; i < responses.size(); ++i) {
+    if (UNLIKELY(i % static_cast<size_t>(std::max(1, FLAGS_num_rows_to_check_memory)) == 0)) {
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
+    auto& resp = responses[i];
     auto dataset = resp.get_vertices();
     if (dataset == nullptr) {
       continue;

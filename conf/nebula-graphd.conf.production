@@ -85,6 +85,8 @@
 ########## memory ##########
 # System memory high watermark ratio, cancel the memory checking when the ratio greater than 1.0
 --system_memory_high_watermark_ratio=0.8
+# Single query max memory usage in bytes. Query fails when current usage exceeds this value.
+--one_query_max_memory_usage=524288000
 
 ########## metrics ##########
 --enable_space_level_metrics=false

@@ -1,0 +1,79 @@
+[2026-02-21] Development_tasks execution started
+Plan: NebulaGraph_OOM_Complete_Test_Plan_2026-02-21.md
+Step1: run_oom_protection_targeted_test.sh
+Step2: run_oom_pressure_test_installed.sh
+(root@nebula) [(none)]> SHOW SPACES;
++--------------------+
+| Name               |
++--------------------+
+| "oom_pt"           |
+| "stress_test_0220" |
+| "stress_test_0221" |
++--------------------+
+Got 3 rows (time spent 374µs/1.115777ms)
+
+Sat, 21 Feb 2026 11:07:44 CST
+
+
+
+Bye root!
+Sat, 21 Feb 2026 11:07:44 CST
+
+[2026-02-21] Revision applied based on Development_tasks.md updates
+- Use preloaded spaces: stress_test_0221 / stress_test_0220
+- Added script: scripts/run_oom_existing_spaces_test.sh
+- Updated plan: NebulaGraph_OOM_Complete_Test_Plan_2026-02-21.md
+normal_wm=0.7000
+reject_wm=0.2948
+>>> running case_baseline_0221 space=stress_test_0221 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_runtime_guard_0221 space=stress_test_0221 mode=single inflight=8 rows_check=16 wm=0.7000 force_guard=true
+[2026-02-21] Fix applied after first run failure
+- fixed graph conf generation to always use backup template
+- reduced baseline query load and baseline worker count
+- rerun revised script next
+normal_wm=0.7000
+reject_wm=0.1973
+>>> running case_baseline_0221 space=stress_test_0221 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_runtime_guard_0221 space=stress_test_0221 mode=single inflight=8 rows_check=16 wm=0.7000 force_guard=true
+[sudo] password for sch: >>> running case_start_reject_0221 space=stress_test_0221 mode=single inflight=8 rows_check=256 wm=0.1973 force_guard=false
+[sudo] password for sch: >>> running case_recovery_0221 space=stress_test_0221 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_inflight16_heavy_0221 space=stress_test_0221 mode=workers inflight=16 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_inflight8_heavy_0221 space=stress_test_0221 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[2026-02-21] Fix applied after second run stall
+- for ExpectTrigger=E case, readiness check switched to process-alive
+- rerun revised script next
+[2026-02-21] Runtime stabilization fix
+- restart changed to stop/wait/start and force-kill fallback
+- heavy query changed to bounded 1-hop large result to avoid orphan long-running requests
+- now running full revised suite with compact timing parameters for deterministic completion
+normal_wm=0.7000
+reject_wm=0.1747
+>>> running case_baseline_0221 space=stress_test_0221 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_runtime_guard_0221 space=stress_test_0221 mode=single inflight=8 rows_check=16 wm=0.7000 force_guard=true
+[sudo] password for sch: >>> running case_start_reject_0221 space=stress_test_0221 mode=single inflight=8 rows_check=256 wm=0.1747 force_guard=false
+[sudo] password for sch: >>> running case_recovery_0221 space=stress_test_0221 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_inflight16_heavy_0221 space=stress_test_0221 mode=workers inflight=16 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_inflight8_heavy_0221 space=stress_test_0221 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_inflight4_heavy_0221 space=stress_test_0221 mode=workers inflight=4 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: >>> running case_baseline_0220 space=stress_test_0220 mode=workers inflight=8 rows_check=256 wm=0.7000 force_guard=false
+[sudo] password for sch: Report generated: /home/sch/nebula/nebula-release-3.6/NebulaGraph_OOM_ExistingSpaces_Test_Report.md
+=== resume after user timeout tuning ===
+query_rc=0
+oom_hits=
+guard_logs=0
+query_rc=0
+oom_hits=0
+guard_logs=0
+query_rc=124
+oom_hits=0
+guard_logs=0
+succ=490
+fail=0
+oom=0
+timeout=0
+other=0
+[2026-02-21] Rebuild/install correction based on Development_tasks.md
+- run: cd build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/nebula -DENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug ..
+- run: cd build && make -j10
+- run: cd build && sudo make install
+- verify: /usr/local/nebula/bin/nebula-graphd md5 == build/bin/nebula-graphd

@@ -4,6 +4,8 @@
 
 #include "graph/executor/query/TraverseExecutor.h"
 
+#include <algorithm>
+
 #include "clients/storage/StorageClient.h"
 #include "common/memory/MemoryTracker.h"
 #include "graph/context/iterator/GetNbrsRespDataSetIter.h"
@@ -44,8 +46,14 @@ Status TraverseExecutor::buildRequestVids() {
   QueryExpressionContext ctx(ectx_);
 
   bool mv = movable(traverse_->inputVars().front());
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
   if (traverse_->trackPrevPath()) {
     for (; iter->valid(); iter->next()) {
+      if (UNLIKELY(++checkCounter >= checkEvery)) {
+        checkCounter = 0;
+        NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+      }
       const auto& vid = src->eval(ctx(iter));
       auto prevPath = mv ? iter->moveRow() : *iter->row();
       auto vidIter = dst2PathsMap_.find(vid);
@@ -61,6 +69,10 @@ Status TraverseExecutor::buildRequestVids() {
     const auto& metaVidType = *(spaceInfo.spaceDesc.vid_type_ref());
     auto vidType = SchemaUtil::propTypeToValueType(metaVidType.get_type());
     for (; iter->valid(); iter->next()) {
+      if (UNLIKELY(++checkCounter >= checkEvery)) {
+        checkCounter = 0;
+        NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+      }
       const auto& vid = src->eval(ctx(iter));
       // FIXME(czp): Remove this DCHECK for now, we should check vid type at compile-time
       if (vid.type() != vidType) {
@@ -177,11 +189,17 @@ size_t sizeOf(const std::vector<T>& v) {
   return sz;
 }
 
-void TraverseExecutor::buildAdjList(DataSet& dataset,
-                                    std::vector<Value>& initVertices,
-                                    VidHashSet& vids,
-                                    VertexMap<Value>& adjList) const {
+Status TraverseExecutor::buildAdjList(DataSet& dataset,
+                                      std::vector<Value>& initVertices,
+                                      VidHashSet& vids,
+                                      VertexMap<Value>& adjList) const {
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
   for (GetNbrsRespDataSetIter iter(&dataset); iter.valid(); iter.next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     Value v = iter.getVertex();
     initVertices.emplace_back(v);
     VidHashSet dstSet;
@@ -195,6 +213,7 @@ void TraverseExecutor::buildAdjList(DataSet& dataset,
         << "The adjacency list should not contain the source vertex: " << v;
     adjList.emplace(v, std::move(adjEdges));
   }
+  return Status::OK();
 }
 
 folly::Future<Status> TraverseExecutor::asyncExpandOneStep(RpcResponse&& resps) {
@@ -204,7 +223,7 @@ folly::Future<Status> TraverseExecutor::asyncExpandOneStep(RpcResponse&& resps) 
   auto adjLists = std::make_shared<std::vector<VertexMap<Value>>>(numResps);
   auto taskRunTime = std::make_shared<std::vector<size_t>>(numResps, 0u);
 
-  std::vector<folly::Future<folly::Unit>> futures;
+  std::vector<folly::Future<Status>> futures;
   futures.reserve(numResps);
 
   for (size_t i = 0; i < numResps; i++) {
@@ -216,24 +235,39 @@ folly::Future<Status> TraverseExecutor::asyncExpandOneStep(RpcResponse&& resps) 
                  initVerticesList,
                  vidsList,
                  adjLists,
-                 taskRunTime]() mutable {
+                 taskRunTime]() mutable -> Status {
       SCOPED_TIMER(&((*taskRunTime)[i]));
-      buildAdjList(dataset, (*initVerticesList)[i], (*vidsList)[i], (*adjLists)[i]);
+      return buildAdjList(dataset, (*initVerticesList)[i], (*vidsList)[i], (*adjLists)[i]);
     };
     futures.emplace_back(folly::via(runner(), std::move(func)));
   }
 
   return folly::collect(futures).via(runner()).thenValue(
-      [this, initVerticesList, vidsList, adjLists, taskRunTime](std::vector<folly::Unit>&&) {
+      [this, initVerticesList, vidsList, adjLists, taskRunTime](
+          std::vector<Status>&& taskStatus) -> Status {
         time::Duration postTaskTime;
+        auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+        int32_t checkCounter = 0;
+        for (auto& status : taskStatus) {
+          NG_RETURN_IF_ERROR(status);
+        }
+
         initVertices_.reserve(sizeOf(*initVerticesList));
         for (auto& initVertices : *initVerticesList) {
+          if (UNLIKELY(++checkCounter >= checkEvery)) {
+            checkCounter = 0;
+            NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+          }
           std::move(initVertices.begin(), initVertices.end(), std::back_inserter(initVertices_));
         }
 
         vids_.reserve(sizeOf(*vidsList));
         for (auto& vids : *vidsList) {
           for (auto& v : vids) {
+            if (UNLIKELY(++checkCounter >= checkEvery)) {
+              checkCounter = 0;
+              NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+            }
             vids_.emplace(std::move(v));
           }
         }
@@ -241,6 +275,10 @@ folly::Future<Status> TraverseExecutor::asyncExpandOneStep(RpcResponse&& resps) 
         adjList_.reserve(adjList_.size() + sizeOf(*adjLists));
         for (auto& adjList : *adjLists) {
           for (auto& p : adjList) {
+            if (UNLIKELY(++checkCounter >= checkEvery)) {
+              checkCounter = 0;
+              NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+            }
             adjList_.emplace(std::move(p.first), std::move(p.second));
           }
         }
@@ -266,7 +304,7 @@ folly::Future<Status> TraverseExecutor::expandOneStep(RpcResponse&& resps) {
   for (auto& resp : resps.responses()) {
     auto dataset = resp.get_vertices();
     if (dataset) {
-      buildAdjList(*dataset, initVertices_, vids_, adjList_);
+      NG_RETURN_IF_ERROR(buildAdjList(*dataset, initVertices_, vids_, adjList_));
     }
   }
 
@@ -287,7 +325,12 @@ folly::Future<Status> TraverseExecutor::handleResponse(RpcResponse&& resps) {
   }
 
   List list;
-  for (auto& resp : resps.responses()) {
+  auto checkEvery = static_cast<size_t>(std::max(1, FLAGS_num_rows_to_check_memory));
+  for (size_t i = 0; i < resps.responses().size(); ++i) {
+    if (UNLIKELY(i % checkEvery == 0)) {
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
+    auto& resp = resps.responses()[i];
     auto dataset = resp.get_vertices();
     if (dataset) {
       list.values.emplace_back(std::move(*dataset));
@@ -311,13 +354,12 @@ folly::Future<Status> TraverseExecutor::handleResponse(RpcResponse&& resps) {
     }
   }
 
-  expand(iter.get());
-  return Status::OK();
+  return expand(iter.get());
 }
 
-void TraverseExecutor::expand(GetNeighborsIter* iter) {
+Status TraverseExecutor::expand(GetNeighborsIter* iter) {
   if (iter->numRows() == 0) {
-    return;
+    return Status::OK();
   }
   auto* vFilter = traverse_->vFilter();
   auto* eFilter = traverse_->eFilter();
@@ -326,10 +368,16 @@ void TraverseExecutor::expand(GetNeighborsIter* iter) {
   Value curVertex;
   std::vector<Value> adjEdges;
   auto sz = iter->size();
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
   adjEdges.reserve(sz);
   vids_.reserve(vids_.size() + sz);
   adjList_.reserve(adjList_.size() + iter->numRows() + 1u);
   for (; iter->valid(); iter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      NG_RETURN_IF_ERROR(checkMemoryAndAbortQuery());
+    }
     if (vFilter != nullptr && currentStep_ == 1) {
       const auto& vFilterVal = vFilter->eval(ctx(iter));
       if (!vFilterVal.isBool() || !vFilterVal.getBool()) {
@@ -361,6 +409,7 @@ void TraverseExecutor::expand(GetNeighborsIter* iter) {
   if (!curVertex.empty()) {
     adjList_.emplace(curVertex, std::move(adjEdges));
   }
+  return Status::OK();
 }
 
 std::vector<Row> TraverseExecutor::buildZeroStepPath() {

@@ -108,7 +108,6 @@
 using folly::stringPrintf;
 
 DEFINE_bool(enable_lifetime_optimize, true, "Does enable the lifetime optimize.");
-DECLARE_double(system_memory_high_watermark_ratio);
 
 namespace nebula {
 namespace graph {
@@ -623,15 +622,20 @@ Status Executor::close() {
 }
 
 Status Executor::checkMemoryWatermark() {
-  if (node_->isQueryNode() && memory::MemoryUtils::kHitMemoryHighWatermark.load()) {
+  uint64_t usedBytes = 0;
+  uint64_t maxBytes = 0;
+  if (node_->isQueryNode() &&
+      memory::MemoryUtils::hitsOneQueryMemoryLimit()) {
+    LOG(WARNING) << "===============in checkMemoryWatermark";
+
     stats::StatsManager::addValue(kNumQueriesHitMemoryWatermark);
     auto &spaceName = qctx()->rctx() ? qctx()->rctx()->session()->spaceName() : "";
     if (FLAGS_enable_space_level_metrics && spaceName != "") {
       stats::StatsManager::addValue(stats::StatsManager::counterWithLabels(
           kNumQueriesHitMemoryWatermark, {{"space", spaceName}}));
     }
-    return Status::Error("Used memory hits the high watermark(%lf) of total system memory.",
-                         FLAGS_system_memory_high_watermark_ratio);
+    return Status::Error(
+        "Used memory(%lu bytes) exceeds one_query_max_memory_usage(%lu bytes).", usedBytes, maxBytes);
   }
   return Status::OK();
 }

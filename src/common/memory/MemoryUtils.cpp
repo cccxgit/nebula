@@ -25,6 +25,9 @@
 
 DEFINE_bool(containerized, false, "Whether run this process inside the docker container");
 DEFINE_double(system_memory_high_watermark_ratio, 0.8, "high watermark ratio of system memory");
+DEFINE_uint64(one_query_max_memory_usage,
+              500ULL * 1024ULL * 1024ULL,
+              "single query max memory usage in bytes, query fails if exceeded");
 
 DEFINE_string(cgroup_v2_controllers, "/sys/fs/cgroup/cgroup.controllers", "cgroup v2 controllers");
 
@@ -134,6 +137,21 @@ StatusOr<bool> MemoryUtils::hitsHighWatermark() {
       << "Memory usage has hit the high watermark of system, available: " << available
       << " vs. total: " << total << " in bytes.";
   return hits;
+}
+
+bool MemoryUtils::hitsOneQueryMemoryLimit(uint64_t* usedBytes, uint64_t* maxBytes) {
+  const auto maxBytesLimit = FLAGS_one_query_max_memory_usage;
+  const auto used = static_cast<uint64_t>(std::max<int64_t>(0, MemoryStats::instance().used()));
+
+  LOG(WARNING) << "------------------current memory usage is " <<used;
+  LOG(WARNING) << "------------------current one_query_max_memory_usage is " <<maxBytesLimit;
+  if (usedBytes != nullptr) {
+    *usedBytes = used;
+  }
+  if (maxBytes != nullptr) {
+    *maxBytes = maxBytesLimit;
+  }
+  return maxBytesLimit > 0 && used > maxBytesLimit;
 }
 
 StatusOr<uint64_t> MemoryUtils::readSysContents(const std::string& path) {

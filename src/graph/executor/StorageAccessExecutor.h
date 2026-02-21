@@ -8,7 +8,9 @@
 #include <thrift/lib/cpp/util/EnumUtils.h>
 
 #include "clients/storage/StorageClientBase.h"
+#include "common/memory/MemoryUtils.h"
 #include "graph/executor/Executor.h"
+#include "graph/service/GraphFlags.h"
 #include "graph/util/Utils.h"
 
 using nebula::storage::StorageRpcResponse;
@@ -183,6 +185,42 @@ class StorageAccessExecutor : public Executor {
                                              const std::vector<VertexProp> *vertexPropPtr);
 
   std::vector<Value> handlePropResp(PropRpcResponse &&resps);
+
+  Status checkMemoryAndAbortQuery() const {
+    uint64_t usedBytes = 0;
+    uint64_t maxBytes = 0;
+    bool limitExceeded = memory::MemoryUtils::hitsOneQueryMemoryLimit();
+    if (UNLIKELY(limitExceeded || FLAGS_test_force_graph_memory_guard_trigger)) {
+      LOG(WARNING) << "===============in checkMemoryAndAbortQuery";
+      int64_t sessionId = -1;
+      int64_t planId = -1;
+      std::string spaceName = "UNKNOWN";
+      std::string query = "UNKNOWN";
+      if (qctx() != nullptr) {
+        if (qctx()->plan() != nullptr) {
+          planId = qctx()->plan()->id();
+        }
+        if (qctx()->rctx() != nullptr) {
+          query = qctx()->rctx()->query();
+          if (qctx()->rctx()->session() != nullptr) {
+            sessionId = qctx()->rctx()->session()->id();
+            spaceName = qctx()->rctx()->session()->spaceName();
+          }
+        }
+      }
+      LOG_EVERY_N(WARNING, 100)
+          << "[OOM_GUARD_TRIGGER] executor=" << name_ << " plan_id=" << planId
+          << " session_id=" << sessionId << " space=" << spaceName
+          << " used_bytes=" << usedBytes << " one_query_max_memory_usage=" << maxBytes
+          << " forced=" << FLAGS_test_force_graph_memory_guard_trigger << " query=\"" << query
+          << "\"";
+      if (qctx() != nullptr) {
+        qctx()->markKilled();
+      }
+      return Executor::memoryExceededStatus();
+    }
+    return Status::OK();
+  }
 };
 
 }  // namespace graph

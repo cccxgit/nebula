@@ -4,10 +4,13 @@
 
 #include "graph/executor/StorageAccessExecutor.h"
 
+#include <algorithm>
+
 #include <folly/Format.h>
 
 #include "graph/context/Iterator.h"
 #include "graph/context/QueryExpressionContext.h"
+#include "common/memory/MemoryUtils.h"
 #include "graph/service/GraphFlags.h"
 #include "graph/util/SchemaUtil.h"
 #include "graph/util/Utils.h"
@@ -51,10 +54,21 @@ StatusOr<DataSet> buildRequestDataSet(const SpaceInfo &space,
 
   std::unordered_set<VidType> uniqueSet;
   uniqueSet.reserve(s);
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
 
   const auto &vidType = *(space.spaceDesc.vid_type_ref());
 
   for (; iter->valid(); iter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      if (memory::MemoryUtils::hitsOneQueryMemoryLimit()) {
+        LOG(WARNING) << "===============in buildRequestDataSet";
+
+        return Status::GraphMemoryExceeded(
+            "(%d)", static_cast<int32_t>(nebula::cpp2::ErrorCode::E_GRAPH_MEMORY_EXCEEDED));
+      }
+    }
     auto vid = expr->eval(exprCtx(iter));
     if (vid.empty()) {
       continue;
@@ -91,11 +105,22 @@ StatusOr<std::vector<Value>> buildRequestList(const SpaceInfo &space,
 
   std::unordered_set<VidType> uniqueSet;
   uniqueSet.reserve(iterSize);
+  auto checkEvery = std::max(1, FLAGS_num_rows_to_check_memory);
+  int32_t checkCounter = 0;
 
   const auto &metaVidType = *(space.spaceDesc.vid_type_ref());
   auto vidType = SchemaUtil::propTypeToValueType(metaVidType.get_type());
 
   for (; iter->valid(); iter->next()) {
+    if (UNLIKELY(++checkCounter >= checkEvery)) {
+      checkCounter = 0;
+      if (memory::MemoryUtils::hitsOneQueryMemoryLimit()) {
+        LOG(WARNING) << "===============in buildRequestList";
+
+        return Status::GraphMemoryExceeded(
+            "(%d)", static_cast<int32_t>(nebula::cpp2::ErrorCode::E_GRAPH_MEMORY_EXCEEDED));
+      }
+    }
     auto vid = expr->eval(exprCtx(iter));
     if (vid.empty()) {
       continue;

@@ -64,6 +64,7 @@ DECLARE_bool(enable_client_white_list);
 DECLARE_string(client_white_list);
 
 DECLARE_int32(num_rows_to_check_memory);
+DECLARE_bool(test_force_graph_memory_guard_trigger);
 
 DECLARE_int32(min_batch_size);
 DECLARE_int32(max_job_size);
