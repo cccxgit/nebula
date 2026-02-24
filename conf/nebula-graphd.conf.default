@@ -74,6 +74,12 @@
 --storage_client_timeout_ms=60000
 # slow query threshold in us
 --slow_query_threshold_us=200000
+# enable slow query nGQL log
+--enable_slow_query_log=true
+# slow query log filename under log_dir
+--slow_query_log_filename=nebula-slow-query.log
+# max nGQL length per slow query log line
+--slow_query_log_max_query_len=4096
 # Port to listen on Meta with HTTP protocol, it corresponds to ws_http_port in metad's configuration file
 --ws_meta_http_port=19559
 

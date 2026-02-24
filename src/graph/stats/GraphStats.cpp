@@ -13,6 +13,13 @@ DEFINE_int32(slow_query_threshold_us,
              200000,
              "Any query slower than this threshold value will be considered"
              " as a slow query");
+DEFINE_bool(enable_slow_query_log, true, "Whether to write slow query nGQL to dedicated log file");
+DEFINE_string(slow_query_log_filename,
+              "nebula-slow-query.log",
+              "Slow query log filename under log_dir");
+DEFINE_int32(slow_query_log_max_query_len,
+             4096,
+             "Maximum query length for one slow query log line, query will be truncated if exceeds");
 DEFINE_bool(enable_space_level_metrics, false, "Whether to enable space level metrircs");
 
 namespace nebula {

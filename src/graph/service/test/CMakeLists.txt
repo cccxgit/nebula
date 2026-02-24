@@ -8,3 +8,15 @@ nebula_add_library(
     sa_test_graph_flags_obj OBJECT
     StandAloneTestGraphFlags.cpp
 )
+
+nebula_add_test(
+    NAME slow_query_logger_test
+    SOURCES
+        SlowQueryLoggerTest.cpp
+        ../SlowQueryLogger.cpp
+    OBJECTS
+        $<TARGET_OBJECTS:base_obj>
+    LIBRARIES
+        gtest
+        gtest_main
+)

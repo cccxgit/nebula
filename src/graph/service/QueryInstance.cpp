@@ -15,6 +15,7 @@
 #include "graph/planner/plan/PlanNode.h"
 #include "graph/scheduler/AsyncMsgNotifyBasedScheduler.h"
 #include "graph/scheduler/Scheduler.h"
+#include "graph/service/SlowQueryLogger.h"
 #include "graph/stats/GraphStats.h"
 #include "graph/util/AstUtils.h"
 #include "graph/validator/Validator.h"
@@ -226,6 +227,22 @@ void QueryInstance::addSlowQueryStats(uint64_t latency, const std::string &space
       stats::StatsManager::addValue(
           stats::StatsManager::histoWithLabels(kSlowQueryLatencyUs, {{"space", spaceName}}),
           latency);
+    }
+
+    if (FLAGS_enable_slow_query_log) {
+      auto* rctx = qctx_->rctx();
+      auto* session = rctx == nullptr ? nullptr : rctx->session();
+      SlowQueryLogRecord record;
+      record.latencyUs = latency;
+      record.thresholdUs = FLAGS_slow_query_threshold_us;
+      record.space = spaceName;
+      record.user = session == nullptr ? "" : session->user();
+      record.sessionId = session == nullptr ? 0 : session->id();
+      record.planId = qctx_->plan() == nullptr ? 0 : qctx_->plan()->id();
+      record.statusCode =
+          static_cast<int32_t>(rctx == nullptr ? ErrorCode::E_UNKNOWN : rctx->resp().errorCode);
+      record.query = rctx == nullptr ? "" : rctx->query();
+      SlowQueryLogger::instance().logSlowQuery(record);
     }
   }
 }
