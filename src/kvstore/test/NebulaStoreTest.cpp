@@ -15,6 +15,7 @@
 #include "common/meta/Common.h"
 #include "common/network/NetworkUtils.h"
 #include "kvstore/LogEncoder.h"
+#include "kvstore/NebulaSnapshotManager.h"
 #include "kvstore/NebulaStore.h"
 #include "kvstore/PartManager.h"
 #include "kvstore/RocksEngine.h"
@@ -43,6 +44,29 @@ std::shared_ptr<folly::IOThreadPoolExecutor> getHandlers() {
   static auto handlersPool = std::make_shared<folly::IOThreadPoolExecutor>(1);
   return handlersPool;
 }
+
+class SpyNebulaStore final : public NebulaStore {
+ public:
+  using NebulaStore::NebulaStore;
+  using NebulaStore::prefix;
+
+  nebula::cpp2::ErrorCode prefix(GraphSpaceID spaceId,
+                                 PartitionID partId,
+                                 const std::string& prefix,
+                                 std::unique_ptr<KVIterator>* iter,
+                                 bool canReadFromFollower,
+                                 const void* snapshot = nullptr) override {
+    observedReadFlags_.emplace_back(canReadFromFollower);
+    return NebulaStore::prefix(spaceId, partId, prefix, iter, canReadFromFollower, snapshot);
+  }
+
+  const std::vector<bool>& observedReadFlags() const {
+    return observedReadFlags_;
+  }
+
+ private:
+  std::vector<bool> observedReadFlags_;
+};
 
 TEST(NebulaStoreTest, SimpleTest) {
   auto partMan = std::make_unique<MemPartManager>();
@@ -1011,6 +1035,72 @@ TEST(NebulaStoreTest, ReadSnapshotTest) {
     }
     std::sort(expected.begin(), expected.end());
     EXPECT_EQ(expected, result);
+  }
+}
+
+TEST(NebulaStoreTest, SnapshotScanBypassesLeaseCheck) {
+  auto partMan = std::make_unique<MemPartManager>();
+  auto ioThreadPool = std::make_shared<folly::IOThreadPoolExecutor>(4);
+  partMan->partsMap()[1][0] = PartHosts();
+
+  fs::TempDir rootPath("/tmp/nebula_store_test.XXXXXX");
+  std::vector<std::string> paths;
+  paths.emplace_back(folly::stringPrintf("%s/disk1", rootPath.path()));
+
+  KVOptions options;
+  options.dataPaths_ = std::move(paths);
+  options.partMan_ = std::move(partMan);
+  HostAddr local = {"", 0};
+  auto store =
+      std::make_unique<SpyNebulaStore>(std::move(options), ioThreadPool, local, getHandlers());
+  if (!store->init()) {
+    store.release();
+    GTEST_SKIP() << "Skip because raft service socket cannot be created in current environment";
+  }
+  sleep(FLAGS_raft_heartbeat_interval_secs);
+
+  {
+    std::vector<KV> data;
+    for (int i = 0; i < 20; i++) {
+      auto key = folly::stringPrintf("snap_key_%d", i);
+      auto val = folly::stringPrintf("snap_val_%d", i);
+      data.emplace_back(std::move(key), std::move(val));
+    }
+    folly::Baton<true, std::atomic> baton;
+    store->asyncMultiPut(1, 0, std::move(data), [&](nebula::cpp2::ErrorCode code) {
+      EXPECT_EQ(nebula::cpp2::ErrorCode::SUCCEEDED, code);
+      baton.post();
+    });
+    baton.wait();
+  }
+
+  NebulaSnapshotManager snapshotMan(store.get());
+  bool done = false;
+  bool failed = false;
+  snapshotMan.accessAllRowsInSnapshot(
+      1,
+      0,
+      [&](LogID,
+          TermID,
+          const std::vector<std::string>&,
+          int64_t,
+          int64_t,
+          raftex::SnapshotStatus status) {
+        if (status == raftex::SnapshotStatus::FAILED) {
+          failed = true;
+          return false;
+        }
+        if (status == raftex::SnapshotStatus::DONE) {
+          done = true;
+        }
+        return true;
+      });
+
+  EXPECT_TRUE(done);
+  EXPECT_FALSE(failed);
+  ASSERT_FALSE(store->observedReadFlags().empty());
+  for (auto bypassLease : store->observedReadFlags()) {
+    EXPECT_TRUE(bypassLease);
   }
 }
 

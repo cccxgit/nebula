@@ -108,7 +108,10 @@ bool NebulaSnapshotManager::accessTable(GraphSpaceID spaceId,
                                         int64_t& totalSize,
                                         kvstore::RateLimiter* rateLimiter) {
   std::unique_ptr<KVIterator> iter;
-  auto ret = store_->prefix(spaceId, partId, prefix, &iter, false, snapshot);
+  // Sending snapshot is an internal replication path. It should not be blocked
+  // by leader lease checks, otherwise a new leader may fail to send snapshot
+  // before committing its first log in this term.
+  auto ret = store_->prefix(spaceId, partId, prefix, &iter, true, snapshot);
   if (ret != nebula::cpp2::ErrorCode::SUCCEEDED) {
     VLOG(2) << "[spaceId:" << spaceId << ", partId:" << partId << "] access prefix failed"
             << ", error code:" << static_cast<int32_t>(ret);

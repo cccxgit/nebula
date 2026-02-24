@@ -53,6 +53,13 @@ folly::Future<StatusOr<std::pair<LogID, TermID>>> SnapshotManager::sendSnapshot(
                                     int64_t totalCount,
                                     int64_t totalSize,
                                     SnapshotStatus status) mutable -> bool {
+          auto current = part->getTermAndRole();
+          if (current.second != RaftPart::Role::LEADER || current.first != termId) {
+            VLOG(1) << part->idStr_ << "leader changed from term " << termId << " to term "
+                    << current.first << ", stop sending snapshot to " << dst;
+            p.setValue(Status::Error("Leader changed during sending snapshot"));
+            return false;
+          }
           if (status == SnapshotStatus::FAILED) {
             VLOG(1) << part->idStr_ << "Snapshot send failed, the leader changed?";
             p.setValue(Status::Error("Send snapshot failed!"));
