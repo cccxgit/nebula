@@ -5,6 +5,10 @@
 #ifndef GRAPH_SESSION_GRAPHSESSIONMANAGER_H_
 #define GRAPH_SESSION_GRAPHSESSIONMANAGER_H_
 
+#include <unordered_set>
+
+#include <folly/hash/Hash.h>
+
 #include "clients/meta/MetaClient.h"
 #include "common/base/Base.h"
 #include "common/base/StatusOr.h"
@@ -98,6 +102,9 @@ class GraphSessionManager final : public SessionManager<ClientSession> {
   // It will reclaim expired sessions and update sessions info to meta.
   void threadFunc();
 
+  // Entry function of the running slow query scan task.
+  void slowQueryScanThreadFunc();
+
   // Removes a session from the local cache.
   // All queries within the expired session will be marked as killed and stats will be updated.
   void removeSessionFromLocalCache(const std::vector<SessionID>& ids);
@@ -112,6 +119,27 @@ class GraphSessionManager final : public SessionManager<ClientSession> {
   // Updates session info locally.
   // session: ClientSession which will be updated.
   void updateSessionInfo(ClientSession* session);
+
+  // Scans running queries from local sessions, logs slow queries once, and reclaims dedup states.
+  void scanRunningSlowQueries();
+
+  struct RunningQueryKey final {
+    SessionID sessionId{0};
+    ExecutionPlanID planId{0};
+    int64_t startTimeUs{0};
+
+    bool operator==(const RunningQueryKey& rhs) const {
+      return sessionId == rhs.sessionId && planId == rhs.planId && startTimeUs == rhs.startTimeUs;
+    }
+  };
+
+  struct RunningQueryKeyHash final {
+    size_t operator()(const RunningQueryKey& key) const {
+      return folly::hash::hash_combine(key.sessionId, key.planId, key.startTimeUs);
+    }
+  };
+
+  std::unordered_set<RunningQueryKey, RunningQueryKeyHash> reportedRunningSlowQueries_;
 };
 
 }  // namespace graph

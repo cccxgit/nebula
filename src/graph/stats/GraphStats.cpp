@@ -20,6 +20,18 @@ DEFINE_string(slow_query_log_filename,
 DEFINE_int32(slow_query_log_max_query_len,
              4096,
              "Maximum query length for one slow query log line, query will be truncated if exceeds");
+DEFINE_bool(enable_running_slow_query_log,
+            false,
+            "Whether to periodically scan local running queries and write running slow query log");
+DEFINE_int32(running_slow_query_scan_interval_secs,
+             1,
+             "Scan interval in seconds for local running slow queries");
+DEFINE_string(running_slow_query_log_dir,
+              "",
+              "Directory for running slow query log, empty means using log_dir");
+DEFINE_string(running_slow_query_log_filename,
+              "nebula-running-slow-query.log",
+              "Running slow query log filename under running_slow_query_log_dir or log_dir");
 DEFINE_bool(enable_space_level_metrics, false, "Whether to enable space level metrircs");
 
 namespace {
@@ -30,9 +42,18 @@ bool ValidateSlowQueryLogMaxQueryLen(const char* flagname, int32_t value) {
   FLOG_WARN("Invalid value for --%s: %d, it should be greater than 0", flagname, value);
   return false;
 }
+
+bool ValidateRunningSlowQueryScanIntervalSecs(const char* flagname, int32_t value) {
+  if (value > 0) {
+    return true;
+  }
+  FLOG_WARN("Invalid value for --%s: %d, it should be greater than 0", flagname, value);
+  return false;
+}
 }  // namespace
 
 DEFINE_validator(slow_query_log_max_query_len, &ValidateSlowQueryLogMaxQueryLen);
+DEFINE_validator(running_slow_query_scan_interval_secs, &ValidateRunningSlowQueryScanIntervalSecs);
 
 namespace nebula {
 

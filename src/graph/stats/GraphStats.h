@@ -13,6 +13,10 @@ DECLARE_int32(slow_query_threshold_us);
 DECLARE_bool(enable_slow_query_log);
 DECLARE_string(slow_query_log_filename);
 DECLARE_int32(slow_query_log_max_query_len);
+DECLARE_bool(enable_running_slow_query_log);
+DECLARE_int32(running_slow_query_scan_interval_secs);
+DECLARE_string(running_slow_query_log_dir);
+DECLARE_string(running_slow_query_log_filename);
 DECLARE_bool(enable_space_level_metrics);
 
 namespace nebula {

@@ -80,6 +80,14 @@
 --slow_query_log_filename=nebula-slow-query.log
 # max nGQL length per slow query log line
 --slow_query_log_max_query_len=4096
+# enable periodic scan for local running slow query
+--enable_running_slow_query_log=false
+# scan interval in seconds for local running slow query
+--running_slow_query_scan_interval_secs=1
+# running slow query log directory, empty means using log_dir
+--running_slow_query_log_dir=
+# running slow query log filename
+--running_slow_query_log_filename=nebula-running-slow-query.log
 # Port to listen on Meta with HTTP protocol, it corresponds to ws_http_port in metad's configuration file
 --ws_meta_http_port=19559
 

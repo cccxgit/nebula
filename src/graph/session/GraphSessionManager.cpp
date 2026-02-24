@@ -4,11 +4,14 @@
 
 #include "graph/session/GraphSessionManager.h"
 
+#include <thrift/lib/cpp/util/EnumUtils.h>
+
 #include "common/base/Base.h"
 #include "common/base/Status.h"
 #include "common/stats/StatsManager.h"
 #include "common/time/WallClock.h"
 #include "graph/service/GraphFlags.h"
+#include "graph/service/RunningSlowQueryLogger.h"
 #include "graph/stats/GraphStats.h"
 
 namespace nebula {
@@ -20,6 +23,12 @@ GraphSessionManager::GraphSessionManager(meta::MetaClient* metaClient, const Hos
     : SessionManager<ClientSession>(metaClient, hostAddr) {
   scavenger_->addDelayTask(
       FLAGS_session_reclaim_interval_secs * 1000, &GraphSessionManager::threadFunc, this);
+  if (FLAGS_running_slow_query_scan_interval_secs > 0) {
+    scavenger_->addDelayTask(static_cast<int64_t>(FLAGS_running_slow_query_scan_interval_secs) *
+                                 1000,
+                             &GraphSessionManager::slowQueryScanThreadFunc,
+                             this);
+  }
 }
 
 folly::Future<StatusOr<std::shared_ptr<ClientSession>>> GraphSessionManager::findSession(
@@ -180,6 +189,86 @@ void GraphSessionManager::threadFunc() {
   updateSessionsToMeta();
   scavenger_->addDelayTask(
       FLAGS_session_reclaim_interval_secs * 1000, &GraphSessionManager::threadFunc, this);
+}
+
+void GraphSessionManager::slowQueryScanThreadFunc() {
+  scanRunningSlowQueries();
+  if (FLAGS_running_slow_query_scan_interval_secs > 0) {
+    scavenger_->addDelayTask(static_cast<int64_t>(FLAGS_running_slow_query_scan_interval_secs) *
+                                 1000,
+                             &GraphSessionManager::slowQueryScanThreadFunc,
+                             this);
+  }
+}
+
+void GraphSessionManager::scanRunningSlowQueries() {
+  if (!FLAGS_enable_running_slow_query_log) {
+    reportedRunningSlowQueries_.clear();
+    return;
+  }
+
+  auto thresholdUs = FLAGS_slow_query_threshold_us;
+  if (thresholdUs <= 0) {
+    reportedRunningSlowQueries_.clear();
+    return;
+  }
+
+  auto nowUs = time::WallClock::fastNowInMicroSec();
+  std::unordered_set<RunningQueryKey, RunningQueryKeyHash> stillRunningSlowQueries;
+  stillRunningSlowQueries.reserve(reportedRunningSlowQueries_.size());
+  for (const auto& iter : activeSessions_) {
+    auto session = iter.second;
+    if (session == nullptr) {
+      continue;
+    }
+    auto sessionCopy = session->getSession();
+    auto sessionId = sessionCopy.get_session_id();
+    for (const auto& query : *sessionCopy.queries_ref()) {
+      const auto& desc = query.second;
+      if (desc.get_status() != meta::cpp2::QueryStatus::RUNNING &&
+          desc.get_status() != meta::cpp2::QueryStatus::KILLING) {
+        continue;
+      }
+      auto startTimeUs = desc.get_start_time();
+      if (startTimeUs <= 0 || nowUs <= startTimeUs) {
+        continue;
+      }
+      auto elapsedUs = static_cast<uint64_t>(nowUs - startTimeUs);
+      if (elapsedUs <= static_cast<uint64_t>(thresholdUs)) {
+        continue;
+      }
+
+      RunningQueryKey key;
+      key.sessionId = sessionId;
+      key.planId = query.first;
+      key.startTimeUs = startTimeUs;
+      stillRunningSlowQueries.emplace(key);
+      if (reportedRunningSlowQueries_.find(key) != reportedRunningSlowQueries_.end()) {
+        continue;
+      }
+
+      RunningSlowQueryLogRecord record;
+      record.elapsedUs = elapsedUs;
+      record.thresholdUs = thresholdUs;
+      record.space = sessionCopy.get_space_name();
+      record.user = sessionCopy.get_user_name();
+      record.sessionId = sessionId;
+      record.planId = query.first;
+      record.startTimeUs = startTimeUs;
+      record.status = apache::thrift::util::enumNameSafe(desc.get_status());
+      record.query = desc.get_query();
+      RunningSlowQueryLogger::instance().logRunningSlowQuery(record);
+      reportedRunningSlowQueries_.emplace(std::move(key));
+    }
+  }
+
+  for (auto it = reportedRunningSlowQueries_.begin(); it != reportedRunningSlowQueries_.end();) {
+    if (stillRunningSlowQueries.find(*it) == stillRunningSlowQueries.end()) {
+      it = reportedRunningSlowQueries_.erase(it);
+    } else {
+      ++it;
+    }
+  }
 }
 
 // TODO(dutor) Now we do a brute-force scanning, of course we could make it more

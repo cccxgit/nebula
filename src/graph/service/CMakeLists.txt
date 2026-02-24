@@ -18,6 +18,7 @@ nebula_add_library(
     QueryEngine.cpp
     QueryInstance.cpp
     SlowQueryLogger.cpp
+    RunningSlowQueryLogger.cpp
 )
 
 nebula_add_library(
