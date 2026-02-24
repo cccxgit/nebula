@@ -17,6 +17,8 @@ namespace graph {
 
 namespace {
 
+constexpr int32_t kDefaultSlowQueryLogMaxQueryLen = 4096;
+
 std::string escapeForLog(const std::string& value) {
   std::string escaped;
   escaped.reserve(value.size());
@@ -47,8 +49,11 @@ std::string escapeForLog(const std::string& value) {
 
 std::pair<std::string, bool> formatEscapedQuery(const std::string& query) {
   auto maxLen = FLAGS_slow_query_log_max_query_len;
+  if (maxLen <= 0) {
+    maxLen = kDefaultSlowQueryLogMaxQueryLen;
+  }
   size_t rawSize = query.size();
-  size_t actualLen = maxLen > 0 ? std::min(rawSize, static_cast<size_t>(maxLen)) : 0UL;
+  size_t actualLen = std::min(rawSize, static_cast<size_t>(maxLen));
   bool truncated = rawSize > actualLen;
   return {escapeForLog(query.substr(0, actualLen)), truncated};
 }
@@ -134,6 +139,14 @@ void SlowQueryLogger::logSlowQuery(const SlowQueryLogRecord& record) {
       }
       return;
     }
+    if (written == 0) {
+      if (!warnedWriteFailed_) {
+        warnedWriteFailed_ = true;
+        LOG(WARNING) << "Failed to write slow query log `" << openedPath_
+                     << "': write returned 0";
+      }
+      return;
+    }
     left -= static_cast<size_t>(written);
     pos += written;
   }
@@ -148,7 +161,7 @@ bool SlowQueryLogger::ensureLogFdUnlocked() {
 
   resetLogFdUnlocked();
   openedPath_ = std::move(targetPath);
-  logFd_ = ::open(openedPath_.c_str(), O_WRONLY | O_APPEND | O_CREAT, 0644);
+  logFd_ = ::open(openedPath_.c_str(), O_WRONLY | O_APPEND | O_CREAT | O_CLOEXEC, 0644);
   if (logFd_ < 0) {
     if (!warnedOpenFailed_) {
       warnedOpenFailed_ = true;

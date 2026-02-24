@@ -53,6 +53,32 @@ std::vector<std::string> readAllLines(const std::string& path) {
   return lines;
 }
 
+int findOpenedFdByPath(const std::string& targetPath) {
+  std::error_code ec;
+  std::filesystem::path procFd("/proc/self/fd");
+  if (!std::filesystem::exists(procFd, ec)) {
+    return -1;
+  }
+
+  for (const auto& entry : std::filesystem::directory_iterator(procFd, ec)) {
+    if (ec) {
+      return -1;
+    }
+    std::error_code linkEc;
+    auto link = std::filesystem::read_symlink(entry.path(), linkEc);
+    if (linkEc || link.string() != targetPath) {
+      continue;
+    }
+    auto fdName = entry.path().filename().string();
+    try {
+      return std::stoi(fdName);
+    } catch (...) {
+      return -1;
+    }
+  }
+  return -1;
+}
+
 SlowQueryLogRecord makeRecord(const std::string& query = "MATCH (v) RETURN v",
                               int64_t sessionId = 17,
                               int64_t planId = 103) {
@@ -118,6 +144,51 @@ TEST(SlowQueryLoggerTest, TruncateLongQuery) {
   ASSERT_EQ(1, lines.size());
   EXPECT_NE(std::string::npos, lines[0].find("truncated=true"));
   EXPECT_NE(std::string::npos, lines[0].find("query=\"01234\""));
+}
+
+TEST(SlowQueryLoggerTest, FallbackWhenMaxLenIsNonPositive) {
+  ScopedTempDir tempDir;
+  FLAGS_log_dir = tempDir.path();
+  FLAGS_enable_slow_query_log = true;
+  FLAGS_slow_query_log_filename = "slow.log";
+  FLAGS_slow_query_log_max_query_len = 0;
+
+  SlowQueryLogger::instance().logSlowQuery(makeRecord("0123456789"));
+
+  auto logPath = tempDir.path() + "/slow.log";
+  auto lines = readAllLines(logPath);
+  ASSERT_EQ(1, lines.size());
+  EXPECT_NE(std::string::npos, lines[0].find("truncated=false"));
+  EXPECT_NE(std::string::npos, lines[0].find("query=\"0123456789\""));
+}
+
+TEST(SlowQueryLoggerTest, DegradeWhenWriteFails) {
+  ScopedTempDir tempDir;
+  FLAGS_enable_slow_query_log = true;
+  FLAGS_log_dir = tempDir.path();
+  FLAGS_slow_query_log_filename = "slow.log";
+  FLAGS_slow_query_log_max_query_len = 4096;
+
+  auto logPath = tempDir.path() + "/slow.log";
+  SlowQueryLogger::instance().logSlowQuery(makeRecord("RETURN first"));
+
+  auto fd = findOpenedFdByPath(logPath);
+  if (fd < 0) {
+    GTEST_SKIP() << "cannot resolve opened fd for log path";
+  }
+  ::close(fd);
+
+  // The logger now holds a stale fd and should hit write failure path without crashing.
+  SlowQueryLogger::instance().logSlowQuery(makeRecord("RETURN fail"));
+
+  // After one write failure, logger should still work for later normal writes.
+  FLAGS_slow_query_log_filename = "slow2.log";
+  SlowQueryLogger::instance().logSlowQuery(makeRecord("RETURN recovered"));
+
+  auto recoveredLogPath = tempDir.path() + "/slow2.log";
+  auto lines = readAllLines(recoveredLogPath);
+  ASSERT_EQ(1, lines.size());
+  EXPECT_NE(std::string::npos, lines[0].find("query=\"RETURN recovered\""));
 }
 
 TEST(SlowQueryLoggerTest, ConcurrentWrite) {

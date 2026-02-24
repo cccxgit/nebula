@@ -22,6 +22,18 @@ DEFINE_int32(slow_query_log_max_query_len,
              "Maximum query length for one slow query log line, query will be truncated if exceeds");
 DEFINE_bool(enable_space_level_metrics, false, "Whether to enable space level metrircs");
 
+namespace {
+bool ValidateSlowQueryLogMaxQueryLen(const char* flagname, int32_t value) {
+  if (value > 0) {
+    return true;
+  }
+  FLOG_WARN("Invalid value for --%s: %d, it should be greater than 0", flagname, value);
+  return false;
+}
+}  // namespace
+
+DEFINE_validator(slow_query_log_max_query_len, &ValidateSlowQueryLogMaxQueryLen);
+
 namespace nebula {
 
 stats::CounterId kNumQueries;
