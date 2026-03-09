@@ -1,9 +1,3 @@
-
----
-
-## 文件 2：`AGENTS.md`
-
-```md
 # AGENTS.md
 
 ## Purpose
