@@ -1,0 +1,5 @@
+interface:
+  display_name: "Distributed Bugfix"
+  short_description: "排查复杂分布式系统 bug，先分析后改代码"
+  icon: "bug"
+  color: "#2563EB"
