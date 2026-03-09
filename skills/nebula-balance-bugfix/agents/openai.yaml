@@ -1,0 +1,5 @@
+interface:
+  display_name: "Nebula Balance Bugfix"
+  short_description: "面向 Nebula Graph balance 故障的专项排查与修复流程"
+  icon: "bug"
+  color: "#1D4ED8"
