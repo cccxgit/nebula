@@ -303,6 +303,7 @@ class AdminClient {
                              int32_t index,
                              Request req,
                              RemoteFunc remoteFunc,
+                             std::string opName,
                              int32_t retry,
                              folly::Promise<Status> pro,
                              int32_t retryLimit);

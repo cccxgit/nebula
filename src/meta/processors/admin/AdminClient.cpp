@@ -130,6 +130,7 @@ folly::Future<Status> AdminClient::addLearner(GraphSpaceID spaceId,
       0,
       std::move(req),
       [](auto client, auto request) { return client->future_addLearner(request); },
+      "add_learner",
       0,
       std::move(pro),
       FLAGS_max_retry_times_admin_op);
@@ -158,6 +159,7 @@ folly::Future<Status> AdminClient::waitingForCatchUpData(GraphSpaceID spaceId,
       0,
       std::move(req),
       [](auto client, auto request) { return client->future_waitingForCatchUpData(request); },
+      "catch_up_data",
       0,
       std::move(pro),
       FLAGS_max_retry_times_admin_op);
@@ -188,6 +190,7 @@ folly::Future<Status> AdminClient::memberChange(GraphSpaceID spaceId,
       0,
       std::move(req),
       [](auto client, auto request) { return client->future_memberChange(request); },
+      added ? "member_change_add" : "member_change_remove",
       0,
       std::move(pro),
       FLAGS_max_retry_times_admin_op);
@@ -478,6 +481,7 @@ void AdminClient::getResponseFromLeader(std::vector<HostAddr> hosts,
                                         int32_t index,
                                         Request req,
                                         RemoteFunc remoteFunc,
+                                        std::string opName,
                                         int32_t retry,
                                         folly::Promise<Status> pro,
                                         int32_t retryLimit) {
@@ -490,6 +494,7 @@ void AdminClient::getResponseFromLeader(std::vector<HostAddr> hosts,
               index,
               req = std::move(req),
               remoteFunc = std::move(remoteFunc),
+              opName = std::move(opName),
               retry,
               pro = std::move(pro),
               retryLimit,
@@ -502,19 +507,26 @@ void AdminClient::getResponseFromLeader(std::vector<HostAddr> hosts,
                           index,
                           req = std::move(req),
                           remoteFunc = std::move(remoteFunc),
+                          opName = std::move(opName),
                           retry,
                           retryLimit,
                           this](folly::Try<storage::cpp2::AdminExecResp>&& t) mutable {
+                     const auto spaceId = req.get_space_id();
+                     const auto partId = req.get_part_id();
                      // exception occurred during RPC
                      if (t.hasException()) {
                        if (retry < retryLimit) {
-                         LOG(INFO) << "Rpc failure to " << hosts[index] << ", retry " << retry
-                                   << ", limit " << retryLimit << ", error: " << t.exception();
+                         LOG(WARNING) << "Balance admin op retry due to rpc failure, op="
+                                      << opName << ", space=" << spaceId << ", part=" << partId
+                                      << ", hostIndex=" << index << ", host=" << hosts[index]
+                                      << ", retry=" << retry << ", retryLimit=" << retryLimit
+                                      << ", error=" << t.exception();
                          index = (index + 1) % hosts.size();
                          getResponseFromLeader(std::move(hosts),
                                                index,
                                                std::move(req),
                                                std::move(remoteFunc),
+                                               std::move(opName),
                                                retry + 1,
                                                std::move(p),
                                                retryLimit);
@@ -541,13 +553,17 @@ void AdminClient::getResponseFromLeader(std::vector<HostAddr> hosts,
                            }
                            if (leader == HostAddr("", 0)) {
                              usleep(1000 * 50);
-                             LOG(INFO) << "The leader is in election"
-                                       << ", retry " << retry << ", limit " << retryLimit;
+                             LOG(WARNING)
+                                 << "Balance admin op retry due to leader election in-progress, op="
+                                 << opName << ", space=" << spaceId << ", part=" << partId
+                                 << ", hostIndex=" << index << ", host=" << hosts[index]
+                                 << ", retry=" << retry << ", retryLimit=" << retryLimit;
                              index = (index + 1) % hosts.size();
                              getResponseFromLeader(std::move(hosts),
                                                    index,
                                                    std::move(req),
                                                    std::move(remoteFunc),
+                                                   std::move(opName),
                                                    retry + 1,
                                                    std::move(p),
                                                    retryLimit);
@@ -571,14 +587,17 @@ void AdminClient::getResponseFromLeader(std::vector<HostAddr> hosts,
                              index = leaderIndex;
                              hosts.emplace_back(leader);
                            }
-                           LOG(INFO)
-                               << "Return leader change from " << hosts[index] << ", new leader is "
-                               << leader << ", retry " << retry << ", limit " << retryLimit;
+                           LOG(WARNING) << "Balance admin op retry due to leader changed, op="
+                                        << opName << ", space=" << spaceId << ", part=" << partId
+                                        << ", hostIndex=" << index << ", host=" << hosts[index]
+                                        << ", reportedLeader=" << leader << ", retry=" << retry
+                                        << ", retryLimit=" << retryLimit;
                            CHECK_LT(leaderIndex, hosts.size());
                            getResponseFromLeader(std::move(hosts),
                                                  leaderIndex,
                                                  std::move(req),
                                                  std::move(remoteFunc),
+                                                 std::move(opName),
                                                  retry + 1,
                                                  std::move(p),
                                                  retryLimit);
@@ -588,15 +607,20 @@ void AdminClient::getResponseFromLeader(std::vector<HostAddr> hosts,
                          return;
                        }
                        default: {
-                         if (retry < retryLimit) {
-                           LOG(INFO) << "Unknown code " << static_cast<int32_t>(resp.get_code())
-                                     << " from " << hosts[index] << ", retry " << retry
-                                     << ", limit " << retryLimit;
+                       if (retry < retryLimit) {
+                           LOG(WARNING)
+                               << "Balance admin op retry due to storage error, op=" << opName
+                               << ", space=" << spaceId << ", part=" << partId
+                               << ", hostIndex=" << index << ", host=" << hosts[index]
+                               << ", errorCode="
+                               << apache::thrift::util::enumNameSafe(resp.get_code())
+                               << ", retry=" << retry << ", retryLimit=" << retryLimit;
                            index = (index + 1) % hosts.size();
                            getResponseFromLeader(std::move(hosts),
                                                  index,
                                                  std::move(req),
                                                  std::move(remoteFunc),
+                                                 std::move(opName),
                                                  retry + 1,
                                                  std::move(p),
                                                  retryLimit);

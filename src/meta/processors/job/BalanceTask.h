@@ -113,6 +113,8 @@ class BalanceTask {
    */
   bool saveInStore();
 
+  void logPhaseFailure(const char* phase, const Status& st) const;
+
   int64_t startTime() const {
     return startTimeMs_;
   }
