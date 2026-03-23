@@ -2200,6 +2200,11 @@ nebula::cpp2::ErrorCode RaftPart::isCaughtUp(const HostAddr& peer) {
           host->followerCommittedLogId_ < wal_->firstLogId()) {
         VLOG(2) << idStr_ << "The committed log id of peer is " << host->followerCommittedLogId_
                 << ", which is invalid or less than my first wal log id";
+        LOG_EVERY_N(INFO, 100) << idStr_ << " isCaughtUp shows peer still needs snapshot"
+                               << ", peer=" << peer
+                               << ", followerCommittedLogId=" << host->followerCommittedLogId_
+                               << ", walFirstLogId=" << wal_->firstLogId()
+                               << ", sendingSnapshot=" << host->sendingSnapshot_;
         return nebula::cpp2::ErrorCode::E_RAFT_SENDING_SNAPSHOT;
       }
       return host->sendingSnapshot_ ? nebula::cpp2::ErrorCode::E_RAFT_SENDING_SNAPSHOT

@@ -348,15 +348,24 @@ Host::prepareAppendLogRequest() {
 nebula::cpp2::ErrorCode Host::startSendSnapshot() {
   CHECK(!lock_.try_lock());
   if (!sendingSnapshot_) {
+    const auto snapshotStartMs = time::WallClock::fastNowInMilliSec();
     VLOG(1) << idStr_ << "Can't find log " << lastLogIdSent_ + 1 << " in wal, send the snapshot"
             << ", logIdToSend = " << logIdToSend_
             << ", firstLogId in wal = " << part_->wal()->firstLogId()
             << ", lastLogId in wal = " << part_->wal()->lastLogId();
+    LOG(INFO) << idStr_ << " Start send snapshot"
+              << ", peer=" << addr_
+              << ", isLearner=" << isLearner_
+              << ", lastLogIdSent=" << lastLogIdSent_
+              << ", logIdToSend=" << logIdToSend_
+              << ", walFirstLogId=" << part_->wal()->firstLogId()
+              << ", walLastLogId=" << part_->wal()->lastLogId();
     sendingSnapshot_ = true;
     stats::StatsManager::addValue(kNumSendSnapshot);
     part_->snapshot_->sendSnapshot(part_, addr_)
-        .thenValue([self = shared_from_this()](auto&& status) {
+        .thenValue([self = shared_from_this(), snapshotStartMs](auto&& status) {
           std::lock_guard<std::mutex> g(self->lock_);
+          auto elapsedMs = time::WallClock::fastNowInMilliSec() - snapshotStartMs;
           if (status.ok()) {
             auto commitLogIdAndTerm = status.value();
             self->lastLogIdSent_ = commitLogIdAndTerm.first;
@@ -365,8 +374,21 @@ nebula::cpp2::ErrorCode Host::startSendSnapshot() {
             VLOG(1) << self->idStr_ << "Send snapshot succeeded!"
                     << " commitLogId = " << commitLogIdAndTerm.first
                     << " commitLogTerm = " << commitLogIdAndTerm.second;
+            LOG(INFO) << self->idStr_ << " Send snapshot succeeded"
+                      << ", peer=" << self->addr_
+                      << ", isLearner=" << self->isLearner_
+                      << ", commitLogId=" << commitLogIdAndTerm.first
+                      << ", commitLogTerm=" << commitLogIdAndTerm.second
+                      << ", elapsedMs=" << elapsedMs;
           } else {
             VLOG(1) << self->idStr_ << "Send snapshot failed!";
+            LOG(WARNING) << self->idStr_ << " Send snapshot failed"
+                         << ", peer=" << self->addr_
+                         << ", isLearner=" << self->isLearner_
+                         << ", lastLogIdSent=" << self->lastLogIdSent_
+                         << ", logIdToSend=" << self->logIdToSend_
+                         << ", followerCommittedLogId=" << self->followerCommittedLogId_
+                         << ", elapsedMs=" << elapsedMs;
             // TODO(heng): we should tell the follower i am failed.
           }
           self->sendingSnapshot_ = false;

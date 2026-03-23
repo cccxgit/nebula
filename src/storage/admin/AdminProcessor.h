@@ -9,6 +9,7 @@
 #include <folly/executors/Async.h>
 
 #include "common/base/Base.h"
+#include "common/time/WallClock.h"
 #include "kvstore/NebulaStore.h"
 #include "kvstore/Part.h"
 #include "kvstore/stats/KVStats.h"
@@ -349,12 +350,18 @@ class WaitingForCatchUpDataProcessor : public BaseProcessor<cpp2::AdminExecResp>
     auto peer = kvstore::NebulaStore::getRaftAddr(req.get_target());
 
     folly::async([this, part, peer, spaceId, partId] {
+      const auto startMs = time::WallClock::fastNowInMilliSec();
       int retry = FLAGS_waiting_catch_up_retry_times;
+      int attempt = 0;
       while (retry-- > 0) {
+        ++attempt;
         auto res = part->isCaughtUp(peer);
+        auto elapsedMs = time::WallClock::fastNowInMilliSec() - startMs;
         LOG(INFO) << "Waiting for catching up data, peer " << peer << ", space " << spaceId
                   << ", part " << partId << ", remaining " << retry << " retry times"
-                  << ", result " << static_cast<int32_t>(res);
+                  << ", attempt " << attempt
+                  << ", result " << static_cast<int32_t>(res)
+                  << ", elapsedMs " << elapsedMs;
         switch (res) {
           case nebula::cpp2::ErrorCode::SUCCEEDED:
             onFinished();
@@ -378,6 +385,10 @@ class WaitingForCatchUpDataProcessor : public BaseProcessor<cpp2::AdminExecResp>
         }
         sleep(FLAGS_waiting_catch_up_interval_in_secs);
       }
+      auto elapsedMs = time::WallClock::fastNowInMilliSec() - startMs;
+      LOG(WARNING) << "Waiting for catching up data exhausted, peer " << peer << ", space "
+                   << spaceId << ", part " << partId << ", elapsedMs " << elapsedMs
+                   << ", retryLimit " << FLAGS_waiting_catch_up_retry_times;
       this->pushResultCode(nebula::cpp2::ErrorCode::E_RETRY_EXHAUSTED, partId);
       onFinished();
     });
