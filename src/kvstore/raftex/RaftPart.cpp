@@ -1953,11 +1953,21 @@ void RaftPart::processHeartbeatRequest(const cpp2::HeartbeatRequest& req,
 
 void RaftPart::processSendSnapshotRequest(const cpp2::SendSnapshotRequest& req,
                                           cpp2::SendSnapshotResponse& resp) {
+  const auto batchRows = req.get_rows().size();
   VLOG(2) << idStr_ << "Receive snapshot from " << req.get_leader_addr() << ":"
           << req.get_leader_port() << ", commit log id " << req.get_committed_log_id()
           << ", commit log term " << req.get_committed_log_term() << ", leader has sent "
           << req.get_total_count() << " logs of size " << req.get_total_size() << ", finished "
           << req.get_done();
+  LOG_EVERY_N(INFO, 50) << idStr_ << " Receive snapshot batch"
+                        << ", leader=" << req.get_leader_addr() << ":" << req.get_leader_port()
+                        << ", term=" << req.get_current_term()
+                        << ", commitLogId=" << req.get_committed_log_id()
+                        << ", commitLogTerm=" << req.get_committed_log_term()
+                        << ", rowsInBatch=" << batchRows
+                        << ", leaderTotalCount=" << req.get_total_count()
+                        << ", leaderTotalSize=" << req.get_total_size()
+                        << ", done=" << req.get_done();
 
   std::lock_guard<std::mutex> g(raftLock_);
   // Check status
@@ -1981,6 +1991,10 @@ void RaftPart::processSendSnapshotRequest(const cpp2::SendSnapshotRequest& req,
     if (err != nebula::cpp2::ErrorCode::SUCCEEDED) {
       // Wrong leadership
       VLOG(3) << idStr_ << "Will not follow the leader";
+      LOG(WARNING) << idStr_ << " Reject snapshot due to leader verification failed"
+                   << ", leader=" << req.get_leader_addr() << ":" << req.get_leader_port()
+                   << ", reqTerm=" << req.get_current_term() << ", localTerm=" << term_
+                   << ", errorCode=" << static_cast<int32_t>(err);
       resp.error_code_ref() = err;
       return;
     }
@@ -1995,6 +2009,11 @@ void RaftPart::processSendSnapshotRequest(const cpp2::SendSnapshotRequest& req,
     // Still waiting for snapshot from another peer, just return error. If the peer doesn't
     // send any logs during raft_snapshot_timeout, will convert to Status::RUNNING, so we can accept
     // snapshot again
+    LOG(WARNING) << idStr_ << " Reject snapshot due to waiting another snapshot stream"
+                 << ", expectedCommitLogId=" << lastSnapshotCommitId_
+                 << ", expectedCommitLogTerm=" << lastSnapshotCommitTerm_
+                 << ", reqCommitLogId=" << req.get_committed_log_id()
+                 << ", reqCommitLogTerm=" << req.get_committed_log_term();
     resp.error_code_ref() = nebula::cpp2::ErrorCode::E_RAFT_WAITING_SNAPSHOT;
     return;
   }
@@ -2009,6 +2028,11 @@ void RaftPart::processSendSnapshotRequest(const cpp2::SendSnapshotRequest& req,
       req.get_rows(), req.get_committed_log_id(), req.get_committed_log_term(), req.get_done());
   if (std::get<0>(ret) != nebula::cpp2::ErrorCode::SUCCEEDED) {
     VLOG(2) << idStr_ << "Persist snapshot failed";
+    LOG(WARNING) << idStr_ << " Persist snapshot failed"
+                 << ", leader=" << req.get_leader_addr() << ":" << req.get_leader_port()
+                 << ", rowsInBatch=" << batchRows
+                 << ", commitLogId=" << req.get_committed_log_id()
+                 << ", commitLogTerm=" << req.get_committed_log_term();
     resp.error_code_ref() = nebula::cpp2::ErrorCode::E_RAFT_PERSIST_SNAPSHOT_FAILED;
     return;
   }
@@ -2018,9 +2042,17 @@ void RaftPart::processSendSnapshotRequest(const cpp2::SendSnapshotRequest& req,
     VLOG(2) << idStr_ << "Bad snapshot, total rows received " << lastTotalCount_
             << ", total rows sended " << req.get_total_count() << ", total size received "
             << lastTotalSize_ << ", total size sended " << req.get_total_size();
+    LOG(WARNING) << idStr_ << " Snapshot progress mismatch"
+                 << ", leader=" << req.get_leader_addr() << ":" << req.get_leader_port()
+                 << ", receivedCount=" << lastTotalCount_ << ", leaderCount=" << req.get_total_count()
+                 << ", receivedSize=" << lastTotalSize_ << ", leaderSize=" << req.get_total_size();
     resp.error_code_ref() = nebula::cpp2::ErrorCode::E_RAFT_PERSIST_SNAPSHOT_FAILED;
     return;
   }
+  LOG_EVERY_N(INFO, 50) << idStr_ << " Snapshot receive progress"
+                        << ", leader=" << req.get_leader_addr() << ":" << req.get_leader_port()
+                        << ", receivedCount=" << lastTotalCount_ << ", receivedSize=" << lastTotalSize_
+                        << ", done=" << req.get_done();
   if (req.get_done()) {
     committedLogId_ = req.get_committed_log_id();
     committedLogTerm_ = req.get_committed_log_term();
@@ -2033,6 +2065,10 @@ void RaftPart::processSendSnapshotRequest(const cpp2::SendSnapshotRequest& req,
     VLOG(1) << idStr_ << "Receive all snapshot, committedLogId_ " << committedLogId_
             << ", committedLogTerm_ " << committedLogTerm_ << ", lastLogId " << lastLogId_
             << ", lastLogTermId " << lastLogTerm_;
+    LOG(INFO) << idStr_ << " Receive all snapshot done"
+              << ", leader=" << req.get_leader_addr() << ":" << req.get_leader_port()
+              << ", committedLogId=" << committedLogId_ << ", committedLogTerm=" << committedLogTerm_
+              << ", totalCount=" << lastTotalCount_ << ", totalSize=" << lastTotalSize_;
   }
   resp.error_code_ref() = nebula::cpp2::ErrorCode::SUCCEEDED;
   return;
