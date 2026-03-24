@@ -52,6 +52,7 @@ void BalanceTask::invoke() {
       client_->checkPeers(spaceId_, partId_).thenValue([this](auto&& resp) {
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Check the peers failed, status " << resp;
+          logPhaseFailure("START/CHECK_PEERS", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           status_ = BalanceTaskStatus::CHANGE_LEADER;
@@ -76,6 +77,7 @@ void BalanceTask::invoke() {
             } else {
               LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Transfer leader failed, status "
                         << resp;
+              logPhaseFailure("CHANGE_LEADER", resp);
               ret_ = BalanceTaskResult::FAILED;
             }
           } else {
@@ -97,6 +99,7 @@ void BalanceTask::invoke() {
       client_->addPart(spaceId_, partId_, dst_, true).thenValue([this](auto&& resp) {
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Open part failed, status " << resp;
+          logPhaseFailure("ADD_PART_ON_DST", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           status_ = BalanceTaskStatus::ADD_LEARNER;
@@ -111,6 +114,7 @@ void BalanceTask::invoke() {
       client_->addLearner(spaceId_, partId_, dst_).thenValue([this](auto&& resp) {
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Add learner failed, status " << resp;
+          logPhaseFailure("ADD_LEARNER", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           status_ = BalanceTaskStatus::CATCH_UP_DATA;
@@ -125,6 +129,7 @@ void BalanceTask::invoke() {
       client_->waitingForCatchUpData(spaceId_, partId_, dst_).thenValue([this](auto&& resp) {
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Catchup data failed, status " << resp;
+          logPhaseFailure("CATCH_UP_DATA", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           status_ = BalanceTaskStatus::MEMBER_CHANGE_ADD;
@@ -140,6 +145,7 @@ void BalanceTask::invoke() {
       client_->memberChange(spaceId_, partId_, dst_, true).thenValue([this](auto&& resp) {
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Add peer failed, status " << resp;
+          logPhaseFailure("MEMBER_CHANGE_ADD", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           status_ = BalanceTaskStatus::MEMBER_CHANGE_REMOVE;
@@ -155,6 +161,7 @@ void BalanceTask::invoke() {
       client_->memberChange(spaceId_, partId_, src_, false).thenValue([this](auto&& resp) {
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Remove peer failed, status " << resp;
+          logPhaseFailure("MEMBER_CHANGE_REMOVE", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           status_ = BalanceTaskStatus::UPDATE_PART_META;
@@ -171,6 +178,7 @@ void BalanceTask::invoke() {
         // invoke directly here.
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Update meta failed, status " << resp;
+          logPhaseFailure("UPDATE_PART_META", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Update meta succeeded!";
@@ -188,6 +196,7 @@ void BalanceTask::invoke() {
         client_->removePart(spaceId_, partId_, src_).thenValue([this](auto&& resp) {
           if (!resp.ok()) {
             LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Remove part failed, status " << resp;
+            logPhaseFailure("REMOVE_PART_ON_SRC", resp);
             ret_ = BalanceTaskResult::FAILED;
           } else {
             status_ = BalanceTaskStatus::CHECK;
@@ -207,6 +216,7 @@ void BalanceTask::invoke() {
       client_->checkPeers(spaceId_, partId_).thenValue([this](auto&& resp) {
         if (!resp.ok()) {
           LOG(INFO) << taskIdStr_ + "," + commandStr_ << " Check the peers failed, status " << resp;
+          logPhaseFailure("CHECK", resp);
           ret_ = BalanceTaskResult::FAILED;
         } else {
           status_ = BalanceTaskStatus::END;
@@ -233,6 +243,16 @@ void BalanceTask::rollback() {
   } else {
     // TODO(heng): Go on the task.
   }
+}
+
+void BalanceTask::logPhaseFailure(const char* phase, const Status& st) const {
+  auto now = time::WallClock::fastNowInSec();
+  auto elapsedSec = startTimeMs_ > 0 ? now - startTimeMs_ : 0;
+  LOG(WARNING) << "Balance task phase failed"
+               << ", taskId=" << taskIdStr_ << ", phase=" << phase << ", status="
+               << static_cast<int32_t>(status_) << ", space=" << spaceId_ << ", part="
+               << partId_ << ", src=" << src_ << ", dst=" << dst_ << ", elapsedSec="
+               << elapsedSec << ", error=" << st;
 }
 
 bool BalanceTask::saveInStore() {

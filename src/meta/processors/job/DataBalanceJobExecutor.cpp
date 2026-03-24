@@ -8,6 +8,7 @@
 #include <folly/executors/CPUThreadPoolExecutor.h>
 
 #include <memory>
+#include <sstream>
 
 #include "common/utils/MetaKeyUtils.h"
 #include "kvstore/NebulaStore.h"
@@ -42,6 +43,7 @@ folly::Future<nebula::cpp2::ErrorCode> DataBalanceJobExecutor::executeInternal()
 Status DataBalanceJobExecutor::buildBalancePlan() {
   std::map<std::string, std::vector<Host*>> lostZoneHost;
   std::map<std::string, std::vector<Host*>> activeSortedHost;
+  std::map<std::string, size_t> zoneTaskCount;
   for (auto& zoneMapEntry : spaceInfo_.zones_) {
     const auto& zoneName = zoneMapEntry.first;
     auto& zone = zoneMapEntry.second;
@@ -63,6 +65,22 @@ Status DataBalanceJobExecutor::buildBalancePlan() {
         break;
       }
     }
+  }
+  if (!lostHosts_.empty()) {
+    std::stringstream lostHostsStream;
+    for (size_t i = 0; i < lostHosts_.size(); i++) {
+      if (i != 0) {
+        lostHostsStream << ",";
+      }
+      lostHostsStream << lostHosts_[i];
+    }
+    LOG(INFO) << "Data balance build plan start, space=" << spaceInfo_.spaceId_
+              << ", lostHosts=[" << lostHostsStream.str() << "]";
+  }
+
+  for (const auto& [zoneName, activeHosts] : activeSortedHost) {
+    LOG(INFO) << "Data balance zone host snapshot, space=" << spaceInfo_.spaceId_
+              << ", zone=" << zoneName << ", activeHostsCount=" << activeHosts.size();
   }
   for (auto& hostMapEntry : activeSortedHost) {
     std::vector<Host*>& hvec = hostMapEntry.second;
@@ -90,6 +108,7 @@ Status DataBalanceJobExecutor::buildBalancePlan() {
                                         dstHost->host_,
                                         kvstore_,
                                         adminClient_);
+        zoneTaskCount[zoneName]++;
         for (size_t i = 0; i < activeVec.size() - 1; i++) {
           if (activeVec[i]->parts_.size() > activeVec[i + 1]->parts_.size()) {
             std::swap(activeVec[i], activeVec[i + 1]);
@@ -103,7 +122,7 @@ Status DataBalanceJobExecutor::buildBalancePlan() {
   }
   lostZoneHost.clear();
   // rebalance for hosts in a zone
-  auto balanceHostVec = [this, &existTasks](std::vector<Host*>& hostVec) {
+  auto balanceHostVec = [this, &existTasks, &zoneTaskCount](std::vector<Host*>& hostVec) {
     size_t totalPartNum = 0;
     size_t avgPartNum = 0;
     for (Host* h : hostVec) {
@@ -153,6 +172,12 @@ Status DataBalanceJobExecutor::buildBalancePlan() {
                                 kvstore_,
                                 adminClient_),
                     &existTasks);
+      for (auto& [zoneName, zone] : spaceInfo_.zones_) {
+        if (zone.hasHost(srcHost->host_)) {
+          zoneTaskCount[zoneName]++;
+          break;
+        }
+      }
       size_t leftIndex = leftBegin;
       for (; leftIndex < leftEnd - 1; leftIndex++) {
         if (hostVec[leftIndex]->parts_.size() > hostVec[leftIndex + 1]->parts_.size()) {
@@ -182,11 +207,27 @@ Status DataBalanceJobExecutor::buildBalancePlan() {
     return Status::Balanced();
   }
   plan_ = std::make_unique<BalancePlan>(jobDescription_, kvstore_, adminClient_);
+  size_t totalTasks = 0;
   std::for_each(existTasks.begin(),
                 existTasks.end(),
                 [this](std::pair<const PartitionID, std::vector<BalanceTask>>& p) {
                   plan_->insertTask(p.second.begin(), p.second.end());
                 });
+  for (const auto& [_, tasks] : existTasks) {
+    totalTasks += tasks.size();
+  }
+  std::stringstream perZoneTaskCountStream;
+  bool first = true;
+  for (const auto& [zoneName, count] : zoneTaskCount) {
+    if (!first) {
+      perZoneTaskCountStream << ",";
+    }
+    first = false;
+    perZoneTaskCountStream << zoneName << ":" << count;
+  }
+  LOG(INFO) << "Data balance plan generated, space=" << spaceInfo_.spaceId_
+            << ", totalTasks=" << totalTasks << ", perZoneTaskCount={"
+            << perZoneTaskCountStream.str() << "}";
   nebula::cpp2::ErrorCode rc = plan_->saveInStore();
   if (rc != nebula::cpp2::ErrorCode::SUCCEEDED) {
     return Status::Error("save balance plan failed");

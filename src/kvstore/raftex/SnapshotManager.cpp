@@ -7,6 +7,7 @@
 
 #include <thrift/lib/cpp/util/EnumUtils.h>
 
+#include "common/time/WallClock.h"
 #include "kvstore/raftex/RaftPart.h"
 
 DEFINE_int32(snapshot_worker_threads, 4, "Threads number for snapshot");
@@ -60,6 +61,7 @@ folly::Future<StatusOr<std::pair<LogID, TermID>>> SnapshotManager::sendSnapshot(
           }
           int retry = FLAGS_snapshot_send_retry_times;
           while (retry-- > 0) {
+            auto sendStartMs = time::WallClock::fastNowInMilliSec();
             auto f = send(spaceId,
                           partId,
                           termId,
@@ -75,6 +77,7 @@ folly::Future<StatusOr<std::pair<LogID, TermID>>> SnapshotManager::sendSnapshot(
             // occupied.
             try {
               auto resp = std::move(f).get();
+              auto elapsedMs = time::WallClock::fastNowInMilliSec() - sendStartMs;
               if (resp.get_error_code() == nebula::cpp2::ErrorCode::SUCCEEDED) {
                 VLOG(3) << part->idStr_ << "has sended count " << totalCount;
                 if (status == SnapshotStatus::DONE) {
@@ -86,12 +89,27 @@ folly::Future<StatusOr<std::pair<LogID, TermID>>> SnapshotManager::sendSnapshot(
               } else {
                 VLOG(2) << part->idStr_ << "Sending snapshot failed, the error code is "
                         << apache::thrift::util::enumNameSafe(resp.get_error_code());
+                LOG(WARNING) << part->idStr_ << " Send snapshot batch failed"
+                             << ", dst=" << dst << ", retry=" << retry
+                             << ", retryLimit=" << FLAGS_snapshot_send_retry_times
+                             << ", status=" << static_cast<int32_t>(status)
+                             << ", totalCount=" << totalCount << ", totalSize=" << totalSize
+                             << ", rpcCode="
+                             << apache::thrift::util::enumNameSafe(resp.get_error_code())
+                             << ", elapsedMs=" << elapsedMs;
                 sleep(1);
                 continue;
               }
             } catch (const std::exception& e) {
+              auto elapsedMs = time::WallClock::fastNowInMilliSec() - sendStartMs;
               VLOG(3) << part->idStr_ << "Send snapshot failed, exception " << e.what()
                       << ", retry " << retry << " times";
+              LOG(WARNING) << part->idStr_ << " Send snapshot batch exception"
+                           << ", dst=" << dst << ", retry=" << retry
+                           << ", retryLimit=" << FLAGS_snapshot_send_retry_times
+                           << ", status=" << static_cast<int32_t>(status)
+                           << ", totalCount=" << totalCount << ", totalSize=" << totalSize
+                           << ", elapsedMs=" << elapsedMs << ", exception=" << e.what();
               sleep(1);
               continue;
             }

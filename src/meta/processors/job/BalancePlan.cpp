@@ -7,6 +7,8 @@
 
 #include <folly/synchronization/Baton.h>
 
+#include <sstream>
+
 #include "meta/ActiveHostsMan.h"
 #include "meta/processors/Common.h"
 
@@ -137,6 +139,17 @@ folly::Future<meta::cpp2::JobStatus> BalancePlan::invoke() {
   saveInStore();
   uint32 bucketSize = buckets_.size();
   int32_t concurrency = std::min(FLAGS_task_concurrency, bucketSize);
+  std::stringstream bucketHistogram;
+  for (size_t i = 0; i < buckets_.size(); i++) {
+    if (i != 0) {
+      bucketHistogram << ",";
+    }
+    bucketHistogram << buckets_[i].size();
+  }
+  LOG(INFO) << "Balance plan scheduling"
+            << ", planId=" << id() << ", taskConcurrency=" << concurrency
+            << ", bucketCount=" << bucketSize
+            << ", bucketSizeHistogram=[" << bucketHistogram.str() << "]";
   curIndex_.store(concurrency, std::memory_order_relaxed);
   for (int32_t i = 0; i < concurrency; i++) {
     if (!buckets_[i].empty()) {
