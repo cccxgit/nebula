@@ -122,24 +122,6 @@ class GraphSessionManager final : public SessionManager<ClientSession> {
 
   // Scans running queries from local sessions, logs slow queries once, and reclaims dedup states.
   void scanRunningSlowQueries();
-
-  struct RunningQueryKey final {
-    SessionID sessionId{0};
-    ExecutionPlanID planId{0};
-    int64_t startTimeUs{0};
-
-    bool operator==(const RunningQueryKey& rhs) const {
-      return sessionId == rhs.sessionId && planId == rhs.planId && startTimeUs == rhs.startTimeUs;
-    }
-  };
-
-  struct RunningQueryKeyHash final {
-    size_t operator()(const RunningQueryKey& key) const {
-      return folly::hash::hash_combine(key.sessionId, key.planId, key.startTimeUs);
-    }
-  };
-
-  std::unordered_set<RunningQueryKey, RunningQueryKeyHash> reportedRunningSlowQueries_;
 };
 
 }  // namespace graph

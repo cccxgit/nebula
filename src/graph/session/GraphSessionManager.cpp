@@ -203,13 +203,11 @@ void GraphSessionManager::slowQueryScanThreadFunc() {
 
 void GraphSessionManager::scanRunningSlowQueries() {
   if (!FLAGS_enable_running_slow_query_log) {
-    reportedRunningSlowQueries_.clear();
     return;
   }
 
   auto thresholdUs = FLAGS_slow_query_threshold_us;
   if (thresholdUs <= 0) {
-    reportedRunningSlowQueries_.clear();
     return;
   }
 
@@ -238,15 +236,6 @@ void GraphSessionManager::scanRunningSlowQueries() {
         continue;
       }
 
-      RunningQueryKey key;
-      key.sessionId = sessionId;
-      key.planId = query.first;
-      key.startTimeUs = startTimeUs;
-      stillRunningSlowQueries.emplace(key);
-      if (reportedRunningSlowQueries_.find(key) != reportedRunningSlowQueries_.end()) {
-        continue;
-      }
-
       RunningSlowQueryLogRecord record;
       record.elapsedUs = elapsedUs;
       record.thresholdUs = thresholdUs;
@@ -258,15 +247,6 @@ void GraphSessionManager::scanRunningSlowQueries() {
       record.status = apache::thrift::util::enumNameSafe(desc.get_status());
       record.query = desc.get_query();
       RunningSlowQueryLogger::instance().logRunningSlowQuery(record);
-      reportedRunningSlowQueries_.emplace(std::move(key));
-    }
-  }
-
-  for (auto it = reportedRunningSlowQueries_.begin(); it != reportedRunningSlowQueries_.end();) {
-    if (stillRunningSlowQueries.find(*it) == stillRunningSlowQueries.end()) {
-      it = reportedRunningSlowQueries_.erase(it);
-    } else {
-      ++it;
     }
   }
 }
