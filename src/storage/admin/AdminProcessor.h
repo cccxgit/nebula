@@ -76,7 +76,8 @@ class TransLeaderProcessor : public BaseProcessor<cpp2::AdminExecResp> {
       onFinished();
       return;
     }
-
+    LOG(INFO) << "sleep 1 day";
+    std::this_thread::sleep_for(std:: chrono::seconds(60*60*24));
     part->asyncTransferLeader(host, [this, spaceId, partId, part](nebula::cpp2::ErrorCode code) {
       if (code == nebula::cpp2::ErrorCode::E_LEADER_CHANGED) {
         LOG(INFO) << "I am not the leader of space " << spaceId << " part " << partId;

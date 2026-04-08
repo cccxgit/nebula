@@ -14,6 +14,9 @@ DEFINE_double(leader_balance_deviation,
               0.05,
               "after leader balance, leader count should in range "
               "[avg * (1 - deviation), avg * (1 + deviation)]");
+DEFINE_int32(leader_balance_timeout_secs,
+              300,
+              "Leader balance task timeout duration, in seconds");
 
 namespace nebula {
 namespace meta {
@@ -269,11 +272,17 @@ folly::Future<nebula::cpp2::ErrorCode> LeaderBalanceJobExecutor::executeInternal
     int32_t failed = 0;
     folly::collectAll(futures)
         .via(executor_.get())
+        .within(std::chrono::seconds(FLAGS_leader_balance_timeout_secs))
         .thenTry([&](const auto& result) {
-          auto tries = result.value();
-          for (const auto& t : tries) {
-            if (!t.value().ok()) {
-              ++failed;
+          if (result.hasException()) {
+            LOG(ERROR) << "Timeout or other exception: " << result.exception().what();
+            return;
+          } else {
+            auto tries = result.value();
+            for (const auto& t : tries) {
+              if (!t.value().ok()) {
+                ++failed;
+              }
             }
           }
         })
