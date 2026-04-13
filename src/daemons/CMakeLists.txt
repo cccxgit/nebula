@@ -100,6 +100,7 @@ nebula_add_executable(
     OBJECTS
         $<TARGET_OBJECTS:meta_service_handler>
         $<TARGET_OBJECTS:meta_http_handler>
+        $<TARGET_OBJECTS:meta_health_obj>
         $<TARGET_OBJECTS:meta_version_man_obj>
         $<TARGET_OBJECTS:meta_data_upgrade_obj>
         $<TARGET_OBJECTS:meta_v2_thrift_obj>
@@ -247,6 +248,7 @@ nebula_add_executable(
         $<TARGET_OBJECTS:storage_local_server_obj>
         $<TARGET_OBJECTS:meta_service_handler>
         $<TARGET_OBJECTS:meta_http_handler>
+        $<TARGET_OBJECTS:meta_health_obj>
         $<TARGET_OBJECTS:meta_version_man_obj>
         $<TARGET_OBJECTS:meta_data_upgrade_obj>
         $<TARGET_OBJECTS:meta_v2_thrift_obj>

@@ -11,6 +11,7 @@
 #include "common/hdfs/HdfsCommandHelper.h"
 #include "interface/gen-cpp2/common_types.h"
 #include "kvstore/KVStore.h"
+#include "meta/health/MetaSemanticHealthManager.h"
 #include "webservice/WebService.h"
 
 nebula::ClusterID& metaClusterId();
@@ -18,7 +19,10 @@ nebula::ClusterID& metaClusterId();
 std::unique_ptr<nebula::kvstore::KVStore> initKV(std::vector<nebula::HostAddr> peers,
                                                  nebula::HostAddr localhost);
 
-nebula::Status initWebService(nebula::WebService* svc, nebula::kvstore::KVStore* kvstore);
+nebula::Status initWebService(nebula::WebService* svc,
+                              nebula::kvstore::KVStore* kvstore,
+                              std::shared_ptr<nebula::meta::MetaSemanticHealthManager>
+                                  healthManager);
 
 nebula::cpp2::ErrorCode initGodUser(nebula::kvstore::KVStore* kvstore,
                                     const nebula::HostAddr& localhost);

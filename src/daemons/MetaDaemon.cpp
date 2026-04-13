@@ -26,6 +26,7 @@
 #include "meta/KVBasedClusterIdMan.h"
 #include "meta/MetaServiceHandler.h"
 #include "meta/MetaVersionMan.h"
+#include "meta/health/MetaSemanticHealthManager.h"
 #include "meta/http/MetaHttpReplaceHostHandler.h"
 #include "meta/processors/job/JobManager.h"
 #include "meta/stats/MetaStats.h"
@@ -50,6 +51,7 @@ DEFINE_string(pid_file, "pids/nebula-metad.pid", "File to hold the process id");
 DEFINE_bool(daemonize, true, "Whether run as a daemon process");
 
 static std::unique_ptr<nebula::kvstore::KVStore> gKVStore;
+static std::shared_ptr<nebula::meta::MetaSemanticHealthManager> gHealthManager;
 
 static void signalHandler(apache::thrift::ThriftServer* metaServer, int sig);
 static void waitForStop();
@@ -153,7 +155,11 @@ int main(int argc, char* argv[]) {
   pool->start(FLAGS_meta_http_thread_num, "http thread pool");
 
   auto webSvc = std::make_unique<nebula::WebService>();
-  status = initWebService(webSvc.get(), gKVStore.get());
+  gHealthManager =
+      std::make_shared<nebula::meta::MetaSemanticHealthManager>(gKVStore.get(), localhost);
+  gHealthManager->start();
+
+  status = initWebService(webSvc.get(), gKVStore.get(), gHealthManager);
   if (!status.ok()) {
     LOG(ERROR) << "Init web service failed: " << status;
     return EXIT_FAILURE;
@@ -241,6 +247,11 @@ void waitForStop() {
   auto jobMan = nebula::meta::JobManager::getInstance();
   if (jobMan) {
     jobMan->shutDown();
+  }
+
+  if (gHealthManager) {
+    gHealthManager->stop();
+    gHealthManager.reset();
   }
 
   if (gKVStore) {

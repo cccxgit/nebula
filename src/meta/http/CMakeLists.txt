@@ -5,6 +5,7 @@
 nebula_add_library(
   meta_http_handler OBJECT
   MetaHttpReplaceHostHandler.cpp
+  MetaHttpSemanticHealthHandler.cpp
 )
 
 nebula_add_subdirectory(test)
