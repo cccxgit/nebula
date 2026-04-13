@@ -27,6 +27,7 @@
 #include "meta/MetaVersionMan.h"
 #include "meta/RootUserMan.h"
 #include "meta/http/MetaHttpReplaceHostHandler.h"
+#include "meta/http/MetaHttpSemanticHealthHandler.h"
 #include "meta/processors/job/JobManager.h"
 #include "meta/stats/MetaStats.h"
 #include "webservice/Router.h"
@@ -222,13 +223,20 @@ nebula::cpp2::ErrorCode initGodUser(nebula::kvstore::KVStore* kvstore,
   return nebula::cpp2::ErrorCode::SUCCEEDED;
 }
 
-nebula::Status initWebService(nebula::WebService* svc, nebula::kvstore::KVStore* kvstore) {
+nebula::Status initWebService(nebula::WebService* svc,
+                              nebula::kvstore::KVStore* kvstore,
+                              std::shared_ptr<nebula::meta::MetaSemanticHealthManager>
+                                  healthManager) {
   LOG(INFO) << "Starting Meta HTTP Service";
   auto& router = svc->router();
   router.get("/replace").handler([kvstore](PathParams&&) {
     auto handler = new nebula::meta::MetaHttpReplaceHostHandler();
     handler->init(kvstore);
     return handler;
+  });
+
+  router.get("/healthz/semantic").handler([healthManager](PathParams&&) {
+    return new nebula::meta::MetaHttpSemanticHealthHandler(healthManager);
   });
 #ifndef BUILD_STANDALONE
   return svc->start();

@@ -27,6 +27,7 @@
 #include "graph/service/GraphService.h"
 #include "graph/stats/GraphStats.h"
 #include "meta/MetaServiceHandler.h"
+#include "meta/health/MetaSemanticHealthManager.h"
 #include "meta/MetaVersionMan.h"
 #include "meta/RootUserMan.h"
 #include "meta/http/MetaHttpReplaceHostHandler.h"
@@ -59,6 +60,7 @@ std::unique_ptr<nebula::storage::StorageServer> gStorageServer;
 static std::unique_ptr<apache::thrift::ThriftServer> gServer;
 static std::unique_ptr<apache::thrift::ThriftServer> gMetaServer;
 static std::unique_ptr<nebula::kvstore::KVStore> gMetaKVStore;
+static std::shared_ptr<nebula::meta::MetaSemanticHealthManager> gMetaHealthManager;
 std::mutex gServerGuard;
 
 // common flags
@@ -209,7 +211,11 @@ int main(int argc, char *argv[]) {
     }
     LOG(INFO) << "Start http service";
     auto webSvc = std::make_unique<nebula::WebService>();
-    status = initWebService(webSvc.get(), gMetaKVStore.get());
+    gMetaHealthManager =
+        std::make_shared<nebula::meta::MetaSemanticHealthManager>(gMetaKVStore.get(),
+                                                                   metaLocalhost);
+    gMetaHealthManager->start();
+    status = initWebService(webSvc.get(), gMetaKVStore.get(), gMetaHealthManager);
     if (!status.ok()) {
       LOG(ERROR) << "Init web service failed: " << status;
       return;
@@ -405,6 +411,11 @@ void stopAllDaemon() {
       gJobMgr->shutDown();
     }
   }
+  if (gMetaHealthManager) {
+    gMetaHealthManager->stop();
+    gMetaHealthManager.reset();
+  }
+
   if (gMetaKVStore) {
     gMetaKVStore->stop();
     gMetaKVStore.reset();

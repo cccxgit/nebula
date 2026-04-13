@@ -1,0 +1,16 @@
+nebula_add_test(
+    NAME
+        meta_health_state_test
+    SOURCES
+        MetaHealthStateTest.cpp
+    OBJECTS
+        $<TARGET_OBJECTS:meta_health_obj>
+        ${meta_test_deps}
+    LIBRARIES
+        ${ROCKSDB_LIBRARIES}
+        ${THRIFT_LIBRARIES}
+        ${PROXYGEN_LIBRARIES}
+        wangle
+        gtest
+        curl
+)

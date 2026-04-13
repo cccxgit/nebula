@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nebula-metad
+  labels:
+    app: nebula-metad
+spec:
+  serviceName: nebula-metad-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nebula-metad
+  template:
+    metadata:
+      labels:
+        app: nebula-metad
+    spec:
+      containers:
+        - name: metad
+          image: vesoft/nebula-metad:release-3.6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: thrift
+              containerPort: 45500
+            - name: http
+              containerPort: 11000
+          args:
+            - --meta_server_addrs=nebula-metad-0.nebula-metad-headless:45500,nebula-metad-1.nebula-metad-headless:45500,nebula-metad-2.nebula-metad-headless:45500
+            - --data_path=/data/meta
+            - --enable_semantic_health_check=true
+            - --semantic_health_mode=fail_liveness
+            - --semantic_health_probe_interval_secs=5
+            - --semantic_health_probe_timeout_ms=1500
+            - --semantic_health_leader_grace_secs=30
+            - --semantic_health_consecutive_failures=4
+            - --semantic_health_recover_successes=2
+          volumeMounts:
+            - name: data
+              mountPath: /data/meta
+          livenessProbe:
+            httpGet:
+              path: /healthz/semantic
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 2
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
