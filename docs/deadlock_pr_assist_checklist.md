@@ -73,12 +73,18 @@ return folly::via(folly::getGlobalIOExecutor().get(), ...)
 
 1. 线程 T1（create space 路径）进入 `addSpace()`，拿到 `NebulaStore::lock_` 写锁。  
    【F:src/kvstore/NebulaStore.cpp†L406-L408】
-2. T1 在锁内调用旧版 `newEngine()`，并在 `.get()` 处阻塞，等待 IO executor 上的任务完成。  
-3. IO 线程 T2 执行 `newEngineAsync()` 的任务链；并发负载下，这条链或其后续影响路径可能间接需要访问需要 `lock_` 的 store 状态（或者被其他持锁线程/资源争用阻塞）。
-4. 出现等待环：
-   - T1：持有 `lock_`，等 T2 完成；
-   - T2（或相关线程）：要推进却受限于 T1 未释放锁/资源。  
-5. worker 线程逐步堆积等待，健康检查/心跳超时，storage 被观察为 offline。
+2. T1 在锁内调用旧版 `newEngine()`，内部执行 `newEngineAsync(...).get()`，因此 T1 会“持有 `lock_` 同步等待 IO 线程返回”。
+3. `newEngineAsync()` 通过 `folly::via(folly::getGlobalIOExecutor())` 投递到全局 IO 线程池执行（T2）。其执行体包含两步关键动作：
+   - 调用 `options_.cffBuilder_->buildCfFactory(spaceId)`；
+   - 调用 `getSpaceVidLen(spaceId)`，进一步访问 `options_.schemaMan_->getSpaceVidLen(spaceId)`。  
+   这些步骤都属于“依赖外部组件/远端状态”的慢路径，执行时延不可控。  
+4. 并发触发 leader balance 时，storage admin 线程会持续处理 `AddPart`/`MemberChange`/`TransLeader` 等请求；其中 `AddPartProcessor::process()` 会在 space 不存在时直接调用 `store->addSpace(spaceId)`，而 `addPart()` 本身也要申请同一把 `NebulaStore::lock_` 写锁。  
+   代码锚点：`AddPartProcessor::process()` 第 168-174 行；`NebulaStore::addPart()` 第 452 行。
+5. 于是形成明确的阻塞放大链：
+   - T1（create-space 元事件线程）：持有 `lock_`，阻塞在 `.get()`；
+   - T3/T4...（leader-balance admin 线程）：进入 `addPart()`/`addSpace()` 时等待 `lock_`；
+   - admin worker 被大量占满后，后续心跳相关/成员变更请求无法及时处理，表现为 storage offline。  
+6. 因为 `.get()` 放在全局写锁临界区内，任何 IO 慢路径都会把“单次建引擎慢”放大成“全局元数据操作串行停滞”，这就是该问题可演化为“看起来像死锁”的直接原因。
 
 这类问题本质是：**在全局写锁临界区里引入跨线程同步等待**，把“局部慢路径”升级成“全局阻塞风险”。
 
