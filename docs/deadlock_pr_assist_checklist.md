@@ -1,63 +1,141 @@
-# Leader Balance 与 Create Space 并发死锁问题复现与 PR 补充清单
+# NebulaGraph 并发死锁问题详解材料（Leader Balance × Create Space）
 
-> 适用场景：Nebula Graph 3 节点部署，`partition_num=20`，`replica_factor=3`，并发执行 leader balance 与 create space，偶现 storage offline + worker 线程卡死。
+> 目标：帮助你系统理解“leader 均衡任务与 create space 并发下 storage 偶发 offline、工作线程卡死”的可能根因，并把根因与修复点精确映射到代码位置，便于你完善社区 PR。
 
-## 1. 当前代码快速结论（基于提交 `60df94c7d3ed2500086a763487c91b79da9ae22a`）
+---
 
-该修复将 `NebulaStore::newEngine()` 从调用 `newEngineAsync(...).get()` 改为直接同步构建 `RocksEngine`，避免在持有 store 内部写锁时阻塞等待异步线程执行造成循环等待风险。
+## 1）问题现象与触发条件
 
-核心推断链路：
+结合你提供的环境（3 meta / 3 graph / 3 storage，K8s 部署，`partition_num=20`、`replica_factor=3`），典型现象是：
 
-1. `addSpace()` 在持有 `NebulaStore::lock_` 写锁期间调用 `newEngine()`。
-2. 旧实现中 `newEngine()` 内部 `newEngineAsync(...).get()` 会阻塞当前线程，等待 IO 线程池任务执行。
-3. 并发 leader balance/create space 场景下，IO 线程任务路径可能再次触达需要分片/空间相关锁的逻辑，形成锁顺序反转或“持锁等待异步完成”的死锁模式。
-4. 结果表现为部分线程长期阻塞，storage 心跳异常，`SHOW HOSTS` 可能观察到 offline。
+- 并发执行 leader balance 与 `CREATE SPACE`；
+- 某些 storage 节点在 `SHOW HOSTS` 中出现 offline；
+- storage 线程池工作线程大量阻塞，服务对外请求处理能力显著下降或失效。
 
-## 2. 你补 PR 时建议补齐的信息
+该现象与“持锁路径上进行跨线程阻塞等待”高度一致，尤其是出现线程间锁顺序反转（lock inversion）时，容易演化为死锁/饥饿。
 
-### 必填背景
+---
 
-- 触发版本：请明确 first-found 分支（你提到 `release-3.6`）与验证分支（`master`）。
-- 部署拓扑：3 meta + 3 graph + 3 storage，K8s 容器化。
-- 空间参数：`partition_num=20`, `replica_factor=3`。
+## 2）关键代码路径与锁关系（带源码位置）
 
-### 复现步骤（建议写成 deterministic 脚本）
+下面是当前 master 代码中最关键的几个锚点：
 
-- 并发启动：
-  - 线程 A：反复触发 leader balance（全库或指定 space）。
-  - 线程 B：反复 `CREATE SPACE`。
-- 观察点：
-  - `SHOW HOSTS` 出现 storage offline；
-  - storage 日志出现长期无进展；
-  - gdb `thread apply all bt` 显示多线程卡在锁等待。
+### A. `addSpace()` 在持有 `NebulaStore::lock_` 写锁时创建引擎
 
-### 根因描述建议（英文 PR 可直接复用）
+`addSpace()` 入口即加写锁：
 
-- “`newEngine()` was blocking on `newEngineAsync(...).get()` while upper-layer code still held `NebulaStore::lock_` write lock. Under concurrent leader balancing and space creation, this could create a lock inversion / wait cycle and eventually deadlock worker threads.”
+```cpp
+folly::RWSpinLock::WriteHolder wh(&lock_);
+```
 
-### 修复点说明
+并在锁内调用 `newEngine(...)`：
 
-- 移除 `newEngine()` 中对异步 future 的阻塞等待；
-- 改为同步构建 `RocksEngine`，不再引入跨线程等待；
-- 说明行为不变（仅构建路径同步化，返回对象与参数一致）。
+```cpp
+spaces_[spaceId]->engines_.emplace_back(newEngine(spaceId, path, options_.walPath_));
+```
 
-### 风险与回归说明
+对应位置：`src/kvstore/NebulaStore.cpp` 第 406-434 行。  
+这说明 “创建 space -> 创建 engine” 的主流程在 store 全局写锁保护区内执行。  
+【F:src/kvstore/NebulaStore.cpp†L406-L434】
 
-- 风险：低；逻辑等价，主要是并发模型简化。
-- 建议回归：
-  - 并发压测（leader balance + create space）；
-  - 常规建库建边/点读写；
-  - 重启恢复后 leader 分布与心跳健康。
+### B. 旧问题中的危险点：`newEngine()` 同步等待异步 future
 
-## 3. 你接下来需要提供给我的最小材料
+你给出的历史修复提交（`60df94c7...`）表明：旧实现里 `newEngine()` 通过
 
-1. 复现脚本（或关键命令序列）。
-2. 一次“问题现场”的 storage 日志片段（卡住前后 2~5 分钟）。
-3. 一份 gdb 栈（`thread apply all bt`）。
-4. 你的 PR 链接中 reviewer 的具体 comment（若有）。
+```cpp
+auto pair = this->newEngineAsync(spaceId, dataPath, walPath).get();
+```
 
-拿到这 4 项后，我可以继续产出：
+等待 `newEngineAsync()` 完成，这是一种“持锁线程等待异步线程返回”的模式。  
+而 `newEngineAsync()` 是丢到全局 IO executor 执行：
 
-- 可直接粘贴到社区 PR 的英文/中文 Root Cause + Fix + Test Plan；
-- 面向 reviewer 的逐条回复草稿；
-- 若需要，补一个最小化并发回归测试思路（含伪代码）。
+```cpp
+return folly::via(folly::getGlobalIOExecutor().get(), ...)
+```
+
+对应当前文件里异步构建函数定义在第 354-371 行。  
+【F:src/kvstore/NebulaStore.cpp†L354-L371】
+
+> 注：当前 master 上 `newEngine()` 已是同步直接构建 `RocksEngine`，不再 `.get()` future（第 373-389 行）。  
+【F:src/kvstore/NebulaStore.cpp†L373-L389】
+
+### C. store 内部大量路径共享同一把 `lock_`
+
+除了 `addSpace()`，例如 `addPart()` 也会加 `lock_` 写锁；`partLeader()` 使用读锁。  
+这意味着一旦写锁长时间不释放，会放大连锁阻塞影响。  
+【F:src/kvstore/NebulaStore.cpp†L391-L404】【F:src/kvstore/NebulaStore.cpp†L448-L467】
+
+---
+
+## 3）可能的死锁机理（为什么会卡死）
+
+以下是与你描述最一致、并且和修复改动逻辑闭环的“高可信机理”：
+
+1. 线程 T1（create space 路径）进入 `addSpace()`，拿到 `NebulaStore::lock_` 写锁。  
+   【F:src/kvstore/NebulaStore.cpp†L406-L408】
+2. T1 在锁内调用旧版 `newEngine()`，并在 `.get()` 处阻塞，等待 IO executor 上的任务完成。  
+3. IO 线程 T2 执行 `newEngineAsync()` 的任务链；并发负载下，这条链或其后续影响路径可能间接需要访问需要 `lock_` 的 store 状态（或者被其他持锁线程/资源争用阻塞）。
+4. 出现等待环：
+   - T1：持有 `lock_`，等 T2 完成；
+   - T2（或相关线程）：要推进却受限于 T1 未释放锁/资源。  
+5. worker 线程逐步堆积等待，健康检查/心跳超时，storage 被观察为 offline。
+
+这类问题本质是：**在全局写锁临界区里引入跨线程同步等待**，把“局部慢路径”升级成“全局阻塞风险”。
+
+---
+
+## 4）你当前修复方式为何合理
+
+你的修复（`60df94c7...`）把 `newEngine()` 改为“当前线程直接构建 `RocksEngine`”，不再通过 `newEngineAsync(...).get()`。
+
+合理性在于：
+
+- 消除了“持锁线程等待异步线程”的等待边；
+- 去掉了跨线程 future 汇合点，避免形成等待环；
+- `newEngine()` 返回对象语义未变（仍返回 `unique_ptr<KVEngine>`，构建参数一致），行为上更可预测。
+
+对应当前 `newEngine()` 实现可见第 373-389 行。  
+【F:src/kvstore/NebulaStore.cpp†L373-L389】
+
+---
+
+## 5）为何你会在 3.6 分支遇到，而 master 可能“看起来已好”
+
+根据你提供信息和本地仓库状态：
+
+- 该修复提交 ID 为 `60df94c7d3ed2500086a763487c91b79da9ae22a`；
+- 当前工作分支已包含等价修复形态（`newEngine()` 无 future `.get()`）。
+
+这通常意味着：
+
+- 问题最初可能存在于 `release-3.6` 的某个区间；
+- 后续在 master 或你的工作分支中已合入/携带修复；
+- 是否“master 仍可复现”要以**同一套并发脚本 + 同样压测时长**实测为准。
+
+---
+
+## 6）建议你对外（PR）如何表述根因（可直接改写为英文）
+
+建议使用三段式：
+
+1. **Root Cause**：`addSpace()` holds `NebulaStore::lock_` write lock, while old `newEngine()` waited on `newEngineAsync(...).get()`, introducing a cross-thread blocking wait in a locked critical section.  
+2. **Deadlock Pattern**：under concurrent leader balancing and space creation, this could form lock/resource wait cycles and stall storage worker threads.  
+3. **Fix**：make `newEngine()` construct engine synchronously in-place, remove the blocking future wait edge, and keep engine creation semantics unchanged.
+
+---
+
+## 7）你还可以如何“证据化”这个根因（强烈建议）
+
+为了让 reviewer 快速接受，建议补三类证据：
+
+- **线程栈证据**：卡死时 `thread apply all bt`，标注谁持有 `lock_`、谁在等待；
+- **时序证据**：`create space` 与 `leader balance` 并发触发时间点 + storage 日志时间点对齐；
+- **对照证据**：
+  - 旧实现（含 `.get()`）高并发下可复现；
+  - 修复后同负载下不再出现相同阻塞模式。
+
+---
+
+## 8）一句话总结（给你自己记忆锚点）
+
+这个 bug 的核心不是“某个锁没释放”，而是：**在持有 NebulaStore 全局写锁的路径上，执行了对异步任务的阻塞等待，导致并发场景下形成等待环并拖垮 storage worker。**
