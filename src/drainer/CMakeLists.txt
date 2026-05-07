@@ -7,6 +7,7 @@ nebula_add_library(
     DrainerFlags.cpp
     DrainerEnv.cpp
     DrainerService.cpp
+    DrainerMetrics.cpp
     CheckpointStore.cpp
     BackupClientCache.cpp
     QueueManager.cpp
