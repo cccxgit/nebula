@@ -4,6 +4,7 @@
 
 nebula_add_library(
     sync_listener_obj OBJECT
+    DrainerClient.cpp
     SyncListener.cpp
     SyncListenerFlags.cpp
     WalRetentionHook.cpp

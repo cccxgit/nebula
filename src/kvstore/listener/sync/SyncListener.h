@@ -13,6 +13,8 @@
 namespace nebula {
 namespace kvstore {
 
+class DrainerClient;
+
 /**
  * SyncListener is a listener that captures committed WAL entries and writes them
  * to a local dump file for cross-cluster synchronization.
@@ -119,12 +121,19 @@ class SyncListener : public Listener {
    */
   std::string encodeOne_(LogID id, TermID term, folly::StringPiece raw);
 
+  void sendBatchToDrainer_(GraphSpaceID spaceId,
+                           PartitionID partId,
+                           LogID firstLogId,
+                           LogID lastLogId,
+                           std::vector<std::pair<LogID, std::string>>&& entries);
+
  private:
   int64_t clusterId_{0};
   std::string walPath_;
   LogID lastSentLogId_{0};
   std::atomic<int64_t> inflightBytes_{0};
   std::string dumpPath_;
+  std::shared_ptr<DrainerClient> drainerClient_;
 };
 
 }  // namespace kvstore

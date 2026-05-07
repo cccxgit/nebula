@@ -10,7 +10,11 @@
 #include <unistd.h>
 
 #include "common/fs/FileUtils.h"
+#include "common/network/NetworkUtils.h"
+#include "common/time/WallClock.h"
+#include "interface/gen-cpp2/sync_types.h"
 #include "kvstore/LogEncoder.h"
+#include "kvstore/listener/sync/DrainerClient.h"
 #include "kvstore/listener/sync/SyncListenerFlags.h"
 
 namespace nebula {
@@ -34,8 +38,23 @@ void SyncListener::init() {
 
   // Load last sent log id from checkpoint
   lastSentLogId_ = loadLastSent_();
+
+  // Initialize DrainerClient for non-dump mode
+  if (!FLAGS_sync_listener_dump_only && !FLAGS_sync_listener_drainer_addrs.empty()) {
+    auto drainerAddrsRet =
+        network::NetworkUtils::toHosts(FLAGS_sync_listener_drainer_addrs);
+    if (!drainerAddrsRet.ok() || drainerAddrsRet.value().empty()) {
+      LOG(ERROR) << idStr_ << "Failed to parse drainer addrs: " << drainerAddrsRet.status();
+    } else {
+      auto drainerAddrs = std::move(drainerAddrsRet).value();
+      drainerClient_ = std::make_shared<DrainerClient>(ioPool_.get(), std::move(drainerAddrs));
+      LOG(INFO) << idStr_ << "DrainerClient initialized";
+    }
+  }
+
   LOG(INFO) << idStr_ << "SyncListener initialized, dumpPath=" << dumpPath_
-            << ", lastSentLogId=" << lastSentLogId_ << ", clusterId=" << clusterId_;
+            << ", lastSentLogId=" << lastSentLogId_ << ", clusterId=" << clusterId_
+            << ", dumpOnly=" << FLAGS_sync_listener_dump_only;
 }
 
 LogID SyncListener::lastApplyLogId() {
@@ -102,33 +121,41 @@ void SyncListener::processLogs() {
   }
 
   LogID lastApplyId = -1;
+  LogID firstLogId = -1;
   std::string buffer;
+  std::vector<std::pair<LogID, std::string>> logEntries;
   int64_t batchBytes = 0;
   int64_t batchCount = 0;
+  bool useDrainer = !FLAGS_sync_listener_dump_only && drainerClient_ != nullptr;
 
   while (iter->valid()) {
     lastApplyId = iter->logId();
     auto log = iter->logMsg();
 
     if (log.empty()) {
-      // Skip heartbeat
       ++(*iter);
       continue;
     }
 
-    // Skip Raft membership command WALs
     if (isSkippableCommandWal_(log)) {
       ++(*iter);
       continue;
     }
 
-    // Encode the WAL entry
-    std::string encoded = encodeOne_(iter->logId(), iter->logTerm(), log);
-    batchBytes += encoded.size();
-    batchCount++;
-    buffer.append(std::move(encoded));
+    if (firstLogId == -1) {
+      firstLogId = iter->logId();
+    }
 
-    // Check batch limits
+    if (useDrainer) {
+      logEntries.emplace_back(iter->logId(), log.toString());
+      batchBytes += log.size();
+    } else {
+      std::string encoded = encodeOne_(iter->logId(), iter->logTerm(), log);
+      batchBytes += encoded.size();
+      buffer.append(std::move(encoded));
+    }
+    batchCount++;
+
     if (batchBytes >= FLAGS_sync_listener_batch_bytes ||
         batchCount >= FLAGS_sync_listener_batch_count) {
       break;
@@ -136,36 +163,38 @@ void SyncListener::processLogs() {
     ++(*iter);
   }
 
-  if (lastApplyId == -1 || buffer.empty()) {
+  if (lastApplyId == -1 || (buffer.empty() && logEntries.empty())) {
     return;
   }
 
-  // Write to dump file (append mode)
-  std::string dumpFile = dumpPath_ + "/sync_dump.log";
-  int32_t fd = open(dumpFile.c_str(), O_CREAT | O_WRONLY | O_APPEND | O_CLOEXEC, 0644);
-  if (fd < 0) {
-    LOG(ERROR) << idStr_ << "Failed to open dump file \"" << dumpFile << "\" (" << errno
-               << "): " << strerror(errno);
-    return;
+  if (useDrainer) {
+    sendBatchToDrainer_(spaceId_, partId_, firstLogId, lastApplyId, std::move(logEntries));
+  } else {
+    std::string dumpFile = dumpPath_ + "/sync_dump.log";
+    int32_t fd = open(dumpFile.c_str(), O_CREAT | O_WRONLY | O_APPEND | O_CLOEXEC, 0644);
+    if (fd < 0) {
+      LOG(ERROR) << idStr_ << "Failed to open dump file \"" << dumpFile << "\" (" << errno
+                 << "): " << strerror(errno);
+      return;
+    }
+
+    ssize_t written = write(fd, buffer.c_str(), buffer.size());
+    close(fd);
+
+    if (written != static_cast<ssize_t>(buffer.size())) {
+      LOG(ERROR) << idStr_ << "Dump write incomplete, bytesWritten:" << written
+                 << ", expected:" << buffer.size() << ", error:" << strerror(errno);
+      return;
+    }
   }
 
-  ssize_t written = write(fd, buffer.c_str(), buffer.size());
-  close(fd);
-
-  if (written != static_cast<ssize_t>(buffer.size())) {
-    LOG(ERROR) << idStr_ << "Dump write incomplete, bytesWritten:" << written
-               << ", expected:" << buffer.size() << ", error:" << strerror(errno);
-    return;
-  }
-
-  // Update state
   {
     std::lock_guard<std::mutex> guard(raftLock_);
     lastApplyLogId_ = lastApplyId;
     lastSentLogId_ = lastApplyId;
     persist(committedLogId_, term_, lastApplyLogId_);
   }
-  VLOG(2) << idStr_ << "SyncListener dumped logs up to " << lastApplyId
+  VLOG(2) << idStr_ << "SyncListener processed logs up to " << lastApplyId
           << ", batchCount=" << batchCount << ", batchBytes=" << batchBytes;
 }
 
@@ -275,6 +304,39 @@ LogID SyncListener::loadLastSent_() {
     return 0;
   }
   return logId;
+}
+
+void SyncListener::sendBatchToDrainer_(GraphSpaceID spaceId,
+                                       PartitionID partId,
+                                       LogID firstLogId,
+                                       LogID lastLogId,
+                                       std::vector<std::pair<LogID, std::string>>&& entries) {
+  sync::cpp2::SyncLogBatch batch;
+  batch.spaceId_ref() = spaceId;
+  batch.partId_ref() = partId;
+  batch.clusterId_ref() = clusterId_;
+  batch.epoch_ref() = 0;
+  batch.firstLogId_ref() = firstLogId;
+  batch.lastLogId_ref() = lastLogId;
+
+  std::vector<sync::cpp2::SyncLogEntry> thriftEntries;
+  thriftEntries.reserve(entries.size());
+  for (auto& [logId, payload] : entries) {
+    sync::cpp2::SyncLogEntry entry;
+    entry.logId_ref() = logId;
+    entry.termId_ref() = 0;
+    entry.timestamp_ref() = time::WallClock::fastNowInMicroSec();
+    entry.op_ref() = sync::cpp2::LogOp::OP_PUT;
+    entry.payload_ref() = std::move(payload);
+    thriftEntries.emplace_back(std::move(entry));
+  }
+  batch.entries_ref() = std::move(thriftEntries);
+
+  auto resp = drainerClient_->appendLogs(std::move(batch), FLAGS_sync_listener_token).get();
+  if (resp.get_code() != nebula::cpp2::ErrorCode::SUCCEEDED) {
+    LOG(WARNING) << idStr_ << "appendLogs to drainer failed, code="
+                 << static_cast<int>(resp.get_code());
+  }
 }
 
 }  // namespace kvstore

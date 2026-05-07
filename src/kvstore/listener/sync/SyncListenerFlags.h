@@ -14,5 +14,9 @@ DECLARE_int32(sync_listener_batch_ms);
 DECLARE_int64(sync_listener_max_inflight_bytes);
 DECLARE_bool(sync_listener_dump_only);
 DECLARE_string(sync_listener_dump_path);
+DECLARE_string(sync_listener_drainer_addrs);
+DECLARE_string(sync_listener_token);
+DECLARE_bool(sync_listener_compression);
+DECLARE_int32(sync_listener_compression_level);
 
 #endif  // KVSTORE_LISTENER_SYNC_LISTENER_FLAGS_H_
