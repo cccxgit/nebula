@@ -934,6 +934,52 @@ struct ListListenerResp {
     3: list<ListenerInfo>      listeners,
 }
 
+// Drainer-related structs for cross-cluster data sync
+struct SignInDrainerReq {
+    1: required list<common.HostAddr>  hosts,
+}
+
+struct SignOutDrainerReq {
+}
+
+struct ListDrainerClientsReq {
+}
+
+struct ListDrainerClientsResp {
+    1: required common.ErrorCode       code,
+    2: required common.HostAddr        leader,
+    3: optional list<common.HostAddr>  clients,
+}
+
+struct AddDrainerReq {
+    1: required common.GraphSpaceID    space_id,
+    2: required list<common.HostAddr>  hosts,
+}
+
+struct RemoveDrainerReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct ListDrainersReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct ListDrainersResp {
+    1: required common.ErrorCode       code,
+    2: required common.HostAddr        leader,
+    3: optional list<common.HostAddr>  drainers,
+}
+
+struct GetSyncStatusReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct GetSyncStatusResp {
+    1: required common.ErrorCode       code,
+    2: required common.HostAddr        leader,
+    3: optional map<common.PartitionID, i64>  progress,
+}
+
 struct GetStatsReq {
     1: common.GraphSpaceID     space_id,
 }
@@ -1285,6 +1331,15 @@ service MetaService {
     ExecResp       addListener(1: AddListenerReq req);
     ExecResp       removeListener(1: RemoveListenerReq req);
     ListListenerResp listListener(1: ListListenerReq req);
+
+    // Drainer service RPCs for cross-cluster data sync
+    ExecResp             signInDrainerService(1: SignInDrainerReq req);
+    ExecResp             signOutDrainerService(1: SignOutDrainerReq req);
+    ListDrainerClientsResp listDrainerClients(1: ListDrainerClientsReq req);
+    ExecResp             addDrainer(1: AddDrainerReq req);
+    ExecResp             removeDrainer(1: RemoveDrainerReq req);
+    ListDrainersResp     listDrainers(1: ListDrainersReq req);
+    GetSyncStatusResp    getSyncStatus(1: GetSyncStatusReq req);
 
     GetStatsResp  getStats(1: GetStatsReq req);
     ExecResp signInService(1: SignInServiceReq req);
