@@ -1,0 +1,56 @@
+########## nebula-metad-listener ###########
+########## shared ##########
+# Whether to run as a daemon process
+--daemonize=true
+# The file to host the process id
+--pid_file=pids/nebula-metad-listener.pid
+# The timezone used in log timestamps and time-based operations
+--timezone_name=UTC
+
+########## logging ##########
+# The directory to host logging files
+--log_dir=logs
+# Log level, 0, 1, 2, 3 for INFO, WARNING, ERROR, FATAL respectively
+--minloglevel=0
+# Verbose log level, 1, 2, 3, 4, the higher of the level, the more verbose of the logging
+--v=0
+# Maximum seconds to buffer the log messages
+--logbufsecs=0
+
+########## networking ##########
+# Metad listener daemon listening port
+--port=9569
+# HTTP service port
+--ws_http_port=19569
+
+########## listener specific ##########
+# Listener WAL directory. Only one path is allowed.
+--listener_path=data/listener/meta
+# Comma separated Meta server addresses
+--meta_server_addrs=127.0.0.1:9559
+
+########## sync ##########
+# Maximum bytes per sync batch
+--sync_listener_batch_bytes=65536
+# Maximum number of entries per sync batch
+--sync_listener_batch_count=256
+# Maximum milliseconds to wait before flushing an incomplete batch
+--sync_listener_batch_ms=50
+# Maximum in-flight bytes across all sync batches
+--sync_listener_max_inflight_bytes=33554432
+# Whether this listener operates in dump-only mode (no apply, only persist)
+--sync_listener_dump_only=true
+# Compression algorithm for sync data transfer
+--sync_listener_compression=zstd
+# Compression level (higher = better ratio, more CPU)
+--sync_listener_compression_level=3
+
+########## TLS ##########
+# Whether to enable TLS for sync listener connections
+--sync_listener_tls_enabled=false
+# Path to the TLS certificate file
+--sync_listener_tls_cert=
+# Path to the TLS private key file
+--sync_listener_tls_key=
+# Path to the TLS CA certificate file
+--sync_listener_tls_ca=

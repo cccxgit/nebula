@@ -1,0 +1,92 @@
+########## nebula-drainerd ###########
+########## shared ##########
+# Whether to run as a daemon process
+--daemonize=true
+# The file to host the process id
+--pid_file=pids/nebula-drainerd.pid
+# The timezone used in log timestamps and time-based operations.
+# Set to the timezone of your production environment for easier log correlation.
+--timezone_name=UTC
+
+########## logging ##########
+# The directory to host logging files
+--log_dir=logs
+# Log level, 0, 1, 2, 3 for INFO, WARNING, ERROR, FATAL respectively
+# In production, use 0 (INFO) for normal operation.
+# Raise to 1 (WARNING) if log volume becomes a concern.
+--minloglevel=0
+# Verbose log level, 1, 2, 3, 4, the higher of the level, the more verbose of the logging
+# Keep at 0 in production to avoid excessive log volume.
+--v=0
+# Maximum seconds to buffer the log messages.
+# 0 means flush immediately; increase to reduce IO if disk latency is high.
+--logbufsecs=0
+# Whether to redirect stdout and stderr to separate output files
+--redirect_stdout=true
+# Destination filename of stdout and stderr, which will also reside in log_dir.
+--stdout_log_file=drainerd-stdout.log
+--stderr_log_file=drainerd-stderr.log
+# Copy log messages at or above this level to stderr in addition to logfiles.
+# The numbers of severity levels INFO, WARNING, ERROR, and FATAL are 0, 1, 2, and 3, respectively.
+--stderrthreshold=3
+# Whether logging files' name contain timestamp.
+--timestamp_in_logfile_name=true
+
+########## networking ##########
+# Drainer daemon listening port
+--port=9889
+# Local IP used to identify the nebula-drainerd process.
+# Change it to an address other than loopback if the service is distributed or
+# will be accessed remotely.
+--local_ip=192.168.2.1
+# HTTP service ip
+--ws_ip=0.0.0.0
+# HTTP service port
+--ws_http_port=19889
+# heartbeat with meta service
+--heartbeat_interval_secs=10
+
+########## drainer specific ##########
+# Root data path for drainer WAL and state.
+# Use a dedicated disk or SSD for best performance in production.
+--drainer_data_path=data/drainer
+# Comma separated Meta server addresses of the secondary (destination) cluster.
+# In production, list all meta servers for high availability.
+--drainer_secondary_meta_addrs=192.168.2.1:9559,192.168.2.2:9559,192.168.2.3:9559
+# Number of worker threads that apply drained log entries.
+# Recommend: set to the number of CPU cores available, up to 32.
+--drainer_apply_workers=16
+# Maximum bytes per batch when applying drained entries.
+# Larger batches improve throughput but increase memory usage.
+# 128KB is a good balance for most workloads.
+--drainer_apply_batch_bytes=131072
+# Maximum in-flight apply requests per partition.
+# Higher values increase parallelism but consume more memory.
+--drainer_max_inflight_per_part=16
+# Interval in ms to poll for schema visibility on the secondary cluster.
+# Lower values reduce replication lag when schema changes propagate,
+# but increase load on the meta service.
+--drainer_schema_visibility_poll_ms=200
+# Timeout in ms waiting for schema to become visible before failing.
+# If schema propagation is slow in your environment, increase this value.
+--drainer_schema_visibility_timeout_ms=30000
+# Interval in ms between persisting drainer checkpoint progress.
+# Lower values reduce replay on restart but increase disk IO.
+--drainer_checkpoint_persist_interval_ms=1000
+# Whether to enable deduplication window for idempotent replay.
+# Strongly recommended in production to prevent duplicate application after failover.
+--drainer_dedup_window=true
+
+########## TLS ##########
+# Whether to enable TLS for drainer connections.
+# Strongly recommended in production for cross-cluster communication.
+--drainer_tls_enabled=false
+# Path to the TLS certificate file
+--drainer_tls_cert=
+# Path to the TLS private key file
+--drainer_tls_key=
+# Path to the TLS CA certificate file
+--drainer_tls_ca=
+# Whether to require client certificates for mutual TLS.
+# Enable for zero-trust environments.
+--drainer_tls_require_client_cert=false

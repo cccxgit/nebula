@@ -1,0 +1,56 @@
+########## nebula-drainerd ###########
+########## shared ##########
+# Whether to run as a daemon process
+--daemonize=true
+# The file to host the process id
+--pid_file=pids/nebula-drainerd.pid
+# The timezone used in log timestamps and time-based operations
+--timezone_name=UTC
+
+########## logging ##########
+# The directory to host logging files
+--log_dir=logs
+# Log level, 0, 1, 2, 3 for INFO, WARNING, ERROR, FATAL respectively
+--minloglevel=0
+# Verbose log level, 1, 2, 3, 4, the higher of the level, the more verbose of the logging
+--v=0
+# Maximum seconds to buffer the log messages
+--logbufsecs=0
+
+########## networking ##########
+# Drainer daemon listening port
+--port=9889
+# HTTP service port
+--ws_http_port=19889
+
+########## drainer specific ##########
+# Root data path for drainer WAL and state
+--drainer_data_path=data/drainer
+# Comma separated Meta server addresses of the secondary (destination) cluster
+--drainer_secondary_meta_addrs=127.0.0.1:9559
+# Number of worker threads that apply drained log entries
+--drainer_apply_workers=16
+# Maximum bytes per batch when applying drained entries
+--drainer_apply_batch_bytes=131072
+# Maximum in-flight apply requests per partition
+--drainer_max_inflight_per_part=16
+# Interval in ms to poll for schema visibility on the secondary cluster
+--drainer_schema_visibility_poll_ms=200
+# Timeout in ms waiting for schema to become visible before failing
+--drainer_schema_visibility_timeout_ms=30000
+# Interval in ms between persisting drainer checkpoint progress
+--drainer_checkpoint_persist_interval_ms=1000
+# Whether to enable deduplication window for idempotent replay
+--drainer_dedup_window=true
+
+########## TLS ##########
+# Whether to enable TLS for drainer connections
+--drainer_tls_enabled=false
+# Path to the TLS certificate file
+--drainer_tls_cert=
+# Path to the TLS private key file
+--drainer_tls_key=
+# Path to the TLS CA certificate file
+--drainer_tls_ca=
+# Whether to require client certificates for mutual TLS
+--drainer_tls_require_client_cert=false
