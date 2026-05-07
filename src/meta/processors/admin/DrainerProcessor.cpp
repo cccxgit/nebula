@@ -258,5 +258,31 @@ void GetSyncStatusProcessor::process(const cpp2::GetSyncStatusReq& req) {
   onFinished();
 }
 
+void StopSyncProcessor::process(const cpp2::StopSyncReq& req) {
+  auto space = req.get_space_id();
+  CHECK_SPACE_ID_AND_RETURN(space);
+  folly::SharedMutex::WriteHolder holder(LockUtils::lock());
+
+  LOG(INFO) << "StopSyncProcessor: stopping sync for space " << space;
+  // TODO(sync): In the full implementation, this will persist a "sync paused"
+  // flag for the space and notify SyncListeners to stop processing WAL logs.
+  // For now, just return SUCCEEDED.
+  handleErrorCode(nebula::cpp2::ErrorCode::SUCCEEDED);
+  onFinished();
+}
+
+void RestartSyncProcessor::process(const cpp2::RestartSyncReq& req) {
+  auto space = req.get_space_id();
+  CHECK_SPACE_ID_AND_RETURN(space);
+  folly::SharedMutex::WriteHolder holder(LockUtils::lock());
+
+  LOG(INFO) << "RestartSyncProcessor: restarting sync for space " << space;
+  // TODO(sync): In the full implementation, this will clear the "sync paused"
+  // flag for the space and notify SyncListeners to resume processing WAL logs.
+  // For now, just return SUCCEEDED.
+  handleErrorCode(nebula::cpp2::ErrorCode::SUCCEEDED);
+  onFinished();
+}
+
 }  // namespace meta
 }  // namespace nebula

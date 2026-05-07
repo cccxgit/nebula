@@ -4041,5 +4041,39 @@ folly::Future<StatusOr<std::vector<HostAddr>>> MetaClient::listDrainerClients() 
   return future;
 }
 
+folly::Future<StatusOr<bool>> MetaClient::stopSync(GraphSpaceID spaceId) {
+  memory::MemoryCheckOffGuard g;
+  cpp2::StopSyncReq req;
+  req.space_id_ref() = spaceId;
+  folly::Promise<StatusOr<bool>> promise;
+  auto future = promise.getFuture();
+  getResponse(
+      std::move(req),
+      [](auto client, auto request) { return client->future_stopSync(request); },
+      [](cpp2::ExecResp&& resp) -> bool {
+        return resp.get_code() == nebula::cpp2::ErrorCode::SUCCEEDED;
+      },
+      std::move(promise),
+      true);
+  return future;
+}
+
+folly::Future<StatusOr<bool>> MetaClient::restartSync(GraphSpaceID spaceId) {
+  memory::MemoryCheckOffGuard g;
+  cpp2::RestartSyncReq req;
+  req.space_id_ref() = spaceId;
+  folly::Promise<StatusOr<bool>> promise;
+  auto future = promise.getFuture();
+  getResponse(
+      std::move(req),
+      [](auto client, auto request) { return client->future_restartSync(request); },
+      [](cpp2::ExecResp&& resp) -> bool {
+        return resp.get_code() == nebula::cpp2::ErrorCode::SUCCEEDED;
+      },
+      std::move(promise),
+      true);
+  return future;
+}
+
 }  // namespace meta
 }  // namespace nebula

@@ -490,6 +490,10 @@ class MetaClient : public BaseMetaClient {
 
   folly::Future<StatusOr<std::vector<HostAddr>>> listDrainerClients();
 
+  folly::Future<StatusOr<bool>> stopSync(GraphSpaceID spaceId);
+
+  folly::Future<StatusOr<bool>> restartSync(GraphSpaceID spaceId);
+
   // Operations for fulltext index.
 
   folly::Future<StatusOr<bool>> createFTIndex(const std::string& name, const cpp2::FTIndex& index);

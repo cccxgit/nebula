@@ -255,21 +255,35 @@ folly::Future<Status> ShowDrainerSyncStatusExecutor::execute() {
 folly::Future<Status> StopSyncExecutor::execute() {
   SCOPED_TIMER(&execTime_);
   auto spaceId = qctx()->rctx()->session()->space().id;
-  // TODO(sync): Add stopSync method to MetaClient that tells metad to pause
-  // the SyncListener for the current space. The metad will set a flag on
-  // the SyncListener to stop processing WAL logs until RESTART SYNC is called.
-  LOG(INFO) << "StopSyncExecutor: stopping sync for space " << spaceId;
-  return Status::OK();
+  return qctx()
+      ->getMetaClient()
+      ->stopSync(spaceId)
+      .via(runner())
+      .thenValue([this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Stop sync failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
 }
 
 folly::Future<Status> RestartSyncExecutor::execute() {
   SCOPED_TIMER(&execTime_);
   auto spaceId = qctx()->rctx()->session()->space().id;
-  // TODO(sync): Add restartSync method to MetaClient that tells metad to
-  // resume the SyncListener for the current space. The metad will clear
-  // the pause flag on the SyncListener and resume processing WAL logs.
-  LOG(INFO) << "RestartSyncExecutor: restarting sync for space " << spaceId;
-  return Status::OK();
+  return qctx()
+      ->getMetaClient()
+      ->restartSync(spaceId)
+      .via(runner())
+      .thenValue([this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Restart sync failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
 }
 
 }  // namespace graph

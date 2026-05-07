@@ -127,6 +127,40 @@ class GetSyncStatusProcessor : public BaseProcessor<cpp2::GetSyncStatusResp> {
       : BaseProcessor<cpp2::GetSyncStatusResp>(kvstore) {}
 };
 
+/**
+ * @brief Stop (pause) sync for a given space.
+ *        Sets a flag in metad so that SyncListeners stop processing WAL logs.
+ */
+class StopSyncProcessor : public BaseProcessor<cpp2::ExecResp> {
+ public:
+  static StopSyncProcessor* instance(kvstore::KVStore* kvstore) {
+    return new StopSyncProcessor(kvstore);
+  }
+
+  void process(const cpp2::StopSyncReq& req);
+
+ private:
+  explicit StopSyncProcessor(kvstore::KVStore* kvstore)
+      : BaseProcessor<cpp2::ExecResp>(kvstore) {}
+};
+
+/**
+ * @brief Restart (resume) sync for a given space.
+ *        Clears the pause flag so that SyncListeners resume processing WAL logs.
+ */
+class RestartSyncProcessor : public BaseProcessor<cpp2::ExecResp> {
+ public:
+  static RestartSyncProcessor* instance(kvstore::KVStore* kvstore) {
+    return new RestartSyncProcessor(kvstore);
+  }
+
+  void process(const cpp2::RestartSyncReq& req);
+
+ private:
+  explicit RestartSyncProcessor(kvstore::KVStore* kvstore)
+      : BaseProcessor<cpp2::ExecResp>(kvstore) {}
+};
+
 }  // namespace meta
 }  // namespace nebula
 #endif  // META_DRAINERPROCESSOR_H_

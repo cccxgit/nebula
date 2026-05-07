@@ -970,6 +970,14 @@ struct ListDrainersResp {
     3: optional list<common.HostAddr>  drainers,
 }
 
+struct StopSyncReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct RestartSyncReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
 struct GetSyncStatusReq {
     1: required common.GraphSpaceID    space_id,
 }
@@ -1358,6 +1366,8 @@ service MetaService {
     ExecResp             removeDrainer(1: RemoveDrainerReq req);
     ListDrainersResp     listDrainers(1: ListDrainersReq req);
     GetSyncStatusResp    getSyncStatus(1: GetSyncStatusReq req);
+    ExecResp             stopSync(1: StopSyncReq req);
+    ExecResp             restartSync(1: RestartSyncReq req);
 
     GetStatsResp  getStats(1: GetStatsReq req);
     ExecResp signInService(1: SignInServiceReq req);

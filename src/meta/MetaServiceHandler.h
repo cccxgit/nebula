@@ -257,6 +257,10 @@ class MetaServiceHandler final : public cpp2::MetaServiceSvIf {
   folly::Future<cpp2::GetSyncStatusResp> future_getSyncStatus(
       const cpp2::GetSyncStatusReq& req) override;
 
+  folly::Future<cpp2::ExecResp> future_stopSync(const cpp2::StopSyncReq& req) override;
+
+  folly::Future<cpp2::ExecResp> future_restartSync(const cpp2::RestartSyncReq& req) override;
+
  private:
   kvstore::KVStore* kvstore_ = nullptr;
   ClusterID clusterId_{0};
