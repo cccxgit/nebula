@@ -436,6 +436,7 @@ class AddSyncListenerValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -446,6 +447,7 @@ class RemoveSyncListenerValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -456,6 +458,7 @@ class ShowSyncListenerValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -468,6 +471,7 @@ class SignInDrainerServiceValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -480,6 +484,7 @@ class SignOutDrainerServiceValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -492,6 +497,7 @@ class ShowDrainerClientsValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -501,6 +507,7 @@ class AddDrainerValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -511,6 +518,7 @@ class RemoveDrainerValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -520,6 +528,7 @@ class ShowDrainersValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -529,6 +538,7 @@ class ShowSyncStatusValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -539,6 +549,7 @@ class ShowDrainerSyncStatusValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -548,6 +559,7 @@ class StopSyncValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
@@ -557,6 +569,7 @@ class RestartSyncValidator final : public Validator {
 
  private:
   Status validateImpl() override;
+  Status checkPermission() override;
   Status toPlan() override;
 };
 
