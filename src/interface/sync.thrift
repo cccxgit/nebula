@@ -3,7 +3,7 @@
  * This source code is licensed under Apache 2.0 License.
  */
 
-namespace cpp nebula.sync.cpp2
+namespace cpp nebula.sync
 namespace java com.vesoft.nebula.sync
 namespace py nebula3.sync
 
