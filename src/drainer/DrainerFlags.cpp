@@ -40,3 +40,9 @@ DEFINE_int32(drainer_metrics_port, 19889, "HTTP port for drainer metrics/stats e
 DEFINE_string(drainer_listener_token,
               "",
               "Authentication token that listeners must present. Empty means accept all.");
+DEFINE_int32(drainer_apply_retry_times,
+             3,
+             "Max number of retries when applying WAL entries to the backup cluster fails");
+DEFINE_int32(drainer_apply_retry_interval_ms,
+             100,
+             "Base retry interval in ms (exponential backoff: base, base*5, base*20)");

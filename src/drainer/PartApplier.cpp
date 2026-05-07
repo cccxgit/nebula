@@ -7,15 +7,25 @@
 
 #include <glog/logging.h>
 
+#include <chrono>
+#include <thread>
+
 #include "common/datatypes/KeyValue.h"
 #include "common/utils/NebulaKeyUtils.h"
 #include "drainer/BackupClientCache.h"
 #include "drainer/CheckpointStore.h"
 #include "drainer/DrainerEnv.h"
+#include "drainer/DrainerFlags.h"
+#include "drainer/MetaApplier.h"
 #include "kvstore/LogEncoder.h"
 
 namespace nebula {
 namespace drainer {
+
+// Exponential backoff multipliers: base, base*5, base*20, ...
+// e.g., with base=100ms: 100ms, 500ms, 2000ms
+static const int kBackoffMultipliers[] = {1, 5, 20};
+static const int kBackoffMultipliersSize = sizeof(kBackoffMultipliers) / sizeof(kBackoffMultipliers[0]);
 
 PartApplier::PartApplier(GraphSpaceID spaceId, PartitionID partId, DrainerEnv* env)
     : spaceId_(spaceId), partId_(partId), env_(env) {}
@@ -92,6 +102,111 @@ void PartApplier::run_() {
   queue_.clear();
 }
 
+bool PartApplier::waitForSchema_(const sync::cpp2::SyncLogEntry& entry) {
+  if (!entry.schemaVer_ref().has_value()) {
+    return true;
+  }
+  auto schemaVer = *entry.schemaVer_ref();
+  if (env_->metaApplier()->schemaVisible(spaceId_, schemaVer)) {
+    return true;
+  }
+
+  // Poll until the schema becomes visible or we hit the timeout
+  auto pollMs = FLAGS_drainer_schema_visibility_poll_ms;
+  auto timeoutMs = FLAGS_drainer_schema_visibility_timeout_ms;
+  int64_t elapsedMs = 0;
+
+  VLOG(2) << "waitForSchema_ waiting for schemaVer=" << schemaVer
+           << " space=" << spaceId_ << " part=" << partId_;
+
+  while (elapsedMs < timeoutMs) {
+    /* sleep override */ std::this_thread::sleep_for(std::chrono::milliseconds(pollMs));
+    elapsedMs += pollMs;
+    if (env_->metaApplier()->schemaVisible(spaceId_, schemaVer)) {
+      VLOG(2) << "waitForSchema_ schemaVer=" << schemaVer << " became visible after "
+               << elapsedMs << "ms, space=" << spaceId_ << " part=" << partId_;
+      return true;
+    }
+  }
+
+  LOG(ERROR) << "waitForSchema_ timed out waiting for schemaVer=" << schemaVer
+             << " after " << timeoutMs << "ms, space=" << spaceId_
+             << " part=" << partId_ << " logId=" << *entry.logId_ref();
+  return false;
+}
+
+void PartApplier::retryOnFailure_(const std::string& opName,
+                                  LogID logId,
+                                  std::function<bool()> func) {
+  int maxRetries = FLAGS_drainer_apply_retry_times;
+  int baseIntervalMs = FLAGS_drainer_apply_retry_interval_ms;
+
+  // First attempt (not a retry)
+  if (func()) {
+    return;
+  }
+
+  // Retry loop with exponential backoff
+  for (int attempt = 0; attempt < maxRetries; ++attempt) {
+    int multiplierIdx = std::min(attempt, kBackoffMultipliersSize - 1);
+    int sleepMs = baseIntervalMs * kBackoffMultipliers[multiplierIdx];
+    LOG(WARNING) << opName << " retry " << (attempt + 1) << "/" << maxRetries
+                 << " after " << sleepMs << "ms, space=" << spaceId_
+                 << " part=" << partId_ << " logId=" << logId;
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleepMs));
+
+    if (func()) {
+      LOG(INFO) << opName << " succeeded on retry " << (attempt + 1)
+                << ", space=" << spaceId_ << " part=" << partId_ << " logId=" << logId;
+      return;
+    }
+  }
+
+  // All retries exhausted — throw to propagate to DrainerService
+  auto msg = folly::stringPrintf(
+      "%s failed after %d retries, space=%d part=%d logId=%ld",
+      opName.c_str(), maxRetries, spaceId_, partId_, logId);
+  LOG(ERROR) << msg;
+  throw std::runtime_error(msg);
+}
+
+// static
+bool PartApplier::isInEdgeKey_(folly::StringPiece key) {
+  // Edge key format: type(1) + partId(3) + srcId(vIdLen) + edgeType(4) +
+  //                  edgeRank(8) + dstId(vIdLen) + placeHolder(1)
+  // Total: kEdgeLen + 2 * vIdLen
+  //   where kEdgeLen = sizeof(PartitionID) + sizeof(EdgeType) +
+  //                    sizeof(EdgeRanking) + sizeof(EdgeVerPlaceHolder)
+  //                  = 4 + 4 + 8 + 1 = 17
+  //
+  // First, check the key type byte to see if it could be an edge.
+  if (key.size() <= static_cast<size_t>(kEdgeLen)) {
+    return false;
+  }
+  constexpr int32_t typeLen = static_cast<int32_t>(sizeof(NebulaKeyType));
+  auto typeVal = readInt<uint32_t>(key.data(), typeLen) & kTypeMask;
+  if (static_cast<NebulaKeyType>(typeVal) != NebulaKeyType::kEdge) {
+    return false;
+  }
+
+  // Derive vIdLen from key size: keyLen = kEdgeLen + 2 * vIdLen
+  auto remaining = static_cast<int64_t>(key.size()) - kEdgeLen;
+  if (remaining <= 0 || remaining % 2 != 0) {
+    return false;
+  }
+  auto vIdLen = static_cast<size_t>(remaining / 2);
+
+  // Verify it's actually a valid edge key (checks size and trailing placeholder)
+  if (!NebulaKeyUtils::isEdge(vIdLen, key)) {
+    return false;
+  }
+
+  // Read the edgeType. Negative edgeType means it's an in-edge.
+  auto edgeType = NebulaKeyUtils::getEdgeType(vIdLen, key);
+  return edgeType < 0;
+}
+
 void PartApplier::applyBatch_(const sync::cpp2::SyncLogBatch& batch) {
   const auto& entries = *batch.entries_ref();
   for (const auto& entry : entries) {
@@ -135,8 +250,12 @@ void PartApplier::applyPut_(const sync::cpp2::SyncLogEntry& entry) {
   const auto& payload = *entry.payload_ref();
   auto logId = *entry.logId_ref();
 
-  // TODO: Schema barrier check — if entry has schemaVer, call
-  //   env_->metaApplier()->schemaVisible(spaceId_, schemaVer) and park if not visible.
+  // Schema barrier: wait for the referenced schema to be visible on the backup cluster
+  if (!waitForSchema_(entry)) {
+    LOG(WARNING) << "applyPut_ skipping entry due to schema barrier timeout, space="
+                 << spaceId_ << " part=" << partId_ << " logId=" << logId;
+    return;
+  }
 
   // OP_PUT is encoded via encodeMultiValues(OP_PUT, key, value), so decode
   // yields exactly 2 pieces: [key, value].
@@ -158,22 +277,30 @@ void PartApplier::applyPut_(const sync::cpp2::SyncLogEntry& entry) {
     return;
   }
 
+  // Skip in-edge keys — the backup cluster's storage layer auto-generates
+  // in-edges when the corresponding out-edge is inserted.
+  if (isInEdgeKey_(key)) {
+    VLOG(3) << "applyPut_ skipping in-edge key (dedup), space=" << spaceId_
+             << " part=" << partId_ << " logId=" << logId;
+    return;
+  }
+
   // TODO: Partition rerouting — the key's embedded partId may differ between
   //   clusters with different partition_num. Extract vertexId, hash to the
   //   correct partId in the backup cluster, and rewrite the key prefix.
 
-  // Build KeyValue and send to backup cluster
-  std::vector<KeyValue> kvs;
-  kvs.emplace_back(KeyValue{key.toString(), val.toString()});
+  // Build KeyValue and send to backup cluster with retry
+  auto keyStr = key.toString();
+  auto valStr = val.toString();
 
-  auto* client = env_->backupClientCache()->backupStorageClient();
-  auto future = client->put(spaceId_, std::move(kvs));
-  auto resp = std::move(future).get();
-  if (!resp.succeeded()) {
-    LOG(ERROR) << "applyPut_ failed on backup cluster, space=" << spaceId_
-               << " part=" << partId_ << " logId=" << logId;
-    // TODO: Add retry / error handling policy
-  }
+  retryOnFailure_("applyPut_", logId, [this, &keyStr, &valStr]() -> bool {
+    std::vector<KeyValue> kvs;
+    kvs.emplace_back(KeyValue{keyStr, valStr});
+    auto* client = env_->backupClientCache()->backupStorageClient();
+    auto future = client->put(spaceId_, std::move(kvs));
+    auto resp = std::move(future).get();
+    return resp.succeeded();
+  });
 
   VLOG(3) << "applyPut_ space=" << spaceId_ << " part=" << partId_
            << " logId=" << logId << " payloadSize=" << payload.size();
@@ -183,7 +310,12 @@ void PartApplier::applyMultiPut_(const sync::cpp2::SyncLogEntry& entry) {
   const auto& payload = *entry.payload_ref();
   auto logId = *entry.logId_ref();
 
-  // TODO: Schema barrier check — park if schema not yet visible on backup.
+  // Schema barrier: wait for the referenced schema to be visible on the backup cluster
+  if (!waitForSchema_(entry)) {
+    LOG(WARNING) << "applyMultiPut_ skipping entry due to schema barrier timeout, space="
+                 << spaceId_ << " part=" << partId_ << " logId=" << logId;
+    return;
+  }
 
   // OP_MULTI_PUT is encoded via encodeMultiValues(OP_MULTI_PUT, vector<KV>),
   // which stores 2*N strings: [key0, val0, key1, val1, ...].
@@ -204,6 +336,11 @@ void PartApplier::applyMultiPut_(const sync::cpp2::SyncLogEntry& entry) {
       continue;
     }
 
+    // Skip in-edge keys (dedup — backup cluster auto-generates in-edges)
+    if (isInEdgeKey_(key)) {
+      continue;
+    }
+
     // TODO: Partition rerouting for different partition_num across clusters.
     kvs.emplace_back(KeyValue{key.toString(), pieces[i + 1].toString()});
   }
@@ -214,14 +351,13 @@ void PartApplier::applyMultiPut_(const sync::cpp2::SyncLogEntry& entry) {
     return;
   }
 
-  auto* client = env_->backupClientCache()->backupStorageClient();
-  auto future = client->put(spaceId_, std::move(kvs));
-  auto resp = std::move(future).get();
-  if (!resp.succeeded()) {
-    LOG(ERROR) << "applyMultiPut_ failed on backup cluster, space=" << spaceId_
-               << " part=" << partId_ << " logId=" << logId;
-    // TODO: Add retry / error handling policy
-  }
+  retryOnFailure_("applyMultiPut_", logId, [this, &kvs]() -> bool {
+    auto kvsCopy = kvs;
+    auto* client = env_->backupClientCache()->backupStorageClient();
+    auto future = client->put(spaceId_, std::move(kvsCopy));
+    auto resp = std::move(future).get();
+    return resp.succeeded();
+  });
 
   VLOG(3) << "applyMultiPut_ space=" << spaceId_ << " part=" << partId_
            << " logId=" << logId << " payloadSize=" << payload.size();
@@ -243,17 +379,16 @@ void PartApplier::applyRemove_(const sync::cpp2::SyncLogEntry& entry) {
 
   // TODO: Partition rerouting for different partition_num across clusters.
 
-  std::vector<std::string> keys;
-  keys.emplace_back(key.toString());
+  auto keyStr = key.toString();
 
-  auto* client = env_->backupClientCache()->backupStorageClient();
-  auto future = client->remove(spaceId_, std::move(keys));
-  auto resp = std::move(future).get();
-  if (!resp.succeeded()) {
-    LOG(ERROR) << "applyRemove_ failed on backup cluster, space=" << spaceId_
-               << " part=" << partId_ << " logId=" << logId;
-    // TODO: Add retry / error handling policy
-  }
+  retryOnFailure_("applyRemove_", logId, [this, &keyStr]() -> bool {
+    std::vector<std::string> keys;
+    keys.emplace_back(keyStr);
+    auto* client = env_->backupClientCache()->backupStorageClient();
+    auto future = client->remove(spaceId_, std::move(keys));
+    auto resp = std::move(future).get();
+    return resp.succeeded();
+  });
 
   VLOG(3) << "applyRemove_ space=" << spaceId_ << " part=" << partId_
            << " logId=" << logId << " payloadSize=" << payload.size();
@@ -284,14 +419,13 @@ void PartApplier::applyMultiRemove_(const sync::cpp2::SyncLogEntry& entry) {
     return;
   }
 
-  auto* client = env_->backupClientCache()->backupStorageClient();
-  auto future = client->remove(spaceId_, std::move(keys));
-  auto resp = std::move(future).get();
-  if (!resp.succeeded()) {
-    LOG(ERROR) << "applyMultiRemove_ failed on backup cluster, space=" << spaceId_
-               << " part=" << partId_ << " logId=" << logId;
-    // TODO: Add retry / error handling policy
-  }
+  retryOnFailure_("applyMultiRemove_", logId, [this, &keys]() -> bool {
+    auto keysCopy = keys;
+    auto* client = env_->backupClientCache()->backupStorageClient();
+    auto future = client->remove(spaceId_, std::move(keysCopy));
+    auto resp = std::move(future).get();
+    return resp.succeeded();
+  });
 
   VLOG(3) << "applyMultiRemove_ space=" << spaceId_ << " part=" << partId_
            << " logId=" << logId << " payloadSize=" << payload.size();
@@ -327,7 +461,12 @@ void PartApplier::applyBatchWrite_(const sync::cpp2::SyncLogEntry& entry) {
   const auto& payload = *entry.payload_ref();
   auto logId = *entry.logId_ref();
 
-  // TODO: Schema barrier check — park if schema not yet visible on backup.
+  // Schema barrier: wait for the referenced schema to be visible on the backup cluster
+  if (!waitForSchema_(entry)) {
+    LOG(WARNING) << "applyBatchWrite_ skipping entry due to schema barrier timeout, space="
+                 << spaceId_ << " part=" << partId_ << " logId=" << logId;
+    return;
+  }
 
   // OP_BATCH_WRITE is encoded via encodeBatchValue(). Each element is
   // (BatchLogType, key, value) — value is empty for REMOVE operations.
@@ -343,6 +482,11 @@ void PartApplier::applyBatchWrite_(const sync::cpp2::SyncLogEntry& entry) {
 
     // Skip system keys
     if (NebulaKeyUtils::isSystem(key)) {
+      continue;
+    }
+
+    // Skip in-edge keys (dedup — backup cluster auto-generates in-edges)
+    if (isInEdgeKey_(key)) {
       continue;
     }
 
@@ -367,28 +511,26 @@ void PartApplier::applyBatchWrite_(const sync::cpp2::SyncLogEntry& entry) {
     }
   }
 
-  auto* client = env_->backupClientCache()->backupStorageClient();
-
-  // Apply puts
+  // Apply puts with retry
   if (!puts.empty()) {
-    auto future = client->put(spaceId_, std::move(puts));
-    auto resp = std::move(future).get();
-    if (!resp.succeeded()) {
-      LOG(ERROR) << "applyBatchWrite_ put failed on backup cluster, space=" << spaceId_
-                 << " part=" << partId_ << " logId=" << logId;
-      // TODO: Add retry / error handling policy
-    }
+    retryOnFailure_("applyBatchWrite_put", logId, [this, &puts]() -> bool {
+      auto putsCopy = puts;
+      auto* client = env_->backupClientCache()->backupStorageClient();
+      auto future = client->put(spaceId_, std::move(putsCopy));
+      auto resp = std::move(future).get();
+      return resp.succeeded();
+    });
   }
 
-  // Apply removes
+  // Apply removes with retry
   if (!removes.empty()) {
-    auto future = client->remove(spaceId_, std::move(removes));
-    auto resp = std::move(future).get();
-    if (!resp.succeeded()) {
-      LOG(ERROR) << "applyBatchWrite_ remove failed on backup cluster, space=" << spaceId_
-                 << " part=" << partId_ << " logId=" << logId;
-      // TODO: Add retry / error handling policy
-    }
+    retryOnFailure_("applyBatchWrite_remove", logId, [this, &removes]() -> bool {
+      auto removesCopy = removes;
+      auto* client = env_->backupClientCache()->backupStorageClient();
+      auto future = client->remove(spaceId_, std::move(removesCopy));
+      auto resp = std::move(future).get();
+      return resp.succeeded();
+    });
   }
 
   VLOG(3) << "applyBatchWrite_ space=" << spaceId_ << " part=" << partId_

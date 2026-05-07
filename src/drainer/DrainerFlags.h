@@ -25,5 +25,7 @@ DECLARE_string(drainer_tls_ca);
 DECLARE_bool(drainer_tls_require_client_cert);
 DECLARE_int32(drainer_metrics_port);
 DECLARE_string(drainer_listener_token);
+DECLARE_int32(drainer_apply_retry_times);
+DECLARE_int32(drainer_apply_retry_interval_ms);
 
 #endif  // DRAINER_DRAINERFLAGS_H_

@@ -9,6 +9,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <deque>
+#include <functional>
 #include <mutex>
 #include <thread>
 
@@ -59,6 +60,44 @@ class PartApplier {
   void applyMultiRemove_(const sync::cpp2::SyncLogEntry& entry);
   void applyRemoveRange_(const sync::cpp2::SyncLogEntry& entry);
   void applyBatchWrite_(const sync::cpp2::SyncLogEntry& entry);
+
+  /**
+   * Retry a storage operation with exponential backoff.
+   * Retries up to FLAGS_drainer_apply_retry_times times with increasing delays
+   * (base, base*5, base*20 where base = FLAGS_drainer_apply_retry_interval_ms).
+   * Throws std::runtime_error if all retries are exhausted.
+   *
+   * @param opName   Name of the operation (for logging)
+   * @param logId    Log ID of the entry being applied (for logging)
+   * @param func     Lambda that returns true on success, false on failure
+   */
+  void retryOnFailure_(const std::string& opName,
+                       LogID logId,
+                       std::function<bool()> func);
+
+  /**
+   * Wait until the schema version referenced by the entry becomes visible
+   * on the backup cluster. Polls with FLAGS_drainer_schema_visibility_poll_ms
+   * interval up to FLAGS_drainer_schema_visibility_timeout_ms.
+   *
+   * @param entry The sync log entry that may reference a schema version
+   * @return true if the schema is visible (or entry has no schemaVer); false on timeout
+   */
+  bool waitForSchema_(const sync::cpp2::SyncLogEntry& entry);
+
+  /**
+   * Check if a key is an in-edge key that should be skipped during replication.
+   * In-edges have a negative edgeType. The backup cluster's storage layer will
+   * auto-generate in-edges when out-edges are inserted, so replicating them
+   * would cause duplicates.
+   *
+   * Derives vIdLen from the key length using the edge key structure:
+   *   keyLen = kEdgeLen + 2 * vIdLen
+   *
+   * @param key The raw key to check
+   * @return true if the key is an in-edge and should be skipped
+   */
+  static bool isInEdgeKey_(folly::StringPiece key);
 
   GraphSpaceID spaceId_;
   PartitionID partId_;
