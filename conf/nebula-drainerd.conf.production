@@ -76,6 +76,9 @@
 # Whether to enable deduplication window for idempotent replay.
 # Strongly recommended in production to prevent duplicate application after failover.
 --drainer_dedup_window=true
+# Authentication token that listeners must present in AppendLogs RPCs.
+# Leave empty to accept all connections (not recommended in production).
+--drainer_listener_token=
 
 ########## TLS ##########
 # Whether to enable TLS for drainer connections.

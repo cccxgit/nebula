@@ -58,3 +58,15 @@
 --engine_type=rocksdb
 # The type of part, `simple', `consensus'...
 --part_type=simple
+
+########## sync listener ##########
+--sync_listener_dump_only=true
+--sync_listener_dump_path=
+--sync_listener_drainer_addrs=
+--sync_listener_token=
+--sync_listener_batch_bytes=65536
+--sync_listener_batch_count=256
+--sync_listener_batch_ms=50
+--sync_listener_max_inflight_bytes=33554432
+--sync_listener_compression=false
+--sync_listener_compression_level=3

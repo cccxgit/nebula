@@ -42,6 +42,8 @@
 --drainer_checkpoint_persist_interval_ms=1000
 # Whether to enable deduplication window for idempotent replay
 --drainer_dedup_window=true
+# Authentication token that listeners must present
+--drainer_listener_token=
 
 ########## TLS ##########
 # Whether to enable TLS for drainer connections

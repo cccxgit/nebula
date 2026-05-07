@@ -56,3 +56,25 @@
 --engine_type=rocksdb
 # The type of part, `simple', `consensus'...
 --part_type=simple
+
+########## sync listener ##########
+# P1 dump-only mode: dump WAL to local file only, do not send to drainer
+--sync_listener_dump_only=true
+# Path for dump files. If empty, uses the listener WAL path
+--sync_listener_dump_path=
+# Comma-separated drainer addresses for non-dump mode
+--sync_listener_drainer_addrs=
+# Authentication token sent to drainer with each AppendLogs RPC
+--sync_listener_token=
+# Max bytes per sync batch
+--sync_listener_batch_bytes=65536
+# Max log entries per sync batch
+--sync_listener_batch_count=256
+# Max ms to wait before flushing a batch
+--sync_listener_batch_ms=50
+# Max inflight bytes for backpressure (32MB)
+--sync_listener_max_inflight_bytes=33554432
+# Enable zstd compression for sync batches
+--sync_listener_compression=false
+# Zstd compression level (1-22)
+--sync_listener_compression_level=3
