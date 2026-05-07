@@ -40,6 +40,15 @@ class DrainerEnv {
 
   CheckpointStore* checkpointStore() { return checkpointStore_.get(); }
 
+  bool validateListenerToken(const std::string& token, int64_t clusterId) const {
+    if (listenerToken_.empty()) {
+      return true;
+    }
+    return token == listenerToken_;
+  }
+
+  void setListenerToken(const std::string& token) { listenerToken_ = token; }
+
  private:
   int64_t selfClusterId_{0};
   std::unordered_map<int64_t, int64_t> epochMap_;
@@ -59,6 +68,7 @@ class DrainerEnv {
       partAppliers_;
   std::mutex partApplierLock_;
 
+  std::string listenerToken_;
   std::unique_ptr<BackupClientCache> clientCache_;
   std::unique_ptr<CheckpointStore> checkpointStore_;
 };

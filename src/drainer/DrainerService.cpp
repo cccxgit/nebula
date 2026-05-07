@@ -6,9 +6,12 @@
 #include "drainer/DrainerService.h"
 
 #include "common/base/Base.h"
+#include "common/stats/StatsManager.h"
 #include "common/time/WallClock.h"
 #include "drainer/CheckpointStore.h"
 #include "drainer/DrainerEnv.h"
+#include "drainer/DrainerFlags.h"
+#include "drainer/DrainerMetrics.h"
 #include "drainer/MetaApplier.h"
 #include "drainer/PartApplier.h"
 
@@ -24,15 +27,22 @@ folly::Future<sync::cpp2::AppendLogsResponse> DrainerService::future_appendLogs(
   const auto& batch = req.get_batch();
 
   sync::cpp2::AppendLogsResponse resp;
+  stats::StatsManager::addValue(kSyncBatchesReceived);
 
-  // 1) Auth: verify listenerToken (stub - accept all for now)
-  // TODO(sync): Validate req.get_listenerToken() against
-  //             env_->checkpointStore()->getToken(batch.get_clusterId())
+  // 1) Auth: verify listenerToken
+  const auto& token = req.get_listenerToken();
+  if (!env_->validateListenerToken(token, batch.get_clusterId())) {
+    LOG(WARNING) << "Auth failed for cluster " << batch.get_clusterId();
+    stats::StatsManager::addValue(kAuthFailedTotal);
+    resp.code_ref() = nebula::cpp2::ErrorCode::E_SYNC_TLS_HANDSHAKE;
+    return resp;
+  }
 
   // 2) Loop guard: if batch.clusterId == self, return E_SYNC_CLUSTER_LOOP
   if (env_->isSelfClusterId(batch.get_clusterId())) {
     LOG(WARNING) << "Detected cluster loop, dropping batch from self cluster "
                  << batch.get_clusterId();
+    stats::StatsManager::addValue(kClusterLoopTotal);
     resp.code_ref() = nebula::cpp2::ErrorCode::E_SYNC_CLUSTER_LOOP;
     return resp;
   }
@@ -43,6 +53,7 @@ folly::Future<sync::cpp2::AppendLogsResponse> DrainerService::future_appendLogs(
     LOG(WARNING) << "Epoch mismatch for cluster " << batch.get_clusterId()
                  << ": batch epoch=" << batch.get_epoch()
                  << " < current epoch=" << currentEpoch;
+    stats::StatsManager::addValue(kEpochMismatchTotal);
     resp.code_ref() = nebula::cpp2::ErrorCode::E_SYNC_EPOCH_MISMATCH;
     return resp;
   }
@@ -85,8 +96,20 @@ folly::Future<sync::cpp2::AppendLogsResponse> DrainerService::future_appendLogs(
     appliedFuture = applier->enqueue(sync::cpp2::SyncLogBatch(batch));
   }
 
+  auto startUs = time::WallClock::fastNowInMicroSec();
+  auto batchEntries = batch.get_entries().size();
+  int64_t batchSize = 0;
+  for (const auto& entry : batch.get_entries()) {
+    batchSize += entry.get_payload().size();
+  }
+
   return std::move(appliedFuture)
-      .thenValue([](LogID ackedId) {
+      .thenValue([startUs, batchEntries, batchSize](LogID ackedId) {
+        stats::StatsManager::addValue(kSyncBatchesApplied);
+        stats::StatsManager::addValue(kSyncEntriesApplied, batchEntries);
+        stats::StatsManager::addValue(kSyncBytesApplied, batchSize);
+        auto elapsed = time::WallClock::fastNowInMicroSec() - startUs;
+        stats::StatsManager::addValue(kSyncApplyLatencyUs, elapsed);
         sync::cpp2::AppendLogsResponse r;
         r.code_ref() = nebula::cpp2::ErrorCode::SUCCEEDED;
         r.ackedLogId_ref() = ackedId;
@@ -95,6 +118,7 @@ folly::Future<sync::cpp2::AppendLogsResponse> DrainerService::future_appendLogs(
       .thenError([spaceId, partId](folly::exception_wrapper ew) {
         LOG(ERROR) << "Failed to apply batch for space=" << spaceId << " part=" << partId
                    << ": " << ew.what();
+        stats::StatsManager::addValue(kSyncBatchesFailed);
         sync::cpp2::AppendLogsResponse r;
         r.code_ref() = nebula::cpp2::ErrorCode::E_UNKNOWN;
         return r;

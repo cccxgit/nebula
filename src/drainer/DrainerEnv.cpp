@@ -52,6 +52,12 @@ bool DrainerEnv::init() {
   // Create MetaApplier for DDL replay
   metaApplier_ = std::make_unique<MetaApplier>(this);
 
+  // Set listener token for auth
+  if (!FLAGS_drainer_listener_token.empty()) {
+    setListenerToken(FLAGS_drainer_listener_token);
+    LOG(INFO) << "DrainerEnv: listener token authentication enabled";
+  }
+
   LOG(INFO) << "DrainerEnv initialized successfully with secondary meta addrs: "
             << FLAGS_drainer_secondary_meta_addrs;
   return true;

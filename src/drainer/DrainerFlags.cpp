@@ -37,3 +37,6 @@ DEFINE_bool(drainer_tls_require_client_cert,
             false,
             "Require client certificate for mutual TLS authentication");
 DEFINE_int32(drainer_metrics_port, 19889, "HTTP port for drainer metrics/stats endpoint");
+DEFINE_string(drainer_listener_token,
+              "",
+              "Authentication token that listeners must present. Empty means accept all.");

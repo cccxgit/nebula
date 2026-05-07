@@ -24,5 +24,6 @@ DECLARE_string(drainer_tls_key);
 DECLARE_string(drainer_tls_ca);
 DECLARE_bool(drainer_tls_require_client_cert);
 DECLARE_int32(drainer_metrics_port);
+DECLARE_string(drainer_listener_token);
 
 #endif  // DRAINER_DRAINERFLAGS_H_

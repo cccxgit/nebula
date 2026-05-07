@@ -22,6 +22,12 @@
 #include "interface/gen-cpp2/sync_types.h"
 
 namespace nebula {
+namespace meta {
+class MetaClient;
+}  // namespace meta
+}  // namespace nebula
+
+namespace nebula {
 namespace drainer {
 
 class DrainerEnv;
@@ -63,8 +69,22 @@ class MetaApplier {
 
  private:
   void run_();
-  void applyOne_(const sync::cpp2::SyncLogEntry& entry);
+  void applyOne_(const sync::cpp2::SyncLogEntry& entry, GraphSpaceID spaceId);
+  void markVisible_(GraphSpaceID spaceId, int64_t schemaVer);
   void releaseParked_(GraphSpaceID spaceId, int64_t schemaVer);
+
+  /**
+   * Decode a single meta payload encoded by MetaSyncListener::encodeMetaPayload_().
+   * Format: [keyLen (4 bytes)][key][valueLen (4 bytes)][value]
+   * Returns (key, value) pairs extracted from the payload buffer.
+   */
+  static std::vector<std::pair<std::string, std::string>>
+  decodeMetaPayload_(folly::StringPiece payload);
+
+  /**
+   * Determine the meta key type from its prefix and return a human-readable name.
+   */
+  static std::string classifyMetaKey_(folly::StringPiece key);
 
   DrainerEnv* env_;
   std::atomic<bool> stop_{false};
