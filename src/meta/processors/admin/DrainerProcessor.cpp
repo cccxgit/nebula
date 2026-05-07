@@ -215,17 +215,14 @@ void GetSyncStatusProcessor::process(const cpp2::GetSyncStatusReq& req) {
   CHECK_SPACE_ID_AND_RETURN(space);
   folly::SharedMutex::ReadHolder holder(LockUtils::lock());
 
-  // Attempt to read sync progress for the space.
-  // In the full implementation, this would aggregate progress from listeners/drainers.
-  // For now, return empty progress map as a stub.
+  // In the full implementation, this aggregates real-time progress from listeners/drainers.
+  // For now, read stored progress and convert to SyncStatusItem list.
   auto key = syncProgressKey(space);
   auto ret = doGet(key);
   if (!nebula::ok(ret)) {
     auto code = nebula::error(ret);
     if (code == nebula::cpp2::ErrorCode::E_KEY_NOT_FOUND) {
-      // No progress data yet, return empty map
-      std::map<PartitionID, int64_t> emptyProgress;
-      resp_.progress_ref() = std::move(emptyProgress);
+      // No progress data yet, return empty lists
       handleErrorCode(nebula::cpp2::ErrorCode::SUCCEEDED);
       onFinished();
       return;
@@ -237,9 +234,9 @@ void GetSyncStatusProcessor::process(const cpp2::GetSyncStatusReq& req) {
     return;
   }
 
-  // Deserialize progress map from stored value
+  // Deserialize progress and convert to SyncStatusItem list
   // Format: repeated [PartitionID (4 bytes) + logId (8 bytes)]
-  std::map<PartitionID, int64_t> progress;
+  std::vector<cpp2::SyncStatusItem> items;
   auto rawData = nebula::value(ret);
   size_t offset = 0;
   while (offset + sizeof(PartitionID) + sizeof(int64_t) <= rawData.size()) {
@@ -247,9 +244,16 @@ void GetSyncStatusProcessor::process(const cpp2::GetSyncStatusReq& req) {
     offset += sizeof(PartitionID);
     auto logId = *reinterpret_cast<const int64_t*>(rawData.data() + offset);
     offset += sizeof(int64_t);
-    progress[partId] = logId;
+
+    cpp2::SyncStatusItem item;
+    item.part_id_ref() = partId;
+    item.status_ref() = "SYNCING";
+    item.log_id_lag_ref() = 0;
+    item.time_latency_ms_ref() = 0;
+    items.emplace_back(std::move(item));
+    UNUSED(logId);
   }
-  resp_.progress_ref() = std::move(progress);
+  resp_.items_ref() = std::move(items);
   handleErrorCode(nebula::cpp2::ErrorCode::SUCCEEDED);
   onFinished();
 }

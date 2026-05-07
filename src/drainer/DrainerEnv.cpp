@@ -37,9 +37,17 @@ bool DrainerEnv::init() {
 
   // Create BackupClientCache for connections to the backup cluster
   clientCache_ = std::make_unique<BackupClientCache>(std::move(backupMetaHosts));
+  if (!clientCache_->init()) {
+    LOG(ERROR) << "Failed to initialize BackupClientCache";
+    return false;
+  }
 
   // Create CheckpointStore for persisting apply progress
   checkpointStore_ = std::make_unique<CheckpointStore>(FLAGS_drainer_data_path);
+  if (!checkpointStore_->init()) {
+    LOG(ERROR) << "Failed to initialize CheckpointStore at " << FLAGS_drainer_data_path;
+    return false;
+  }
 
   // Create MetaApplier for DDL replay
   metaApplier_ = std::make_unique<MetaApplier>(this);
