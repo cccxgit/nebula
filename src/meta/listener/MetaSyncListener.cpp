@@ -182,8 +182,39 @@ void MetaSyncListener::processLogs() {
         buffer.append(std::move(encoded));
         batchCount++;
       }
+    } else if (opType == kvstore::OP_BATCH_WRITE) {
+      // Decode the batch into individual sub-operations
+      auto batchData = kvstore::decodeBatchValue(log);
+      for (const auto& op : batchData) {
+        auto key = op.second.first;
+        if (!isReplicableMetaKey_(key)) {
+          continue;
+        }
+
+        switch (op.first) {
+          case kvstore::BatchLogType::OP_BATCH_PUT: {
+            auto value = op.second.second;
+            std::string encoded = encodeMetaPayload_(key, value);
+            buffer.append(std::move(encoded));
+            batchCount++;
+            break;
+          }
+          case kvstore::BatchLogType::OP_BATCH_REMOVE: {
+            // For remove operations, encode with empty value
+            std::string encoded = encodeMetaPayload_(key, folly::StringPiece());
+            buffer.append(std::move(encoded));
+            batchCount++;
+            break;
+          }
+          case kvstore::BatchLogType::OP_BATCH_REMOVE_RANGE: {
+            // Range removes are rare for meta operations; skip for now
+            VLOG(2) << idStr_ << "Skipping OP_BATCH_REMOVE_RANGE in meta batch write";
+            break;
+          }
+        }
+      }
     }
-    // Skip OP_BATCH_WRITE, OP_REMOVE_RANGE, and other unknown op types for now
+    // Skip OP_REMOVE_RANGE and other unknown op types
 
     ++(*iter);
   }
