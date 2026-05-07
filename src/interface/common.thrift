@@ -399,6 +399,11 @@ enum ErrorCode {
     E_NO_INVALID_BALANCE_PLAN         = -2028,  // No invalid balance plan
     E_NO_VALID_DRAINER                = -2029,  // Lack of valid drainers[only ent]
 
+    E_SYNC_EPOCH_MISMATCH             = -9030,  // Batch epoch != current standby epoch[only ent]
+    E_SYNC_SCHEMA_NOT_READY           = -9031,  // Schema barrier blocking[only ent]
+    E_SYNC_CLUSTER_LOOP               = -9032,  // Self-originated batch dropped[only ent]
+    E_SYNC_AUTH_FAILED                = -9033,  // Listener token invalid[only ent]
+    E_SYNC_TLS_HANDSHAKE              = -9034,  // TLS handshake failed[only ent]
 
     // Authentication Failure
     E_IMPROPER_ROLE                   = -2030,  // Failed to recover user role

@@ -902,6 +902,8 @@ struct ListZonesResp {
 enum ListenerType {
     UNKNOWN       = 0x00,
     ELASTICSEARCH = 0x01,
+    SYNC_STORAGE  = 0x02,
+    SYNC_META     = 0x03,
 } (cpp.enum_strict)
 
 struct AddListenerReq {
