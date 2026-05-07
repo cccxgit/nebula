@@ -16,6 +16,7 @@
 #include "kvstore/LogEncoder.h"
 #include "kvstore/listener/sync/DrainerClient.h"
 #include "kvstore/listener/sync/SyncListenerFlags.h"
+#include "kvstore/listener/sync/WalRetentionHook.h"
 
 namespace nebula {
 namespace kvstore {
@@ -50,6 +51,12 @@ void SyncListener::init() {
       drainerClient_ = std::make_shared<DrainerClient>(ioPool_.get(), std::move(drainerAddrs));
       LOG(INFO) << idStr_ << "DrainerClient initialized";
     }
+  }
+
+  // Register initial listener progress with WAL retention hook so that
+  // WAL GC does not delete entries the listener still needs.
+  if (lastSentLogId_ > 0) {
+    WalRetentionHook::updateListenerProgress(spaceId_, partId_, lastSentLogId_);
   }
 
   LOG(INFO) << idStr_ << "SyncListener initialized, dumpPath=" << dumpPath_
@@ -194,6 +201,11 @@ void SyncListener::processLogs() {
     lastSentLogId_ = lastApplyId;
     persist(committedLogId_, term_, lastApplyLogId_);
   }
+
+  // Notify WAL retention hook that the listener has consumed up to this log ID,
+  // so WAL GC can safely reclaim older entries.
+  WalRetentionHook::updateListenerProgress(spaceId_, partId_, lastApplyId);
+
   VLOG(2) << idStr_ << "SyncListener processed logs up to " << lastApplyId
           << ", batchCount=" << batchCount << ", batchBytes=" << batchBytes;
 }
@@ -241,6 +253,8 @@ std::tuple<nebula::cpp2::ErrorCode, int64_t, int64_t> SyncListener::commitSnapsh
     lastApplyLogId_ = committedLogId;
     lastSentLogId_ = committedLogId;
     persist(committedLogId, committedLogTerm, lastApplyLogId_);
+    // Update WAL retention hook after snapshot commit
+    WalRetentionHook::updateListenerProgress(spaceId_, partId_, committedLogId);
     LOG(INFO) << idStr_ << "SyncListener snapshot committed: committedLogId=" << committedLogId
               << ", committedLogTerm=" << committedLogTerm;
   }
