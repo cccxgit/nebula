@@ -187,6 +187,10 @@ class PlanNode {
 
     kShowQueries,
     kKillQuery,
+
+    // sync related
+    kShowSyncStatus,
+    kShowDrainerSyncStatus,
   };
 
   bool isQueryNode() const {

@@ -468,6 +468,19 @@ class MetaClient : public BaseMetaClient {
   StatusOr<std::vector<cpp2::ServiceClient>> getServiceClientsFromCache(
       const cpp2::ExternalServiceType& type);
 
+  // Operations for drainer/sync management.
+
+  folly::Future<StatusOr<bool>> signInDrainerService(
+      const std::vector<HostAddr>& hosts);
+
+  folly::Future<StatusOr<bool>> signOutDrainerService();
+
+  folly::Future<StatusOr<std::vector<cpp2::SyncStatusItem>>> getSyncStatus(
+      GraphSpaceID spaceId);
+
+  folly::Future<StatusOr<std::vector<cpp2::DrainerSyncStatusItem>>> getDrainerSyncStatus(
+      GraphSpaceID spaceId);
+
   // Operations for fulltext index.
 
   folly::Future<StatusOr<bool>> createFTIndex(const std::string& name, const cpp2::FTIndex& index);

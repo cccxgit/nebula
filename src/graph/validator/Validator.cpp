@@ -262,6 +262,22 @@ std::unique_ptr<Validator> Validator::makeValidator(Sentence* sentence, QueryCon
       return std::make_unique<ClearSpaceValidator>(sentence, context);
     case Sentence::Kind::kUnwind:
       return std::make_unique<UnwindValidator>(sentence, context);
+    case Sentence::Kind::kShowSyncStatus:
+      return std::make_unique<ShowSyncStatusValidator>(sentence, context);
+    case Sentence::Kind::kShowDrainerSyncStatus:
+      return std::make_unique<ShowDrainerSyncStatusValidator>(sentence, context);
+    case Sentence::Kind::kAddSyncListener:
+    case Sentence::Kind::kRemoveSyncListener:
+    case Sentence::Kind::kShowSyncListener:
+    case Sentence::Kind::kSignInDrainerService:
+    case Sentence::Kind::kSignOutDrainerService:
+    case Sentence::Kind::kShowDrainerClients:
+    case Sentence::Kind::kAddDrainer:
+    case Sentence::Kind::kRemoveDrainer:
+    case Sentence::Kind::kShowDrainers:
+      // TODO(sync): implement validators for remaining sync commands
+      DLOG(FATAL) << "Unimplemented sync sentence " << kind;
+      break;
     case Sentence::Kind::kUnknown:
     case Sentence::Kind::kReturn: {
       // nothing

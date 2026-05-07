@@ -46,6 +46,8 @@ set(storage_meta_deps
     $<TARGET_OBJECTS:kv_stats_obj>
     $<TARGET_OBJECTS:raftex_obj>
     $<TARGET_OBJECTS:listener_obj>
+    $<TARGET_OBJECTS:sync_listener_obj>
+    $<TARGET_OBJECTS:sync_thrift_obj>
     $<TARGET_OBJECTS:wal_obj>
     $<TARGET_OBJECTS:disk_man_obj>
     $<TARGET_OBJECTS:keyutils_obj>
@@ -206,8 +208,10 @@ nebula_add_executable(
         SetupBreakpad.cpp
     OBJECTS
         $<TARGET_OBJECTS:drainer_obj>
-        $<TARGET_OBJECTS:sync_thrift_obj>
+        $<TARGET_OBJECTS:storage_client_base_obj>
+        $<TARGET_OBJECTS:storage_client_obj>
         ${common_deps}
+        ${storage_meta_deps}
     LIBRARIES
         ${ROCKSDB_LIBRARIES}
         ${THRIFT_LIBRARIES}

@@ -8,6 +8,7 @@
 #include "common/utils/MetaKeyUtils.h"
 #include "meta/processors/admin/AgentHBProcessor.h"
 #include "meta/processors/admin/ClearSpaceProcessor.h"
+#include "meta/processors/admin/DrainerProcessor.h"
 #include "meta/processors/admin/CreateBackupProcessor.h"
 #include "meta/processors/admin/CreateSnapshotProcessor.h"
 #include "meta/processors/admin/DropSnapshotProcessor.h"
@@ -561,5 +562,47 @@ folly::Future<cpp2::GetSegmentIdResp> MetaServiceHandler::future_getSegmentId(
   auto* processor = GetSegmentIdProcessor::instance(kvstore_);
   RETURN_FUTURE(processor);
 }
+folly::Future<cpp2::ExecResp> MetaServiceHandler::future_signInDrainerService(
+    const cpp2::SignInDrainerReq& req) {
+  auto* processor = SignInDrainerProcessor::instance(kvstore_);
+  RETURN_FUTURE(processor);
+}
+
+folly::Future<cpp2::ExecResp> MetaServiceHandler::future_signOutDrainerService(
+    const cpp2::SignOutDrainerReq& req) {
+  auto* processor = SignOutDrainerProcessor::instance(kvstore_);
+  RETURN_FUTURE(processor);
+}
+
+folly::Future<cpp2::ListDrainerClientsResp> MetaServiceHandler::future_listDrainerClients(
+    const cpp2::ListDrainerClientsReq& req) {
+  auto* processor = ListDrainerClientsProcessor::instance(kvstore_);
+  RETURN_FUTURE(processor);
+}
+
+folly::Future<cpp2::ExecResp> MetaServiceHandler::future_addDrainer(
+    const cpp2::AddDrainerReq& req) {
+  auto* processor = AddDrainerProcessor::instance(kvstore_);
+  RETURN_FUTURE(processor);
+}
+
+folly::Future<cpp2::ExecResp> MetaServiceHandler::future_removeDrainer(
+    const cpp2::RemoveDrainerReq& req) {
+  auto* processor = RemoveDrainerProcessor::instance(kvstore_);
+  RETURN_FUTURE(processor);
+}
+
+folly::Future<cpp2::ListDrainersResp> MetaServiceHandler::future_listDrainers(
+    const cpp2::ListDrainersReq& req) {
+  auto* processor = ListDrainersProcessor::instance(kvstore_);
+  RETURN_FUTURE(processor);
+}
+
+folly::Future<cpp2::GetSyncStatusResp> MetaServiceHandler::future_getSyncStatus(
+    const cpp2::GetSyncStatusReq& req) {
+  auto* processor = GetSyncStatusProcessor::instance(kvstore_);
+  RETURN_FUTURE(processor);
+}
+
 }  // namespace meta
 }  // namespace nebula

@@ -712,5 +712,27 @@ Status KillQueryValidator::toPlan() {
   tail_ = root_;
   return Status::OK();
 }
+Status ShowSyncStatusValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowSyncStatusValidator::toPlan() {
+  auto *doNode = ShowSyncStatus::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowDrainerSyncStatusValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowDrainerSyncStatusValidator::toPlan() {
+  auto *doNode = ShowDrainerSyncStatus::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
 }  // namespace graph
 }  // namespace nebula

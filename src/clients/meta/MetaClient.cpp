@@ -3894,5 +3894,79 @@ Status MetaClient::saveVersionToMeta() {
   return Status::OK();
 }
 
+folly::Future<StatusOr<bool>> MetaClient::signInDrainerService(
+    const std::vector<HostAddr>& hosts) {
+  memory::MemoryCheckOffGuard g;
+  cpp2::SignInDrainerReq req;
+  req.hosts_ref() = hosts;
+  folly::Promise<StatusOr<bool>> promise;
+  auto future = promise.getFuture();
+  getResponse(
+      std::move(req),
+      [](auto client, auto request) { return client->future_signInDrainerService(request); },
+      [](cpp2::ExecResp&& resp) -> bool {
+        return resp.get_code() == nebula::cpp2::ErrorCode::SUCCEEDED;
+      },
+      std::move(promise),
+      true);
+  return future;
+}
+
+folly::Future<StatusOr<bool>> MetaClient::signOutDrainerService() {
+  memory::MemoryCheckOffGuard g;
+  cpp2::SignOutDrainerReq req;
+  folly::Promise<StatusOr<bool>> promise;
+  auto future = promise.getFuture();
+  getResponse(
+      std::move(req),
+      [](auto client, auto request) { return client->future_signOutDrainerService(request); },
+      [](cpp2::ExecResp&& resp) -> bool {
+        return resp.get_code() == nebula::cpp2::ErrorCode::SUCCEEDED;
+      },
+      std::move(promise),
+      true);
+  return future;
+}
+
+folly::Future<StatusOr<std::vector<cpp2::SyncStatusItem>>> MetaClient::getSyncStatus(
+    GraphSpaceID spaceId) {
+  memory::MemoryCheckOffGuard g;
+  cpp2::GetSyncStatusReq req;
+  req.space_id_ref() = spaceId;
+  folly::Promise<StatusOr<std::vector<cpp2::SyncStatusItem>>> promise;
+  auto future = promise.getFuture();
+  getResponse(
+      std::move(req),
+      [](auto client, auto request) { return client->future_getSyncStatus(request); },
+      [](cpp2::GetSyncStatusResp&& resp) -> std::vector<cpp2::SyncStatusItem> {
+        if (resp.items_ref().has_value()) {
+          return std::move(resp.items_ref()).value();
+        }
+        return {};
+      },
+      std::move(promise));
+  return future;
+}
+
+folly::Future<StatusOr<std::vector<cpp2::DrainerSyncStatusItem>>>
+MetaClient::getDrainerSyncStatus(GraphSpaceID spaceId) {
+  memory::MemoryCheckOffGuard g;
+  cpp2::GetSyncStatusReq req;
+  req.space_id_ref() = spaceId;
+  folly::Promise<StatusOr<std::vector<cpp2::DrainerSyncStatusItem>>> promise;
+  auto future = promise.getFuture();
+  getResponse(
+      std::move(req),
+      [](auto client, auto request) { return client->future_getSyncStatus(request); },
+      [](cpp2::GetSyncStatusResp&& resp) -> std::vector<cpp2::DrainerSyncStatusItem> {
+        if (resp.drainer_items_ref().has_value()) {
+          return std::move(resp.drainer_items_ref()).value();
+        }
+        return {};
+      },
+      std::move(promise));
+  return future;
+}
+
 }  // namespace meta
 }  // namespace nebula

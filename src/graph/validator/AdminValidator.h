@@ -429,6 +429,27 @@ class KillQueryValidator final : public Validator {
 
   Status toPlan() override;
 };
+class ShowSyncStatusValidator final : public Validator {
+ public:
+  ShowSyncStatusValidator(Sentence* sentence, QueryContext* context) : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+
+  Status toPlan() override;
+};
+
+class ShowDrainerSyncStatusValidator final : public Validator {
+ public:
+  ShowDrainerSyncStatusValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+
+  Status toPlan() override;
+};
+
 }  // namespace graph
 }  // namespace nebula
 #endif  // GRAPH_VALIDATOR_ADMINVALIDATOR_H_

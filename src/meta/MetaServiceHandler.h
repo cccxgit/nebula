@@ -237,6 +237,26 @@ class MetaServiceHandler final : public cpp2::MetaServiceSvIf {
   folly::Future<cpp2::GetSegmentIdResp> future_getSegmentId(
       const cpp2::GetSegmentIdReq& req) override;
 
+  // Drainer/sync management
+  folly::Future<cpp2::ExecResp> future_signInDrainerService(
+      const cpp2::SignInDrainerReq& req) override;
+
+  folly::Future<cpp2::ExecResp> future_signOutDrainerService(
+      const cpp2::SignOutDrainerReq& req) override;
+
+  folly::Future<cpp2::ListDrainerClientsResp> future_listDrainerClients(
+      const cpp2::ListDrainerClientsReq& req) override;
+
+  folly::Future<cpp2::ExecResp> future_addDrainer(const cpp2::AddDrainerReq& req) override;
+
+  folly::Future<cpp2::ExecResp> future_removeDrainer(const cpp2::RemoveDrainerReq& req) override;
+
+  folly::Future<cpp2::ListDrainersResp> future_listDrainers(
+      const cpp2::ListDrainersReq& req) override;
+
+  folly::Future<cpp2::GetSyncStatusResp> future_getSyncStatus(
+      const cpp2::GetSyncStatusReq& req) override;
+
  private:
   kvstore::KVStore* kvstore_ = nullptr;
   ClusterID clusterId_{0};

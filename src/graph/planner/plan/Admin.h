@@ -1384,6 +1384,30 @@ class KillQuery final : public SingleInputNode {
   Expression* sessionId_;
   Expression* epId_;
 };
+class ShowSyncStatus final : public SingleDependencyNode {
+ public:
+  static ShowSyncStatus* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<ShowSyncStatus>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  ShowSyncStatus(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kShowSyncStatus, input) {}
+};
+
+class ShowDrainerSyncStatus final : public SingleDependencyNode {
+ public:
+  static ShowDrainerSyncStatus* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<ShowDrainerSyncStatus>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  ShowDrainerSyncStatus(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kShowDrainerSyncStatus, input) {}
+};
+
 }  // namespace graph
 }  // namespace nebula
 #endif  // GRAPH_PLANNER_PLAN_ADMIN_H_

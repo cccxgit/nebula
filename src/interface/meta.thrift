@@ -974,10 +974,28 @@ struct GetSyncStatusReq {
     1: required common.GraphSpaceID    space_id,
 }
 
+struct SyncStatusItem {
+    1: required common.PartitionID    part_id,
+    2: required string                status,
+    3: required i64                   log_id_lag,
+    4: required i64                   time_latency_ms,
+}
+
+struct DrainerSyncStatusItem {
+    1: required string                drainer_host,
+    2: required common.PartitionID    part_id,
+    3: required string                status,
+    4: required i64                   log_id_lag,
+    5: required i64                   time_latency_ms,
+    6: required i64                   epoch,
+    7: required i64                   last_applied_log_id,
+}
+
 struct GetSyncStatusResp {
-    1: required common.ErrorCode       code,
-    2: required common.HostAddr        leader,
-    3: optional map<common.PartitionID, i64>  progress,
+    1: required common.ErrorCode              code,
+    2: required common.HostAddr               leader,
+    3: optional list<SyncStatusItem>          items,
+    4: optional list<DrainerSyncStatusItem>   drainer_items,
 }
 
 struct GetStatsReq {

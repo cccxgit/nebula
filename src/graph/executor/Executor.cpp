@@ -30,6 +30,7 @@
 #include "graph/executor/admin/ListUsersExecutor.h"
 #include "graph/executor/admin/ListenerExecutor.h"
 #include "graph/executor/admin/PartExecutor.h"
+#include "graph/executor/admin/SyncExecutor.h"
 #include "graph/executor/admin/RevokeRoleExecutor.h"
 #include "graph/executor/admin/SessionExecutor.h"
 #include "graph/executor/admin/ShowHostsExecutor.h"
@@ -574,6 +575,12 @@ Executor *Executor::makeExecutor(QueryContext *qctx, const PlanNode *node) {
     }
     case PlanNode::Kind::kShortestPath: {
       return pool->makeAndAdd<ShortestPathExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowSyncStatus: {
+      return pool->makeAndAdd<ShowSyncStatusExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowDrainerSyncStatus: {
+      return pool->makeAndAdd<ShowDrainerSyncStatusExecutor>(node, qctx);
     }
     case PlanNode::Kind::kUnknown: {
       DLOG(FATAL) << "Unknown plan node kind " << static_cast<int32_t>(node->kind());

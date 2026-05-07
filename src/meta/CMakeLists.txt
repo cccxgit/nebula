@@ -95,6 +95,7 @@ nebula_add_library(
     processors/zone/DivideZoneProcessor.cpp
     processors/zone/ListZonesProcessor.cpp
     processors/listener/ListenerProcessor.cpp
+    processors/admin/DrainerProcessor.cpp
     processors/session/SessionManagerProcessor.cpp
     processors/id/GetSegmentIdProcessor.cpp
 )

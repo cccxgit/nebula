@@ -309,6 +309,10 @@ const char* PlanNode::toString(PlanNode::Kind kind) {
       return "RollUpApply";
     case Kind::kPatternApply:
       return "PatternApply";
+    case Kind::kShowSyncStatus:
+      return "ShowSyncStatus";
+    case Kind::kShowDrainerSyncStatus:
+      return "ShowDrainerSyncStatus";
       // no default so the compiler will warning when lack
   }
   DLOG(FATAL) << "Impossible kind plan node " << static_cast<int>(kind);
