@@ -197,6 +197,38 @@ install(
         meta
 )
 
+nebula_add_executable(
+    NAME
+        nebula-drainerd
+    SOURCES
+        DrainerDaemon.cpp
+        SetupLogging.cpp
+        SetupBreakpad.cpp
+    OBJECTS
+        $<TARGET_OBJECTS:drainer_obj>
+        $<TARGET_OBJECTS:sync_thrift_obj>
+        ${common_deps}
+    LIBRARIES
+        ${ROCKSDB_LIBRARIES}
+        ${THRIFT_LIBRARIES}
+        ${PROXYGEN_LIBRARIES}
+        wangle
+        curl
+)
+
+install(
+    TARGETS
+        nebula-drainerd
+    PERMISSIONS
+        OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        GROUP_EXECUTE GROUP_READ
+        WORLD_EXECUTE WORLD_READ
+    DESTINATION
+        bin
+    COMPONENT
+        drainer
+)
+
 else()
 
 nebula_add_executable(
