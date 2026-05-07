@@ -189,6 +189,15 @@ class PlanNode {
     kKillQuery,
 
     // sync related
+    kAddSyncListener,
+    kRemoveSyncListener,
+    kShowSyncListener,
+    kSignInDrainerService,
+    kSignOutDrainerService,
+    kShowDrainerClients,
+    kAddDrainer,
+    kRemoveDrainer,
+    kShowDrainers,
     kShowSyncStatus,
     kShowDrainerSyncStatus,
   };

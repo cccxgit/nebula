@@ -429,13 +429,106 @@ class KillQueryValidator final : public Validator {
 
   Status toPlan() override;
 };
+class AddSyncListenerValidator final : public Validator {
+ public:
+  AddSyncListenerValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class RemoveSyncListenerValidator final : public Validator {
+ public:
+  RemoveSyncListenerValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class ShowSyncListenerValidator final : public Validator {
+ public:
+  ShowSyncListenerValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class SignInDrainerServiceValidator final : public Validator {
+ public:
+  SignInDrainerServiceValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {
+    setNoSpaceRequired();
+  }
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class SignOutDrainerServiceValidator final : public Validator {
+ public:
+  SignOutDrainerServiceValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {
+    setNoSpaceRequired();
+  }
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class ShowDrainerClientsValidator final : public Validator {
+ public:
+  ShowDrainerClientsValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {
+    setNoSpaceRequired();
+  }
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class AddDrainerValidator final : public Validator {
+ public:
+  AddDrainerValidator(Sentence* sentence, QueryContext* context) : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class RemoveDrainerValidator final : public Validator {
+ public:
+  RemoveDrainerValidator(Sentence* sentence, QueryContext* context)
+      : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class ShowDrainersValidator final : public Validator {
+ public:
+  ShowDrainersValidator(Sentence* sentence, QueryContext* context) : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
 class ShowSyncStatusValidator final : public Validator {
  public:
   ShowSyncStatusValidator(Sentence* sentence, QueryContext* context) : Validator(sentence, context) {}
 
  private:
   Status validateImpl() override;
-
   Status toPlan() override;
 };
 
@@ -446,7 +539,6 @@ class ShowDrainerSyncStatusValidator final : public Validator {
 
  private:
   Status validateImpl() override;
-
   Status toPlan() override;
 };
 

@@ -576,6 +576,33 @@ Executor *Executor::makeExecutor(QueryContext *qctx, const PlanNode *node) {
     case PlanNode::Kind::kShortestPath: {
       return pool->makeAndAdd<ShortestPathExecutor>(node, qctx);
     }
+    case PlanNode::Kind::kAddSyncListener: {
+      return pool->makeAndAdd<AddSyncListenerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kRemoveSyncListener: {
+      return pool->makeAndAdd<RemoveSyncListenerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowSyncListener: {
+      return pool->makeAndAdd<ShowSyncListenerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kSignInDrainerService: {
+      return pool->makeAndAdd<SignInDrainerServiceExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kSignOutDrainerService: {
+      return pool->makeAndAdd<SignOutDrainerServiceExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowDrainerClients: {
+      return pool->makeAndAdd<ShowDrainerClientsExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kAddDrainer: {
+      return pool->makeAndAdd<AddDrainerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kRemoveDrainer: {
+      return pool->makeAndAdd<RemoveDrainerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowDrainers: {
+      return pool->makeAndAdd<ShowDrainersExecutor>(node, qctx);
+    }
     case PlanNode::Kind::kShowSyncStatus: {
       return pool->makeAndAdd<ShowSyncStatusExecutor>(node, qctx);
     }

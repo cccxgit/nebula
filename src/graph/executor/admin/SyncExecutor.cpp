@@ -9,6 +9,127 @@
 namespace nebula {
 namespace graph {
 
+folly::Future<Status> AddSyncListenerExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  auto *addNode = asNode<AddSyncListener>(node());
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  return qctx()
+      ->getMetaClient()
+      ->addListener(spaceId, meta::cpp2::ListenerType::SYNC_STORAGE, addNode->storageHosts())
+      .via(runner())
+      .thenValue([this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Add sync listener failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
+}
+
+folly::Future<Status> RemoveSyncListenerExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  return qctx()
+      ->getMetaClient()
+      ->removeListener(spaceId, meta::cpp2::ListenerType::SYNC_STORAGE)
+      .via(runner())
+      .thenValue([this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Remove sync listener failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
+}
+
+folly::Future<Status> ShowSyncListenerExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  return qctx()->getMetaClient()->listListener(spaceId).via(runner()).thenValue(
+      [this](StatusOr<std::vector<meta::cpp2::ListenerInfo>> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Show sync listener failed: " << resp.status();
+          return resp.status();
+        }
+
+        auto listeners = std::move(resp).value();
+        DataSet result({"PartId", "Type", "Host", "Status"});
+        for (const auto& listener : listeners) {
+          if (listener.get_type() != meta::cpp2::ListenerType::SYNC_STORAGE) {
+            continue;
+          }
+          Row row;
+          row.values.emplace_back(listener.get_part_id());
+          row.values.emplace_back("SYNC_STORAGE");
+          row.values.emplace_back(listener.get_host().toString());
+          row.values.emplace_back(
+              apache::thrift::util::enumNameSafe(listener.get_status()));
+          result.emplace_back(std::move(row));
+        }
+
+        return finish(std::move(result));
+      });
+}
+
+folly::Future<Status> SignInDrainerServiceExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  auto *signInNode = asNode<SignInDrainerService>(node());
+  return qctx()
+      ->getMetaClient()
+      ->signInDrainerService(signInNode->hosts())
+      .via(runner())
+      .thenValue([this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Sign in drainer service failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
+}
+
+folly::Future<Status> SignOutDrainerServiceExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  return qctx()->getMetaClient()->signOutDrainerService().via(runner()).thenValue(
+      [this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Sign out drainer service failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
+}
+
+folly::Future<Status> ShowDrainerClientsExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  // TODO(sync): Add listDrainerClients method to MetaClient
+  DataSet result({"Host", "Port"});
+  return finish(std::move(result));
+}
+
+folly::Future<Status> AddDrainerExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  // TODO(sync): Add addDrainer method to MetaClient
+  return Status::OK();
+}
+
+folly::Future<Status> RemoveDrainerExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  // TODO(sync): Add removeDrainer method to MetaClient
+  return Status::OK();
+}
+
+folly::Future<Status> ShowDrainersExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  // TODO(sync): Add listDrainers method to MetaClient
+  DataSet result({"Host", "Port", "Status"});
+  return finish(std::move(result));
+}
+
 folly::Future<Status> ShowSyncStatusExecutor::execute() {
   SCOPED_TIMER(&execTime_);
   auto spaceId = qctx()->rctx()->session()->space().id;

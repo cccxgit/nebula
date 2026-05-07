@@ -712,6 +712,124 @@ Status KillQueryValidator::toPlan() {
   tail_ = root_;
   return Status::OK();
 }
+Status AddSyncListenerValidator::validateImpl() {
+  auto sentence = static_cast<AddSyncListenerSentence *>(sentence_);
+  if (sentence->metaHosts()->hosts().empty()) {
+    return Status::SemanticError("Sync listener meta hosts should not be empty");
+  }
+  if (sentence->storageHosts()->hosts().empty()) {
+    return Status::SemanticError("Sync listener storage hosts should not be empty");
+  }
+  return Status::OK();
+}
+
+Status AddSyncListenerValidator::toPlan() {
+  auto sentence = static_cast<AddSyncListenerSentence *>(sentence_);
+  auto *doNode = AddSyncListener::make(
+      qctx_, nullptr, sentence->metaHosts()->hosts(), sentence->storageHosts()->hosts());
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status RemoveSyncListenerValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status RemoveSyncListenerValidator::toPlan() {
+  auto *doNode = RemoveSyncListener::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowSyncListenerValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowSyncListenerValidator::toPlan() {
+  auto *doNode = ShowSyncListener::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status SignInDrainerServiceValidator::validateImpl() {
+  auto sentence = static_cast<SignInDrainerServiceSentence *>(sentence_);
+  if (sentence->hosts()->hosts().empty()) {
+    return Status::SemanticError("Drainer service hosts should not be empty");
+  }
+  return Status::OK();
+}
+
+Status SignInDrainerServiceValidator::toPlan() {
+  auto sentence = static_cast<SignInDrainerServiceSentence *>(sentence_);
+  auto *doNode = SignInDrainerService::make(qctx_, nullptr, sentence->hosts()->hosts());
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status SignOutDrainerServiceValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status SignOutDrainerServiceValidator::toPlan() {
+  auto *doNode = SignOutDrainerService::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowDrainerClientsValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowDrainerClientsValidator::toPlan() {
+  auto *doNode = ShowDrainerClients::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status AddDrainerValidator::validateImpl() {
+  auto sentence = static_cast<AddDrainerSentence *>(sentence_);
+  if (sentence->hosts()->hosts().empty()) {
+    return Status::SemanticError("Drainer hosts should not be empty");
+  }
+  return Status::OK();
+}
+
+Status AddDrainerValidator::toPlan() {
+  auto sentence = static_cast<AddDrainerSentence *>(sentence_);
+  auto *doNode = AddDrainer::make(qctx_, nullptr, sentence->hosts()->hosts());
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status RemoveDrainerValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status RemoveDrainerValidator::toPlan() {
+  auto *doNode = RemoveDrainer::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowDrainersValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowDrainersValidator::toPlan() {
+  auto *doNode = ShowDrainers::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
 Status ShowSyncStatusValidator::validateImpl() {
   return Status::OK();
 }
