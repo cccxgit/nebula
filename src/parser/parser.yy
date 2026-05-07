@@ -183,7 +183,7 @@ using namespace nebula;
 %token KW_IF KW_NOT KW_EXISTS KW_WITH
 %token KW_BY KW_DOWNLOAD KW_HDFS KW_UUID KW_CONFIGS KW_FORCE
 %token KW_GET KW_DECLARE KW_GRAPH KW_META KW_STORAGE KW_AGENT
-%token KW_TTL KW_TTL_DURATION KW_TTL_COL KW_DATA KW_STOP
+%token KW_TTL KW_TTL_DURATION KW_TTL_COL KW_DATA KW_STOP KW_RESTART
 %token KW_FETCH KW_PROP KW_UPDATE KW_UPSERT KW_WHEN
 %token KW_ORDER KW_ASC KW_LIMIT KW_SAMPLE KW_OFFSET KW_ASCENDING KW_DESCENDING
 %token KW_DISTINCT KW_ALL KW_OF
@@ -389,6 +389,7 @@ using namespace nebula;
 %type <sentence> sign_in_drainer_service_sentence sign_out_drainer_service_sentence show_drainer_clients_sentence
 %type <sentence> add_drainer_sentence remove_drainer_sentence show_drainers_sentence
 %type <sentence> show_sync_status_sentence show_drainer_sync_status_sentence
+%type <sentence> stop_sync_sentence restart_sync_sentence
 
 %type <sentence> admin_job_sentence
 %type <sentence> create_user_sentence alter_user_sentence drop_user_sentence change_password_sentence describe_user_sentence
@@ -592,6 +593,7 @@ unreserved_keyword
     | KW_RENAME             { $$ = new std::string("rename"); }
     | KW_CLEAR              { $$ = new std::string("clear"); }
     | KW_ANALYZER           { $$ = new std::string("analyzer"); }
+    | KW_RESTART            { $$ = new std::string("restart"); }
     ;
 
 expression
@@ -3999,6 +4001,18 @@ show_drainer_sync_status_sentence
     }
     ;
 
+stop_sync_sentence
+    : KW_STOP KW_SYNC {
+        $$ = new StopSyncSentence();
+    }
+    ;
+
+restart_sync_sentence
+    : KW_RESTART KW_SYNC {
+        $$ = new RestartSyncSentence();
+    }
+    ;
+
 kill_query_sentence
     : KW_KILL KW_QUERY L_PAREN query_unique_identifier R_PAREN {
         $$ = new KillQuerySentence($4);
@@ -4104,6 +4118,8 @@ maintain_sentence
     | show_drainers_sentence { $$ = $1; }
     | show_sync_status_sentence { $$ = $1; }
     | show_drainer_sync_status_sentence { $$ = $1; }
+    | stop_sync_sentence { $$ = $1; }
+    | restart_sync_sentence { $$ = $1; }
     ;
 
 sentence

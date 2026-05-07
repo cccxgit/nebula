@@ -98,6 +98,22 @@ class ShowDrainerSyncStatusExecutor final : public Executor {
   folly::Future<Status> execute() override;
 };
 
+class StopSyncExecutor final : public Executor {
+ public:
+  StopSyncExecutor(const PlanNode *node, QueryContext *qctx)
+      : Executor("StopSyncExecutor", node, qctx) {}
+
+  folly::Future<Status> execute() override;
+};
+
+class RestartSyncExecutor final : public Executor {
+ public:
+  RestartSyncExecutor(const PlanNode *node, QueryContext *qctx)
+      : Executor("RestartSyncExecutor", node, qctx) {}
+
+  folly::Future<Status> execute() override;
+};
+
 }  // namespace graph
 }  // namespace nebula
 

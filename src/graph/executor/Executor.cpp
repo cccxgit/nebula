@@ -609,6 +609,12 @@ Executor *Executor::makeExecutor(QueryContext *qctx, const PlanNode *node) {
     case PlanNode::Kind::kShowDrainerSyncStatus: {
       return pool->makeAndAdd<ShowDrainerSyncStatusExecutor>(node, qctx);
     }
+    case PlanNode::Kind::kStopSync: {
+      return pool->makeAndAdd<StopSyncExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kRestartSync: {
+      return pool->makeAndAdd<RestartSyncExecutor>(node, qctx);
+    }
     case PlanNode::Kind::kUnknown: {
       DLOG(FATAL) << "Unknown plan node kind " << static_cast<int32_t>(node->kind());
       break;

@@ -179,6 +179,7 @@ LABEL_FULL_WIDTH            {CN_EN_FULL_WIDTH}{CN_EN_NUM_FULL_WIDTH}*
 "PROP"                      { return TokenType::KW_PROP; }
 "BALANCE"                   { return TokenType::KW_BALANCE; }
 "STOP"                      { return TokenType::KW_STOP; }
+"RESTART"                   { return TokenType::KW_RESTART; }
 "LIMIT"                     { return TokenType::KW_LIMIT; }
 "OFFSET"                    { return TokenType::KW_OFFSET; }
 "IS"                        { return TokenType::KW_IS; }

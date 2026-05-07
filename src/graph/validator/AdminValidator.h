@@ -542,6 +542,24 @@ class ShowDrainerSyncStatusValidator final : public Validator {
   Status toPlan() override;
 };
 
+class StopSyncValidator final : public Validator {
+ public:
+  StopSyncValidator(Sentence* sentence, QueryContext* context) : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
+class RestartSyncValidator final : public Validator {
+ public:
+  RestartSyncValidator(Sentence* sentence, QueryContext* context) : Validator(sentence, context) {}
+
+ private:
+  Status validateImpl() override;
+  Status toPlan() override;
+};
+
 }  // namespace graph
 }  // namespace nebula
 #endif  // GRAPH_VALIDATOR_ADMINVALIDATOR_H_

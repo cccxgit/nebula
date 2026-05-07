@@ -135,6 +135,8 @@ class Sentence {
     kShowDrainers,
     kShowSyncStatus,
     kShowDrainerSyncStatus,
+    kStopSync,
+    kRestartSync,
     kCreateFTIndex,
     kDropFTIndex,
     kShowSessions,

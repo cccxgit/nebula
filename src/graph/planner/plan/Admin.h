@@ -1542,6 +1542,30 @@ class ShowDrainerSyncStatus final : public SingleDependencyNode {
       : SingleDependencyNode(qctx, Kind::kShowDrainerSyncStatus, input) {}
 };
 
+class StopSync final : public SingleDependencyNode {
+ public:
+  static StopSync* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<StopSync>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  StopSync(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kStopSync, input) {}
+};
+
+class RestartSync final : public SingleDependencyNode {
+ public:
+  static RestartSync* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<RestartSync>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  RestartSync(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kRestartSync, input) {}
+};
+
 }  // namespace graph
 }  // namespace nebula
 #endif  // GRAPH_PLANNER_PLAN_ADMIN_H_

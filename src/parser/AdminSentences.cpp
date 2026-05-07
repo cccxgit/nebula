@@ -479,6 +479,14 @@ std::string ShowDrainerSyncStatusSentence::toString() const {
   return "SHOW DRAINER SYNC STATUS";
 }
 
+std::string StopSyncSentence::toString() const {
+  return "STOP SYNC";
+}
+
+std::string RestartSyncSentence::toString() const {
+  return "RESTART SYNC";
+}
+
 std::string ShowSessionsSentence::toString() const {
   if (isSetSessionID()) {
     return folly::stringPrintf("SHOW SESSION %ld", sessionId_);

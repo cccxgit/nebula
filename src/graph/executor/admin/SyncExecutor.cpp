@@ -106,28 +106,83 @@ folly::Future<Status> SignOutDrainerServiceExecutor::execute() {
 
 folly::Future<Status> ShowDrainerClientsExecutor::execute() {
   SCOPED_TIMER(&execTime_);
-  // TODO(sync): Add listDrainerClients method to MetaClient
-  DataSet result({"Host", "Port"});
-  return finish(std::move(result));
+  return qctx()->getMetaClient()->listDrainerClients().via(runner()).thenValue(
+      [this](StatusOr<std::vector<HostAddr>> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Show drainer clients failed: " << resp.status();
+          return resp.status();
+        }
+
+        auto clients = std::move(resp).value();
+        DataSet result({"Host", "Port"});
+        for (const auto& host : clients) {
+          Row row;
+          row.values.emplace_back(host.host);
+          row.values.emplace_back(host.port);
+          result.emplace_back(std::move(row));
+        }
+        return finish(std::move(result));
+      });
 }
 
 folly::Future<Status> AddDrainerExecutor::execute() {
   SCOPED_TIMER(&execTime_);
-  // TODO(sync): Add addDrainer method to MetaClient
-  return Status::OK();
+  auto *addNode = asNode<AddDrainer>(node());
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  return qctx()
+      ->getMetaClient()
+      ->addDrainer(spaceId, addNode->hosts())
+      .via(runner())
+      .thenValue([this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Add drainer failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
 }
 
 folly::Future<Status> RemoveDrainerExecutor::execute() {
   SCOPED_TIMER(&execTime_);
-  // TODO(sync): Add removeDrainer method to MetaClient
-  return Status::OK();
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  return qctx()
+      ->getMetaClient()
+      ->removeDrainer(spaceId)
+      .via(runner())
+      .thenValue([this](StatusOr<bool> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Remove drainer failed: " << resp.status();
+          return resp.status();
+        }
+        return Status::OK();
+      });
 }
 
 folly::Future<Status> ShowDrainersExecutor::execute() {
   SCOPED_TIMER(&execTime_);
-  // TODO(sync): Add listDrainers method to MetaClient
-  DataSet result({"Host", "Port", "Status"});
-  return finish(std::move(result));
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  return qctx()->getMetaClient()->listDrainers(spaceId).via(runner()).thenValue(
+      [this](StatusOr<std::vector<HostAddr>> resp) {
+        SCOPED_TIMER(&execTime_);
+        if (!resp.ok()) {
+          LOG(WARNING) << "Show drainers failed: " << resp.status();
+          return resp.status();
+        }
+
+        auto drainers = std::move(resp).value();
+        DataSet result({"Host", "Port", "Status"});
+        for (const auto& host : drainers) {
+          Row row;
+          row.values.emplace_back(host.host);
+          row.values.emplace_back(host.port);
+          row.values.emplace_back("ONLINE");
+          result.emplace_back(std::move(row));
+        }
+        return finish(std::move(result));
+      });
 }
 
 folly::Future<Status> ShowSyncStatusExecutor::execute() {
@@ -195,6 +250,26 @@ folly::Future<Status> ShowDrainerSyncStatusExecutor::execute() {
 
         return finish(std::move(result));
       });
+}
+
+folly::Future<Status> StopSyncExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  // TODO(sync): Add stopSync method to MetaClient that tells metad to pause
+  // the SyncListener for the current space. The metad will set a flag on
+  // the SyncListener to stop processing WAL logs until RESTART SYNC is called.
+  LOG(INFO) << "StopSyncExecutor: stopping sync for space " << spaceId;
+  return Status::OK();
+}
+
+folly::Future<Status> RestartSyncExecutor::execute() {
+  SCOPED_TIMER(&execTime_);
+  auto spaceId = qctx()->rctx()->session()->space().id;
+  // TODO(sync): Add restartSync method to MetaClient that tells metad to
+  // resume the SyncListener for the current space. The metad will clear
+  // the pause flag on the SyncListener and resume processing WAL logs.
+  LOG(INFO) << "RestartSyncExecutor: restarting sync for space " << spaceId;
+  return Status::OK();
 }
 
 }  // namespace graph

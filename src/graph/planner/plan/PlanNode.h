@@ -200,6 +200,8 @@ class PlanNode {
     kShowDrainers,
     kShowSyncStatus,
     kShowDrainerSyncStatus,
+    kStopSync,
+    kRestartSync,
   };
 
   bool isQueryNode() const {
