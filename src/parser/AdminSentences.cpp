@@ -409,6 +409,64 @@ std::string SignOutServiceSentence::toString() const {
   }
 }
 
+std::string AddSyncListenerSentence::toString() const {
+  std::string buf;
+  buf.reserve(128);
+  buf += "ADD LISTENER SYNC META ";
+  buf += metaHosts_->toString();
+  buf += " STORAGE ";
+  buf += storageHosts_->toString();
+  return buf;
+}
+
+std::string RemoveSyncListenerSentence::toString() const {
+  return "REMOVE LISTENER SYNC";
+}
+
+std::string ShowSyncListenerSentence::toString() const {
+  return "SHOW LISTENER SYNC";
+}
+
+std::string SignInDrainerServiceSentence::toString() const {
+  std::string buf;
+  buf.reserve(64);
+  buf += "SIGN IN DRAINER SERVICE ";
+  buf += hosts_->toString();
+  return buf;
+}
+
+std::string SignOutDrainerServiceSentence::toString() const {
+  return "SIGN OUT DRAINER SERVICE";
+}
+
+std::string ShowDrainerClientsSentence::toString() const {
+  return "SHOW DRAINER CLIENTS";
+}
+
+std::string AddDrainerSentence::toString() const {
+  std::string buf;
+  buf.reserve(64);
+  buf += "ADD DRAINER ";
+  buf += hosts_->toString();
+  return buf;
+}
+
+std::string RemoveDrainerSentence::toString() const {
+  return "REMOVE DRAINER";
+}
+
+std::string ShowDrainersSentence::toString() const {
+  return "SHOW DRAINERS";
+}
+
+std::string ShowSyncStatusSentence::toString() const {
+  return "SHOW SYNC STATUS";
+}
+
+std::string ShowDrainerSyncStatusSentence::toString() const {
+  return "SHOW DRAINER SYNC STATUS";
+}
+
 std::string ShowSessionsSentence::toString() const {
   if (isSetSessionID()) {
     return folly::stringPrintf("SHOW SESSION %ld", sessionId_);
