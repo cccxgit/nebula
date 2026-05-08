@@ -10,14 +10,18 @@
 - Never commit code that doesn't compile or breaks existing tests.
 - Verify ESListener regression: SyncListener changes must not break the existing ESListener.
 
-## Build & Test Environment (Singapore ECS)
-- **Build server**: `47.84.234.139` (Aliyun ECS, Linux)
-- **SSH access**: `ssh -i ~/.ssh/sg_aps.pem root@47.84.234.139`
+## Build & Test Environment (Main PC WSL2 — Primary)
+- **Build server**: `192.204.57.251:51002` (WSL2 Ubuntu 22.04, Ryzen 5800X 8C/16T, 48GB RAM)
+- **SSH access**: `SSHPASS='K1=3SBNPLLOKj3%o-H2vkTYRzR=7HXutn' sshpass -e ssh -o PubkeyAuthentication=no -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o NumberOfPasswordPrompts=1 -p 51002 root@192.204.57.251`
 - **Build system**: CMake
-- **Build command**: `mkdir -p build && cd build && cmake .. && make -j$(nproc)`
-- **Test**: run relevant unit tests under `tests/` before committing
-- **All compilation MUST be done on the SG Linux server** — macOS cannot build nebula (missing third-party: RocksDB, folly, fbthrift)
-- **Third-party deps**: install via `install-third-party.sh` or download pre-built from vesoft CDN to `/opt/vesoft/third-party/`
+- **Build command**: `mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTING=OFF && make -j8`
+- **Source path**: `/root/nebula-build/nebula`
+- **Third-party deps**: installed at `/opt/vesoft/third-party/` via `third-party/install-third-party.sh`
+- **All compilation MUST be done on a Linux server** — macOS cannot build nebula (missing third-party: RocksDB, folly, fbthrift)
+
+## Build & Test Environment (Singapore ECS — Backup, OOM risk)
+- **Build server**: `47.84.234.139` (Aliyun ECS, Linux) — may OOM during compilation
+- **SSH access**: `ssh -i ~/.ssh/sg_aps.pem root@47.84.234.139`
 - **Note**: The server also runs artology services (pm2, ports 3000/8787/8090-8092) — do not interfere with those processes
 
 ## Branch Strategy
