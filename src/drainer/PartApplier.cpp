@@ -295,7 +295,10 @@ void PartApplier::applyPut_(const sync::cpp2::SyncLogEntry& entry) {
 
   retryOnFailure_("applyPut_", logId, [this, &keyStr, &valStr]() -> bool {
     std::vector<KeyValue> kvs;
-    kvs.emplace_back(KeyValue{keyStr, valStr});
+    KeyValue kv;
+    kv.key = keyStr;
+    kv.value = valStr;
+    kvs.emplace_back(std::move(kv));
     auto* client = env_->backupClientCache()->backupStorageClient();
     auto future = client->put(spaceId_, std::move(kvs));
     auto resp = std::move(future).get();
@@ -342,7 +345,10 @@ void PartApplier::applyMultiPut_(const sync::cpp2::SyncLogEntry& entry) {
     }
 
     // TODO: Partition rerouting for different partition_num across clusters.
-    kvs.emplace_back(KeyValue{key.toString(), pieces[i + 1].toString()});
+    KeyValue kv;
+    kv.key = key.toString();
+    kv.value = pieces[i + 1].toString();
+    kvs.emplace_back(std::move(kv));
   }
 
   if (kvs.empty()) {
@@ -494,7 +500,12 @@ void PartApplier::applyBatchWrite_(const sync::cpp2::SyncLogEntry& entry) {
 
     switch (op.first) {
       case kvstore::BatchLogType::OP_BATCH_PUT: {
-        puts.emplace_back(KeyValue{key.toString(), op.second.second.toString()});
+        {
+          KeyValue kv;
+          kv.key = key.toString();
+          kv.value = op.second.second.toString();
+          puts.emplace_back(std::move(kv));
+        }
         break;
       }
       case kvstore::BatchLogType::OP_BATCH_REMOVE: {

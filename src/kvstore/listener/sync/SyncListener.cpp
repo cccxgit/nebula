@@ -48,7 +48,7 @@ void SyncListener::init() {
       LOG(ERROR) << idStr_ << "Failed to parse drainer addrs: " << drainerAddrsRet.status();
     } else {
       auto drainerAddrs = std::move(drainerAddrsRet).value();
-      drainerClient_ = std::make_shared<DrainerClient>(ioPool_.get(), std::move(drainerAddrs));
+      drainerClient_ = std::make_shared<DrainerClient>(ioThreadPool_.get(), std::move(drainerAddrs));
       LOG(INFO) << idStr_ << "DrainerClient initialized";
     }
   }
