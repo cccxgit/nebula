@@ -32,11 +32,14 @@ bool BackupClientCache::init() {
   // Create IO thread pool for async thrift communication
   ioPool_ = std::make_shared<folly::IOThreadPoolExecutor>(3);
 
-  // Create MetaClient options for the backup cluster
+  // Create MetaClient options for the backup cluster.
+  // Use UNKNOWN role so that the MetaClient does NOT send heartbeats or try
+  // to register as a storage host.  The drainer is a pure client that reads
+  // schema information; it should never appear in the host registry.
   meta::MetaClientOptions options;
   options.serviceName_ = "drainer";
   options.skipConfig_ = true;
-  options.role_ = meta::cpp2::HostRole::STORAGE;
+  options.role_ = meta::cpp2::HostRole::UNKNOWN;
 
   // Create MetaClient pointing to backup meta servers
   metaClient_ = std::make_unique<meta::MetaClient>(ioPool_, metaHosts_, options);

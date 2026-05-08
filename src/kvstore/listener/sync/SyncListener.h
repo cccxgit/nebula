@@ -121,7 +121,7 @@ class SyncListener : public Listener {
    */
   std::string encodeOne_(LogID id, TermID term, folly::StringPiece raw);
 
-  void sendBatchToDrainer_(GraphSpaceID spaceId,
+  bool sendBatchToDrainer_(GraphSpaceID spaceId,
                            PartitionID partId,
                            LogID firstLogId,
                            LogID lastLogId,

@@ -175,7 +175,13 @@ void SyncListener::processLogs() {
   }
 
   if (useDrainer) {
-    sendBatchToDrainer_(spaceId_, partId_, firstLogId, lastApplyId, std::move(logEntries));
+    bool sendOk =
+        sendBatchToDrainer_(spaceId_, partId_, firstLogId, lastApplyId, std::move(logEntries));
+    if (!sendOk) {
+      // Drainer rejected the batch (e.g. auth failure, cluster loop, log gap).
+      // Do NOT advance progress — retry on the next processLogs() cycle.
+      return;
+    }
   } else {
     std::string dumpFile = dumpPath_ + "/sync_dump.log";
     int32_t fd = open(dumpFile.c_str(), O_CREAT | O_WRONLY | O_APPEND | O_CLOEXEC, 0644);
@@ -320,7 +326,7 @@ LogID SyncListener::loadLastSent_() {
   return logId;
 }
 
-void SyncListener::sendBatchToDrainer_(GraphSpaceID spaceId,
+bool SyncListener::sendBatchToDrainer_(GraphSpaceID spaceId,
                                        PartitionID partId,
                                        LogID firstLogId,
                                        LogID lastLogId,
@@ -350,7 +356,9 @@ void SyncListener::sendBatchToDrainer_(GraphSpaceID spaceId,
   if (resp.get_code() != nebula::cpp2::ErrorCode::SUCCEEDED) {
     LOG(WARNING) << idStr_ << "appendLogs to drainer failed, code="
                  << static_cast<int>(resp.get_code());
+    return false;
   }
+  return true;
 }
 
 }  // namespace kvstore

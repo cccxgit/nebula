@@ -80,6 +80,7 @@ PartApplier* DrainerEnv::getOrCreatePartApplier(GraphSpaceID spaceId, PartitionI
     return it->second.get();
   }
   auto applier = std::make_shared<PartApplier>(spaceId, partId, this);
+  applier->start();
   partAppliers_.emplace(key, applier);
   return applier.get();
 }
