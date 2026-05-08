@@ -40,7 +40,7 @@ class DrainerEnv {
 
   CheckpointStore* checkpointStore() { return checkpointStore_.get(); }
 
-  bool validateListenerToken(const std::string& token, int64_t clusterId) const {
+  bool validateListenerToken(const std::string& token, int64_t /*clusterId*/) const {
     if (listenerToken_.empty()) {
       return true;
     }
