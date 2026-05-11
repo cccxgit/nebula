@@ -242,6 +242,24 @@ namespace graph {
     case Sentence::Kind::kShowQueries: {
       return Status::OK();
     }
+    // Sync/Drainer operations — permission checks are handled by the validator's
+    // checkPermission() override; return OK here to avoid falling through to the
+    // error case below.
+    case Sentence::Kind::kAddSyncListener:
+    case Sentence::Kind::kRemoveSyncListener:
+    case Sentence::Kind::kShowSyncListener:
+    case Sentence::Kind::kSignInDrainerService:
+    case Sentence::Kind::kSignOutDrainerService:
+    case Sentence::Kind::kShowDrainerClients:
+    case Sentence::Kind::kAddDrainer:
+    case Sentence::Kind::kRemoveDrainer:
+    case Sentence::Kind::kShowDrainers:
+    case Sentence::Kind::kShowSyncStatus:
+    case Sentence::Kind::kShowDrainerSyncStatus:
+    case Sentence::Kind::kStopSync:
+    case Sentence::Kind::kRestartSync: {
+      return Status::OK();
+    }
   }
   LOG(ERROR) << "Impossible permission checking for sentence " << sentence->kind();
   return Status::Error("Impossible permission checking for sentence %d.",

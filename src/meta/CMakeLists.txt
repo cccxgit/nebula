@@ -95,6 +95,7 @@ nebula_add_library(
     processors/zone/DivideZoneProcessor.cpp
     processors/zone/ListZonesProcessor.cpp
     processors/listener/ListenerProcessor.cpp
+    processors/admin/DrainerProcessor.cpp
     processors/session/SessionManagerProcessor.cpp
     processors/id/GetSegmentIdProcessor.cpp
 )
@@ -185,6 +186,7 @@ set(meta_test_deps
 endif()
 
 nebula_add_subdirectory(http)
+nebula_add_subdirectory(listener)
 nebula_add_subdirectory(test)
 nebula_add_subdirectory(upgrade)
 nebula_add_subdirectory(stats)

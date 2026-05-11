@@ -8,4 +8,5 @@ nebula_add_library(
     elasticsearch/ESListener.cpp
 )
 
+nebula_add_subdirectory(sync)
 nebula_add_subdirectory(test)

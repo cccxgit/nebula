@@ -183,7 +183,7 @@ using namespace nebula;
 %token KW_IF KW_NOT KW_EXISTS KW_WITH
 %token KW_BY KW_DOWNLOAD KW_HDFS KW_UUID KW_CONFIGS KW_FORCE
 %token KW_GET KW_DECLARE KW_GRAPH KW_META KW_STORAGE KW_AGENT
-%token KW_TTL KW_TTL_DURATION KW_TTL_COL KW_DATA KW_STOP
+%token KW_TTL KW_TTL_DURATION KW_TTL_COL KW_DATA KW_STOP KW_RESTART
 %token KW_FETCH KW_PROP KW_UPDATE KW_UPSERT KW_WHEN
 %token KW_ORDER KW_ASC KW_LIMIT KW_SAMPLE KW_OFFSET KW_ASCENDING KW_DESCENDING
 %token KW_DISTINCT KW_ALL KW_OF
@@ -204,6 +204,7 @@ using namespace nebula;
 %token KW_CASE KW_THEN KW_ELSE KW_END
 %token KW_GROUP KW_ZONE KW_GROUPS KW_ZONES KW_INTO KW_NEW
 %token KW_LISTENER KW_ELASTICSEARCH KW_FULLTEXT KW_HTTPS KW_HTTP
+%token KW_SYNC KW_DRAINER KW_DRAINERS
 %token KW_AUTO KW_ES_QUERY KW_ANALYZER
 %token KW_TEXT KW_SEARCH KW_CLIENTS KW_SIGN KW_SERVICE KW_TEXT_SEARCH
 %token KW_ANY KW_SINGLE KW_NONE
@@ -384,6 +385,11 @@ using namespace nebula;
 %type <sentence> merge_zone_sentence divide_zone_sentence rename_zone_sentence
 %type <sentence> create_snapshot_sentence drop_snapshot_sentence
 %type <sentence> add_listener_sentence remove_listener_sentence list_listener_sentence
+%type <sentence> add_sync_listener_sentence remove_sync_listener_sentence show_sync_listener_sentence
+%type <sentence> sign_in_drainer_service_sentence sign_out_drainer_service_sentence show_drainer_clients_sentence
+%type <sentence> add_drainer_sentence remove_drainer_sentence show_drainers_sentence
+%type <sentence> show_sync_status_sentence show_drainer_sync_status_sentence
+%type <sentence> stop_sync_sentence restart_sync_sentence
 
 %type <sentence> admin_job_sentence
 %type <sentence> create_user_sentence alter_user_sentence drop_user_sentence change_password_sentence describe_user_sentence
@@ -549,6 +555,9 @@ unreserved_keyword
     | KW_ZONE               { $$ = new std::string("zone"); }
     | KW_ZONES              { $$ = new std::string("zones"); }
     | KW_LISTENER           { $$ = new std::string("listener"); }
+    | KW_SYNC               { $$ = new std::string("sync"); }
+    | KW_DRAINER            { $$ = new std::string("drainer"); }
+    | KW_DRAINERS           { $$ = new std::string("drainers"); }
     | KW_ELASTICSEARCH      { $$ = new std::string("elasticsearch"); }
     | KW_FULLTEXT           { $$ = new std::string("fulltext"); }
     | KW_STATS              { $$ = new std::string("stats"); }
@@ -584,6 +593,7 @@ unreserved_keyword
     | KW_RENAME             { $$ = new std::string("rename"); }
     | KW_CLEAR              { $$ = new std::string("clear"); }
     | KW_ANALYZER           { $$ = new std::string("analyzer"); }
+    | KW_RESTART            { $$ = new std::string("restart"); }
     ;
 
 expression
@@ -3925,6 +3935,84 @@ list_listener_sentence
     }
     ;
 
+add_sync_listener_sentence
+    : KW_ADD KW_LISTENER KW_SYNC KW_META host_list KW_STORAGE host_list {
+        $$ = new AddSyncListenerSentence($5, $7);
+    }
+    ;
+
+remove_sync_listener_sentence
+    : KW_REMOVE KW_LISTENER KW_SYNC {
+        $$ = new RemoveSyncListenerSentence();
+    }
+    ;
+
+show_sync_listener_sentence
+    : KW_SHOW KW_LISTENER KW_SYNC {
+        $$ = new ShowSyncListenerSentence();
+    }
+    ;
+
+sign_in_drainer_service_sentence
+    : KW_SIGN KW_IN KW_DRAINER KW_SERVICE host_list {
+        $$ = new SignInDrainerServiceSentence($5);
+    }
+    ;
+
+sign_out_drainer_service_sentence
+    : KW_SIGN KW_OUT KW_DRAINER KW_SERVICE {
+        $$ = new SignOutDrainerServiceSentence();
+    }
+    ;
+
+show_drainer_clients_sentence
+    : KW_SHOW KW_DRAINER KW_CLIENTS {
+        $$ = new ShowDrainerClientsSentence();
+    }
+    ;
+
+add_drainer_sentence
+    : KW_ADD KW_DRAINER host_list {
+        $$ = new AddDrainerSentence($3);
+    }
+    ;
+
+remove_drainer_sentence
+    : KW_REMOVE KW_DRAINER {
+        $$ = new RemoveDrainerSentence();
+    }
+    ;
+
+show_drainers_sentence
+    : KW_SHOW KW_DRAINERS {
+        $$ = new ShowDrainersSentence();
+    }
+    ;
+
+show_sync_status_sentence
+    : KW_SHOW KW_SYNC KW_STATUS {
+        $$ = new ShowSyncStatusSentence();
+    }
+    ;
+
+show_drainer_sync_status_sentence
+    : KW_SHOW KW_DRAINER KW_SYNC KW_STATUS {
+        $$ = new ShowDrainerSyncStatusSentence();
+    }
+    ;
+
+stop_sync_sentence
+    : KW_STOP KW_SYNC {
+        $$ = new StopSyncSentence();
+    }
+    ;
+
+restart_sync_sentence
+    : KW_RESTART KW_SYNC {
+        $$ = new RestartSyncSentence();
+    }
+    ;
+
 kill_query_sentence
     : KW_KILL KW_QUERY L_PAREN query_unique_identifier R_PAREN {
         $$ = new KillQuerySentence($4);
@@ -4019,6 +4107,19 @@ maintain_sentence
     | drop_snapshot_sentence { $$ = $1; }
     | sign_in_service_sentence { $$ = $1; }
     | sign_out_service_sentence { $$ = $1; }
+    | add_sync_listener_sentence { $$ = $1; }
+    | remove_sync_listener_sentence { $$ = $1; }
+    | show_sync_listener_sentence { $$ = $1; }
+    | sign_in_drainer_service_sentence { $$ = $1; }
+    | sign_out_drainer_service_sentence { $$ = $1; }
+    | show_drainer_clients_sentence { $$ = $1; }
+    | add_drainer_sentence { $$ = $1; }
+    | remove_drainer_sentence { $$ = $1; }
+    | show_drainers_sentence { $$ = $1; }
+    | show_sync_status_sentence { $$ = $1; }
+    | show_drainer_sync_status_sentence { $$ = $1; }
+    | stop_sync_sentence { $$ = $1; }
+    | restart_sync_sentence { $$ = $1; }
     ;
 
 sentence

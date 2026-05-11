@@ -1,0 +1,89 @@
+########## nebula-metad-listener ###########
+########## shared ##########
+# Whether to run as a daemon process
+--daemonize=true
+# The file to host the process id
+--pid_file=pids/nebula-metad-listener.pid
+# The timezone used in log timestamps and time-based operations.
+# Set to the timezone of your production environment for easier log correlation.
+--timezone_name=UTC
+
+########## logging ##########
+# The directory to host logging files
+--log_dir=logs
+# Log level, 0, 1, 2, 3 for INFO, WARNING, ERROR, FATAL respectively
+# In production, use 0 (INFO) for normal operation.
+--minloglevel=0
+# Verbose log level, 1, 2, 3, 4, the higher of the level, the more verbose of the logging
+# Keep at 0 in production to avoid excessive log volume.
+--v=0
+# Maximum seconds to buffer the log messages.
+# 0 means flush immediately; increase to reduce IO if disk latency is high.
+--logbufsecs=0
+# Whether to redirect stdout and stderr to separate output files
+--redirect_stdout=true
+# Destination filename of stdout and stderr, which will also reside in log_dir.
+--stdout_log_file=metad-listener-stdout.log
+--stderr_log_file=metad-listener-stderr.log
+# Copy log messages at or above this level to stderr in addition to logfiles.
+# The numbers of severity levels INFO, WARNING, ERROR, and FATAL are 0, 1, 2, and 3, respectively.
+--stderrthreshold=3
+# Whether logging files' name contain timestamp.
+--timestamp_in_logfile_name=true
+
+########## networking ##########
+# Metad listener daemon listening port
+--port=9569
+# Local IP used to identify the nebula-metad-listener process.
+# Change it to an address other than loopback if the service is distributed or
+# will be accessed remotely.
+--local_ip=192.168.2.1
+# HTTP service ip
+--ws_ip=0.0.0.0
+# HTTP service port
+--ws_http_port=19569
+# heartbeat with meta service
+--heartbeat_interval_secs=10
+
+########## listener specific ##########
+# Listener WAL directory. Only one path is allowed.
+# Use a dedicated disk or SSD for best performance in production.
+--listener_path=data/listener/meta
+# Comma separated Meta server addresses.
+# In production, list all meta servers for high availability.
+--meta_server_addrs=192.168.2.1:9559,192.168.2.2:9559,192.168.2.3:9559
+
+########## sync ##########
+# Maximum bytes per sync batch.
+# Larger batches improve throughput but increase memory usage and latency.
+--sync_listener_batch_bytes=65536
+# Maximum number of entries per sync batch.
+# Tune based on average entry size and desired throughput.
+--sync_listener_batch_count=256
+# Maximum milliseconds to wait before flushing an incomplete batch.
+# Lower values reduce latency; higher values improve batching efficiency.
+--sync_listener_batch_ms=50
+# Maximum in-flight bytes across all sync batches.
+# Controls memory usage during heavy replication. 32MB is recommended.
+--sync_listener_max_inflight_bytes=33554432
+# Whether this listener operates in dump-only mode (no apply, only persist).
+# In dump-only mode, data is written to local WAL but not applied to storage.
+--sync_listener_dump_only=true
+# Compression algorithm for sync data transfer.
+# Options: none, snappy, lz4, zstd
+# zstd offers the best compression ratio for cross-datacenter replication.
+--sync_listener_compression=zstd
+# Compression level (higher = better ratio, more CPU).
+# For zstd: 1-22, recommended 3 for balanced performance.
+--sync_listener_compression_level=3
+
+########## TLS ##########
+# Whether to enable TLS for sync listener connections.
+# Strongly recommended in production for cross-cluster communication.
+--sync_listener_tls_enabled=false
+# Path to the TLS certificate file
+--sync_listener_tls_cert=
+# Path to the TLS private key file
+--sync_listener_tls_key=
+# Path to the TLS CA certificate file
+--sync_listener_tls_ca=

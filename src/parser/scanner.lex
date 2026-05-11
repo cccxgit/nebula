@@ -179,6 +179,7 @@ LABEL_FULL_WIDTH            {CN_EN_FULL_WIDTH}{CN_EN_NUM_FULL_WIDTH}*
 "PROP"                      { return TokenType::KW_PROP; }
 "BALANCE"                   { return TokenType::KW_BALANCE; }
 "STOP"                      { return TokenType::KW_STOP; }
+"RESTART"                   { return TokenType::KW_RESTART; }
 "LIMIT"                     { return TokenType::KW_LIMIT; }
 "OFFSET"                    { return TokenType::KW_OFFSET; }
 "IS"                        { return TokenType::KW_IS; }
@@ -286,6 +287,9 @@ LABEL_FULL_WIDTH            {CN_EN_FULL_WIDTH}{CN_EN_NUM_FULL_WIDTH}*
 "INTO"                      { return TokenType::KW_INTO; }
 "NEW"                       { return TokenType::KW_NEW; }
 "LISTENER"                  { return TokenType::KW_LISTENER; }
+"SYNC"                      { return TokenType::KW_SYNC; }
+"DRAINER"                   { return TokenType::KW_DRAINER; }
+"DRAINERS"                  { return TokenType::KW_DRAINERS; }
 "ELASTICSEARCH"             { return TokenType::KW_ELASTICSEARCH; }
 "HTTP"                      { return TokenType::KW_HTTP; }
 "HTTPS"                     { return TokenType::KW_HTTPS; }

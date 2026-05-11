@@ -760,6 +760,153 @@ class SignOutServiceSentence final : public Sentence {
   meta::cpp2::ExternalServiceType type_;
 };
 
+class AddSyncListenerSentence final : public Sentence {
+ public:
+  AddSyncListenerSentence(HostList* metaHosts, HostList* storageHosts) {
+    kind_ = Kind::kAddSyncListener;
+    metaHosts_.reset(metaHosts);
+    storageHosts_.reset(storageHosts);
+  }
+
+  HostList* metaHosts() const {
+    return metaHosts_.get();
+  }
+
+  HostList* storageHosts() const {
+    return storageHosts_.get();
+  }
+
+  std::string toString() const override;
+
+ private:
+  std::unique_ptr<HostList> metaHosts_;
+  std::unique_ptr<HostList> storageHosts_;
+};
+
+class RemoveSyncListenerSentence final : public Sentence {
+ public:
+  RemoveSyncListenerSentence() {
+    kind_ = Kind::kRemoveSyncListener;
+  }
+
+  std::string toString() const override;
+};
+
+class ShowSyncListenerSentence final : public Sentence {
+ public:
+  ShowSyncListenerSentence() {
+    kind_ = Kind::kShowSyncListener;
+  }
+
+  std::string toString() const override;
+};
+
+class SignInDrainerServiceSentence final : public Sentence {
+ public:
+  explicit SignInDrainerServiceSentence(HostList* hosts) {
+    kind_ = Kind::kSignInDrainerService;
+    hosts_.reset(hosts);
+  }
+
+  HostList* hosts() const {
+    return hosts_.get();
+  }
+
+  std::string toString() const override;
+
+ private:
+  std::unique_ptr<HostList> hosts_;
+};
+
+class SignOutDrainerServiceSentence final : public Sentence {
+ public:
+  SignOutDrainerServiceSentence() {
+    kind_ = Kind::kSignOutDrainerService;
+  }
+
+  std::string toString() const override;
+};
+
+class ShowDrainerClientsSentence final : public Sentence {
+ public:
+  ShowDrainerClientsSentence() {
+    kind_ = Kind::kShowDrainerClients;
+  }
+
+  std::string toString() const override;
+};
+
+class AddDrainerSentence final : public Sentence {
+ public:
+  explicit AddDrainerSentence(HostList* hosts) {
+    kind_ = Kind::kAddDrainer;
+    hosts_.reset(hosts);
+  }
+
+  HostList* hosts() const {
+    return hosts_.get();
+  }
+
+  std::string toString() const override;
+
+ private:
+  std::unique_ptr<HostList> hosts_;
+};
+
+class RemoveDrainerSentence final : public Sentence {
+ public:
+  RemoveDrainerSentence() {
+    kind_ = Kind::kRemoveDrainer;
+  }
+
+  std::string toString() const override;
+};
+
+class ShowDrainersSentence final : public Sentence {
+ public:
+  ShowDrainersSentence() {
+    kind_ = Kind::kShowDrainers;
+  }
+
+  std::string toString() const override;
+};
+
+class ShowSyncStatusSentence final : public Sentence {
+ public:
+  ShowSyncStatusSentence() {
+    kind_ = Kind::kShowSyncStatus;
+  }
+
+  std::string toString() const override;
+};
+
+class ShowDrainerSyncStatusSentence final : public Sentence {
+ public:
+  ShowDrainerSyncStatusSentence() {
+    kind_ = Kind::kShowDrainerSyncStatus;
+  }
+
+  std::string toString() const override;
+};
+
+class StopSyncSentence final : public Sentence {
+ public:
+  StopSyncSentence() {
+    kind_ = Kind::kStopSync;
+  }
+
+  std::string toString() const override;
+};
+
+class RestartSyncSentence final : public Sentence {
+ public:
+  RestartSyncSentence() {
+    kind_ = Kind::kRestartSync;
+  }
+
+  std::string toString() const override;
+};
+
 class ShowSessionsSentence final : public Sentence {
  public:
   ShowSessionsSentence() {

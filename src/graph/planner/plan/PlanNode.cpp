@@ -309,6 +309,32 @@ const char* PlanNode::toString(PlanNode::Kind kind) {
       return "RollUpApply";
     case Kind::kPatternApply:
       return "PatternApply";
+    case Kind::kAddSyncListener:
+      return "AddSyncListener";
+    case Kind::kRemoveSyncListener:
+      return "RemoveSyncListener";
+    case Kind::kShowSyncListener:
+      return "ShowSyncListener";
+    case Kind::kSignInDrainerService:
+      return "SignInDrainerService";
+    case Kind::kSignOutDrainerService:
+      return "SignOutDrainerService";
+    case Kind::kShowDrainerClients:
+      return "ShowDrainerClients";
+    case Kind::kAddDrainer:
+      return "AddDrainer";
+    case Kind::kRemoveDrainer:
+      return "RemoveDrainer";
+    case Kind::kShowDrainers:
+      return "ShowDrainers";
+    case Kind::kShowSyncStatus:
+      return "ShowSyncStatus";
+    case Kind::kShowDrainerSyncStatus:
+      return "ShowDrainerSyncStatus";
+    case Kind::kStopSync:
+      return "StopSync";
+    case Kind::kRestartSync:
+      return "RestartSync";
       // no default so the compiler will warning when lack
   }
   DLOG(FATAL) << "Impossible kind plan node " << static_cast<int>(kind);

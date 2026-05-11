@@ -11,6 +11,7 @@
 #include "graph/planner/plan/Admin.h"
 #include "graph/planner/plan/Query.h"
 #include "graph/service/GraphFlags.h"
+#include "graph/service/PermissionManager.h"
 #include "parser/MaintainSentences.h"
 
 namespace nebula {
@@ -712,5 +713,281 @@ Status KillQueryValidator::toPlan() {
   tail_ = root_;
   return Status::OK();
 }
+// Helper: check if the user has at least ADMIN role on any space, or is GOD.
+// Used for global drainer operations that require Admin privilege but have no
+// space context.
+static Status checkAtLeastAdmin(ClientSession *session) {
+  if (!FLAGS_enable_authorize) {
+    return Status::OK();
+  }
+  if (session->isGod()) {
+    return Status::OK();
+  }
+  // Check if the user has ADMIN role on any space
+  for (const auto &role : session->roles()) {
+    if (role.second == meta::cpp2::RoleType::ADMIN) {
+      return Status::OK();
+    }
+  }
+  return Status::PermissionError("No permission to perform drainer operation.");
+}
+
+// Helper: check if the user has at least ADMIN role on the current space, or is GOD.
+// Used for space-scoped operations that require Admin privilege.
+static Status checkAtLeastAdminOnSpace(ClientSession *session, ValidateContext *vctx) {
+  if (!FLAGS_enable_authorize) {
+    return Status::OK();
+  }
+  if (session->isGod()) {
+    return Status::OK();
+  }
+  if (!vctx->spaceChosen()) {
+    return Status::PermissionError("No space chosen.");
+  }
+  auto roleResult = session->roleWithSpace(vctx->whichSpace().id);
+  if (!roleResult.ok()) {
+    return Status::PermissionError("No permission to perform this operation.");
+  }
+  auto role = roleResult.value();
+  switch (role) {
+    case meta::cpp2::RoleType::GOD:
+    case meta::cpp2::RoleType::ADMIN:
+      return Status::OK();
+    default:
+      return Status::PermissionError("No permission to perform this operation. "
+                                     "Admin role or above is required.");
+  }
+}
+
+// --- Sync Listener Validators ---
+// ADD/REMOVE/SHOW SYNC LISTENER require at least DBA privilege on the space.
+
+Status AddSyncListenerValidator::validateImpl() {
+  auto sentence = static_cast<AddSyncListenerSentence *>(sentence_);
+  if (sentence->metaHosts()->hosts().empty()) {
+    return Status::SemanticError("Sync listener meta hosts should not be empty");
+  }
+  if (sentence->storageHosts()->hosts().empty()) {
+    return Status::SemanticError("Sync listener storage hosts should not be empty");
+  }
+  return Status::OK();
+}
+
+Status AddSyncListenerValidator::checkPermission() {
+  // Require at least DBA on the space — same as schema write permission
+  return PermissionManager::canWriteSchema(qctx_->rctx()->session(), vctx_);
+}
+
+Status AddSyncListenerValidator::toPlan() {
+  auto sentence = static_cast<AddSyncListenerSentence *>(sentence_);
+  auto *doNode = AddSyncListener::make(
+      qctx_, nullptr, sentence->metaHosts()->hosts(), sentence->storageHosts()->hosts());
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status RemoveSyncListenerValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status RemoveSyncListenerValidator::checkPermission() {
+  return PermissionManager::canWriteSchema(qctx_->rctx()->session(), vctx_);
+}
+
+Status RemoveSyncListenerValidator::toPlan() {
+  auto *doNode = RemoveSyncListener::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowSyncListenerValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowSyncListenerValidator::checkPermission() {
+  return PermissionManager::canWriteSchema(qctx_->rctx()->session(), vctx_);
+}
+
+Status ShowSyncListenerValidator::toPlan() {
+  auto *doNode = ShowSyncListener::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+// --- Drainer Service Validators ---
+// SIGN IN/OUT DRAINER SERVICE require at least Admin privilege (global operations).
+
+Status SignInDrainerServiceValidator::validateImpl() {
+  auto sentence = static_cast<SignInDrainerServiceSentence *>(sentence_);
+  if (sentence->hosts()->hosts().empty()) {
+    return Status::SemanticError("Drainer service hosts should not be empty");
+  }
+  return Status::OK();
+}
+
+Status SignInDrainerServiceValidator::checkPermission() {
+  return checkAtLeastAdmin(qctx_->rctx()->session());
+}
+
+Status SignInDrainerServiceValidator::toPlan() {
+  auto sentence = static_cast<SignInDrainerServiceSentence *>(sentence_);
+  auto *doNode = SignInDrainerService::make(qctx_, nullptr, sentence->hosts()->hosts());
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status SignOutDrainerServiceValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status SignOutDrainerServiceValidator::checkPermission() {
+  return checkAtLeastAdmin(qctx_->rctx()->session());
+}
+
+Status SignOutDrainerServiceValidator::toPlan() {
+  auto *doNode = SignOutDrainerService::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowDrainerClientsValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowDrainerClientsValidator::checkPermission() {
+  return checkAtLeastAdmin(qctx_->rctx()->session());
+}
+
+Status ShowDrainerClientsValidator::toPlan() {
+  auto *doNode = ShowDrainerClients::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+// --- Drainer Validators (space-scoped) ---
+// ADD/REMOVE/SHOW DRAINER require at least Admin privilege on the space.
+
+Status AddDrainerValidator::validateImpl() {
+  auto sentence = static_cast<AddDrainerSentence *>(sentence_);
+  if (sentence->hosts()->hosts().empty()) {
+    return Status::SemanticError("Drainer hosts should not be empty");
+  }
+  return Status::OK();
+}
+
+Status AddDrainerValidator::checkPermission() {
+  return checkAtLeastAdminOnSpace(qctx_->rctx()->session(), vctx_);
+}
+
+Status AddDrainerValidator::toPlan() {
+  auto sentence = static_cast<AddDrainerSentence *>(sentence_);
+  auto *doNode = AddDrainer::make(qctx_, nullptr, sentence->hosts()->hosts());
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status RemoveDrainerValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status RemoveDrainerValidator::checkPermission() {
+  return checkAtLeastAdminOnSpace(qctx_->rctx()->session(), vctx_);
+}
+
+Status RemoveDrainerValidator::toPlan() {
+  auto *doNode = RemoveDrainer::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowDrainersValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowDrainersValidator::checkPermission() {
+  return checkAtLeastAdminOnSpace(qctx_->rctx()->session(), vctx_);
+}
+
+Status ShowDrainersValidator::toPlan() {
+  auto *doNode = ShowDrainers::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+// --- Show Status Validators ---
+// SHOW SYNC STATUS / SHOW DRAINER SYNC STATUS require at least DBA on the space.
+
+Status ShowSyncStatusValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowSyncStatusValidator::checkPermission() {
+  return PermissionManager::canWriteSchema(qctx_->rctx()->session(), vctx_);
+}
+
+Status ShowSyncStatusValidator::toPlan() {
+  auto *doNode = ShowSyncStatus::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status ShowDrainerSyncStatusValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status ShowDrainerSyncStatusValidator::checkPermission() {
+  return PermissionManager::canWriteSchema(qctx_->rctx()->session(), vctx_);
+}
+
+Status ShowDrainerSyncStatusValidator::toPlan() {
+  auto *doNode = ShowDrainerSyncStatus::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+// --- Stop/Restart Sync Validators ---
+// STOP/RESTART SYNC require Admin privilege on the space.
+
+Status StopSyncValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status StopSyncValidator::checkPermission() {
+  return checkAtLeastAdminOnSpace(qctx_->rctx()->session(), vctx_);
+}
+
+Status StopSyncValidator::toPlan() {
+  auto *doNode = StopSync::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
+Status RestartSyncValidator::validateImpl() {
+  return Status::OK();
+}
+
+Status RestartSyncValidator::checkPermission() {
+  return checkAtLeastAdminOnSpace(qctx_->rctx()->session(), vctx_);
+}
+
+Status RestartSyncValidator::toPlan() {
+  auto *doNode = RestartSync::make(qctx_, nullptr);
+  root_ = doNode;
+  tail_ = root_;
+  return Status::OK();
+}
+
 }  // namespace graph
 }  // namespace nebula

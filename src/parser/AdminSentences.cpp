@@ -214,6 +214,12 @@ std::string AddListenerSentence::toString() const {
     case meta::cpp2::ListenerType::ELASTICSEARCH:
       buf += "ELASTICSEARCH ";
       break;
+    case meta::cpp2::ListenerType::SYNC_STORAGE:
+      buf += "SYNC ";
+      break;
+    case meta::cpp2::ListenerType::SYNC_META:
+      buf += "SYNC META ";
+      break;
     case meta::cpp2::ListenerType::UNKNOWN:
       DLOG(FATAL) << "Unknown listener type.";
       return "";
@@ -229,6 +235,12 @@ std::string RemoveListenerSentence::toString() const {
   switch (type_) {
     case meta::cpp2::ListenerType::ELASTICSEARCH:
       buf += "ELASTICSEARCH ";
+      break;
+    case meta::cpp2::ListenerType::SYNC_STORAGE:
+      buf += "SYNC ";
+      break;
+    case meta::cpp2::ListenerType::SYNC_META:
+      buf += "SYNC META ";
       break;
     case meta::cpp2::ListenerType::UNKNOWN:
       DLOG(FATAL) << "Unknown listener type.";
@@ -407,6 +419,72 @@ std::string SignOutServiceSentence::toString() const {
       DLOG(FATAL) << "Unknown service type " << static_cast<uint8_t>(type_);
       return "";
   }
+}
+
+std::string AddSyncListenerSentence::toString() const {
+  std::string buf;
+  buf.reserve(128);
+  buf += "ADD LISTENER SYNC META ";
+  buf += metaHosts_->toString();
+  buf += " STORAGE ";
+  buf += storageHosts_->toString();
+  return buf;
+}
+
+std::string RemoveSyncListenerSentence::toString() const {
+  return "REMOVE LISTENER SYNC";
+}
+
+std::string ShowSyncListenerSentence::toString() const {
+  return "SHOW LISTENER SYNC";
+}
+
+std::string SignInDrainerServiceSentence::toString() const {
+  std::string buf;
+  buf.reserve(64);
+  buf += "SIGN IN DRAINER SERVICE ";
+  buf += hosts_->toString();
+  return buf;
+}
+
+std::string SignOutDrainerServiceSentence::toString() const {
+  return "SIGN OUT DRAINER SERVICE";
+}
+
+std::string ShowDrainerClientsSentence::toString() const {
+  return "SHOW DRAINER CLIENTS";
+}
+
+std::string AddDrainerSentence::toString() const {
+  std::string buf;
+  buf.reserve(64);
+  buf += "ADD DRAINER ";
+  buf += hosts_->toString();
+  return buf;
+}
+
+std::string RemoveDrainerSentence::toString() const {
+  return "REMOVE DRAINER";
+}
+
+std::string ShowDrainersSentence::toString() const {
+  return "SHOW DRAINERS";
+}
+
+std::string ShowSyncStatusSentence::toString() const {
+  return "SHOW SYNC STATUS";
+}
+
+std::string ShowDrainerSyncStatusSentence::toString() const {
+  return "SHOW DRAINER SYNC STATUS";
+}
+
+std::string StopSyncSentence::toString() const {
+  return "STOP SYNC";
+}
+
+std::string RestartSyncSentence::toString() const {
+  return "RESTART SYNC";
 }
 
 std::string ShowSessionsSentence::toString() const {

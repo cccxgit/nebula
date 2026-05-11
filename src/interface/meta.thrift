@@ -902,6 +902,8 @@ struct ListZonesResp {
 enum ListenerType {
     UNKNOWN       = 0x00,
     ELASTICSEARCH = 0x01,
+    SYNC_STORAGE  = 0x02,
+    SYNC_META     = 0x03,
 } (cpp.enum_strict)
 
 struct AddListenerReq {
@@ -930,6 +932,78 @@ struct ListListenerResp {
     1: common.ErrorCode        code,
     2: common.HostAddr         leader,
     3: list<ListenerInfo>      listeners,
+}
+
+// Drainer-related structs for cross-cluster data sync
+struct SignInDrainerReq {
+    1: required list<common.HostAddr>  hosts,
+}
+
+struct SignOutDrainerReq {
+}
+
+struct ListDrainerClientsReq {
+}
+
+struct ListDrainerClientsResp {
+    1: required common.ErrorCode       code,
+    2: required common.HostAddr        leader,
+    3: optional list<common.HostAddr>  clients,
+}
+
+struct AddDrainerReq {
+    1: required common.GraphSpaceID    space_id,
+    2: required list<common.HostAddr>  hosts,
+}
+
+struct RemoveDrainerReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct ListDrainersReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct ListDrainersResp {
+    1: required common.ErrorCode       code,
+    2: required common.HostAddr        leader,
+    3: optional list<common.HostAddr>  drainers,
+}
+
+struct StopSyncReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct RestartSyncReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct GetSyncStatusReq {
+    1: required common.GraphSpaceID    space_id,
+}
+
+struct SyncStatusItem {
+    1: required common.PartitionID    part_id,
+    2: required string                status,
+    3: required i64                   log_id_lag,
+    4: required i64                   time_latency_ms,
+}
+
+struct DrainerSyncStatusItem {
+    1: required string                drainer_host,
+    2: required common.PartitionID    part_id,
+    3: required string                status,
+    4: required i64                   log_id_lag,
+    5: required i64                   time_latency_ms,
+    6: required i64                   epoch,
+    7: required i64                   last_applied_log_id,
+}
+
+struct GetSyncStatusResp {
+    1: required common.ErrorCode              code,
+    2: required common.HostAddr               leader,
+    3: optional list<SyncStatusItem>          items,
+    4: optional list<DrainerSyncStatusItem>   drainer_items,
 }
 
 struct GetStatsReq {
@@ -1283,6 +1357,17 @@ service MetaService {
     ExecResp       addListener(1: AddListenerReq req);
     ExecResp       removeListener(1: RemoveListenerReq req);
     ListListenerResp listListener(1: ListListenerReq req);
+
+    // Drainer service RPCs for cross-cluster data sync
+    ExecResp             signInDrainerService(1: SignInDrainerReq req);
+    ExecResp             signOutDrainerService(1: SignOutDrainerReq req);
+    ListDrainerClientsResp listDrainerClients(1: ListDrainerClientsReq req);
+    ExecResp             addDrainer(1: AddDrainerReq req);
+    ExecResp             removeDrainer(1: RemoveDrainerReq req);
+    ListDrainersResp     listDrainers(1: ListDrainersReq req);
+    GetSyncStatusResp    getSyncStatus(1: GetSyncStatusReq req);
+    ExecResp             stopSync(1: StopSyncReq req);
+    ExecResp             restartSync(1: RestartSyncReq req);
 
     GetStatsResp  getStats(1: GetStatsReq req);
     ExecResp signInService(1: SignInServiceReq req);

@@ -30,6 +30,7 @@
 #include "graph/executor/admin/ListUsersExecutor.h"
 #include "graph/executor/admin/ListenerExecutor.h"
 #include "graph/executor/admin/PartExecutor.h"
+#include "graph/executor/admin/SyncExecutor.h"
 #include "graph/executor/admin/RevokeRoleExecutor.h"
 #include "graph/executor/admin/SessionExecutor.h"
 #include "graph/executor/admin/ShowHostsExecutor.h"
@@ -574,6 +575,45 @@ Executor *Executor::makeExecutor(QueryContext *qctx, const PlanNode *node) {
     }
     case PlanNode::Kind::kShortestPath: {
       return pool->makeAndAdd<ShortestPathExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kAddSyncListener: {
+      return pool->makeAndAdd<AddSyncListenerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kRemoveSyncListener: {
+      return pool->makeAndAdd<RemoveSyncListenerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowSyncListener: {
+      return pool->makeAndAdd<ShowSyncListenerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kSignInDrainerService: {
+      return pool->makeAndAdd<SignInDrainerServiceExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kSignOutDrainerService: {
+      return pool->makeAndAdd<SignOutDrainerServiceExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowDrainerClients: {
+      return pool->makeAndAdd<ShowDrainerClientsExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kAddDrainer: {
+      return pool->makeAndAdd<AddDrainerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kRemoveDrainer: {
+      return pool->makeAndAdd<RemoveDrainerExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowDrainers: {
+      return pool->makeAndAdd<ShowDrainersExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowSyncStatus: {
+      return pool->makeAndAdd<ShowSyncStatusExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kShowDrainerSyncStatus: {
+      return pool->makeAndAdd<ShowDrainerSyncStatusExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kStopSync: {
+      return pool->makeAndAdd<StopSyncExecutor>(node, qctx);
+    }
+    case PlanNode::Kind::kRestartSync: {
+      return pool->makeAndAdd<RestartSyncExecutor>(node, qctx);
     }
     case PlanNode::Kind::kUnknown: {
       DLOG(FATAL) << "Unknown plan node kind " << static_cast<int32_t>(node->kind());

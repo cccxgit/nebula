@@ -18,6 +18,7 @@
 #include "kvstore/NebulaSnapshotManager.h"
 #include "kvstore/RocksEngine.h"
 #include "kvstore/listener/elasticsearch/ESListener.h"
+#include "kvstore/listener/sync/SyncListener.h"
 
 DEFINE_string(engine_type, "rocksdb", "rocksdb, memory...");
 DEFINE_int32(num_workers, 4, "Number of worker threads");
@@ -27,6 +28,7 @@ DEFINE_bool(auto_remove_invalid_space, true, "whether remove data of invalid spa
 DECLARE_bool(rocksdb_disable_wal);
 DECLARE_int32(rocksdb_backup_interval_secs);
 DECLARE_int32(wal_ttl);
+DECLARE_int32(cluster_id);
 
 namespace nebula {
 namespace kvstore {
@@ -662,6 +664,9 @@ std::shared_ptr<Listener> NebulaStore::newListener(GraphSpaceID spaceId,
   if (type == meta::cpp2::ListenerType::ELASTICSEARCH) {
     listener = std::make_shared<ESListener>(
         spaceId, partId, raftAddr_, walPath, ioPool_, bgWorkers_, workers_, options_.schemaMan_);
+  } else if (type == meta::cpp2::ListenerType::SYNC_STORAGE) {
+    listener = std::make_shared<SyncListener>(
+        spaceId, partId, raftAddr_, walPath, ioPool_, bgWorkers_, workers_, FLAGS_cluster_id);
   } else {
     LOG(FATAL) << "Should not reach here";
     return nullptr;

@@ -1384,6 +1384,188 @@ class KillQuery final : public SingleInputNode {
   Expression* sessionId_;
   Expression* epId_;
 };
+class AddSyncListener final : public SingleDependencyNode {
+ public:
+  static AddSyncListener* make(QueryContext* qctx,
+                                PlanNode* input,
+                                std::vector<HostAddr> metaHosts,
+                                std::vector<HostAddr> storageHosts) {
+    return qctx->objPool()->makeAndAdd<AddSyncListener>(
+        qctx, input, std::move(metaHosts), std::move(storageHosts));
+  }
+
+  const std::vector<HostAddr>& metaHosts() const { return metaHosts_; }
+  const std::vector<HostAddr>& storageHosts() const { return storageHosts_; }
+
+ private:
+  friend ObjectPool;
+  AddSyncListener(QueryContext* qctx,
+                   PlanNode* input,
+                   std::vector<HostAddr> metaHosts,
+                   std::vector<HostAddr> storageHosts)
+      : SingleDependencyNode(qctx, Kind::kAddSyncListener, input),
+        metaHosts_(std::move(metaHosts)),
+        storageHosts_(std::move(storageHosts)) {}
+
+  std::vector<HostAddr> metaHosts_;
+  std::vector<HostAddr> storageHosts_;
+};
+
+class RemoveSyncListener final : public SingleDependencyNode {
+ public:
+  static RemoveSyncListener* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<RemoveSyncListener>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  RemoveSyncListener(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kRemoveSyncListener, input) {}
+};
+
+class ShowSyncListener final : public SingleDependencyNode {
+ public:
+  static ShowSyncListener* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<ShowSyncListener>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  ShowSyncListener(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kShowSyncListener, input) {}
+};
+
+class SignInDrainerService final : public SingleDependencyNode {
+ public:
+  static SignInDrainerService* make(QueryContext* qctx,
+                                     PlanNode* input,
+                                     std::vector<HostAddr> hosts) {
+    return qctx->objPool()->makeAndAdd<SignInDrainerService>(qctx, input, std::move(hosts));
+  }
+
+  const std::vector<HostAddr>& hosts() const { return hosts_; }
+
+ private:
+  friend ObjectPool;
+  SignInDrainerService(QueryContext* qctx, PlanNode* input, std::vector<HostAddr> hosts)
+      : SingleDependencyNode(qctx, Kind::kSignInDrainerService, input),
+        hosts_(std::move(hosts)) {}
+
+  std::vector<HostAddr> hosts_;
+};
+
+class SignOutDrainerService final : public SingleDependencyNode {
+ public:
+  static SignOutDrainerService* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<SignOutDrainerService>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  SignOutDrainerService(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kSignOutDrainerService, input) {}
+};
+
+class ShowDrainerClients final : public SingleDependencyNode {
+ public:
+  static ShowDrainerClients* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<ShowDrainerClients>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  ShowDrainerClients(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kShowDrainerClients, input) {}
+};
+
+class AddDrainer final : public SingleDependencyNode {
+ public:
+  static AddDrainer* make(QueryContext* qctx, PlanNode* input, std::vector<HostAddr> hosts) {
+    return qctx->objPool()->makeAndAdd<AddDrainer>(qctx, input, std::move(hosts));
+  }
+
+  const std::vector<HostAddr>& hosts() const { return hosts_; }
+
+ private:
+  friend ObjectPool;
+  AddDrainer(QueryContext* qctx, PlanNode* input, std::vector<HostAddr> hosts)
+      : SingleDependencyNode(qctx, Kind::kAddDrainer, input), hosts_(std::move(hosts)) {}
+
+  std::vector<HostAddr> hosts_;
+};
+
+class RemoveDrainer final : public SingleDependencyNode {
+ public:
+  static RemoveDrainer* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<RemoveDrainer>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  RemoveDrainer(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kRemoveDrainer, input) {}
+};
+
+class ShowDrainers final : public SingleDependencyNode {
+ public:
+  static ShowDrainers* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<ShowDrainers>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  ShowDrainers(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kShowDrainers, input) {}
+};
+
+class ShowSyncStatus final : public SingleDependencyNode {
+ public:
+  static ShowSyncStatus* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<ShowSyncStatus>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  ShowSyncStatus(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kShowSyncStatus, input) {}
+};
+
+class ShowDrainerSyncStatus final : public SingleDependencyNode {
+ public:
+  static ShowDrainerSyncStatus* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<ShowDrainerSyncStatus>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  ShowDrainerSyncStatus(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kShowDrainerSyncStatus, input) {}
+};
+
+class StopSync final : public SingleDependencyNode {
+ public:
+  static StopSync* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<StopSync>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  StopSync(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kStopSync, input) {}
+};
+
+class RestartSync final : public SingleDependencyNode {
+ public:
+  static RestartSync* make(QueryContext* qctx, PlanNode* input) {
+    return qctx->objPool()->makeAndAdd<RestartSync>(qctx, input);
+  }
+
+ private:
+  friend ObjectPool;
+  RestartSync(QueryContext* qctx, PlanNode* input)
+      : SingleDependencyNode(qctx, Kind::kRestartSync, input) {}
+};
+
 }  // namespace graph
 }  // namespace nebula
 #endif  // GRAPH_PLANNER_PLAN_ADMIN_H_

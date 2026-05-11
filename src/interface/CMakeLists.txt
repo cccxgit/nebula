@@ -31,6 +31,9 @@ thrift_generate(
 # Target object name : meta_thrift_obj
 thrift_generate("meta" "MetaService" ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} "interface")
 
+# Target object name : sync_thrift_obj
+thrift_generate("sync" "SyncService" ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} "interface")
+
 add_custom_target(
     clean-interface
     COMMAND "rm" "-fr" "gen-cpp2" "gen-java" "gen-go" "gen-py" "gen-rust"

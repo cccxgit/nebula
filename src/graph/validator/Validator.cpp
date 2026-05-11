@@ -262,6 +262,32 @@ std::unique_ptr<Validator> Validator::makeValidator(Sentence* sentence, QueryCon
       return std::make_unique<ClearSpaceValidator>(sentence, context);
     case Sentence::Kind::kUnwind:
       return std::make_unique<UnwindValidator>(sentence, context);
+    case Sentence::Kind::kAddSyncListener:
+      return std::make_unique<AddSyncListenerValidator>(sentence, context);
+    case Sentence::Kind::kRemoveSyncListener:
+      return std::make_unique<RemoveSyncListenerValidator>(sentence, context);
+    case Sentence::Kind::kShowSyncListener:
+      return std::make_unique<ShowSyncListenerValidator>(sentence, context);
+    case Sentence::Kind::kSignInDrainerService:
+      return std::make_unique<SignInDrainerServiceValidator>(sentence, context);
+    case Sentence::Kind::kSignOutDrainerService:
+      return std::make_unique<SignOutDrainerServiceValidator>(sentence, context);
+    case Sentence::Kind::kShowDrainerClients:
+      return std::make_unique<ShowDrainerClientsValidator>(sentence, context);
+    case Sentence::Kind::kAddDrainer:
+      return std::make_unique<AddDrainerValidator>(sentence, context);
+    case Sentence::Kind::kRemoveDrainer:
+      return std::make_unique<RemoveDrainerValidator>(sentence, context);
+    case Sentence::Kind::kShowDrainers:
+      return std::make_unique<ShowDrainersValidator>(sentence, context);
+    case Sentence::Kind::kShowSyncStatus:
+      return std::make_unique<ShowSyncStatusValidator>(sentence, context);
+    case Sentence::Kind::kShowDrainerSyncStatus:
+      return std::make_unique<ShowDrainerSyncStatusValidator>(sentence, context);
+    case Sentence::Kind::kStopSync:
+      return std::make_unique<StopSyncValidator>(sentence, context);
+    case Sentence::Kind::kRestartSync:
+      return std::make_unique<RestartSyncValidator>(sentence, context);
     case Sentence::Kind::kUnknown:
     case Sentence::Kind::kReturn: {
       // nothing
