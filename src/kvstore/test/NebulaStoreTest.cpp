@@ -7,7 +7,10 @@
 #include <rocksdb/db.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
+#include <condition_variable>
+#include <future>
 #include <iostream>
+#include <mutex>
 
 #include "common/base/Base.h"
 #include "common/fs/FileUtils.h"
@@ -728,6 +731,58 @@ TEST(NebulaStoreTest, CheckpointTest) {
   ASSERT_TRUE(ret.isRightType());
   ret = store->createCheckpoint(2, "test_checkpoint");
   ASSERT_TRUE(ret.isRightType());
+}
+
+TEST(NebulaStoreTest, AddSpaceDoesNotDependOnGlobalIOExecutor) {
+  auto partMan = std::make_unique<MemPartManager>();
+  auto ioThreadPool = std::make_shared<folly::IOThreadPoolExecutor>(4);
+  fs::TempDir rootPath("/tmp/nebula_store_test.XXXXXX");
+  std::vector<std::string> paths;
+  paths.emplace_back(folly::stringPrintf("%s/disk1", rootPath.path()));
+
+  KVOptions options;
+  options.dataPaths_ = std::move(paths);
+  options.partMan_ = std::move(partMan);
+  HostAddr local = {"", 0};
+  auto store =
+      std::make_unique<NebulaStore>(std::move(options), ioThreadPool, local, getHandlers());
+  ASSERT_TRUE(store->init());
+
+  std::mutex blockerMutex;
+  std::condition_variable blockerCv;
+  bool blocked = true;
+  std::vector<folly::Future<folly::Unit>> futures;
+  futures.reserve(256);
+  for (size_t i = 0; i < 256; ++i) {
+    futures.emplace_back(folly::via(
+        folly::getGlobalIOExecutor().get(), [&blockerMutex, &blockerCv, &blocked]() {
+          std::unique_lock<std::mutex> lock(blockerMutex);
+          blockerCv.wait(lock, [&blocked]() { return !blocked; });
+          return folly::Unit();
+        }));
+  }
+
+  auto addSpaceFuture = std::async(std::launch::async, [&store]() {
+    store->addSpace(1);
+  });
+  EXPECT_EQ(std::future_status::ready, addSpaceFuture.wait_for(std::chrono::seconds(2)));
+
+  {
+    std::lock_guard<std::mutex> lock(blockerMutex);
+    blocked = false;
+  }
+  blockerCv.notify_all();
+  for (auto& future : futures) {
+    std::move(future).wait();
+  }
+  addSpaceFuture.wait();
+
+  auto spaceRet = store->space(1);
+  ASSERT_TRUE(ok(spaceRet));
+  auto space = nebula::value(std::move(spaceRet));
+  ASSERT_EQ(1, space->engines_.size());
+  EXPECT_EQ(folly::stringPrintf("%s/disk1/nebula/1", rootPath.path()),
+            space->engines_[0]->getDataRoot());
 }
 
 TEST(NebulaStoreTest, ThreeCopiesCheckpointTest) {

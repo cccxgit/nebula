@@ -1,0 +1,21 @@
+git restore --staged "tasks (copy)/yelp_data/Yelp-JSON.zip"
+  git restore --staged "tasks (copy)/yelp_data"
+  printf '\ntasks (copy)/yelp_data/\n' >> .git/info/exclude
+  git restore --staged "tasks (copy)"
+  git restore --staged task-1.md manual-test-report-task-1.md pr-content-task-
+  1.md pr-content-github-task-1.md pr-content-cn-task-1.md pr-final-package-
+  task-1.md task-1-analysis-index.md
+  git add src/kvstore/NebulaStore.cpp src/kvstore/NebulaStore.h src/kvstore/
+  test/NebulaStoreTest.cpp
+  git status --short
+  git commit -m "fix bug" -m "Avoid waiting on folly::getGlobalIOExecutor()
+  while holding NebulaStore write lock in addSpace().
+
+  Extract engine creation into a synchronous helper so the space-creation path
+  no longer blocks on the global IO executor. This removes the lock/executor
+  dependency that can deadlock with transfer leader follow-up checks under
+  concurrency.
+
+  Add a regression test to verify addSpace() still completes when the global IO
+  executor is saturated."
+  git push origin 5-17
