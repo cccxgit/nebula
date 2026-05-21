@@ -138,19 +138,85 @@ std::any_of(tagNodes_.begin(), tagNodes_.end(), ... valid())
 
 #### (3) 遍历每个 `TagNode` 收集属性
 
-调用 `tagNode->collectTagPropsIfValid` 并传入两个 lambda：
+`collectOneRow` 的核心是调用：
 
-- **lambda A（无 reader 分支）**：
-  - 对 returned 属性放占位 `Value()`；
-  - 对 filtered 属性向 `expCtx_` 填空值。
+```cpp
+tagNode->collectTagPropsIfValid(nullHandler, valueHandler)
+```
 
-- **lambda B（有 reader 分支）**：
-  - 对 returned 或 filtered 属性，调用 `QueryUtils::readVertexProp(...)` 真正读值；
-  - 失败返回 `E_TAG_PROP_NOT_FOUND`；
-  - filtered 值写入 `expCtx_`；
-  - returned 值 append 到 `row`。
+而 `TagNode::collectTagPropsIfValid` 的分发规则是：
 
-> 这两个回调让 `TagNode` 可以在“无有效存储值”与“有 reader”两种场景下统一外部行为，保证列对齐并支持过滤表达式。
+- `valid() == false`：调用 `nullHandler(props_)`
+- `valid() == true`：调用 `valueHandler(key_, reader_.get(), props_)`
+
+这套分发可以在 `TagNode.h` 看到，逻辑非常直接：无效就走“空值分支”，有效就走“真实值分支”。
+
+---
+
+##### A. `valid()==false` 时：`nullHandler` 细节
+
+`nullHandler` 对每个属性 `prop` 做两件事：
+
+1. 如果 `prop.returned_ == true`：
+   - 向 `row` 里 append 一个 `Value()` 空占位。
+   - 目的：保持返回列位次稳定（哪怕该 tag 记录无效、TTL 过期或 decode 失败）。
+
+2. 如果 `prop.filtered_ == true && expCtx_ != nullptr`：
+   - 向表达式上下文写入该 tag/prop 的空值：
+     `expCtx_->setTagProp(tagName, propName, Value())`。
+   - 目的：让 filter 求值阶段能“看到字段存在但值为空”，而不是缺失键。
+
+`nullHandler` **不会**触发任何 `readVertexProp`，因为 `valid()==false` 时 reader 不可用。
+
+---
+
+##### B. `valid()==true` 时：`valueHandler` 细节
+
+`valueHandler` 处理路径更“重”：
+
+1. 筛选是否需要读取：
+   - 仅当 `prop.returned_` 或（`prop.filtered_ && expCtx_!=nullptr`）时才读取。
+   - 这是性能优化：不返回也不参与过滤的列不解码。
+
+2. 实际读取：
+   - 调 `QueryUtils::readVertexProp(key, vIdLen, isIntId, reader, prop)`。
+   - 若读取失败，立即返回 `E_TAG_PROP_NOT_FOUND`，上层终止本行处理。
+
+3. 写回过滤上下文：
+   - 若 `prop.filtered_`，把真实值注入 `expCtx_`。
+
+4. 写回结果行：
+   - 若 `prop.returned_`，把真实值 append 到 `row`。
+
+---
+
+##### C. 两条分支的关键差异（你最关心）
+
+1. **数据来源**
+   - `nullHandler`：不读存储，直接填空。
+   - `valueHandler`：从 reader 解码真实值。
+
+2. **错误语义**
+   - `nullHandler`：基本不会产生属性缺失错误。
+   - `valueHandler`：读失败会返回 `E_TAG_PROP_NOT_FOUND`。
+
+3. **结果列内容**
+   - `nullHandler`：returned 列是空值占位。
+   - `valueHandler`：returned 列是实际属性值。
+
+4. **过滤输入**
+   - `nullHandler`：filtered 列注入空值。
+   - `valueHandler`：filtered 列注入真实值。
+
+---
+
+##### D. 为什么这样设计
+
+- 统一列对齐：无论 tag 是否有效，返回列数和顺序稳定。
+- 统一 filter 行为：无论数据是否缺失，表达式求值上下文都完整可求值。
+- 统一调用接口：上层不用关心 `TagNode` 是否有效，只需注册两种 handler。
+
+> 这也是 `collectTagPropsIfValid` 的价值：把“有效/无效分支控制”封装在 `TagNode` 内部，把“该怎么填 row / expCtx”交给上层回调实现。
 
 #### (4) filter 处理
 
