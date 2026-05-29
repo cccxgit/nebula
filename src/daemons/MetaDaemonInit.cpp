@@ -26,6 +26,7 @@
 #include "meta/MetaServiceHandler.h"
 #include "meta/MetaVersionMan.h"
 #include "meta/RootUserMan.h"
+#include "meta/http/MetaHttpRenameSpaceHandler.h"
 #include "meta/http/MetaHttpReplaceHostHandler.h"
 #include "meta/processors/job/JobManager.h"
 #include "meta/stats/MetaStats.h"
@@ -50,6 +51,7 @@ DEFINE_int32(ws_meta_http_port, 11000, "Port to listen on Meta with HTTP protoco
 #endif
 
 DECLARE_uint32(raft_heartbeat_interval_secs);
+DECLARE_bool(enable_space_rename_rest);
 
 using nebula::web::PathParams;
 
@@ -227,6 +229,11 @@ nebula::Status initWebService(nebula::WebService* svc, nebula::kvstore::KVStore*
   auto& router = svc->router();
   router.get("/replace").handler([kvstore](PathParams&&) {
     auto handler = new nebula::meta::MetaHttpReplaceHostHandler();
+    handler->init(kvstore);
+    return handler;
+  });
+  router.post("/admin/space/rename").handler([kvstore](PathParams&&) {
+    auto handler = new nebula::meta::MetaHttpRenameSpaceHandler();
     handler->init(kvstore);
     return handler;
   });
