@@ -14,6 +14,7 @@ nebula_add_library(
     processors/parts/GetSpaceProcessor.cpp
     processors/parts/ListSpacesProcessor.cpp
     processors/parts/DropSpaceProcessor.cpp
+    processors/parts/RenameSpaceHardProcessor.cpp
     processors/parts/GetPartsAllocProcessor.cpp
     processors/parts/AlterSpaceProcessor.cpp
     processors/schema/CreateTagProcessor.cpp

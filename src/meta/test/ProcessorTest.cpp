@@ -14,6 +14,7 @@
 #include "meta/processors/parts/GetSpaceProcessor.h"
 #include "meta/processors/parts/ListPartsProcessor.h"
 #include "meta/processors/parts/ListSpacesProcessor.h"
+#include "meta/processors/parts/RenameSpaceHardProcessor.h"
 #include "meta/processors/schema/AlterEdgeProcessor.h"
 #include "meta/processors/schema/AlterTagProcessor.h"
 #include "meta/processors/schema/CreateEdgeProcessor.h"
@@ -43,6 +44,126 @@ namespace nebula {
 namespace meta {
 
 using nebula::cpp2::PropertyType;
+
+TEST(ProcessorTest, RenameSpaceHardTest) {
+  fs::TempDir rootPath("/tmp/RenameSpaceHardTest.XXXXXX");
+  std::unique_ptr<kvstore::KVStore> kv(MockCluster::initMetaKV(rootPath.path()));
+  TestUtils::assembleSpace(kv.get(), 10, 3);
+
+  {
+    RenameSpaceHardReq req;
+    req.oldName = "test_space";
+    req.newName = "renamed_space";
+    req.expectedSpaceId = 10;
+    req.dryRun = true;
+    auto* processor = RenameSpaceHardProcessor::instance(kv.get());
+    auto f = processor->getFuture();
+    processor->process(req);
+    auto resp = std::move(f).get();
+    ASSERT_EQ(nebula::cpp2::ErrorCode::SUCCEEDED, resp.get_code());
+
+    std::string val;
+    ASSERT_EQ(
+        nebula::cpp2::ErrorCode::SUCCEEDED,
+        kv->get(kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::indexSpaceKey("test_space"), &val));
+    ASSERT_EQ(
+        nebula::cpp2::ErrorCode::E_KEY_NOT_FOUND,
+        kv->get(
+            kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::indexSpaceKey("renamed_space"), &val));
+  }
+
+  {
+    RenameSpaceHardReq req;
+    req.oldName = "test_space";
+    req.newName = "renamed_space";
+    req.expectedSpaceId = 10;
+    req.dryRun = false;
+    req.operatorName = "ops";
+    req.comment = "unit test";
+    auto* processor = RenameSpaceHardProcessor::instance(kv.get());
+    auto f = processor->getFuture();
+    processor->process(req);
+    auto resp = std::move(f).get();
+    ASSERT_EQ(nebula::cpp2::ErrorCode::SUCCEEDED, resp.get_code());
+    ASSERT_EQ(10, resp.get_id().get_space_id());
+
+    std::string val;
+    ASSERT_EQ(
+        nebula::cpp2::ErrorCode::E_KEY_NOT_FOUND,
+        kv->get(kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::indexSpaceKey("test_space"), &val));
+    ASSERT_EQ(
+        nebula::cpp2::ErrorCode::SUCCEEDED,
+        kv->get(
+            kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::indexSpaceKey("renamed_space"), &val));
+    ASSERT_EQ(10, *reinterpret_cast<const GraphSpaceID*>(val.c_str()));
+
+    ASSERT_EQ(nebula::cpp2::ErrorCode::SUCCEEDED,
+              kv->get(kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::spaceKey(10), &val));
+    auto desc = MetaKeyUtils::parseSpace(val);
+    ASSERT_EQ("renamed_space", desc.get_space_name());
+    ASSERT_EQ(3, desc.get_partition_num());
+  }
+
+  {
+    RenameSpaceHardReq req;
+    req.oldName = "missing_space";
+    req.newName = "another_space";
+    req.expectedSpaceId = 10;
+    auto* processor = RenameSpaceHardProcessor::instance(kv.get());
+    auto f = processor->getFuture();
+    processor->process(req);
+    auto resp = std::move(f).get();
+    ASSERT_EQ(nebula::cpp2::ErrorCode::E_SPACE_NOT_FOUND, resp.get_code());
+  }
+
+  {
+    RenameSpaceHardReq req;
+    req.oldName = "renamed_space";
+    req.newName = "renamed_space";
+    req.expectedSpaceId = 10;
+    auto* processor = RenameSpaceHardProcessor::instance(kv.get());
+    auto f = processor->getFuture();
+    processor->process(req);
+    auto resp = std::move(f).get();
+    ASSERT_EQ(nebula::cpp2::ErrorCode::E_INVALID_PARM, resp.get_code());
+  }
+
+  TestUtils::assembleSpace(kv.get(), 11, 1, 1, 1, true);
+  {
+    RenameSpaceHardReq req;
+    req.oldName = "renamed_space";
+    req.newName = "test_space_11";
+    req.expectedSpaceId = 10;
+    auto* processor = RenameSpaceHardProcessor::instance(kv.get());
+    auto f = processor->getFuture();
+    processor->process(req);
+    auto resp = std::move(f).get();
+    ASSERT_EQ(nebula::cpp2::ErrorCode::E_EXISTED, resp.get_code());
+  }
+
+  {
+    RenameSpaceHardReq req;
+    req.oldName = "renamed_space";
+    req.newName = "second_rename";
+    req.expectedSpaceId = 999;
+    auto* processor = RenameSpaceHardProcessor::instance(kv.get());
+    auto f = processor->getFuture();
+    processor->process(req);
+    auto resp = std::move(f).get();
+    ASSERT_EQ(nebula::cpp2::ErrorCode::E_INVALID_PARM, resp.get_code());
+  }
+
+  {
+    RenameSpaceHardReq req;
+    req.oldName = "renamed_space";
+    req.newName = "second_rename";
+    auto* processor = RenameSpaceHardProcessor::instance(kv.get());
+    auto f = processor->getFuture();
+    processor->process(req);
+    auto resp = std::move(f).get();
+    ASSERT_EQ(nebula::cpp2::ErrorCode::E_INVALID_PARM, resp.get_code());
+  }
+}
 
 TEST(ProcessorTest, ListHostsTest) {
   fs::TempDir rootPath("/tmp/ListHostsTest.XXXXXX");

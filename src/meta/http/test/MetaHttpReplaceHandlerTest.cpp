@@ -11,10 +11,14 @@
 #include "common/network/NetworkUtils.h"
 #include "common/process/ProcessUtils.h"
 #include "common/thread/GenericThreadPool.h"
+#include "meta/http/MetaHttpRenameSpaceHandler.h"
 #include "meta/http/MetaHttpReplaceHostHandler.h"
 #include "meta/test/TestUtils.h"
 #include "webservice/Router.h"
 #include "webservice/WebService.h"
+
+DECLARE_bool(enable_space_rename_rest);
+DECLARE_string(space_rename_rest_token);
 
 namespace nebula {
 namespace meta {
@@ -47,6 +51,8 @@ class MetaHttpReplaceHandlerTestEnv : public ::testing::Environment {
     ZoneInfo zoneInfo = {{"zone_0", {host0, host1}}, {"zone_1", {host2, host3}}};
     TestUtils::assembleZone(gKVStore, zoneInfo);
 
+    FLAGS_enable_space_rename_rest = true;
+    FLAGS_space_rename_rest_token = "test-token";
     LOG(INFO) << "Setup webservice with replace handler...";
     webSvc_ = std::make_unique<WebService>();
     auto& router = webSvc_->router();
@@ -54,6 +60,11 @@ class MetaHttpReplaceHandlerTestEnv : public ::testing::Environment {
       gHandler = new meta::MetaHttpReplaceHostHandler();
       gHandler->init(gKVStore);
       return gHandler;
+    });
+    router.post("/admin/space/rename").handler([&](nebula::web::PathParams&&) {
+      auto handler = new meta::MetaHttpRenameSpaceHandler();
+      handler->init(gKVStore);
+      return handler;
     });
     auto status = webSvc_->start();
     ASSERT_TRUE(status.ok()) << status;
@@ -66,6 +77,8 @@ class MetaHttpReplaceHandlerTestEnv : public ::testing::Environment {
 
     gHandler = nullptr;
     gKVStore = nullptr;
+    FLAGS_enable_space_rename_rest = false;
+    FLAGS_space_rename_rest_token = "";
     gHosts.clear();
     LOG(INFO) << "Web service stopped";
   }
@@ -78,6 +91,18 @@ class MetaHttpReplaceHandlerTestEnv : public ::testing::Environment {
 
 StatusOr<std::string> silentCurl(const std::string& path) {
   auto command = folly::stringPrintf("/usr/bin/curl -Gs \"%s\"", path.c_str());
+  return nebula::ProcessUtils::runCommand(command.c_str());
+}
+
+StatusOr<std::string> silentPost(const std::string& path,
+                                 const std::string& token,
+                                 const std::string& body) {
+  auto command = folly::stringPrintf(
+      "/usr/bin/curl -s -X POST -H \"Content-Type: application/json\" "
+      "-H \"X-Nebula-Admin-Token: %s\" -d '%s' \"%s\"",
+      token.c_str(),
+      body.c_str(),
+      path.c_str());
   return nebula::ProcessUtils::runCommand(command.c_str());
 }
 
@@ -251,6 +276,59 @@ std::set<HostAddr> dumpHosts(kvstore::KVStore* kvstore) {
   }
 
   return hosts;
+}
+
+TEST(MetaHttpReplaceHandlerTest, RenameSpaceRest) {
+  auto base = folly::stringPrintf("http://127.0.0.1:%d/admin/space/rename", FLAGS_ws_http_port);
+  const std::string dryRunBody =
+      R"({"old_name":"test_space","new_name":"rest_renamed_space","expected_space_id":1})";
+  const std::string renameBody =
+      R"({"old_name":"test_space","new_name":"rest_renamed_space","dry_run":false,"expected_space_id":1,"operator":"ops","comment":"rest test"})";
+
+  {
+    auto ret = silentPost(base, "bad-token", dryRunBody);
+    ASSERT_TRUE(ret.ok()) << ret.status();
+    std::string val;
+    ASSERT_EQ(
+        nebula::cpp2::ErrorCode::SUCCEEDED,
+        gKVStore->get(
+            kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::indexSpaceKey("test_space"), &val));
+  }
+
+  {
+    auto ret = silentPost(base, "test-token", dryRunBody);
+    ASSERT_TRUE(ret.ok()) << ret.status();
+    std::string val;
+    ASSERT_EQ(
+        nebula::cpp2::ErrorCode::SUCCEEDED,
+        gKVStore->get(
+            kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::indexSpaceKey("test_space"), &val));
+    ASSERT_EQ(nebula::cpp2::ErrorCode::E_KEY_NOT_FOUND,
+              gKVStore->get(kDefaultSpaceId,
+                            kDefaultPartId,
+                            MetaKeyUtils::indexSpaceKey("rest_renamed_space"),
+                            &val));
+  }
+
+  {
+    auto ret = silentPost(base, "test-token", renameBody);
+    ASSERT_TRUE(ret.ok()) << ret.status();
+    std::string val;
+    ASSERT_EQ(
+        nebula::cpp2::ErrorCode::E_KEY_NOT_FOUND,
+        gKVStore->get(
+            kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::indexSpaceKey("test_space"), &val));
+    ASSERT_EQ(nebula::cpp2::ErrorCode::SUCCEEDED,
+              gKVStore->get(kDefaultSpaceId,
+                            kDefaultPartId,
+                            MetaKeyUtils::indexSpaceKey("rest_renamed_space"),
+                            &val));
+    ASSERT_EQ(1, *reinterpret_cast<const GraphSpaceID*>(val.c_str()));
+    ASSERT_EQ(nebula::cpp2::ErrorCode::SUCCEEDED,
+              gKVStore->get(kDefaultSpaceId, kDefaultPartId, MetaKeyUtils::spaceKey(1), &val));
+    auto desc = MetaKeyUtils::parseSpace(val);
+    ASSERT_EQ("rest_renamed_space", desc.get_space_name());
+  }
 }
 
 }  // namespace meta

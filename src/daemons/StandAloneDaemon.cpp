@@ -29,6 +29,7 @@
 #include "meta/MetaServiceHandler.h"
 #include "meta/MetaVersionMan.h"
 #include "meta/RootUserMan.h"
+#include "meta/http/MetaHttpRenameSpaceHandler.h"
 #include "meta/http/MetaHttpReplaceHostHandler.h"
 #include "meta/processors/job/JobManager.h"
 #include "meta/stats/MetaStats.h"
