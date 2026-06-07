@@ -21,6 +21,7 @@
 #include "common/ssl/SSLConfig.h"
 #include "common/time/TimezoneInfo.h"
 #include "common/utils/MetaKeyUtils.h"
+#include "daemons/SetupBreakpad.h"
 #include "daemons/SetupLogging.h"
 #include "folly/ScopeGuard.h"
 #include "graph/service/GraphFlags.h"
@@ -51,9 +52,6 @@ void printHelp(const char *prog);
 void stopAllDaemon();
 static void signalHandler(int sig);
 static Status setupSignalHandler();
-#if defined(ENABLE_BREAKPAD)
-extern Status setupBreakpad();
-#endif
 
 std::unique_ptr<nebula::storage::StorageServer> gStorageServer;
 static std::unique_ptr<apache::thrift::ThriftServer> gServer;
@@ -153,6 +151,11 @@ int main(int argc, char *argv[]) {
       LOG(ERROR) << status;
       return EXIT_FAILURE;
     }
+  }
+
+  status = setupBreakpadSignalMinidump();
+  if (!status.ok()) {
+    LOG(WARNING) << "Breakpad signal minidump is disabled: " << status;
   }
 
   // Validate the IPv4 address or hostname

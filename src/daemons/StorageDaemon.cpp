@@ -4,7 +4,12 @@
  */
 
 #include <folly/ssl/Init.h>
+#include <pthread.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+
+#include <chrono>
+#include <mutex>
+#include <thread>
 
 #include "common/base/Base.h"
 #include "common/base/SignalHandler.h"
@@ -12,6 +17,7 @@
 #include "common/network/NetworkUtils.h"
 #include "common/process/ProcessUtils.h"
 #include "common/time/TimezoneInfo.h"
+#include "daemons/SetupBreakpad.h"
 #include "daemons/SetupLogging.h"
 #include "storage/StorageServer.h"
 #include "storage/stats/StorageStats.h"
@@ -47,9 +53,36 @@ using nebula::network::NetworkUtils;
 
 static void signalHandler(nebula::storage::StorageServer *storageServer, int sig);
 static Status setupSignalHandler(nebula::storage::StorageServer *storageServer);
-#if defined(ENABLE_BREAKPAD)
-extern Status setupBreakpad();
-#endif
+static void maybeStartBreakpadTestDeadlock();
+
+DEFINE_bool(breakpad_test_enable_deadlock,
+            false,
+            "Only for testing signal-triggered minidump. Create an intentional deadlock.");
+DEFINE_bool(breakpad_test_deadlock_only,
+            false,
+            "Only for testing signal-triggered minidump. Keep the process alive after creating "
+            "the intentional deadlock.");
+
+namespace {
+
+std::mutex gBreakpadTestDeadlockMutexA;
+std::mutex gBreakpadTestDeadlockMutexB;
+
+void breakpadTestDeadlockThreadA() {
+  ::pthread_setname_np(::pthread_self(), "bp-deadlock-a");
+  std::unique_lock<std::mutex> lockA(gBreakpadTestDeadlockMutexA);
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+  std::unique_lock<std::mutex> lockB(gBreakpadTestDeadlockMutexB);
+}
+
+void breakpadTestDeadlockThreadB() {
+  ::pthread_setname_np(::pthread_self(), "bp-deadlock-b");
+  std::unique_lock<std::mutex> lockB(gBreakpadTestDeadlockMutexB);
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+  std::unique_lock<std::mutex> lockA(gBreakpadTestDeadlockMutexA);
+}
+
+}  // namespace
 
 int main(int argc, char *argv[]) {
   google::SetVersionString(nebula::versionString());
@@ -109,6 +142,19 @@ int main(int argc, char *argv[]) {
     if (!status.ok()) {
       LOG(ERROR) << status;
       return EXIT_FAILURE;
+    }
+  }
+
+  status = setupBreakpadSignalMinidump();
+  if (!status.ok()) {
+    LOG(WARNING) << "Breakpad signal minidump is disabled: " << status;
+  }
+
+  maybeStartBreakpadTestDeadlock();
+  if (FLAGS_breakpad_test_deadlock_only) {
+    LOG(WARNING) << "Breakpad test deadlock-only mode is enabled";
+    while (true) {
+      std::this_thread::sleep_for(std::chrono::seconds(60));
     }
   }
 
@@ -192,6 +238,15 @@ Status setupSignalHandler(nebula::storage::StorageServer *storageServer) {
       {SIGINT, SIGTERM}, [storageServer](nebula::SignalHandler::GeneralSignalInfo *info) {
         signalHandler(storageServer, info->sig());
       });
+}
+
+void maybeStartBreakpadTestDeadlock() {
+  if (!FLAGS_breakpad_test_enable_deadlock) {
+    return;
+  }
+  LOG(WARNING) << "Starting intentional breakpad test deadlock threads";
+  std::thread(breakpadTestDeadlockThreadA).detach();
+  std::thread(breakpadTestDeadlockThreadB).detach();
 }
 
 void signalHandler(nebula::storage::StorageServer *storageServer, int sig) {

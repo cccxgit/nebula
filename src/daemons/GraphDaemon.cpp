@@ -5,9 +5,14 @@
 
 #include <errno.h>
 #include <folly/ssl/Init.h>
+#include <pthread.h>
 #include <signal.h>
 #include <string.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+
+#include <chrono>
+#include <mutex>
+#include <thread>
 
 #include "common/base/Base.h"
 #include "common/fs/FileUtils.h"
@@ -15,6 +20,7 @@
 #include "common/process/ProcessUtils.h"
 #include "common/ssl/SSLConfig.h"
 #include "common/time/TimezoneInfo.h"
+#include "daemons/SetupBreakpad.h"
 #include "daemons/SetupLogging.h"
 #include "graph/service/GraphFlags.h"
 #include "graph/service/GraphServer.h"
@@ -33,12 +39,38 @@ using nebula::network::NetworkUtils;
 static void signalHandler(nebula::graph::GraphServer *graphServer, int sig);
 static Status setupSignalHandler(nebula::graph::GraphServer *graphServer);
 static void printHelp(const char *prog);
-#if defined(ENABLE_BREAKPAD)
-extern Status setupBreakpad();
-#endif
+static void maybeStartBreakpadTestDeadlock();
 
 DECLARE_string(flagfile);
 DECLARE_bool(containerized);
+DEFINE_bool(breakpad_test_enable_deadlock,
+            false,
+            "Only for testing signal-triggered minidump. Create an intentional deadlock.");
+DEFINE_bool(breakpad_test_deadlock_only,
+            false,
+            "Only for testing signal-triggered minidump. Keep the process alive after creating "
+            "the intentional deadlock.");
+
+namespace {
+
+std::mutex gBreakpadTestDeadlockMutexA;
+std::mutex gBreakpadTestDeadlockMutexB;
+
+void breakpadTestDeadlockThreadA() {
+  ::pthread_setname_np(::pthread_self(), "bp-deadlock-a");
+  std::unique_lock<std::mutex> lockA(gBreakpadTestDeadlockMutexA);
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+  std::unique_lock<std::mutex> lockB(gBreakpadTestDeadlockMutexB);
+}
+
+void breakpadTestDeadlockThreadB() {
+  ::pthread_setname_np(::pthread_self(), "bp-deadlock-b");
+  std::unique_lock<std::mutex> lockB(gBreakpadTestDeadlockMutexB);
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+  std::unique_lock<std::mutex> lockA(gBreakpadTestDeadlockMutexA);
+}
+
+}  // namespace
 
 int main(int argc, char *argv[]) {
   google::SetVersionString(nebula::versionString());
@@ -104,6 +136,11 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  status = setupBreakpadSignalMinidump();
+  if (!status.ok()) {
+    LOG(WARNING) << "Breakpad signal minidump is disabled: " << status;
+  }
+
   // Validate the IPv4 address or hostname
   status = NetworkUtils::validateHostOrIp(FLAGS_local_ip);
   if (!status.ok()) {
@@ -152,6 +189,14 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  maybeStartBreakpadTestDeadlock();
+  if (FLAGS_breakpad_test_deadlock_only) {
+    LOG(WARNING) << "Breakpad test deadlock-only mode is enabled";
+    while (true) {
+      std::this_thread::sleep_for(std::chrono::seconds(60));
+    }
+  }
+
   if (!graphServer->start()) {
     LOG(ERROR) << "The graph server start failed";
     return EXIT_FAILURE;
@@ -167,6 +212,15 @@ Status setupSignalHandler(nebula::graph::GraphServer *graphServer) {
       {SIGINT, SIGTERM}, [graphServer](nebula::SignalHandler::GeneralSignalInfo *info) {
         signalHandler(graphServer, info->sig());
       });
+}
+
+void maybeStartBreakpadTestDeadlock() {
+  if (!FLAGS_breakpad_test_enable_deadlock) {
+    return;
+  }
+  LOG(WARNING) << "Starting intentional breakpad test deadlock threads";
+  std::thread(breakpadTestDeadlockThreadA).detach();
+  std::thread(breakpadTestDeadlockThreadB).detach();
 }
 
 void signalHandler(nebula::graph::GraphServer *graphServer, int sig) {
