@@ -1286,6 +1286,71 @@ int32_t NebulaStore::allLeader(
   return count;
 }
 
+folly::dynamic NebulaStore::walStats(std::optional<GraphSpaceID> spaceIdFilter,
+                                     std::optional<PartitionID> partIdFilter) {
+  folly::RWSpinLock::ReadHolder rh(&lock_);
+
+  int64_t totalActiveBytes = 0;
+  int64_t totalDirtyBytes = 0;
+  int64_t totalActiveNodes = 0;
+  int64_t totalDirtyNodes = 0;
+  int64_t totalReaderRefs = 0;
+  int64_t totalGcCount = 0;
+  int64_t totalGcDeletedNodes = 0;
+  int64_t totalGcDeletedBytes = 0;
+  int64_t totalHeartbeatEmptyLogs = 0;
+  int64_t totalParts = 0;
+  auto parts = folly::dynamic::array();
+
+  for (const auto& spaceIt : spaces_) {
+    auto spaceId = spaceIt.first;
+    if (spaceIdFilter.has_value() && spaceIdFilter.value() != spaceId) {
+      continue;
+    }
+
+    for (const auto& partIt : spaceIt.second->parts_) {
+      auto partId = partIt.first;
+      if (partIdFilter.has_value() && partIdFilter.value() != partId) {
+        continue;
+      }
+
+      const auto& part = partIt.second;
+      auto bufferStats = part->wal()->buffer()->stats();
+      auto heartbeatEmptyLogs = static_cast<int64_t>(part->numHeartbeatEmptyLogs());
+
+      totalActiveBytes += bufferStats.activeBytes;
+      totalDirtyBytes += bufferStats.dirtyBytes;
+      totalActiveNodes += bufferStats.activeNodes;
+      totalDirtyNodes += bufferStats.dirtyNodes;
+      totalReaderRefs += bufferStats.readerRefs;
+      totalGcCount += bufferStats.gcCount;
+      totalGcDeletedNodes += bufferStats.gcDeletedNodes;
+      totalGcDeletedBytes += bufferStats.gcDeletedBytes;
+      totalHeartbeatEmptyLogs += heartbeatEmptyLogs;
+      totalParts++;
+
+      parts.push_back(folly::dynamic::object("space_id", spaceId)(
+          "part_id", partId)("role", part->roleStr())("is_leader", part->isLeader())(
+          "active_bytes", bufferStats.activeBytes)("dirty_bytes", bufferStats.dirtyBytes)(
+          "active_nodes", bufferStats.activeNodes)("dirty_nodes", bufferStats.dirtyNodes)(
+          "reader_refs", bufferStats.readerRefs)("first_log_id", bufferStats.firstLogId)(
+          "last_log_id", bufferStats.lastLogId)("gc_count", bufferStats.gcCount)(
+          "gc_deleted_nodes", bufferStats.gcDeletedNodes)(
+          "gc_deleted_bytes", bufferStats.gcDeletedBytes)(
+          "heartbeat_empty_logs", heartbeatEmptyLogs));
+    }
+  }
+
+  auto total = folly::dynamic::object("parts", totalParts)("active_bytes", totalActiveBytes)(
+      "dirty_bytes", totalDirtyBytes)("active_nodes", totalActiveNodes)(
+      "dirty_nodes", totalDirtyNodes)("reader_refs", totalReaderRefs)(
+      "gc_count", totalGcCount)("gc_deleted_nodes", totalGcDeletedNodes)(
+      "gc_deleted_bytes", totalGcDeletedBytes)(
+      "heartbeat_empty_logs", totalHeartbeatEmptyLogs);
+
+  return folly::dynamic::object("total", std::move(total))("parts", std::move(parts));
+}
+
 bool NebulaStore::checkLeader(std::shared_ptr<Part> part, bool canReadFromFollower) const {
   return canReadFromFollower || (part->isLeader() && part->leaseValid());
 }

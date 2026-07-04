@@ -21,6 +21,9 @@ extern stats::CounterId kTransferLeaderLatencyUs;
 extern stats::CounterId kNumStartElect;
 extern stats::CounterId kNumGrantVotes;
 extern stats::CounterId kNumSendSnapshot;
+extern stats::CounterId kNumRaftHeartbeat;
+extern stats::CounterId kNumRaftHeartbeatEmptyLog;
+extern stats::CounterId kNumRaftHeartbeatWithoutEmptyLog;
 
 void initKVStats();
 

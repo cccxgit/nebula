@@ -29,6 +29,7 @@
 #include "storage/http/StorageHttpAdminHandler.h"
 #include "storage/http/StorageHttpPropertyHandler.h"
 #include "storage/http/StorageHttpStatsHandler.h"
+#include "storage/http/StorageHttpWalStatsHandler.h"
 #include "storage/transaction/TransactionManager.h"
 #include "version/Version.h"
 #include "webservice/Router.h"
@@ -139,6 +140,9 @@ bool StorageServer::initWebService() {
   });
   router.get("/rocksdb_property").handler([this](web::PathParams&&) {
     return new storage::StorageHttpPropertyHandler(schemaMan_.get(), kvstore_.get());
+  });
+  router.get("/wal_stats").handler([this](web::PathParams&&) {
+    return new storage::StorageHttpWalStatsHandler(kvstore_.get());
   });
 
 #ifndef BUILD_STANDALONE

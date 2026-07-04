@@ -8,7 +8,10 @@
 
 #include <folly/RWSpinLock.h>
 #include <folly/concurrency/ConcurrentHashMap.h>
+#include <folly/dynamic.h>
 #include <gtest/gtest_prod.h>
+
+#include <optional>
 
 #include "common/base/Base.h"
 #include "common/ssl/SSLConfig.h"
@@ -590,6 +593,9 @@ class NebulaStore : public KVStore, public Handler {
    */
   int32_t allLeader(
       std::unordered_map<GraphSpaceID, std::vector<meta::cpp2::LeaderInfo>>& leaderIds) override;
+
+  folly::dynamic walStats(std::optional<GraphSpaceID> spaceId = std::nullopt,
+                          std::optional<PartitionID> partId = std::nullopt);
 
   /**
    * @brief Backup the data of a table prefix, for meta backup

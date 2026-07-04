@@ -76,6 +76,7 @@ void AtomicLogBuffer::push(LogID logId, Record&& record) {
     newNode->firstLogId_ = logId;
     newNode->next_ = head;
     newNode->push_back(std::move(record));
+    activeNodes_.fetch_add(1, std::memory_order_relaxed);
     if (head == nullptr || head->markDeleted_.load(std::memory_order_relaxed)) {
       // It is the first Node in current list, or head has been marked as
       // deleted
@@ -109,6 +110,8 @@ void AtomicLogBuffer::push(LogID logId, Record&& record) {
       tail_.store(tail->prev_, std::memory_order_release);
       if (marked) {
         size_.fetch_sub(tail->size_, std::memory_order_relaxed);
+        dirtyBytes_.fetch_add(tail->size_, std::memory_order_relaxed);
+        activeNodes_.fetch_sub(1, std::memory_order_relaxed);
         // dirtyNodes_ changes SHOULD after the tail move.
         dirtyNodes_.fetch_add(1, std::memory_order_release);
       }
@@ -121,17 +124,21 @@ void AtomicLogBuffer::push(LogID logId, Record&& record) {
 void AtomicLogBuffer::reset() {
   auto* p = head_.load(std::memory_order_relaxed);
   int32_t count = 0;
+  int64_t bytes = 0;
   while (p != nullptr) {
     bool expected = false;
     if (!p->markDeleted_.compare_exchange_strong(expected, true, std::memory_order_relaxed)) {
       // The rest nodes has been mark deleted.
       break;
     }
+    bytes += p->size_;
     p = p->next_;
     ++count;
   }
   size_.store(0, std::memory_order_relaxed);
   firstLogId_.store(0, std::memory_order_relaxed);
+  dirtyBytes_.fetch_add(bytes, std::memory_order_relaxed);
+  activeNodes_.fetch_sub(count, std::memory_order_relaxed);
   dirtyNodes_.fetch_add(count, std::memory_order_release);
 }
 
@@ -195,15 +202,23 @@ void AtomicLogBuffer::releaseRef() {
 
       // Now we begin to delete the nodes.
       auto* curr = dirtyHead;
+      int64_t deletedNodes = 0;
+      int64_t deletedBytes = 0;
       while (curr != nullptr) {
         CHECK(curr->markDeleted_.load(std::memory_order_relaxed));
         VLOG(5) << "Delete node " << curr->firstLogId_;
         auto* del = curr;
         curr = curr->next_;
+        deletedBytes += del->size_;
+        deletedNodes++;
         delete del;
         dirtyNodes_.fetch_sub(1, std::memory_order_release);
         CHECK_GE(dirtyNodes_, 0);
       }
+      gcCount_.fetch_add(1, std::memory_order_relaxed);
+      gcDeletedNodes_.fetch_add(deletedNodes, std::memory_order_relaxed);
+      gcDeletedBytes_.fetch_add(deletedBytes, std::memory_order_relaxed);
+      dirtyBytes_.fetch_sub(deletedBytes, std::memory_order_relaxed);
 
       gcOnGoing_.store(false, std::memory_order_release);
       VLOG(4) << "GC finished!";

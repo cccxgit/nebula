@@ -120,6 +120,19 @@ class AtomicLogBuffer : public std::enable_shared_from_this<AtomicLogBuffer> {
   FRIEND_TEST(AtomicLogBufferTest, ResetThenPushExceedLimit);
 
  public:
+  struct Stats {
+    int64_t activeBytes{0};
+    int64_t dirtyBytes{0};
+    int64_t activeNodes{0};
+    int64_t dirtyNodes{0};
+    int64_t readerRefs{0};
+    int64_t gcCount{0};
+    int64_t gcDeletedNodes{0};
+    int64_t gcDeletedBytes{0};
+    LogID firstLogId{0};
+    LogID lastLogId{0};
+  };
+
   /**
    * @brief The log iterator used in AtomicLogBuffer, all logs are in memory. Once the iterator is
    * created, it could just see the snapshot of current list. In other words, the new records
@@ -317,6 +330,21 @@ class AtomicLogBuffer : public std::enable_shared_from_this<AtomicLogBuffer> {
     return iter;
   }
 
+  Stats stats() const {
+    Stats s;
+    s.activeBytes = size_.load(std::memory_order_relaxed);
+    s.dirtyBytes = dirtyBytes_.load(std::memory_order_relaxed);
+    s.activeNodes = activeNodes_.load(std::memory_order_relaxed);
+    s.dirtyNodes = dirtyNodes_.load(std::memory_order_relaxed);
+    s.readerRefs = refs_.load(std::memory_order_relaxed);
+    s.gcCount = gcCount_.load(std::memory_order_relaxed);
+    s.gcDeletedNodes = gcDeletedNodes_.load(std::memory_order_relaxed);
+    s.gcDeletedBytes = gcDeletedBytes_.load(std::memory_order_relaxed);
+    s.firstLogId = firstLogId();
+    s.lastLogId = lastLogId();
+    return s;
+  }
+
  private:
   /**
    * @brief Construct a new Atomic Log Buffer object
@@ -358,11 +386,16 @@ class AtomicLogBuffer : public std::enable_shared_from_this<AtomicLogBuffer> {
   std::atomic_int refs_{0};
   // current size for the buffer.
   std::atomic_int size_{0};
+  std::atomic<int64_t> dirtyBytes_{0};
+  std::atomic<int64_t> activeNodes_{0};
   std::atomic<LogID> firstLogId_{0};
   // The max size limit.
   int32_t capacity_{8 * 1024 * 1024};
   std::atomic<bool> gcOnGoing_{false};
   std::atomic<int32_t> dirtyNodes_{0};
+  std::atomic<int64_t> gcCount_{0};
+  std::atomic<int64_t> gcDeletedNodes_{0};
+  std::atomic<int64_t> gcDeletedBytes_{0};
   int32_t dirtyNodesLimit_{5};
 };
 

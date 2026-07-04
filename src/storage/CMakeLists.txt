@@ -73,6 +73,7 @@ nebula_add_library(
     http/StorageHttpAdminHandler.cpp
     http/StorageHttpStatsHandler.cpp
     http/StorageHttpPropertyHandler.cpp
+    http/StorageHttpWalStatsHandler.cpp
 )
 
 nebula_add_library(

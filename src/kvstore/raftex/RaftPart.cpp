@@ -2039,13 +2039,24 @@ void RaftPart::processSendSnapshotRequest(const cpp2::SendSnapshotRequest& req,
 }
 
 void RaftPart::sendHeartbeat() {
+  stats::StatsManager::addValue(kNumRaftHeartbeat);
+
   // If leader has not commit any logs in this term, it must commit all logs in
   // previous term, so heartbeat is send by appending one empty log.
-  if (!replicatingLogs_.load(std::memory_order_acquire)) {
+  bool needAppendEmptyLog = false;
+  {
+    std::lock_guard<std::mutex> g(raftLock_);
+    needAppendEmptyLog = status_ == Status::RUNNING && role_ == Role::LEADER && !commitInThisTerm_;
+  }
+  if (needAppendEmptyLog && !replicatingLogs_.load(std::memory_order_acquire)) {
+    stats::StatsManager::addValue(kNumRaftHeartbeatEmptyLog);
+    numHeartbeatEmptyLogs_.fetch_add(1, std::memory_order_relaxed);
     folly::via(executor_.get(), [this] {
       std::string log = "";
       appendLogAsync(clusterId_, LogType::NORMAL, std::move(log));
     });
+  } else {
+    stats::StatsManager::addValue(kNumRaftHeartbeatWithoutEmptyLog);
   }
 
   using namespace folly;  // NOLINT since the fancy overload of | operator

@@ -19,6 +19,9 @@ stats::CounterId kTransferLeaderLatencyUs;
 stats::CounterId kNumStartElect;
 stats::CounterId kNumGrantVotes;
 stats::CounterId kNumSendSnapshot;
+stats::CounterId kNumRaftHeartbeat;
+stats::CounterId kNumRaftHeartbeatEmptyLog;
+stats::CounterId kNumRaftHeartbeatWithoutEmptyLog;
 
 void initKVStats() {
   kCommitLogLatencyUs = stats::StatsManager::registerHisto(
@@ -36,6 +39,11 @@ void initKVStats() {
   kNumStartElect = stats::StatsManager::registerStats("num_start_elect", "rate, sum");
   kNumGrantVotes = stats::StatsManager::registerStats("num_grant_votes", "rate, sum");
   kNumSendSnapshot = stats::StatsManager::registerStats("num_send_snapshot", "rate, sum");
+  kNumRaftHeartbeat = stats::StatsManager::registerStats("num_raft_heartbeat", "rate, sum");
+  kNumRaftHeartbeatEmptyLog =
+      stats::StatsManager::registerStats("num_raft_heartbeat_empty_log", "rate, sum");
+  kNumRaftHeartbeatWithoutEmptyLog =
+      stats::StatsManager::registerStats("num_raft_heartbeat_without_empty_log", "rate, sum");
 }
 
 }  // namespace nebula

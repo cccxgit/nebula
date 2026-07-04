@@ -112,6 +112,10 @@ class RaftPart : public std::enable_shared_from_this<RaftPart> {
     return role_ == Role::LEARNER;
   }
 
+  const char* roleStr() const {
+    return roleStr(role_);
+  }
+
   /**
    * @brief Return the cluster id of RaftPart
    */
@@ -387,6 +391,10 @@ class RaftPart : public std::enable_shared_from_this<RaftPart> {
    * @return std::pair<LogID, TermID> Pair of last log id and last log term in wal
    */
   std::pair<LogID, TermID> lastLogInfo() const;
+
+  uint64_t numHeartbeatEmptyLogs() const {
+    return numHeartbeatEmptyLogs_.load(std::memory_order_relaxed);
+  }
 
   /**
    * @brief Reset the part, clean up all data and WALs.
@@ -884,6 +892,7 @@ class RaftPart : public std::enable_shared_from_this<RaftPart> {
   int64_t startTimeMs_ = 0;
 
   std::atomic<bool> blocking_{false};
+  std::atomic<uint64_t> numHeartbeatEmptyLogs_{0};
 };
 
 }  // namespace raftex
