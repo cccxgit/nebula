@@ -40,6 +40,9 @@ DEFINE_string(default_charset, "utf8", "The default charset when a space is crea
 DEFINE_string(default_collate, "utf8_bin", "The default collate when a space is created");
 
 DEFINE_bool(enable_authorize, false, "Enable authorization, default false");
+DEFINE_bool(enable_graph_mutation,
+            true,
+            "Allow graphd mutation statements. Set false to freeze a source cluster for migration");
 DEFINE_string(auth_type,
               "password",
               "User login authentication type,"

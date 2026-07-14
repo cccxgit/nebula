@@ -13,6 +13,7 @@
 #include "graph/context/QueryContext.h"
 #include "graph/optimizer/Optimizer.h"
 #include "graph/scheduler/Scheduler.h"
+#include "graph/service/MutationFreezeManager.h"
 #include "parser/GQLParser.h"
 
 /**
@@ -61,6 +62,7 @@ class QueryInstance final : public boost::noncopyable, public cpp::NonMovable {
   std::unique_ptr<Sentence> sentence_;
   std::unique_ptr<QueryContext> qctx_;
   std::unique_ptr<Scheduler> scheduler_;
+  std::unique_ptr<MutationLease> mutationLease_;
   opt::Optimizer* optimizer_{nullptr};
 };
 

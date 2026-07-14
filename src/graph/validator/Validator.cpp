@@ -9,6 +9,7 @@
 
 #include "common/function/FunctionManager.h"
 #include "graph/planner/plan/PlanNode.h"
+#include "graph/service/MutationFreezeManager.h"
 #include "graph/planner/plan/Query.h"
 #include "graph/util/ExpressionUtils.h"
 #include "graph/util/SchemaUtil.h"
@@ -355,6 +356,10 @@ Status Validator::validate() {
   vidType_ = SchemaUtil::propTypeToValueType(vidType);
 
   NG_RETURN_IF_ERROR(validateImpl());
+
+  // Guard parsed AST nodes rather than matching raw query text. Sequential validators validate
+  // every child sentence, so a mixed read/write request cannot bypass the migration freeze.
+  NG_RETURN_IF_ERROR(MutationFreezeManager::instance().checkMutationAllowed(sentence_));
 
   // Check for duplicate reference column names in pipe or var statement
   NG_RETURN_IF_ERROR(checkDuplicateColName());

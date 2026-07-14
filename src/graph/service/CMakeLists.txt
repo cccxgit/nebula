@@ -11,6 +11,8 @@ nebula_add_library(
     service_obj OBJECT
     GraphService.cpp
     GraphServer.cpp
+    MigrationFreezeStatusHandler.cpp
+    MutationFreezeManager.cpp
 )
 
 nebula_add_library(

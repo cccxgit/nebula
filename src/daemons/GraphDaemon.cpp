@@ -17,10 +17,12 @@
 #include "common/time/TimezoneInfo.h"
 #include "daemons/SetupLogging.h"
 #include "graph/service/GraphFlags.h"
+#include "graph/service/MigrationFreezeStatusHandler.h"
 #include "graph/service/GraphServer.h"
 #include "graph/service/GraphService.h"
 #include "graph/stats/GraphStats.h"
 #include "version/Version.h"
+#include "webservice/Router.h"
 #include "webservice/WebService.h"
 
 using nebula::ProcessUtils;
@@ -121,6 +123,10 @@ int main(int argc, char *argv[]) {
 
   LOG(INFO) << "Starting Graph HTTP Service";
   auto webSvc = std::make_unique<nebula::WebService>();
+  webSvc->router().get("/migration_freeze_status").handler([](nebula::web::PathParams&& params) {
+    DCHECK(params.empty());
+    return new nebula::graph::MigrationFreezeStatusHandler();
+  });
   status = webSvc->start();
   if (!status.ok()) {
     return EXIT_FAILURE;

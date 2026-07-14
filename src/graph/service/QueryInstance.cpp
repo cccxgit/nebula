@@ -99,6 +99,9 @@ Status QueryInstance::validateAndOptimize() {
 
   // Validate the query, if failed, return
   NG_RETURN_IF_ERROR(Validator::validate(sentence_.get(), qctx()));
+  auto mutationLease = MutationFreezeManager::instance().acquire(sentence_.get());
+  NG_RETURN_IF_ERROR(mutationLease);
+  mutationLease_ = std::move(mutationLease).value();
   // Optimize the query, and get the execution plan. We should not pass the optimizer errors to user
   // since the message is often not easy to understand. Logging them is enough.
   if (auto status = findBestPlan(); !status.ok()) {

@@ -37,6 +37,7 @@ DECLARE_string(meta_server_addrs);
 DECLARE_string(default_charset);
 DECLARE_string(default_collate);
 DECLARE_bool(enable_authorize);
+DECLARE_bool(enable_graph_mutation);
 DECLARE_string(auth_type);
 DECLARE_string(cloud_http_url);
 DECLARE_uint32(max_allowed_statements);
