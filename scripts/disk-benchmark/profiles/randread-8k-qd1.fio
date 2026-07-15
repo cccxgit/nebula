@@ -1,0 +1,28 @@
+# Copyright (c) 2026 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License.
+
+[global]
+filename=${DATA_FILE}
+size=${TEST_SIZE}
+ioengine=psync
+direct=1
+invalidate=1
+allow_file_create=0
+rw=randread
+bs=8k
+iodepth=1
+numjobs=1
+time_based=1
+runtime=${RUNTIME}
+ramp_time=${RAMP_TIME}
+thread=1
+group_reporting=1
+randrepeat=1
+randseed=${RANDSEED}
+norandommap=1
+clat_percentiles=1
+lat_percentiles=1
+percentile_list=50:95:99:99.9
+
+[randread_8k_qd1]

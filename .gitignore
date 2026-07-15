@@ -41,6 +41,7 @@ modules/
 tests/secrets
 reformat-gherkin
 nebula-python
+/nebula-disk-results/
 
 # IDE
 .idea/

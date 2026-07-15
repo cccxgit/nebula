@@ -1,0 +1,32 @@
+# Copyright (c) 2026 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License.
+
+[global]
+size=${TEST_SIZE}
+ioengine=libaio
+direct=1
+invalidate=1
+fallocate=none
+bs=1m
+iodepth=${IODEPTH}
+numjobs=1
+time_based=1
+runtime=${RUNTIME}
+ramp_time=${RAMP_TIME}
+thread=1
+group_reporting=1
+clat_percentiles=1
+lat_percentiles=1
+percentile_list=50:95:99:99.9
+
+[compaction_read]
+filename=${DATA_FILE}
+allow_file_create=0
+rw=read
+
+[compaction_write]
+new_group=1
+filename=${COMPACTION_FILE}
+rw=write
+refill_buffers=1

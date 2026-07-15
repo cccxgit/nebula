@@ -111,3 +111,41 @@ install(
     COMPONENT
         storage
 )
+
+install(
+    PROGRAMS
+        disk-benchmark/nebula-disk-benchmark.sh
+    DESTINATION
+        scripts/disk-benchmark
+    COMPONENT
+        tool
+)
+
+install(
+    FILES
+        disk-benchmark/README-CN.md
+    DESTINATION
+        scripts/disk-benchmark
+    COMPONENT
+        tool
+)
+
+install(
+    FILES
+        disk-benchmark/lib/report.py
+    DESTINATION
+        scripts/disk-benchmark/lib
+    COMPONENT
+        tool
+)
+
+install(
+    DIRECTORY
+        disk-benchmark/profiles
+    DESTINATION
+        scripts/disk-benchmark
+    COMPONENT
+        tool
+    FILES_MATCHING
+        PATTERN "*.fio"
+)
