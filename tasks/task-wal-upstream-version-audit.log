@@ -1,0 +1,73 @@
+===== 2026-08-14 NebulaGraph upstream version audit =====
+
+Scope
+-----
+- Question: whether the open-source community or a later public release fixes the
+  task-wal memory-growth mechanism identified on NebulaGraph v3.6.
+- Read-only source/history/forum audit. No Nebula service was started, and no
+  product source or configuration was changed.
+
+Official public version boundary
+--------------------------------
+- v3.6.0 tag: de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+- latest GitHub release: v3.8.0, published 2024-05-17
+- v3.8.0 tag: fa928930ab34f150db522933323aa610e54f26e7
+- current release-3.8 head: 15fc0b7a12ba69b3977c6f4a9d70d15ec7f98742
+- current master head queried on 2026-08-14:
+  cdef57e5fd0a972ec9e51d5272638fd772273f46
+- No official v3.7.0 tag or release exists in vesoft-inc/nebula.
+
+Byte-level comparison
+---------------------
+The following official raw source files have identical SHA-256 values across
+v3.6.0, v3.8.0, current release-3.8, and current master:
+
+- src/kvstore/raftex/RaftPart.cpp
+  3b0c2c1a872f3c7e2ef3420e66bc6bd5d7bdd7ba8871f084e57c7d64375de221
+- src/kvstore/wal/AtomicLogBuffer.cpp
+  3af5641a37c66d5a80ed27670857c9beb8538a6406ff7fa1bd74ccc4b7a2e47a
+- src/kvstore/wal/AtomicLogBuffer.h
+  da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd
+- src/kvstore/wal/FileBasedWal.cpp
+  a25d6cc58f82f1cb15d3e5840e786109f1dcc2de8b77173e5156ebd9f0e0d79f
+- src/kvstore/Part.cpp
+  d8b4b8bd31ab0c40756f7f3ccc7693f042bffc804b0b90e1c846a712cecf9034
+- src/kvstore/RocksEngine.cpp
+  ac7b30301a7e5362fb3d4bb04deb1c9ce01b1b74bb5e936a5df9f0873c204536
+
+Consequence
+-----------
+- sendHeartbeat() still appends an empty NORMAL log whenever replication is not
+  in flight; it is not gated by commitInThisTerm_.
+- committing that empty log still writes the per-partition RocksDB commit key.
+- FileBasedWal still pushes every empty log into AtomicLogBuffer.
+- AtomicLogBuffer capacity/dirty-node/reader-based GC behavior is unchanged.
+- Therefore the identified empty-log -> RocksDB memtable plus AtomicLogBuffer
+  growth mechanism is not fixed by public v3.8.0 or current public master.
+
+Official issue/PR evidence
+--------------------------
+- https://github.com/vesoft-inc/nebula/issues/6156
+  Open as queried on 2026-08-14; no linked branch or pull request. It proposes
+  adding commitInThisTerm_ to prevent repeated no-op logs after the leader has
+  committed once in the current term. This matches the identified upstream
+  trigger but is not a released fix.
+- https://github.com/vesoft-inc/nebula/pull/4386
+  Merged in 2022 and already present in v3.6. It adds a physical-GC condition for
+  oversized AtomicLogBuffer usage caused by large individual logs; it does not
+  stop periodic empty logs or RocksDB commit-key writes.
+- https://github.com/vesoft-inc/nebula-storage/issues/390
+  Historical reader/GC design issue. Current source still links it from a TODO in
+  AtomicLogBuffer::releaseRef(), so its closure is not evidence of a full redesign.
+- https://discuss.nebula-graph.com.cn/t/topic/14718
+  A maintainer said a raft-log-buffer fix might wait for "3.7". The wording was
+  tentative; no public v3.7 release or corresponding code change was found, and
+  the same key files remain byte-identical through current public master.
+
+Conclusion
+----------
+- Several unrelated memory-growth bugs have been fixed historically, and PR #4386
+  partially mitigated a different large-log AtomicLogBuffer case.
+- The exact task-wal mechanism is not fixed in any currently public open-source
+  release/branch inspected. Upgrading v3.6 to public v3.8 alone will not remove it.
+- This conclusion does not cover private enterprise/internal branches.

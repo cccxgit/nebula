@@ -1,0 +1,195 @@
+===== 2026-08-14 task-wal root-cause audit =====
+
+Scope
+-----
+- Read-only audit of Nebula Graph 3.6 source and existing task-wal artifacts.
+- No product source was changed.
+- No Nebula service was started or stopped during this audit.
+- Process check at final-review time found no nebula-storaged, nebula-metad, or nebula-graphd process.
+- The requested task is root-cause analysis only; no fix was implemented.
+
+Repository
+----------
+cwd=/home/sch/nebula/nebula-3.6-w
+HEAD=de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+HEAD date=2023-07-20 11:22:28 +0800
+HEAD subject=Cherry pick 3.6 (0701-0720) (#5649)
+
+Key source findings
+-------------------
+- conf/nebula-storaged.conf.default:46: raft_heartbeat_interval_secs=30
+- RaftPart.cpp:1411: polling delay = H*1000/3 + rand32(500)
+- RaftPart.cpp:2041-2048: each idle leader polling cycle appends NORMAL empty log when !replicatingLogs_
+- RaftPart.cpp:2051-2081: a separate Heartbeat RPC is also sent
+- RaftPart.cpp:1912-1914: follower Heartbeat RPC path explicitly does not append logs
+- Part.cpp:225-232: empty payload skips business operation only
+- Part.cpp:349-358,403-410: the same empty log still writes per-partition commit key to RocksDB
+- RocksEngine.cpp:124-134: commitBatchWrite calls db_->Write
+- NebulaStore.cpp:395-421: one RocksEngine per space per data path
+- conf/nebula-storaged.conf.default:102: write_buffer_size=67108864
+- FileBasedWal.cpp:499: every log is pushed into AtomicLogBuffer
+- AtomicLogBuffer.h:18,23-39: 64 records per Node; empty record logical size=16 bytes
+- AtomicLogBuffer.cpp:91-119: capacity overflow marks old Node dirty, not immediate free
+- AtomicLogBuffer.cpp:167-214: physical Node deletion happens in iterator release GC
+- FileBasedWal.cpp:640-706: wal_ttl cleanup only deletes disk files and keeps at least two
+
+Existing accelerated task-wal cluster configuration
+--------------------------------------------------
+Build provenance:
+  source worktree=/home/sch/nebula/nebula-3.6-wal
+  commit=a3a8e5f5f49cce1507f91e3653cfcc4dddab643a
+  committed product source under src/ and conf/ matches the current v3.6 baseline
+  uncommitted changes add AtomicLogBuffer/HTTP observation metrics only
+
+Files:
+  /usr/local/nebula/etc/nebula-storaged-task-wal-{1,2,3}.conf
+
+Observed flags:
+  raft_heartbeat_interval_secs=1
+  write_buffer_size=67108864
+  5 empty spaces, 20 partitions/space, replica_factor=3
+  100 local partition replicas per storaged
+
+RocksDB long-run log aggregation
+--------------------------------
+Command pattern:
+  rg 'flush_started.*Write Buffer Full' \
+    /usr/local/nebula/data/task-wal-storage{1,2,3}/nebula/{1,2,3,4,5}/data/LOG
+
+Result:
+  DB logs containing Write Buffer Full = 15
+  events per DB = 60
+  total events = 900
+  avg num_entries = 1281118.22
+  min num_entries = 1231550
+  max num_entries = 1316940
+  avg memory_usage bytes = 66262551.50
+  min memory_usage = 64935336
+  max memory_usage = 66911368
+
+Inter-flush interval aggregation:
+  intervals = 885
+  avg seconds = 37355.43
+  avg hours = 10.3765
+  min seconds = 35936
+  max seconds = 38393
+
+Representative evidence
+-----------------------
+File:
+  /usr/local/nebula/data/task-wal-storage1/nebula/1/data/LOG
+
+First full flush:
+  2026/07/07-07:31:56
+  num_entries=1272918
+  total_data_size=43278875
+  memory_usage=66647512
+  flush_reason=Write Buffer Full
+  output SST file_size=1565, num_entries=41
+
+Second full flush:
+  2026/07/07-17:53:42
+  num_entries=1280025
+  total_data_size=43520850
+  memory_usage=66452944
+  flush_reason=Write Buffer Full
+  output SST file_size=1443, num_entries=20
+  raw_key_size=320, raw_value_size=320
+
+RocksDB stats immediately after first flush:
+  uptime=37203.0 seconds
+  cumulative writes=1276K
+  cumulative keys=1276K
+  cumulative commit groups=1276K
+
+Timing cross-check
+------------------
+H=1 mean polling interval:
+  floor(1000/3)+249.5 ms = 0.5825 sec
+
+Theoretical write rate for one space with 20 local partitions:
+  20 / 0.5825 = 34.33 entries/sec
+
+Theoretical flush duration using observed 1281118-entry threshold:
+  1281118 / 34.33 = 10.364 hours
+
+Observed mean:
+  10.3765 hours
+
+Projected clean-heartbeat flush cycle:
+  H=20 -> 5.127 days
+  H=30 -> 7.599 days
+
+AtomicLogBuffer timing cross-check
+----------------------------------
+Empty record logical size=16 bytes.
+8 MiB / 16 = 524288 records before capacity pressure.
+Six-dirty-node first GC point is approximately record 524610.
+
+Projected first GC:
+  H=1  -> 3.537 days
+  H=20 -> 41.990 days
+  H=30 -> 62.234 days
+
+This does not match the first H=1 RocksDB drop at 10.4 hours or the production-scale multi-day drop.
+
+External references reviewed
+----------------------------
+- https://discuss.nebula-graph.com.cn/t/topic/13075
+- https://discuss.nebula-graph.com.cn/uploads/short-url/bsPWKDeIjm7ASd8EvQ6Jgqs4af9.pdf
+- https://discuss.nebula-graph.com.cn/t/topic/13677
+- https://discuss.nebula-graph.com.cn/uploads/short-url/btEMiwlhVWgXVz1eWgw56OUZ2z2.pdf
+- https://discuss.nebula-graph.com.cn/t/topic/14316
+- https://discuss.nebula-graph.com.cn/t/topic/14718
+- https://discuss.nebula-graph.com.cn/t/topic/14898
+- https://discuss.nebula-graph.com.cn/t/topic/15244
+- https://discuss.nebula-graph.com.cn/t/topic/16594
+- https://github.com/vesoft-inc/nebula/pull/4386
+- https://github.com/vesoft-inc/nebula-storage/issues/390
+- https://github.com/facebook/rocksdb/wiki/MemTable
+- https://github.com/facebook/rocksdb/wiki/Memory-usage-in-RocksDB
+
+Official-forum profile cross-check
+----------------------------------
+topic/13075 post #7, jeprof --base diff, one-page PDF:
+  total/focusing=256.2 MB
+  FileBasedWal::appendLogs flat=+208.1 MB, cumulative=+232.7 MB
+  AtomicLogBuffer::push=+24.6 MB
+  RocksDB MemTable/Arena=+71.7 MB
+  RocksDB FlushJob path=-74.2 MB
+
+topic/13075 post #8 versus post #10, independent in-use snapshots five days apart:
+  process RSS=5.7 GiB -> 6.1 GiB
+  total profiled heap=5062.8 MB -> 5464.1 MB (+401.3 MB)
+  AtomicLogBuffer::push=107.9 MB -> 565.9 MB (+458.0 MB)
+  FileBasedWal::appendLogs cumulative=727.2 MB -> 1139.3 MB (+412.1 MB)
+  theoretical Atomic Node growth for 212 parts, H=30, five days ~=0.43-0.48 GiB
+  The snapshot subtraction is this audit's derivation, not a forum-provided --base diff.
+
+topic/13677 post #1, apparent single in-use snapshot, one-page PDF:
+  total/focusing=855447293 bytes
+  AtomicLogBuffer::push=160455022 bytes (18.8%)
+  RocksDB MemTable/Arena=295897981 bytes (34.6%)
+
+Public-version check for the forum's tentative "3.7 fix" statement:
+  public v3.6.0 tag=de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+  public v3.8.0 tag=fa928930ab34f150db522933323aa610e54f26e7
+  AtomicLogBuffer.cpp/.h, FileBasedWal.cpp and RaftPart.cpp are byte-identical between tags.
+  sha256 AtomicLogBuffer.cpp=3af5641a37c66d5a80ed27670857c9beb8538a6406ff7fa1bd74ccc4b7a2e47a
+  sha256 AtomicLogBuffer.h=da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd
+  sha256 FileBasedWal.cpp=a25d6cc58f82f1cb15d3e5840e786109f1dcc2de8b77173e5156ebd9f0e0d79f
+  sha256 RaftPart.cpp=3b0c2c1a872f3c7e2ef3420e66bc6bd5d7bdd7ba8871f084e57c7d64375de221
+  No public PR/commit for a 3.7 raft-buffer fix was found.
+  PR #4386 from 2022 is already present in v3.6.0.
+
+Audit outcome
+-------------
+Common upstream trigger:
+  periodic empty NORMAL Raft logs from RaftPart::sendHeartbeat
+
+Multi-day RSS drop trigger:
+  repeated per-partition commit-key versions fill each space's RocksDB memtable,
+  followed by Write Buffer Full flush
+
+Long-term additive growth:
+  per-partition AtomicLogBuffer Node growth before its logical capacity is reached
