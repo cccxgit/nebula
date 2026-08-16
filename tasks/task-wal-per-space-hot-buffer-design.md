@@ -16,9 +16,9 @@
 
 > 为每个 Space 持久化一个期望的 WAL 内存缓存容量；storaged 将该策略应用到此 Space 的每个普通 replica-part。每个 `AtomicLogBuffer` 只把原来构造期固定的 `capacity_` 改成可原子更新的目标容量，后续缓存收缩仍完全复用现有 `push() -> 标记旧 tail -> releaseRef() GC` 路径，不增加后台主动 trim，不直接修改链表，也不删除磁盘 WAL。
 
-第一版采用人工审核和人工下发 Space 策略，不自动判断冷热。自动冷热识别只作为后续可选阶段，并且应按 replica-part 判断、按 Space 汇总展示。
+第一版采用 `OBSERVE_ONLY` 冷热观察、人工审核和人工下发 Space 策略：系统必须按 replica-part 采集 WAL 写热度、业务请求热度和后台忙碌状态，再按 Space 保守汇总；但观察器不得自动修改容量。自动执行只作为完成 shadow 验证后的可选阶段。
 
-第一版的准入条件是：目标 Space 的**全部普通 Part** 都已被证明为低非空 WAL 写入，或业务负责人明确接受热点 Part 也同步降容的性能代价。只要存在“一部分 Part 热、一部分 Part 冷”的写入倾斜且不能接受误伤，就应跳过该 Space，或等 Phase 3 使用 per-part 策略；Space 级 target 不会自动避开热点 Part。
+第一版的准入条件是：目标 Space 的**全部普通 Part** 都已被证明为低非空 WAL 写入，或业务负责人明确接受热点 Part 也同步降容的性能代价。只要存在“一部分 Part 热、一部分 Part 冷”的写入倾斜且不能接受误伤，就应跳过该 Space；per-part policy 必须另立项目，Phase 3 的 Space 级自动执行也不会自动避开热点 Part。
 
 ### 1.2 为什么它是在线精细化治理中的最佳平衡点
 
@@ -88,6 +88,8 @@ RaftPart::statusPolling()
 8. 允许单节点、单 Space、单批 Part 灰度；
 9. 可以观测 desired、applied、shrinking、steady 和 warming；
 10. 异常配置、乱序更新和进程崩溃不能造成静默回到错误容量。
+11. 能够给出可解释、可审计的 Space 冷热证据，缺报、重启、拓扑变化和后台作业一律 fail-closed；
+12. 第一阶段的冷热观察只读，不允许未经人工批准自动修改 target。
 
 ### 2.3 非目标
 
@@ -100,7 +102,7 @@ RaftPart::statusPolling()
 - 不对冷 Space 主动 flush RocksDB；
 - 不自动降低 `wal_ttl`；
 - 不承诺 RSS 立即下降；
-- 不自动识别业务级“完全空闲”；
+- 第一阶段不自动执行冷热容量切换；观察器只给出 `WAL_WRITE_HEAT`、`REQUEST_HEAT`、`SYSTEM_BUSY` 和候选建议；
 - 不把 Listener 默认纳入第一版；
 - 不承诺整个 Space 的所有 Part 在同一时刻原子切换容量。
 
@@ -223,7 +225,7 @@ SpaceWalBufferPolicy {
 - 每个 Part 使用6.3节完整 `EffectiveCapacityVersion`（含 gate 与 `generation_install_epoch`）和 target 比较；
 - RESET 保留 `enabled=false` tombstone 和新的 `last_modified_epoch`，不能直接物理删除 CAS token；
 - Drop Space 可以在删除 Space 元数据时同批删除 tombstone；
-- `activity_epoch` 是未来自动冷热的本地活动版本，与以上管理版本完全独立。
+- `wal_activity_epoch/request_epoch/safety_epoch` 是未来冷热观察的本地版本，与以上管理版本完全独立。
 
 当前 generation 中从未配置过的 Space，其初始 CAS token 定义为 `(current_generation, 0)`。
 
@@ -364,7 +366,7 @@ EffectiveCapacityVersion {
 
 这些规则可同时关闭旧 target、旧 gate 和旧 generation 的 check-then-store 窗口。该策略锁不进入 Raft/WAL 链表临界区，也不能在持有时获取 NebulaStore 或 Meta 锁。
 
-Phase 3 若启用自动冷热，还要把 `activity_epoch` 和 HOT/COLD mode 纳入 effective-capacity 状态机；第一版不预留一个含义模糊的单一 revision 来同时处理三种版本域。
+Phase 3 若启用自动执行，还要把 `wal_activity_epoch/request_epoch/safety_epoch` 和 HOT/COLD mode 纳入 effective-capacity 状态机；第一版不预留一个含义模糊的单一 revision 来同时处理这些版本域。
 
 `FileBasedWalPolicy::bufferSize` 当前是构造期策略并保存在 const `policy_`：[`FileBasedWal.h:265`](../src/kvstore/wal/FileBasedWal.h#L265)。热更新后它只能表示 initial capacity；HTTP/metrics 必须从 `AtomicLogBuffer::capacity()` 获取当前有效 target，不能继续展示 `policy_.bufferSize`。
 
@@ -696,59 +698,579 @@ gate 默认 `DISABLED`，由每台 storaged 的专用本地状态文件和受控
 
 Heartbeat 状态至少携带 `process_instance_id/boot_id`、capability、`gate_epoch/gate_state`、ready、desired generation/epoch/hash 和 `applied_gate_epoch`/generation/epoch/hash。storaged 首次 heartbeat 可能早于 kvstore 构造完成（初始化顺序见 [`StorageServer.cpp:236-257`](../src/storage/StorageServer.cpp#L236-L257)），因此新进程先报告 `INITIALIZING` 且没有 applied；Meta 对同一 boot_id 拒绝较小 gate epoch，只统计当前活跃、属于目标集合、capability/gate匹配且 boot_id 对应本进程的 ack，不能沿用相同 HostAddr 上一个进程的陈旧 applied。
 
-## 11. 可选的自动冷热识别
+## 11. 图空间冷热观察与可选自动决策
 
-### 11.1 第一版为什么不自动化
+### 11.1 交付边界：观察是必选项，自动改容量是后续项
 
-第一版应由运维人工审核冷 Space 并下发 target。这样可以单独验证：
+本方案必须包含冷热观察，否则“目标 Space 的全部普通 Part 已经冷”无法形成可审计证据。交付应拆为两个互相隔离的能力：
 
-- atomic capacity；
-- push/GC 并发硬化；
-- 磁盘 fallback；
-- Snapshot；
-- 控制面 generation/epoch/hash；
-- 回滚和升容语义。
+1. **只读观察器**：首个版本即提供，默认 `OBSERVE_ONLY`，只采集、聚合和解释冷热，不调用 capacity setter；人工审核 Space 时必须以该结果为主要依据。
+2. **自动决策器**：只有观察器经过至少一个完整业务周期的 shadow 验证后，才作为后续可选能力逐 Space 启用。
 
-把识别、状态机和容量热更新同时上线，会让故障无法归因。
+第一批生产版本仍由运维人工下发 target，这样可以单独验证 atomic capacity、push/GC 并发硬化、磁盘 fallback、Snapshot、控制面版本和回滚语义。观察器即使判断为冷，也只输出建议；不得在第一阶段自动修改容量。
 
-### 11.2 第二版按Part识别、按Space展示
+### 11.2 “冷热”必须拆成三种信号
 
-自动模式建议：
+OSS 3.6 当前没有一个现成指标能够证明“整个 Space 业务空闲且适合缩小 WAL cache”；进程级 operation counter、WAL mtime、RSS 和 Meta 的 Space 状态都不足以单独授权降容。不能用一个 `last_active` 或一个不透明分数替代证据链，至少拆成：
 
-```text
-HOT
-  -> 连续idle_timeout无非空Raft WAL活动
-  -> COLD_CANDIDATE
-  -> 第二次确认activity_epoch未变化
-  -> COLD
+| 维度 | 精确定义 | 与 WAL buffer 的关系 | 决策用途 |
+|---|---|---|---|
+| `WAL_WRITE_HEAT` | 本地 replica 成功接受的非空 Raft WAL record | 直接反映 Atomic cache 中是否持续进入有业务/管理 payload 的日志 | 冷判定的主信号 |
+| `REQUEST_HEAT` | storaged 收到的业务读写 RPC 尝试 | 读请求本身不消费 Atomic WAL；但能识别“无写但查询很热”的 Space | 自动降容的保守性能 gate 和人工解释 |
+| `SYSTEM_BUSY` | Snapshot、ingest、restore、rebuild、balance、追赶、拓扑或角色不稳定 | 可能绕过普通 WAL，或使小缓存更容易走磁盘/Snapshot | 直接否决自动转冷 |
 
-COLD
-  -> 第一条非空Raft WAL到来
-  -> 先恢复hot target
-  -> 再push当前日志
-  -> HOT
+```mermaid
+flowchart LR
+    A["成功的本地WAL append"] --> D["per-replica Part观察器"]
+    B["Graph Storage读写RPC入口"] --> D
+    C["Snapshot/Admin/Balance/Raft状态"] --> D
+    D --> E["有界短/长窗口与epoch"]
+    E --> F["同一拓扑版本的逻辑Part聚合"]
+    F --> G["Space fail-closed聚合"]
+    G --> H["OBSERVE_ONLY查询/告警"]
+    G --> I["人工审批MANUAL策略"]
+    G -.->|shadow通过后才允许| J["显式启用的AUTO决策"]
+    J --> K["per-Space target policy"]
 ```
 
-识别信号应记录在 `FileBasedWal::appendLogInternal()` 成功路径，条件为 `msg` 非空。准确位置是磁盘 WAL 写入及元数据更新成功之后、[`logBuffer_->push()`](../src/kvstore/wal/FileBasedWal.cpp#L492-L500) 之前。它表示“近期有非空 Raft WAL 活动”，不能直接命名为“没有任何业务写入”，因为 Snapshot、SST ingest 和 restore 可绕过普通 WAL append。
-
-每次非空活动增加 `activity_epoch`。这不能实现成“检查 epoch，再单独 store capacity”，否则仍有迟到 Cleaner 覆盖 HOT 的 check-then-store 竞态。per-part 状态必须提供原子迁移：
-
-- `tryCold(expectedEpoch)`：在同一策略临界区复核 epoch/时间、切换 COLD、写入 cold capacity；
-- `onNonEmptyActivity()`：在同一临界区执行 `epoch++`、切换 HOT、恢复 hot capacity，然后才允许当前非空日志进入 buffer；
-- 冷任务、WAL Writer 和手工 policy 更新使用定义清楚的优先级；人工 policy snapshot 与本地 gate state 高于自动状态；
-- 该临界区不得同步获取 NebulaStore 或 Meta 锁。
-
-`activity_epoch` 只描述本地 Part 活动，不能与管理面的 `policy_generation/snapshot_epoch` 混用。自动阶段启用前必须为这两种迁移加入确定性竞态测试。
-
-一个 Space 可以按以下方式展示：
+因此本文中的“冷 Space”不是简单的“用户没有查询”，而是：
 
 ```text
-20/20 parts cold -> SPACE_COLD
-18/20 parts cold -> SPACE_PARTIALLY_COLD
-0/20 parts cold  -> SPACE_HOT
+WAL写观察证据完整且满足冷窗口
+  + 业务请求热度未触发保护门槛
+  + 无后台管理/恢复/拓扑忙碌状态
+  + 所有预期普通replica-part均有新鲜报告
 ```
 
-实际 target 仍按 Part 执行，以避免一个热点 Part 拖住其余19个空闲 buffer，或错误缩小热点 Part。
+读热点不属于 Raft correctness 风险，但为了最小化性能回归，首个可执行的 AUTO 版本应默认让 `READ_HOT` 或 `READ_UNKNOWN` 阻止降容。人工模式可以在经过专项压测后显式接受“只读热点、WAL 写冷”的 Space。
+
+### 11.3 正式状态模型：Part观察与Space控制分域
+
+不能把证据有效性、WAL温度、请求热度、安全状态和控制权塞进一个枚举。每个普通 replica-part 维护四个正交观察域：
+
+```text
+ObservationValidity = UNKNOWN(reason_mask) | OBSERVING | VALID
+WalTemperature      = HOT | COOLING | COLD
+RequestGuard        = REQUEST_HOT | REQUEST_COLD | REQUEST_UNKNOWN
+SafetyGuard         = SAFE | BUSY(reason_mask) | SAFETY_UNKNOWN(reason_mask)
+```
+
+`SpaceControlOwner = OBSERVE_ONLY | MANUAL | AUTO` 是 **Space policy 域**，不属于某个 replica 的温度。集群级还维护独立的 Space decision state：
+
+```text
+NO_DECISION | COLD_PREPARING | COLD_APPLYING
+            | CANARY_COLD_APPLIED | COLD_APPLIED
+            | HOT_RECOVERING | ABORTING
+```
+
+只有以下条件同时成立，某个 Part 才能为 Space 自动判冷提供一份有效资格：
+
+```text
+ObservationValidity == VALID
+&& WalTemperature == COLD
+&& RequestGuard == REQUEST_COLD
+&& SafetyGuard == SAFE
+&& health/topology/lag检查通过
+```
+
+只有所有预期普通 Part/replica 都提供同一 topology collection round 的有效资格，且 Space `SpaceControlOwner=AUTO`，协调者才可发起 `COLD_PREPARING`。任一证据缺失都必须得到 `eligible_for_cold=false`，不能把“没有收到指标”解释成“没有流量”。
+
+如果 AUTO 已经应用 cold target，任一 Part 进入 UNKNOWN、BUSY 或 REQUEST_HOT 时，本 Part 必须先恢复 original/hot target，并使当前 Space auto decision 失效；协调者随后将整个 Space 异步恢复 hot。已经淘汰的缓存不会立即预热，但不能继续按冷容量淘汰。`MANUAL` 模式下观察器只报告和告警，不能覆盖人工 target；`OBSERVE_ONLY` 永远不能调用 setter。
+
+### 11.4 WAL写热度的权威采集点
+
+最强的 WAL 活动信号位于 [`FileBasedWal::appendLogInternal()`](../src/kvstore/wal/FileBasedWal.cpp#L442-L500)：
+
+```text
+write本地WAL文件
+  -> 可选fsync
+  -> 更新WAL文件元数据和first/last LogID
+  -> 记录冷热活动
+  -> AtomicLogBuffer::push()
+```
+
+具体应在 [`FileBasedWal.cpp:489-499`](../src/kvstore/wal/FileBasedWal.cpp#L489-L499) 完成元数据更新之后、调用 `logBuffer_->push()` 之前执行 O(1) 回调。`FileBasedWal` 已保存 `spaceId_` 和 `partId_`：[`FileBasedWal.h:260-265`](../src/kvstore/wal/FileBasedWal.h#L260-L265)。回调由 `RaftPart` 构造时注入到 per-part heat controller，热路径不得查询全局 policy map 或 Meta。
+
+采集语义必须写准确：
+
+- `!msg.empty()`：本地 replica 成功接受一条非空 Raft WAL record，增加 `wal_activity_epoch`、record 总数和 payload bytes；
+- `msg.empty()`：只增加 empty-record 计数，用于解释空日志增长斜率，不重置非空活动冷却时间；
+- append 失败不计成功活动；
+- 该成功不等于 quorum commit，也不保证已经 apply；默认 `wal_sync=false` 时也不等于介质已经完成 fsync；
+- 日志后来 rollback 时不撤销此次热活动，保守地多判热不会造成误降容。
+
+成功 hook 之外还必须有 WAL health hook：[`FileBasedWal.cpp:446-455`](../src/kvstore/wal/FileBasedWal.cpp#L446-L455) 的 gap/preprocessor拒绝在返回前调用 `onWalAppendRejected(reason)`；[`FileBasedWal.cpp:480-488`](../src/kvstore/wal/FileBasedWal.cpp#L480-L488) 的短写会终止进程并通过新 boot进入UNKNOWN，fsync告警则必须同步设置 `WAL_APPEND_ERROR`/`safety_epoch`，不能一边记录错误一边继续把观察证据标成 VALID。失败不增加成功热度，但会否决自动判冷，直到明确恢复并重新完成观察窗口。
+
+Leader 写 WAL 的路径见 [`RaftPart::appendLogsInternal()`](../src/kvstore/raftex/RaftPart.cpp#L874-L915)，Follower 写 WAL 的路径见 [`RaftPart::processAppendLogRequest()`](../src/kvstore/raftex/RaftPart.cpp#L1757-L1781)。健康并完成复制时，一条逻辑写通常被多个、最终可能被全部副本观察；部分复制、换主和rollback时不保证如此，因此集群汇总不能把 RF=3 的 record 数直接相加当成业务写次数。
+
+空 payload 也不能无条件命名为“heartbeat no-op”。周期空 NORMAL 的来源确实是 [`RaftPart::sendHeartbeat()`](../src/kvstore/raftex/RaftPart.cpp#L2041-L2049)，但 `LogType` 只存在于 [`RaftPart::appendLogAsync()`](../src/kvstore/raftex/RaftPart.cpp#L786-L825) 的内存队列，WAL 层只保留 payload；而 [`Part::sync()`](../src/kvstore/Part.cpp#L115-L117) 也会写空 COMMAND。冷热观察可以把所有空 record 排除在“非空 WAL 热度”之外，但展示字段必须叫 `empty_wal_records`，不能叫 `heartbeat_count`。
+
+非空 record 也可能来自 membership、command、Follower catch-up或历史重放，而不全是用户 DML；它会造成保守的 false-hot，但不会造成危险的 false-cold。
+
+### 11.5 业务请求热度的采集点与语义
+
+查询不会产生 WAL，因此只观察非空 WAL 无法说明“业务是否正在频繁读取”。建议在 [`GraphStorageServiceHandler.cpp:89-219`](../src/storage/GraphStorageServiceHandler.cpp#L89-L219) 的 Graph Storage RPC 入口增加轻量 observer：
+
+- 写请求：add/delete/update vertex、tag、edge，以及 KV put/remove；
+- 读请求：getNeighbors、getDstBySrc、getProps、lookup、scan vertex/edge，以及 KV get；
+- 从 request 中提取 `space_id`，对目标 part list/map 去重后计数；
+- 同时记录 RPC 次数、目标 Part 次数、item/key 数和可低成本估算的 bytes，避免把 1 条和 10 万条记录的请求视为等量。
+
+请求处理器在取得 Space ID 的位置可见：[`GetNeighborsProcessor.cpp:32-39`](../src/storage/query/GetNeighborsProcessor.cpp#L32-L39)、[`AddVerticesProcessor.cpp:24-33`](../src/storage/mutate/AddVerticesProcessor.cpp#L24-L33) 和 [`AddEdgesProcessor.cpp:23-33`](../src/storage/mutate/AddEdgesProcessor.cpp#L23-L33)。现有 counter 在 [`GraphStorageServiceHandler.cpp:69-85`](../src/storage/GraphStorageServiceHandler.cpp#L69-L85) 按操作注册、由 [`BaseProcessor::onFinished()`](../src/storage/BaseProcessor.h#L41-L60) 在进程级累计，没有 Space/Part 维度，不能直接作为冷热证据。
+
+入口信号表示“本机收到一次请求尝试”，必须接受以下边界：
+
+- 会包含参数错误、not-leader、空 batch 和最终失败；
+- 客户端超时重试会再次计数；
+- 它是 storaged RPC 压力，不是去重后的用户查询 QPS；
+- handler fan-out 后一次用户查询可能对应多个 Space/Part RPC；
+- 管理任务、Follower apply、Snapshot 和直接 KV 调用不会经过该入口。
+
+这些 false-hot 对自动降容是保守的。若需要“成功请求率”，可在 Future 完成时另外记录成功/失败和延迟，但不能依赖现有 `BaseProcessor::onFinished()` 反推出全部成功 Part；原始目标 Part 应在 ingress 时保存或直接计数。
+
+如需进一步区分实际存储 I/O，可在 [`NebulaStore` 五个读入口](../src/kvstore/NebulaStore.cpp#L746-L857) 和 [`NebulaStore` 六个写入口](../src/kvstore/NebulaStore.cpp#L878-L955) 记录 `PHYSICAL_KV_ACTIVITY`。它会把索引维护、事务内部读写和后台任务放大，必须与 `REQUEST_HEAT` 分栏，不能混成一个业务 QPS。
+
+OSS 3.6 的 [`StorageServer`](../src/storage/StorageServer.cpp#L272-L422) 只创建 Graph/Admin server，没有注册 Internal/TOSS 服务。商用分支如果启用了该路径，还必须为事务 prime、remote、commit/abort、recovery retry 标注 `origin` 和 `stage`，防止把同一逻辑事务重复计算为多次用户写。
+
+### 11.6 SYSTEM_BUSY与安全否决信号
+
+只依据“非空 WAL 为零”自动降容仍不充分。下列状态必须进入 `busy_mask` 或 `UNKNOWN`：
+
+| 状态 | 推荐信号点 | 决策 |
+|---|---|---|
+| Part STARTING/WAITING_SNAPSHOT | [`RaftPart::needToCleanWal()`](../src/kvstore/raftex/RaftPart.cpp#L1452-L1462)、Raft state | UNKNOWN，禁止转冷 |
+| 接收 Raft Snapshot | [`RaftPart::processSendSnapshotRequest()`](../src/kvstore/raftex/RaftPart.cpp#L1954-L2038)、[`needToCleanupSnapshot()/cleanupSnapshot()`](../src/kvstore/raftex/RaftPart.cpp#L1438-L1450) | 从进入 WAITING_SNAPSHOT 到完成/超时清理均 busy |
+| 向 Follower 发送 Snapshot | [`Host::startSendSnapshot()`](../src/kvstore/raftex/Host.cpp#L348-L379) | 对该 Part busy；通过锁内 accessor/RAII 观察 |
+| checkpoint/CREATE SNAPSHOT | [`CreateCheckpointProcessor.cpp:11-41`](../src/storage/admin/CreateCheckpointProcessor.cpp#L11-L41)、[`NebulaStore::createCheckpoint()`](../src/kvstore/NebulaStore.cpp#L1090-L1171) | Space 级 busy |
+| SST ingest | [`IngestTask.cpp:17-47`](../src/storage/admin/IngestTask.cpp#L17-L47) | 围绕每个 Part 的 `engine->ingest()` 设置 RAII busy |
+| tag/edge index rebuild | [`RebuildIndexTask.cpp:75-112`](../src/storage/admin/RebuildIndexTask.cpp#L75-L112)、[`IndexGuard`](../src/storage/CommonUtils.h#L46-L100) | STARTING/BUILDING/LOCKED 全部 busy |
+| fulltext rebuild/其他 AdminTask | [`AdminTask::getSpaceId/jobType/running`](../src/storage/admin/AdminTask.h#L156-L227)、[`AdminTaskManager`](../src/storage/admin/AdminTaskManager.cpp#L252-L323) | 按 Space 和 job type 观察，不使用混合全局计数 |
+| restore/direct ingest | [`NebulaStore::restoreFromFiles()`](../src/kvstore/NebulaStore.cpp#L1368-L1384) | 以 Space RAII busy 覆盖整个 engine ingest；商用扩展入口也必须注册 |
+| engine backup | [`NebulaStore::backup()`](../src/kvstore/NebulaStore.cpp#L1323-L1332) | 当前接口遍历全部Space，调用期间使用全局backup busy；若产品未启用则明确capability状态 |
+| data balance | [`BalanceTask` 状态机](../src/meta/processors/job/BalanceTask.cpp#L46-L259) | 以 Meta 持久任务状态为权威；缺失视为 UNKNOWN |
+| 角色、term、拓扑变化 | [`RaftPart::getState()`](../src/kvstore/raftex/RaftPart.cpp#L1197-L1216) | 进入稳定观察期，旧候选失效 |
+| commit/apply lag | `max(0,last_log_id-committed_log_id)`，字段语义见 [`RaftPart.h:829-837`](../src/kvstore/raftex/RaftPart.h#L829-L837) | 超过经 SLO 批准的门槛则 busy/UNKNOWN |
+| WAL append异常 | [`FileBasedWal::appendLogInternal()`](../src/kvstore/wal/FileBasedWal.cpp#L442-L500) 的拒绝/fsync错误hook | 增加safety epoch并置 WAL_APPEND_ERROR；重新完成窗口前不可判冷 |
+
+Snapshot、ingest、restore、backup 和 rebuild 可能绕过普通业务 WAL 信号。每个 storaged heat report 必须带 `observer_capabilities` 矩阵，逐项把 WAL error、RPC、snapshot、checkpoint、ingest、restore、backup、rebuild、balance和Raft state标成 `OBSERVED`、`PROVEN_DISABLED` 或 `UNSUPPORTED_UNKNOWN`。AUTO只接受前两种；任一所需来源为 `UNSUPPORTED_UNKNOWN` 即 `SAFETY_UNKNOWN/UNSUPPORTED_PROVENANCE`。不能因为某个产品分支“通常不用该路径”就在运行时默认放行；`PROVEN_DISABLED` 必须来自不可变build capability或受版本控制的启动配置及其hash。
+
+`RaftPart::getState()` 在同一 `raftLock_` 下返回 term、role、status、committed/last LogID 和 peers，优于分别读取多个无锁字段。跨副本采样不是原子快照；只有同一轮中 term 一致、唯一 Leader、状态 RUNNING 且报告新鲜时，才能计算集群 lag。角色切换本身不一定是业务热，但必须让当前 cold candidate 失效并重新进入稳定期。
+
+### 11.7 每Part观察数据模型
+
+建议的数据结构如下，字段名仅表示设计语义：
+
+```text
+PartHeatObservation {
+  space_id, part_id
+  host, boot_id, part_instance_id
+  observation_config_epoch
+  wal_activity_epoch
+  request_epoch
+  safety_epoch
+
+  wal_nonempty_records_total
+  wal_nonempty_payload_bytes_total
+  wal_empty_records_total
+  last_nonempty_monotonic_time
+
+  read_rpc_attempts_total
+  write_rpc_attempts_total
+  request_items_total
+  request_bytes_estimate_total
+  last_read_monotonic_time
+  last_write_request_monotonic_time
+
+  role, term, raft_status
+  last_log_id, committed_log_id, commit_lag
+  membership_revision
+  busy_mask
+  observer_capabilities
+
+  observation_validity
+  wal_temperature
+  request_guard
+  safety_guard
+  reason_mask
+}
+```
+
+原则：
+
+- 决策时间全部使用 `steady_clock`；wall clock 只用于人类展示和审计；
+- 计数器在一个 `boot_id/part_instance_id` 内单调，counter reset、溢出或倒退立即进入 UNKNOWN；
+- WAL append 热路径只做原子计数、时间和 epoch 更新，不分配字符串、不写日志、不获取全局锁；
+- Graph RPC ingress 每次请求增加 `request_epoch`；它与 WAL `wal_activity_epoch` 分离，避免读请求与后台判冷的周期采样竞态；
+- 周期 worker 从累计计数生成窗口快照，避免每条 heartbeat/no-op 都写高基数时序指标；
+- `wal_activity_epoch`、`request_epoch`、`safety_epoch`、观察配置版本和管理面的 `EffectiveCapacityVersion` 是不同版本域，不得复用一个 revision。
+
+### 11.8 滚动窗口、EWMA和判冷算法
+
+第一版判冷应采用“完整窗口内非空 WAL 精确为零”，而不是任意加权分数。低速但非零写入只展示为 `COOLING`，在 shadow 数据证明以前不能自动判冷。
+
+实现可采用有界的两级时间桶，例如短窗口使用细粒度桶、长窗口使用粗粒度桶；具体桶数必须按最大 Part 数做内存预算和启动校验。不能为每 Part 保留无限时序。累计计数按实际采样间隔计算：
+
+```text
+rate = counter_delta / delta_time
+alpha = 1 - exp(-delta_time / tau)
+ewma = alpha * rate + (1 - alpha) * previous_ewma
+```
+
+record/s 和 payload-byte/s 两条通道都要保留。短/长 EWMA适合展示和防抖，但不能单独授权转冷，因为启动零值、采样暂停和缺报都会把它错误衰减到零。
+
+首个可执行的 `COLD` 条件应全部满足：
+
+```text
+observation_age >= W_long
+&& 长窗口覆盖完整、无sample gap
+&& W_long内wal_nonempty_records_delta == 0
+&& W_long内wal_nonempty_payload_bytes_delta == 0
+&& last_nonempty_age >= T_idle
+&& request heat未超过经SLO批准的保护门槛
+&& wal_activity_epoch在candidate和confirm期不变
+&& request_epoch在candidate和confirm期不变（首个AUTO零读门槛）
+&& safety_epoch在candidate和confirm期不变
+&& observation_config_epoch不变
+&& busy_mask == 0
+&& Raft/拓扑/lag/副本覆盖全部有效
+&& 连续满足T_confirm
+```
+
+若未来开放“低速非零也可冷”，必须满足 `cold_enter_threshold < hot_exit_threshold`，同时配置最短 HOT 保持期和确认期，避免阈值附近抖动。窗口长度必须覆盖实际业务周期；存在日批或周批任务时，24小时未必足够。
+
+首个 AUTO 版本如果没有经过业务 SLO 审批的 read threshold，应保守要求确认期内 read RPC attempt 为零；不能把缺省阈值解释成“读热度不参与”。只读热点 Space 需要保留 MANUAL 审批路径，由专项磁盘 fallback、Leader transfer 和查询 P99 测试决定是否可降容。
+
+建议只作为 shadow 起点、等待生产 SLO 批准的候选参数：
+
+```text
+sample_interval       = 60s
+short_window          = 5m
+idle/long_window      = 24h或一个完整业务周期中的更长者
+confirm_window        = 1h
+report_interval       = 60s
+max_sample_gap        = 2 × sample_interval
+replica_coverage      = 100%
+```
+
+这些不是通用默认真理。容量 target 仍由第12节的内存预算、batch charge 和追赶窗口决定，不能从“冷分数”直接推导出 2MiB/1MiB。
+
+### 11.9 状态机与防竞态线性化
+
+`ObservationValidity` 生命周期：
+
+```mermaid
+stateDiagram-v2
+    [*] --> UNKNOWN
+    UNKNOWN --> OBSERVING: "boot/Part构造/证据源恢复"
+    OBSERVING --> VALID: "完整窗口且无sample gap"
+    VALID --> OBSERVING: "safety epoch变化后重建窗口"
+    VALID --> UNKNOWN: "缺报/配置/boot/拓扑/计数异常"
+    OBSERVING --> UNKNOWN: "缺报/配置/boot/拓扑/计数异常"
+```
+
+`WalTemperature` 生命周期：
+
+```mermaid
+stateDiagram-v2
+    [*] --> HOT
+    HOT --> COOLING: "完整短窗口低活动"
+    COOLING --> COLD: "完整长窗口零非空WAL且确认期通过"
+    COLD --> HOT: "第一条成功非空WAL"
+    COOLING --> HOT: "出现非空WAL"
+```
+
+`RequestGuard` 和 `SafetyGuard` 是独立状态，不改写 `WalTemperature`；例如一个只读热点 Space 可以同时显示 `WalTemperature=COLD`、`RequestGuard=REQUEST_HOT`、`eligible_for_cold=false`。`COLD_PREPARING/COLD_APPLIED/HOT_RECOVERING` 属于 Space decision state，不得出现在 Part 的温度枚举中。
+
+自动迁移不能实现成“后台检查 epoch，然后在另一个临界区 store capacity”。每个 Part 必须提供明确的 prepare/apply/失效原语：
+
+```text
+prepareCold(space_decision_epoch,
+            expected_part_instance,
+            expected_wal_activity_epoch,
+            expected_request_epoch,
+            expected_safety_epoch,
+            expected_observation_config_epoch,
+            expected_current_effective_capacity_version)
+
+applyCold(space_decision_epoch,
+          prepared_token_hash,
+          committed_cold_effective_capacity_version)
+restoreHotAndInvalidateSpace(reason, space_decision_epoch)
+
+onNonEmptyActivity()
+onRequestActivity()
+onSafetyStateChange()
+```
+
+`prepareCold()` 在同一 per-part policy/temperature 临界区重验观察 token、当前hot effective version、时间窗、busy 和管理策略，只返回包含这些字段规范化hash的 PREPARED ack，**不修改 target**。只有集群协调者以CAS持久化同一 `space_decision_epoch` 的 COMMIT 和新cold effective version后，`applyCold()` 才验证 prepared hash、确认观察epoch未变化，并执行“旧hot version或幂等new cold version -> committed cold version”的受控转换。任一失败都会使该 Space decision 进入 ABORTING，并补偿性恢复已经应用的 Part；并发MANUAL/gate更新必须使COMMIT CAS失败。
+
+`onNonEmptyActivity()` 必须在当前非空 record 进入 `logBuffer_->push()` **之前**，在同一临界区完成：
+
+```text
+wal_activity_epoch++
+wal_temperature=HOT
+本Part恢复original/hot target（AUTO owner时）
+发布Space decision invalidation
+然后允许当前record push
+```
+
+`onRequestActivity()` 在 Graph RPC dispatch 前增加 `request_epoch`。首个 AUTO 版本采用零读保护时，它也同步恢复本 Part 的 hot target并发布Space失效；未来若允许低速读，则至少必须让当前 cold decision失效并由新窗口重新评估。`onSafetyStateChange()` 在进入 Snapshot、管理作业、拓扑/角色不稳或安全未知时增加 `safety_epoch`、设置相应 `SafetyGuard`，AUTO owner 同样同步恢复本 Part并发布失效；busy结束后置 `SafetyGuard=SAFE`，同时把观察窗口重置为 `ObservationValidity=OBSERVING`，重新积累完整窗口。
+
+`prepareCold()/applyCold()` 不能只相信周期采样的 Raft字段。入口应先获取 `raftLock_`，在当前状态下复核 role、term、status、commit lag和membership，再获取 per-part temperature/policy lock 检查全部 token。这样迟到任务不能把已经重新活跃或进入恢复状态的 Part 降回小容量。Raft Leader/Follower WAL append 可能已经持有 `raftLock_`，锁序必须固定为：
+
+```text
+raftLock -> per-part temperature/policy lock
+```
+
+后台观察器禁止持有 temperature lock 后获取 Raft、NebulaStore、Meta 或指标 registry 锁。回调必须是 O(1)，不能在 WAL Writer 内做 Space 聚合。
+
+控制权优先级固定为：
+
+```text
+本机activation gate
+  > 显式MANUAL Space policy
+  > AUTO观察决策
+```
+
+自动任务版本令牌还必须包含第6.3节的完整 `EffectiveCapacityVersion` 和持久化的 `space_decision_epoch`。任何 gate、人工策略、Part实例或观察配置变化都使旧 AUTO 任务失效。
+
+### 11.10 从Part聚合为Space：必须fail-closed
+
+策略是 Space 级，实际观察对象是所有普通 replica-part。聚合分母必须来自同一 topology/membership revision 的**预期集合**，不能只统计当前返回了指标的对象。
+
+预期集合由 Meta 中的 Space partition/replica 分配生成。若现有元数据没有可直接使用的全局 topology revision，聚合器必须从一次一致读取的规范化 membership snapshot 计算 hash/epoch；不能把多次读取中跨越 balance 的旧、新成员拼成一个分母。
+
+每个逻辑 Part 的保守合并规则：
+
+```text
+任一当前副本HOT                         -> LOGICAL_PART_HOT
+全部预期副本fresh、VALID且COLD          -> LOGICAL_PART_COLD
+副本缺失/陈旧/boot变化/term或拓扑不一致 -> LOGICAL_PART_UNKNOWN
+其他完整且有效的混合状态                -> LOGICAL_PART_COOLING
+```
+
+健康且完成复制的逻辑写通常会被多个、最终可能被全部副本观察，但部分复制、换主、失败和rollback时不保证三副本记录完全一致。因此 Space write rate 应先对同一个逻辑 Part 取各副本的 `max`，再跨逻辑 Part 求和；同时输出 `max_part_rate`。这个值是保守的 replica-normalized WAL 活动率，不是精确业务写 QPS。不得对副本直接求和，也不得只看 Space 平均值掩盖一个热点分片。
+
+Space 级规则：
+
+```text
+全部预期普通logical Parts均COLD
+  + 所有当前replica报告fresh/VALID
+  + read/system busy保护通过
+  -> SPACE_COLD_ELIGIBLE
+
+任一Part HOT
+  -> SPACE_HOT或SPACE_PARTIALLY_HOT，不自动降容
+
+任一Part UNKNOWN/COOLING/busy
+  -> SPACE_NOT_SAFE_TO_CLASSIFY，不自动降容
+```
+
+当前方案是 **Space 级 all-or-nothing policy**：只有全部普通 Part 都满足冷准入，desired policy 才能从 hot 切到 cold；正式全量模式的 target 覆盖该 Space 的所有普通 replica-part。这里的 all-or-nothing 指“资格和同一 application scope 内的期望策略”，不承诺跨三台机器瞬时原子更新。每个 buffer 独立执行 setter，应用期间会短暂出现 mixed capacity，但必须有同一 decision epoch、完整 applied 计数和失败补偿；不能把这种过渡状态偷换成永久 per-part policy。若业务存在稳定的一热十九冷倾斜，应跳过该 Space，或另立 per-part policy 项目。
+
+单host灰度是唯一允许的显式例外：decision 持久化 `application_scope={canary host/replicas}` 及其hash，仍用全Space、全副本观察证据判资格，但只对scope内执行prepare/apply。此时状态必须叫 `CANARY_COLD_APPLIED`，不能冒充全Space容量已一致；正式扩面时提交新的更大 decision epoch，将scope扩到全部当前普通replica。scope外Part仍参与热事件失效判断。
+
+Listener 第一版不在普通 Part 分母中，必须单独报告 scope。单台 storaged 的本地结果只能叫 `LOCAL_CANDIDATE`，不能宣称集群 Space 已冷。自动模式不以多数派覆盖掩盖缺失副本：RF=3 中缺一份新鲜报告仍是 UNKNOWN。
+
+#### 11.10.1 一致采样协议与集群聚合主体
+
+Phase O 的集群聚合器运行在当前 Meta Leader；Meta 已持有权威 Space membership，Graph 的 `SHOW SPACE WAL HEAT` 只读取聚合器最近一次完整 collection round。Heartbeat 不承载全量 Part 数据。
+
+一次 collection round 必须这样完成：
+
+1. Meta Leader 从一次一致的 Meta 读取生成规范化 membership snapshot，得到 `topology_revision/hash` 和预期 host/Part/replica 集合；
+2. 分配在当前 Leader任期内单调的 `collection_round_id=(meta_term, local_round_seq)`，并向每台目标 storaged 请求该 topology 下的本地 heat snapshot；
+3. storaged 在一个短临界区复制本地观察摘要，生成不可变报告：
+
+```text
+HeatReportIdentity {
+  host, boot_id
+  report_seq
+  collection_round_id
+  topology_revision
+  observation_config_epoch
+  created_wall_time_display_only
+  snapshot_ttl_ms
+  page_count
+  canonical_report_hash
+}
+```
+
+4. 分页 token 必须绑定同一不可变 `HeatReportIdentity`；storaged 用自己的 `steady_clock` 拒绝已过 `snapshot_ttl_ms` 的分页，Meta用接收端 `steady_clock` 记录本轮freshness，不能跨主机比较monotonic值或用wall clock授权；任一页 boot/report_seq/hash 不同、快照过期或缺页，整台 host 的报告作废并重拉，不能把两轮页面拼起来；
+5. Meta 校验所有报告的 topology revision、boot、capability、freshness 和 Part集合与第1步完全一致后，才原子发布一个完成的 cluster heat snapshot；
+6. collection期间发生 balance、boot变化、Meta切主或超时，本轮不发布，Space维持 UNKNOWN。
+
+`fresh_ttl` 是配置项，候选下限可取 `max(3 × report_interval, 2 × collection_timeout)`，但最终按现网抖动/SLO批准。`SHOW` 响应必须带 collection round、完成时间和过期状态；过期 snapshot只能展示，不能授权 AUTO。
+
+Phase O 即使只读也只允许一个 Meta Leader 发布 authoritative round；新 Leader 不复用前任内存中的半轮数据，从新的 membership snapshot 和 round 开始。外部运维采集器可作为诊断客户端，但不能成为第二个 AUTO 写入者。
+
+#### 11.10.2 Space AUTO决策、失败补偿与热恢复
+
+Phase 3 唯一 AUTO 协调者是当前 Meta Raft Leader。它把每个 `space_decision_epoch`、membership hash、collection round、期望 Part token、`application_scope/hash`、target 和 decision state 持久化到 Meta Raft；Meta切主后由新 Leader幂等恢复，storaged拒绝旧 epoch。没有 Meta quorum/Leader 时禁止创建新冷决策。
+
+冷进入采用 prepare/commit：
+
+```text
+SPACE_COLD_ELIGIBLE
+  -> 持久化COLD_PREPARING(decision_epoch, tokens, membership_hash)
+  -> 所有预期replica提供资格token；application scope内执行prepareCold，只重验并ack，不改target
+  -> 全部PREPARED且仍在TTL内
+  -> Meta持久化COLD_APPLYING/desired cold
+  -> scope内各replica执行applyCold并回报applied decision epoch
+  -> scope为全量且全部applied才显示COLD_APPLIED；canary scope显示CANARY_COLD_APPLIED
+```
+
+任一 prepare/apply 失败、token变化、报告过期或 membership变化，协调者持久化 `ABORTING/HOT_RECOVERING`，把 scope内已经降容的 replica 全部补偿性恢复 hot；只有scope内全部 replica 报告 hot target 后才回到无冷决策状态。
+
+冷状态出现新非空 WAL、首个版本保护范围内的请求，或 SafetyGuard失效时：
+
+1. 事件所在 Part 在继续当前 WAL push/RPC之前同步恢复本地 hot target；
+2. 增加本地 invalidation sequence，异步通知 Meta 使该 `space_decision_epoch` 失效；
+3. Meta持久化更大的 decision epoch 和 `HOT_RECOVERING`，向当前 application scope 的全部 replica下发 hot target；scope外本来就保持hot；
+4. 传播期间允许协议安全的 `MIXED_CAPACITY/HOT_RECOVERING`，但必须展示 hot/applied/remaining Part 数和最长持续时间；
+5. 若 Meta暂时不可用，其他 replica最迟在 AUTO decision lease 到期时用本地 `steady_clock` 恢复 hot；每个自身出现活动的 Part无需等待Meta。
+
+因此 all-or-nothing 不是分布式瞬时原子性承诺，而是“一个 Space decision、声明清楚的application scope、scope内同一desired、失败即全量补偿”。本 Part先升容保证当前活动路径，Space scope异步升容保证不会长期保留一热十九冷的旧AUTO决策；正式全量scope覆盖全部普通replica。
+
+### 11.11 UNKNOWN原因码与重启/时钟语义
+
+至少定义以下稳定 reason bitset：
+
+```text
+BOOT_WARMUP
+SAMPLE_GAP
+COUNTER_RESET_OR_OVERFLOW
+OBSERVATION_CONFIG_CHANGED
+PART_STARTING_OR_STOPPED
+WAITING_SNAPSHOT
+WAL_APPEND_ERROR
+ROLE_TERM_OR_TOPOLOGY_CHANGE
+REPLICA_MISSING_OR_STALE
+LEARNER_OR_CATCHUP
+SNAPSHOT_SEND_OR_RECEIVE
+CHECKPOINT
+INGEST_OR_RESTORE
+BACKUP
+REBUILD
+BALANCE
+COMMIT_LAG
+REQUEST_HEAT_UNKNOWN
+UNSUPPORTED_PROVENANCE
+COLLECTION_ROUND_STALE_OR_INCOMPLETE
+AUTO_DECISION_LEASE_EXPIRED
+UNSUPPORTED_MIXED_VERSION
+```
+
+重启后不能沿用持久化 wall timestamp 直接判冷：
+
+- 新 `boot_id/part_instance_id` 从 `UNKNOWN/BOOT_WARMUP` 开始，重新积累完整长窗口；
+- NTP前后跳不影响 `steady_clock` 决策；进程 suspend 或采样间隔超限触发 `SAMPLE_GAP`；
+- WAL 文件 mtime 会被周期空记录持续更新，不能反推出最后业务写时间；
+- 新建、balance迁入、重建 Part 和 mixed-version 不支持观察能力的副本均为 UNKNOWN；
+- 中央历史时序可供人查看，但不能替新进程授权跳过 warmup；
+- MANUAL policy 可按控制面规则在重启后继续生效，AUTO cold decision 必须重新验证。
+
+### 11.12 指标、查询接口与高基数控制
+
+默认接口只输出每 Space 的有限聚合：
+
+```text
+space_id / space_name
+topology_revision
+collection_round_id / report_fresh_deadline
+expected/observed logical_parts
+expected/observed replicas
+hot/cooling/cold/unknown/busy counts
+unknown reason counts
+short/long nonempty-record rate
+short/long nonempty-byte rate
+read/write RPC attempt rate
+max_part_rate
+minimum_last_nonempty_age
+coverage
+observation_config_epoch
+wal_temperature / request_guard / safety_guard / observation_validity
+eligible_for_cold
+current/original/approved_target（仅展示已配置或已审批值）
+space_control_owner
+space_decision_epoch/state/application_scope_hash/lease_expiry
+hot/cold/mixed applied replica counts
+```
+
+每 Part 明细必须通过带 `space_id/part_id` 过滤、分页和数量上限的只读接口查询。建议命令形态：
+
+```text
+SHOW SPACE WAL HEAT <space>
+SHOW SPACE WAL HEAT DETAIL <space> [PART <id>] [LIMIT <n>]
+SHOW WAL BUFFER CANDIDATES
+```
+
+明细至少展示 host、boot/Part实例、report_seq、role/term/status、最后非空活动年龄、短/长窗口记录/字节率、read/write request rate、commit lag、observer capabilities、busy/unknown reason、四个正式观察域和当前/目标容量。
+
+禁止为所有 `(space,part,host,boot_id)` 创建永久 Prometheus/StatsManager label。普通 `/stats` 只提供聚合状态数和 top-K hot/unknown Part；boot ID、版本、错误文本放在按需响应字段，不作为 label。Heartbeat 只携带紧凑的 capability、配置版本、Space摘要/hash或候选变化；高基数 Part 明细由 Meta/运维按需从 storaged 分页拉取。
+
+### 11.13 Shadow验证、人工准入和自动化门槛
+
+发布顺序必须是：
+
+```text
+OBSERVE_ONLY
+  -> 至少覆盖一个完整业务周期
+  -> 与业务审计/定时任务/请求日志对照
+  -> 人工使用观察结果选择Space
+  -> MANUAL capacity canary
+  -> 证明无false-cold后，才允许单Space AUTO canary
+```
+
+shadow 阶段至少验证：
+
+1. 每个判定为 `SPACE_COLD_ELIGIBLE` 的窗口确实没有已知业务写、批处理、ingest、rebuild、balance 或 Snapshot；
+2. 一个热点 Part、一个缺失副本或一个旧 boot 报告都能阻止 Space 判冷；
+3. `cold -> hot` 唤醒次数、唤醒后的 WAL disk fallback、Snapshot、commit P99 和业务 P99 可解释；
+4. 观察器 CPU、锁等待和内存开销在预算内；
+5. 长窗口至少覆盖业务的日/周峰谷周期，而不是只覆盖测试空闲时段；
+6. 上线 AUTO 前 shadow 记录中的 false-cold 必须为零；false-hot 可以接受并继续优化。
+
+自动化只允许对明确设置 `SpaceControlOwner=AUTO` 的 Space 生效。首个 AUTO canary 仍遵循第22节单 host、单 Space、Leader路径、跨 target、多轮GC和24小时稳态门槛。观察器的 `COLD` 只说明有资格使用已批准的 target，不负责选择 target 大小。
+
+### 11.14 一个完整判定示例
+
+假设 `archive_graph` 有20个逻辑 Part、RF=3，Meta 的一致 membership snapshot 期望60个普通 replica 报告：
+
+```text
+SHOW SPACE WAL HEAT archive_graph
+
+topology_revision: 8f31...
+collection_round_id: 9182
+expected_logical_parts: 20
+expected_replicas: 60
+observed_replicas: 60
+coverage: 100%
+wal_temperature: COLD
+observation_validity: VALID
+request_guard: REQUEST_COLD
+safety_guard: SAFE
+cold/cooling/hot/unknown: 20/0/0/0 logical parts
+minimum_last_nonempty_age: 8d 3h
+long_window_nonempty_records: 0
+max_part_nonempty_rate: 0/s
+read_rpc_rate: 0/s
+busy_parts: 0
+space_control_owner: OBSERVE_ONLY
+space_decision_state: NO_DECISION
+eligible_for_cold: true
+approved_target: not_set
+```
+
+这里的 `true` 只表示“可以进入人工容量评审”，不会自动选择2MiB或修改 target。以下任一变化都会得到不同结果：
+
+- 只收到59/60个 replica：`coverage<100%`、`REPLICA_MISSING_OR_STALE`、不可判冷；
+- 第17个逻辑 Part 有一个副本出现非空 WAL：该逻辑 Part 为 HOT，整个 Space 不可判冷；
+- WAL 全冷但仍有读请求：显示 `READ_HOT`，AUTO不可判冷；MANUAL必须有专项审批；
+- 正在 rebuild 第5个 Part：显示 `SYSTEM_BUSY/REBUILD`，busy结束后重新积累完整窗口；
+- storaged 重启：该 host 上的 replica进入 `BOOT_WARMUP`，中央历史不能替新 boot 直接授权。
+
+只有证据持续满足、target经过第12节容量预算审批并由 MANUAL/AUTO控制面提交后，才会进入 `COLD_APPLIED`；`COLD_APPLIED` 仍须继续观察磁盘 fallback、Snapshot 和P99。
 
 ## 12. 容量、时间窗与收敛模型
 
@@ -947,7 +1469,7 @@ reader release：按原生GC删除dirty链
 
 ### 13.3 Space恢复业务
 
-人工模式下，运维以新的更大 snapshot epoch 将 target 恢复8MiB。自动模式下，第一条非空 Raft WAL 会先增加 `activity_epoch` 并恢复 hot target，再执行当前 `push()`。
+人工模式下，运维以新的更大 snapshot epoch 将 target 恢复8MiB。自动模式下，第一条非空 Raft WAL 会先增加 `wal_activity_epoch`、同步恢复本 Part 的 hot target、发布 Space decision invalidation，再执行当前 `push()`；首个零读保护版本的请求 ingress 也会增加 `request_epoch`、恢复本 Part 并触发整个 Space 异步进入 `HOT_RECOVERING`。
 
 恢复后的第一条业务批次不会被继续按2MiB target主动淘汰，但此前已经删除的缓存不会预热。落后 peer 如需更旧日志，仍可能走磁盘 WAL 或 Snapshot。
 
@@ -1050,7 +1572,16 @@ Node delete 只表示 live object 释放。jemalloc 可能继续保留 extent/pa
 | P1 | 长Reader延迟GC | dirty链累积、最后释放时CPU长尾 | refs/dirty指标、压力测试、分阶段降容 |
 | P1 | 控制面乱序或部分应用 | 节点容量漂移、性能不对称 | per-Space CAS、完整快照generation/epoch/hash、applied ack |
 | P1 | 重启丢失内存态策略 | 静默恢复默认容量 | 先持久化desired，再应用live Part |
-| P1 | 误把热Space设为冷 | 热业务磁盘IO和P99上升 | 第一版人工审核、单Space canary、快速升容 |
+| P1 | 误把热Space设为冷 | 热业务磁盘IO和P99上升 | 第一版OBSERVE_ONLY；完整业务周期shadow；全部普通Part/副本100%覆盖；人工审批 |
+| P1 | 缺报、旧boot或拓扑变化被误当成无流量 | false-cold、错误自动降容 | UNKNOWN fail-closed；以同一topology revision的预期副本集合为分母 |
+| P1 | 分页/多host数据跨collection round拼接 | 虚假100% coverage和false-cold | immutable report identity；缺页/过期/换boot整轮作废；SHOW只读完整round |
+| P1 | 多个AUTO协调者或Meta切主重放旧决策 | 新旧target互相覆盖 | 仅Meta Raft Leader单写；持久space decision epoch；storaged拒绝旧epoch |
+| P1 | Space冷应用部分成功 | 长期一热十九冷、行为难审计 | prepare/commit；任一失败ABORTING并补偿恢复；mixed状态和超时指标 |
+| P1 | AUTO冷任务与新WAL/请求/安全状态竞态 | 活跃或busy Part被迟到任务重新设成cold target | wal/request/safety/config/version token；同一per-Part临界区先恢复hot再继续数据路径 |
+| P1 | Snapshot/ingest/rebuild/balance绕过普通WAL | 后台忙碌Space被误判冷 | 独立SYSTEM_BUSY provenance；未接入即UNKNOWN |
+| P1 | Space平均值掩盖单个热点Part | all-or-nothing策略误伤热点分片 | 任一Part HOT即阻止；输出max_part_rate和热点Part列表 |
+| P2 | false-hot过多 | 可治理Space长期不进入候选 | 区分WAL/request/admin origin；false-hot先保守接受，shadow后再调阈值 |
+| P2 | per-Part指标高基数或热路径锁竞争 | 额外内存、CPU和WAL写长尾 | O(1)原子采集；有界时间桶；默认仅Space聚合和top-K；明细按需分页 |
 | P1 | Listener被意外纳入 | 外部索引apply lag | 第一版显式 DATA_PART_ONLY |
 | P1 | 多Space同时降容 | allocator、GC、IO峰值 | 分host、分Space、8->4->2分级应用 |
 | P2 | 升容后缓存不预热 | 短期磁盘回读仍高 | WARMING状态和预期说明，不做危险reset |
@@ -1161,9 +1692,10 @@ Node delete 只表示 live object 释放。jemalloc 可能继续保留 extent/pa
 1. push/GC 并发窗口已经修复并通过 sanitizer；
 2. 磁盘 iterator/rollback 边界已验证；
 3. 策略有持久化 generation/epoch/hash 和 applied 状态；
-4. 第一版人工操作，不把自动识别同时上线；
-5. 容量按真实 batch 和内存预算选取；
-6. 先单 Space、单 host canary。
+4. 第一版启用只读观察和人工操作，不把自动执行同时上线；
+5. 冷热证据对所有预期普通Part/副本100%覆盖，UNKNOWN一律fail-closed；
+6. 容量按真实 batch 和内存预算选取；
+7. 先单 Space、单 host canary。
 
 任一条件不满足时，应退回静态 per-space override，而不是带风险启用热更新。
 
@@ -1182,7 +1714,41 @@ Node delete 只表示 live object 释放。jemalloc 可能继续保留 extent/pa
 
 这一阶段不增加热配置，行为和容量保持默认。
 
-### 19.2 Phase 1：本机per-space热容量
+### 19.2 Phase O：只读冷热观察
+
+这一阶段默认 `OBSERVE_ONLY`，不得依赖或调用 capacity setter。涉及：
+
+- `FileBasedWal.h/.cpp`
+  - 在成功更新 WAL 元数据之后、`logBuffer_->push()` 之前调用 O(1) 活动回调；
+  - 分开累计 non-empty records/bytes 和 empty records；
+  - gap/preprocessor拒绝、fsync错误调用 WAL health hook，设置safety epoch/UNKNOWN；短写进程退出后由新boot warmup兜底；
+- `GraphStorageServiceHandler`、必要的 Processor/`StorageEnv`
+  - 记录带 origin 的 per-Space/per-Part 读写 RPC ingress；
+  - completion 只补成功率和延迟，不反推目标 Part；
+- `RaftPart`/`Host`/Snapshot manager
+  - 通过一致 Raft state 快照和受锁 accessor 暴露 role、term、status、lag、incoming/outgoing Snapshot；
+- storage admin task 与 Meta balance state
+  - 以 Space/Part 和 job type 暴露 ingest、checkpoint、rebuild、restore、backup、balance busy provenance；
+  - 输出每种provenance的 `OBSERVED/PROVEN_DISABLED/UNSUPPORTED_UNKNOWN` capability矩阵；
+- 新增有界 `SpaceHeatObserver/PartHeatObservation`
+  - boot/Part实例、wal/request/safety/config epoch；
+  - 两级固定时间桶、短/长 EWMA、UNKNOWN reason bitset；
+  - 同一 topology revision 下的全部预期副本 fail-closed 聚合；
+- storaged immutable heat report
+  - boot/report_seq/collection round/topology/config/hash identity；
+  - 快照绑定分页、TTL和缺页整轮失败；
+- Meta Leader只读 `HeatAggregationCoordinator`
+  - 生成一致membership snapshot和collection round；
+  - 拉取全部storaged报告，只原子发布完整round；
+  - Meta切主丢弃半轮并重新采集；
+- 只读管理接口
+  - 默认输出 Space 汇总与 top-K；
+  - Part 明细按 Space/Part 过滤和分页；
+  - 不在默认 StatsManager/Prometheus 中创建全量高基数 label。
+
+Phase O 应先运行一个完整业务周期并与业务审计对照。它可以为后续人工策略提供证据，但不能自动改变任何 target。
+
+### 19.3 Phase 1：本机per-space热容量
 
 涉及：
 
@@ -1204,7 +1770,7 @@ Node delete 只表示 live object 释放。jemalloc 可能继续保留 extent/pa
 - `StorageHttpStatsHandler` 或独立只读状态接口；
 - 配置模板和测试。
 
-### 19.3 Phase 2：集群级产品控制面
+### 19.4 Phase 2：集群级产品控制面
 
 涉及：
 
@@ -1217,15 +1783,19 @@ Node delete 只表示 live object 释放。jemalloc 可能继续保留 extent/pa
 - Drop Space、backup、restore；
 - mixed-version 和 failover 测试。
 
-### 19.4 Phase 3：可选自动冷热
+### 19.5 Phase 3：可选自动执行
 
 涉及：
 
-- `FileBasedWal` 非空 WAL 活动时间；
-- per-part `activity_epoch`；
-- HOT/COLD 状态机；
-- Snapshot/ingest/restore busy gate；
-- hysteresis、冷却时间和自动恢复测试。
+- 在 Phase O 只读证据之上增加 `SpaceControlOwner=AUTO`；
+- per-part `prepareCold()/applyCold()/restoreHotAndInvalidateSpace()` 与活动/安全回调原子迁移；
+- 持久化 `space_decision_epoch` 的Meta Leader单写协调器；
+- 全replica prepare/commit、部分应用ABORT补偿和AUTO decision lease；
+- 本Part同步hot恢复、Space异步HOT_RECOVERING收敛；
+- wal/request/safety/config/effective-capacity 完整版本令牌；
+- Space all-or-nothing 资格判断和显式 per-Space AUTO gate；
+- hysteresis、冷却/确认窗口、自动升回hot target和竞态测试；
+- 保留 MANUAL 和 activation gate 对 AUTO 的绝对优先级。
 
 ## 20. 测试方案
 
@@ -1300,6 +1870,29 @@ Node delete 只表示 live object 释放。jemalloc 可能继续保留 extent/pa
 - valid/dirty/live Node；
 - 查询、写入、Leader transfer和追赶P99。
 
+### 20.6 冷热观察与自动决策测试
+
+- 成功非空 WAL append 在 `push()` 前增加 wal activity epoch；失败 append 不计成功热度，但拒绝/fsync错误必须增加safety epoch并置WAL_APPEND_ERROR；空 record 只进入 empty 计数；
+- Leader、Follower、Follower catch-up 和 rollback 下的信号语义符合11.4节，RF3汇总不重复相加；
+- 读请求、写请求、失败、重试、多Part fan-out和商用事务 origin 不混算；
+- Snapshot send/receive、checkpoint、ingest、restore、backup、各类 rebuild、balance 和 commit lag 正确设置/清除 busy；
+- capability矩阵任一AUTO必需来源为UNSUPPORTED_UNKNOWN时必须阻止资格；PROVEN_DISABLED只接受受版本控制的build/config hash；
+- 一个 HOT Part、一个缺失/陈旧 replica、boot变化或 mixed-version 均阻止 `SPACE_COLD_ELIGIBLE`；
+- 重启、新建/balance迁入 Part 必须重新走完整 `BOOT_WARMUP`，wall clock/NTP跳变不影响判断；
+- sample gap、counter reset/overflow、配置版本变化都进入 UNKNOWN，而不是零速率；
+- 时间桶边界、窗口覆盖、EWMA按实际采样间隔计算，并验证低速非零第一版只展示不执行；
+- prepare/apply冷任务与第一条非空 WAL 的确定性交错均保证先恢复 hot target、旧 decision 无法覆盖；
+- MANUAL/activation gate 始终高于 AUTO，旧 AUTO token 在策略/Part/config变化后失效；
+- 聚合使用预期 topology 集合和每逻辑Part副本max；单热点Part不会被Space平均值掩盖；
+- immutable report分页必须保持同一boot/report_seq/hash；缺页、跨页换boot、过期和跨topology round全部作废；
+- Meta Leader切换时丢弃半轮采集，只发布完整collection round；旧AUTO协调者/decision epoch无法写入；
+- COLD prepare不修改target；任一prepare/apply失败进入ABORTING，并把已降Part补偿恢复hot；
+- 任一Part新WAL/请求/busy先本地同步升容，再使Space decision失效；验证MIXED_CAPACITY最终收敛HOT；
+- Meta不可用时AUTO decision lease到期，各host按本地steady clock恢复hot；
+- 10,000级 Part 下验证观察器CPU、锁等待、时间桶内存和管理接口分页上限；
+- 至少运行一个完整业务周期的 OBSERVE_ONLY shadow，与业务审计、批处理和管理任务日志逐项对照；
+- AUTO canary 统计 false-cold、cold->hot唤醒、WAL disk fallback、Snapshot、commit/业务P99；false-cold非零即禁止扩面。
+
 ## 21. 指标与状态接口
 
 ### 21.1 每Part指标
@@ -1325,6 +1918,19 @@ atomic_hit/miss
 wal_file_iterator_bytes/latency
 gc_runs/deleted_nodes/duration_us/max_deleted_nodes
 dirty_nodes_high_water
+boot_id/part_instance_id
+observation_config_epoch
+wal_activity_epoch/request_epoch/safety_epoch
+observation_validity/wal_temperature/request_guard/safety_guard/reason_mask
+observer_capabilities
+wal_nonempty_records/bytes_total
+wal_empty_records_total
+last_nonempty_age
+short/long wal record/byte rate
+read/write request attempt rate
+raft role/term/status/commit_lag
+busy_mask/topology_revision
+report_seq/collection_round_id/fresh_deadline
 ```
 
 当前观测补丁的 `nodes_` 统计尚未 delete 的全部 Node，包含 dirty Node，并不存在精确 `valid_nodes`：[`AtomicLogBuffer.h:390-393`](../src/kvstore/wal/AtomicLogBuffer.h#L390-L393)。产品实现必须新增在结构线性化点维护的 valid-node 计数。由于 push Writer 与 `releaseRef()` GC 可以并发，分别读取多个 atomic 不是一致快照；用于硬验收的 `snapshotMetrics()` 必须使用轻量 per-buffer stats mutex 或另一种经过证明的 multi-writer 一致快照机制。普通独立 atomic 采样只能用于趋势，不能断言 `live=valid+dirty` 的瞬时不变量。
@@ -1340,6 +1946,17 @@ shrinking_parts
 steady_parts
 warming_parts
 error_parts
+expected/observed logical_parts
+expected/observed replicas
+hot/cooling/cold/unknown/busy parts
+unknown reason counts
+short/long nonempty record/byte rate
+read/write request attempt rate
+max_part_rate/minimum_last_nonempty_age
+observation_coverage/eligible_for_cold
+space_control_owner
+space_decision_epoch/state/lease_expiry
+hot/cold/mixed applied replica counts
 sum_accounted_bytes
 sum_live_node_bytes
 desired_generation/epoch/hash
@@ -1354,10 +1971,35 @@ gate_epoch/state
 desired generation/epoch/hash
 applied gate/generation/epoch/hash
 policy hash
+heat observer capability/config epoch
+collection_round/topology_revision/report hash/freshness
+AUTO coordinator Meta term/space decision epoch/state
+AUTO application scope/hash
 last error
 ```
 
 接口必须避免高基数默认全量输出。普通 `/stats` 可只给聚合值，按 Space/Part 的明细通过带过滤参数的只读管理接口查询。
+
+### 21.4 冷热查询与告警
+
+建议提供：
+
+```text
+SHOW SPACE WAL HEAT <space>
+SHOW SPACE WAL HEAT DETAIL <space> [PART <id>] [LIMIT <n>]
+SHOW WAL BUFFER CANDIDATES
+```
+
+告警至少包括：
+
+- Space 曾为 COLD/COLD_APPLIED 后短时间内恢复 HOT；
+- observation coverage 低于100%、报告陈旧或 boot/topology 不一致；
+- SYSTEM_BUSY 长时间不清除；
+- AUTO 与 MANUAL/gate 冲突，或旧 token 被拒绝；
+- cold target 后 Atomic miss、磁盘 WAL read、Snapshot、commit P99 超出基线；
+- 观察器 sample gap、时间桶内存预算或热路径耗时超限。
+
+普通监控只保留 Space 聚合与状态计数。Part/replica明细必须按需分页拉取，不能把 `boot_id`、reason文本或所有 Part ID 作为长期时序 label。
 
 ## 22. 发布、灰度与回滚
 
@@ -1365,7 +2007,10 @@ last error
 
 - Phase 0 的并发硬化已独立合入并通过 ASan/TSan；
 - 磁盘 iterator/rollback 测试完成；
-- 所有新功能默认关闭；
+- capacity/AUTO功能默认关闭，冷热观察默认 `OBSERVE_ONLY`；
+- 观察器已覆盖至少一个完整业务周期，所有候选均能与业务审计和管理作业日志对上；
+- 预期普通Part/副本coverage为100%，false-cold为0，UNKNOWN严格fail-closed；
+- 观察器CPU、锁等待、内存和管理接口高基数开销在预算内；
 - 三台 storaged 均健康，RF完整；
 - 无 balance、rebuild、backup、snapshot 管理作业；
 - 无持续 `E_RAFT_*`、LOG_GAP、WAITING_SNAPSHOT；
@@ -1374,17 +2019,19 @@ last error
 
 ### 22.2 推荐灰度顺序
 
-1. 按10.5节顺序完成 metad、必要的 graphd、storaged 部署，所有 storaged feature gate 保持关闭；
-2. 验证关闭状态与原版本一致；
-3. 在实验环境完成“预填满8MiB，再热降4MiB/2MiB”的真实跨容量验证；
-4. 仅一台 Leader 最少的 storaged 启用本地能力；
-5. 选择1个已证明全部普通 Part 都冷、或已明确接受热点 Part 代价的 Space；
-6. 设置经预算批准的 canary target；若当前 accounted 已接近8MiB，可按8->4->2分级，否则直接设置最终 target；
-7. 确认 canary 节点实际承载该 Space 的 Leader；若没有，在健康RF3和无管理作业时做一次受控 Leader transfer；
-8. 等待 buffer 真正达到/跨过 target，观察原生淘汰、磁盘 fallback 和多轮 GC，并在逻辑/物理收敛后完成至少24小时稳态验收；
-9. 同时覆盖一个业务高峰，检查查询/写入P99、Follower追赶、Snapshot、IO和异常日志；
-10. 只有上述路径全部通过后，才依次启用第二、第三台；
-11. 第一轮始终保持 heartbeat、`wal_ttl`、RocksDB 参数不变。
+1. 按10.5节顺序完成 metad、必要的 graphd、storaged 部署，所有 storaged capacity/AUTO gate 保持关闭；
+2. 仅开启 `OBSERVE_ONLY`，验证关闭容量功能时与原版本数据/协议行为一致；
+3. 让观察器覆盖至少一个完整业务周期，核验100%副本覆盖、UNKNOWN reason、业务日/周峰谷和false-cold；
+4. 在实验环境完成“预填满8MiB，再热降4MiB/2MiB”的真实跨容量验证；
+5. 仅一台 Leader 最少的 storaged 启用本地capacity能力，仍不启用AUTO；
+6. 从 `SHOW WAL BUFFER CANDIDATES` 选择1个全部普通 Part/副本均有VALID COLD证据的 Space；存在热点Part、缺报或busy时不得选择，除非业务负责人显式接受并记录；
+7. 以MANUAL方式设置经预算批准的 canary target；若当前 accounted 已接近8MiB，可按8->4->2分级，否则直接设置最终 target；
+8. 确认 canary 节点实际承载该 Space 的 Leader；若没有，在健康RF3和无管理作业时做一次受控 Leader transfer；
+9. 等待 buffer 真正达到/跨过 target，观察原生淘汰、磁盘 fallback 和多轮 GC，并在逻辑/物理收敛后完成至少24小时稳态验收；
+10. 同时覆盖一个业务高峰，检查观察状态、查询/写入P99、Follower追赶、Snapshot、IO和异常日志；
+11. 只有上述路径全部通过后，才依次启用第二、第三台；
+12. MANUAL全量稳定且shadow false-cold持续为0后，另开变更对单一Space、单一host启用AUTO；
+13. 第一轮始终保持 heartbeat、`wal_ttl`、RocksDB 参数不变。
 
 首次生产部署的重启已经清空旧缓存，不能借此证明“8MiB->2MiB在线收缩”。H=30、纯空日志、2MiB target 从空触顶名义约15.55天；若不使用经审批的受控负载，就必须等待这段实际 push 窗口后才能扩第二台。不能用15分钟或尚未跨容量的24小时 RSS下降证明方案有效；重启、allocator purge和 target setter 的效果必须分开。
 
@@ -1399,6 +2046,9 @@ last error
 - term/Leader频繁抖动；
 - dirty Node 长时间只增不减；
 - applied generation/epoch不收敛或节点policy hash漂移；
+- observation coverage不足、boot/topology报告不一致或出现任何false-cold；
+- 观察器热路径CPU/锁等待、时间桶内存或管理接口负载超出预算；
+- AUTO覆盖MANUAL/gate，或第一条非空WAL前未恢复hot target；
 - ASan/TSan/日志出现链表、引用或计数异常。
 
 ### 22.4 回滚
@@ -1469,18 +2119,34 @@ snapshot epoch 43: target=8MiB
 - Follower catch-up 不超过基线1.2倍且仍满足故障恢复RTO；
 - 排除正常管理作业后，健康RF3下非预期 Snapshot 不高于基线，且无持续 `E_RAFT_NO_WAL_FOUND` 或不可用 Part。
 
+### 23.5 冷热观察
+
+- `SPACE_COLD_ELIGIBLE` 必然覆盖同一 topology revision 下100%的预期普通 logical Part 和当前 replica；
+- 每次判断只使用一个完整且未过期的 collection round；分页boot/report_seq/hash一致，Meta切主或拓扑变化不拼接旧页；
+- `WalTemperature=COLD` 只有在完整长窗口、零 non-empty WAL delta且wal epoch稳定时成立；自动资格还要求ObservationValidity=VALID、RequestGuard=REQUEST_COLD、SafetyGuard=SAFE；
+- 任一非空 WAL 在进入 Atomic buffer 前完成 HOT迁移和AUTO target升容；
+- 一个热点Part、缺失/陈旧副本、boot变化、sample gap、Snapshot、ingest、rebuild或balance都能阻止自动判冷；
+- WAL拒绝/fsync错误、backup busy或任一必需observer capability未知都能阻止AUTO；
+- RF3重复日志不会被当作三倍业务写，Space平均值不会掩盖max_part_rate；
+- 重启和新Part必须经过完整BOOT_WARMUP，wall clock跳变不能制造COLD；
+- OBSERVE_ONLY覆盖至少一个完整业务周期，候选与业务审计/批处理日志一致，false-cold为0；
+- MANUAL和activation gate永远优先于AUTO，陈旧自动任务全部被版本令牌拒绝；
+- AUTO冷进入完成声明的application scope内全replica prepare后才commit（正式全量scope即全部普通replica）；失败补偿恢复hot；本Part活动同步升容后整个scope最终收敛HOT_RECOVERING->hot；
+- 默认接口无无限高基数label，10,000级Part观察开销满足已批准CPU、内存和锁等待预算。
+
 ## 24. 最终建议
 
 推荐按以下顺序实施：
 
 ```text
 Phase 0  修复并证明现有淘汰/GC与磁盘iterator并发边界
+Phase O  默认OBSERVE_ONLY的per-Part采集与fail-closed Space冷热汇总
 Phase 1  默认关闭的本机per-space atomic热容量，人工操作
 Phase 2  独立Meta policy generation/epoch/hash/applied控制面
-Phase 3  可选per-part自动冷热识别
+Phase 3  经完整业务周期shadow验证后的可选Space级自动执行
 ```
 
-第一批生产版本不要同时实现主动 trim、自动识别和 RocksDB idle flush。先证明：
+第一批生产版本不要同时启用主动 trim、AUTO容量切换和 RocksDB idle flush。冷热观察保持 `OBSERVE_ONLY`，先证明：
 
 ```text
 指定冷Space的target可热更新
@@ -1489,6 +2155,6 @@ Phase 3  可选per-part自动冷热识别
   + 磁盘fallback和Snapshot在预算内
 ```
 
-第一版只对“全部普通 Part 都已证明为低非空 WAL 写入”的 Space 使用；存在不可接受的分片冷热倾斜时，跳过该 Space，等待 per-part 策略。这个准入条件与并发硬化、磁盘 fallback 压测同等重要。
+第一版只对观察器证明“同一拓扑版本下全部普通 Part/副本均为VALID COLD，且请求热度和SYSTEM_BUSY保护通过”的 Space 使用；存在不可接受的分片冷热倾斜、缺报或UNKNOWN时，跳过该 Space，等待证据恢复或另立per-part策略。这个准入条件与并发硬化、磁盘 fallback压测同等重要。
 
 在这些条件成立后，按图空间热更新 `wal_buffer_size` 是当前约束下最合适的方案：它没有触碰 Raft 正确性核心，把影响限制在明确的冷 Space，并且避免了主动 trim 的第二 Writer 和全局调参对热业务的无差别伤害。
