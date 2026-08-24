@@ -1,0 +1,102 @@
+NebulaGraph INSERT VERTEX storage data-flow documentation task log
+Repository: /home/sch/nebula/nebula-3.6-wal-1
+Branch: 3.6-w-1
+Baseline commit: 65abd33d0349091e8d4c751e609924408c10940a
+Started: 2026-08-24 09:48:36 CST (+0800)
+
+[Scope]
+- Static source walk of graphd -> StorageClient -> storaged -> KVStore -> Raft/WAL -> RocksDB.
+- Distributed analysis covers multiple graphd/storaged instances, partition leaders,
+  replica quorum, native indexes, and optional listener/learner flow.
+- No database service was started and no runtime configuration was changed.
+- This is a documentation-only task; a full C++ rebuild is not required.
+
+[Repository safety audit]
+- Existing modified files (not part of this task):
+  src/kvstore/wal/AtomicLogBuffer.cpp
+  src/kvstore/wal/AtomicLogBuffer.h
+  src/storage/http/StorageHttpStatsHandler.cpp
+- Existing untracked paths (not part of this task):
+  AGENTS.md
+  codex.md
+  tasks/task-wal-investigation.log
+  tasks/wal-lab/
+- Only docs/insert-vertex-storage-data-flow/ will be staged for this task.
+
+[Key source trace]
+1. Parser and graph planning
+   src/parser/parser.yy:2920-2984
+   src/graph/validator/MutateValidator.cpp:19-148
+   src/graph/planner/plan/Mutate.h:16-78
+   src/graph/executor/mutate/InsertExecutor.cpp:15-43
+
+2. Partition routing and scatter/gather
+   src/clients/storage/StorageClient.cpp:149-186,774-800
+   src/clients/storage/StorageClientBase-inl.h:45-69,72-153,157-276
+   src/clients/meta/MetaClient.cpp:1218-1231,2391-2434
+   Finding: requests are grouped first by leader host and then by partition;
+   one Thrift RPC is sent per target host.
+
+3. Storaged mutation processing
+   src/storage/GraphStorageServiceHandler.cpp:34-48,88-93
+   src/storage/mutate/AddVerticesProcessor.cpp:24-394
+   src/storage/BaseProcessor-inl.h:40-58,70-118,142-170
+   Finding: no-index writes use asyncMultiPut; if any tag index exists in the
+   space, writes use asyncAtomicOp to maintain old/new index keys and tag rows.
+
+4. Raft, WAL, and state-machine apply
+   src/kvstore/NebulaStore.cpp:891-902,944-955
+   src/kvstore/Part.cpp:83-89,120-124,215-364
+   src/kvstore/raftex/RaftPart.cpp:786-1135,1610-1822
+   src/kvstore/wal/FileBasedWal.cpp:442-527
+   src/kvstore/RocksEngine.cpp:120-141
+   Finding: leader writes its Raft WAL, waits for follower quorum acceptance,
+   applies the committed batch to local RocksDB, then fulfills the proposal
+   promise. A follower can acknowledge after WAL append before applying the
+   just-received entry; a later AppendLog carries the advanced committed id.
+
+5. Physical layout and durability
+   src/common/utils/NebulaKeyUtils.cpp:37-49,77-109
+   src/common/utils/IndexKeyUtils.cpp:87-106
+   src/codec/RowWriterV2.h:25-85
+   src/codec/RowWriterV2.cpp:935-955
+   src/kvstore/RocksEngineConfig.cpp:23-27
+   Finding: Raft WAL and RocksDB WAL are distinct. In this branch both
+   --wal_sync and --rocksdb_wal_sync default to false; successful logical
+   commit is not equivalent to per-write fsync under default flags.
+
+[Distributed correctness findings]
+- Atomicity is per partition/Raft log/RocksDB WriteBatch, not per nGQL statement.
+- Cross-partition or cross-host partial commits are possible; mutation execution
+  rejects partial success but does not roll back successful partitions.
+- E_LEADER_CHANGED updates graphd's local leader cache for a later request; the
+  addVertices call itself is not resubmitted by StorageClient.
+- E_RAFT_UNKNOWN_APPEND_LOG is an indeterminate result: a replicated log may
+  later be committed by a new leader.
+- Native tag-index rows and primary tag rows share the same partition batch.
+- Elasticsearch listeners are learners and do not participate in write quorum;
+  full-text visibility can lag nGQL success.
+- IF NOT EXISTS is not a strict compare-and-set in either write path. The indexed
+  path does not represent an absent old row in its read set, and concurrent
+  write/write operations retain last-write-wins behavior.
+
+[Validation]
+- Checked 117 local Markdown links: 0 missing files and 0 out-of-range line anchors.
+- Checked 36 Markdown fence lines and 3 Mermaid blocks: fences and Mermaid
+  subgraph/par scopes are balanced.
+- Checked for trailing whitespace and duplicate level-2 headings: none found.
+- Re-resolved the core StorageClient, AddVerticesProcessor, RaftPart, and Part
+  source entry points against the current working tree.
+- Mermaid CLI is not installed locally, so diagrams were structurally checked
+  but not raster-rendered. GitHub-compatible Mermaid source remains in README.md.
+- No C++ build or database startup was run because only documentation was added.
+
+[Publication validation]
+- SSH preflight resolved origin/3.6-w-1 at the baseline commit
+  65abd33d0349091e8d4c751e609924408c10940a.
+- Staged only docs/insert-vertex-storage-data-flow/README.md and investigation.log.
+- Initial cached diff: 2 new files, 1182 inserted lines.
+- git diff --cached --check: passed with no whitespace errors.
+- Target publication branch: origin/3.6-w-1.
+
+Documentation validation completed: 2026-08-24 09:59:57 CST (+0800)
