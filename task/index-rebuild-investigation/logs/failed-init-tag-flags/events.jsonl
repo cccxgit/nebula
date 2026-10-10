@@ -1,0 +1,1 @@
+{"utc": "2026-10-09T23:07:04.023870+00:00", "elapsed": 0.002, "event": "parameters", "parameters": {"kind": "TAG", "name": "ir_tag_flags_01", "backlog": 96, "seed": 2048, "batch": 131072, "rate": 524288, "port": 21531, "http_port": 22631, "timeout": 900, "runtime": "/home/sch/nebula-run/nebula-index", "output": "task/index-rebuild-investigation/live/tag_flags"}}

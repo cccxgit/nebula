@@ -1,0 +1,103 @@
+diff --git a/src/storage/admin/RebuildIndexTask.cpp b/src/storage/admin/RebuildIndexTask.cpp
+index e1f6f62e2..b4a1d05f0 100644
+--- a/src/storage/admin/RebuildIndexTask.cpp
++++ b/src/storage/admin/RebuildIndexTask.cpp
+@@ -138,12 +138,18 @@ nebula::cpp2::ErrorCode RebuildIndexTask::buildIndexOnOperations(
+     return nebula::cpp2::ErrorCode::E_USER_CANCEL;
+   }
+ 
++  // Investigation only: counters and logs; the replay algorithm is unchanged.
++  uint64_t diagnosticRound = 0;
+   while (true) {
+     if (UNLIKELY(canceled_)) {
+       LOG(INFO) << folly::sformat("Rebuild index canceled, space={}, part={}", space, part);
+       return nebula::cpp2::ErrorCode::E_USER_CANCEL;
+     }
+ 
++    ++diagnosticRound;
++    uint64_t diagnosticOperations = 0;
++    LOG(INFO) << "INDEX_DIAG replay_begin space=" << space << " part=" << part
++              << " round=" << diagnosticRound;
+     std::unique_ptr<kvstore::KVIterator> operationIter;
+     auto operationPrefix = OperationKeyUtils::operationPrefix(part);
+     auto operationRet = env_->kvstore_->prefix(space, part, operationPrefix, &operationIter);
+@@ -155,6 +161,7 @@ nebula::cpp2::ErrorCode RebuildIndexTask::buildIndexOnOperations(
+     std::unique_ptr<kvstore::BatchHolder> batchHolder = std::make_unique<kvstore::BatchHolder>();
+     batchHolder->reserve(kReserveNum);
+     while (operationIter->valid()) {
++      ++diagnosticOperations;
+       auto opKey = operationIter->key();
+       auto opVal = operationIter->val();
+       // replay operation record
+@@ -187,6 +194,10 @@ nebula::cpp2::ErrorCode RebuildIndexTask::buildIndexOnOperations(
+       return ret;
+     }
+ 
++    LOG(INFO) << "INDEX_DIAG replay_end space=" << space << " part=" << part
++              << " round=" << diagnosticRound << " operations=" << diagnosticOperations
++              << " retained_bytes=" << batchHolder->size()
++              << " retained_entries=" << batchHolder->getBatch().size();
+     // When the processed operation size is less than the batch size,
+     // we will mark the lock's building in StorageEnv and refuse writing for
+     // a short piece of time.
+@@ -202,11 +213,24 @@ nebula::cpp2::ErrorCode RebuildIndexTask::buildIndexOnOperations(
+ 
+         // Waiting all of the on flying requests have finished.
+         int32_t currentRequestNum;
++        const auto diagnosticWaitStart = std::chrono::steady_clock::now();
++        auto diagnosticLastLog = diagnosticWaitStart;
++        LOG(INFO) << "INDEX_DIAG locked_wait_begin space=" << space << " part=" << part;
+         do {
+           currentRequestNum = env_->onFlyingRequest_.load();
++          const auto diagnosticNow = std::chrono::steady_clock::now();
++          if (diagnosticNow - diagnosticLastLog >= std::chrono::seconds(1)) {
++            LOG(INFO) << "INDEX_DIAG locked_wait space=" << space << " part=" << part
++                      << " on_flying=" << currentRequestNum << " canceled=" << canceled_
++                      << " elapsed_ms="
++                      << std::chrono::duration_cast<std::chrono::milliseconds>(
++                             diagnosticNow - diagnosticWaitStart).count();
++            diagnosticLastLog = diagnosticNow;
++          }
+           VLOG(1) << "On Flying Request: " << currentRequestNum;
+           usleep(100);
+         } while (currentRequestNum != 0);
++        LOG(INFO) << "INDEX_DIAG locked_wait_end space=" << space << " part=" << part;
+       } else {
+         break;
+       }
+@@ -262,9 +286,14 @@ nebula::cpp2::ErrorCode RebuildIndexTask::writeOperation(GraphSpaceID space,
+   folly::Baton<true, std::atomic> baton;
+   auto result = nebula::cpp2::ErrorCode::SUCCEEDED;
+   auto encoded = encodeBatchValue(batchHolder->getBatch());
++  static std::atomic<uint64_t> diagnosticWriteSequence{0};
++  const auto diagnosticSequence = ++diagnosticWriteSequence;
++  const auto diagnosticEncodedBytes = encoded.size();
++  const auto diagnosticStart = std::chrono::steady_clock::now();
+   rateLimiter->consume(static_cast<double>(batchHolder->size()),                   // toConsume
+                        static_cast<double>(FLAGS_rebuild_index_part_rate_limit),   // rate
+                        static_cast<double>(FLAGS_rebuild_index_part_rate_limit));  // burstSize
++  const auto diagnosticAfterLimit = std::chrono::steady_clock::now();
+   env_->kvstore_->asyncAppendBatch(
+       space, part, std::move(encoded), [&result, &baton](nebula::cpp2::ErrorCode code) {
+         if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
+@@ -273,6 +302,20 @@ nebula::cpp2::ErrorCode RebuildIndexTask::writeOperation(GraphSpaceID space,
+         baton.post();
+       });
+   baton.wait();
++  const auto diagnosticEnd = std::chrono::steady_clock::now();
++  if (diagnosticSequence <= 5 || diagnosticSequence % 100 == 0 ||
++      diagnosticEnd - diagnosticStart >= std::chrono::milliseconds(900)) {
++    LOG(INFO) << "INDEX_DIAG append space=" << space << " part=" << part
++              << " seq=" << diagnosticSequence << " batch_bytes=" << batchHolder->size()
++              << " entries=" << batchHolder->getBatch().size()
++              << " encoded_bytes=" << diagnosticEncodedBytes << " limit_ms="
++              << std::chrono::duration_cast<std::chrono::milliseconds>(
++                     diagnosticAfterLimit - diagnosticStart).count()
++              << " append_ms="
++              << std::chrono::duration_cast<std::chrono::milliseconds>(
++                     diagnosticEnd - diagnosticAfterLimit).count()
++              << " rc=" << static_cast<int32_t>(result);
++  }
+   return result;
+ }
+ 

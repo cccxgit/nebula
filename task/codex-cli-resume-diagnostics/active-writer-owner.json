@@ -1,0 +1,17 @@
+[
+  {
+    "lock_file": "/home/sch/.codex/thread-writer-locks/01a122bc-efa6-7351-8ea5-7a9569f4bce0.lock",
+    "inode": 34608049,
+    "proc_locks": [
+      "151: FLOCK  ADVISORY  WRITE 34358 103:0b:34608049 0 EOF"
+    ],
+    "owner": {
+      "pid": 34358,
+      "exe": "/usr/lib/chatgpt/resources/codex",
+      "is_app_server": true,
+      "parent_pid": 34132,
+      "parent_exe": "/usr/lib/chatgpt/ChatGPT",
+      "parent_comm": "ChatGPT"
+    }
+  }
+]

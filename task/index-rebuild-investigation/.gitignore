@@ -1,0 +1,5 @@
+# Keep reproducible harness sources and logs; omit local executables and caches.
+/audit/rate_harness
+/audit/source_harness
+__pycache__/
+*.pyc

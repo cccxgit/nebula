@@ -1,0 +1,33 @@
+class RateLimiter {
+ public:
+  RateLimiter() {
+    // token will be available after 1 second, to prevent speed spike at the beginning
+    auto now = time::WallClock::fastNowInSec();
+    int64_t waitInSec = FLAGS_skip_wait_in_rate_limiter ? 0 : 1;
+    bucket_.reset(new folly::DynamicTokenBucket(static_cast<double>(now + waitInSec)));
+  }
+
+  /**
+   * @brief Consume some budget from rate limiter. Caller must make sure the **the partition has
+   * been add, and won't be removed during consume.** Snapshot and rebuild index follow this
+   * principle by design.
+   *
+   * @param toConsume Amount to consume
+   * @param rate Generate speed
+   * @param burstSize Maximum consume speed to consume
+   */
+  void consume(double toConsume, double rate, double burstSize) {
+    if (toConsume > burstSize) {
+      // consumeWithBorrowAndWait do nothing when toConsume > burstSize_, we sleep 1s instead
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+    } else {
+      // If there are enough tokens, consume and return immediately.
+      // If not, consume anyway, but sleep enough time before return.
+      auto now = time::WallClock::fastNowInSec();
+      bucket_->consumeWithBorrowAndWait(toConsume, rate, burstSize, static_cast<double>(now));
+    }
+  }
+
+ private:
+  std::unique_ptr<folly::DynamicTokenBucket> bucket_;
+};

@@ -1,0 +1,13 @@
+  ERROR: Expected one success event, observed 0
+  ERROR: Expected one baseline_submit event, observed 0
+  ERROR: baseline_submit: expected one terminal event for job None, got 0
+  ERROR: Expected one experiment_submit event, observed 0
+  ERROR: experiment_submit: expected one terminal event for job None, got 0
+  ERROR: Expected one reproduction_evidence event, observed 0
+  ERROR: Expected one verify_concurrent_index_rows event, observed 0
+  ERROR: LOOKUP row count None differs from requested backlog 96
+  ERROR: experiment-storage.log is empty; experiment evidence incomplete
+  ERROR: replay_end backlog assertion failed: sum=None, max=None, requested N=96; expected exactly one complete nonempty round
+Wrote /home/sch/nebula/nebula-index/task/index-rebuild-investigation/live/summary.json and /home/sch/nebula/nebula-index/task/index-rebuild-investigation/live/summary.csv; cases=2, all_valid=False
+edge_flags: baseline=Nones, experiment=Nones, rounds=[], sampled_appends=0, valid=False
+tag_flags: baseline=18.047s, experiment=82.289s, rounds=[96, 0, 0], sampled_appends=50, valid=True

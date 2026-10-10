@@ -1,0 +1,9 @@
+[INFO] Stopping nebula-graphd...
+[INFO] Done
+[INFO] Stopping nebula-storaged...
+[INFO] Done
+[INFO] Stopping nebula-metad...
+[INFO] Done
+[INFO] nebula-graphd(de9b3ed80): Exited
+[INFO] nebula-storaged(de9b3ed80): Exited
+[INFO] nebula-metad(de9b3ed80): Exited

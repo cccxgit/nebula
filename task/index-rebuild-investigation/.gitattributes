@@ -1,0 +1,6 @@
+# Evidence and extracted source snippets must retain their original bytes.
+# Patch context lines and captured tool output may contain intentional whitespace.
+*.log -text -whitespace
+*.inc -text -whitespace
+*.patch -text -whitespace
+*.csv -text -whitespace

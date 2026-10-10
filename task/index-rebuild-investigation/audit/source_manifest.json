@@ -1,0 +1,12 @@
+{
+  "commit": "de9b3ed800a6627d9845e9289b6bbc5b6faf460a",
+  "excerpts_sha256": {
+    "log_enums": "88e69fc4f7e6a9ae6155cb9eb43f54ec0ed6957c1e74163e818ea0baa96402fb",
+    "batch_holder": "85dedd8dabedcc4fd6a6177c37ab2635a36f0e46746dc47a15a47a8a3f8faccb",
+    "encode_batch": "2c4a8b24fa1ee990e4a1694997d7b504257df3b9fa7ea0d84810bf13cf379d3c",
+    "replay": "a506aa054b8d50aaf9f5a9cd9fa2d2fb06fb7c066365b83aa7a28571422284f3",
+    "write_operation": "7f0d4d74b39da9d1ec79bd16a5f1aad43b987c0e56cabb52ff214a61b1e2167c",
+    "request_wrapper": "e3e30bdb858a36e123842a493e55cdbc95453ae85049aa208b63f08aa5ff456a",
+    "rate_limiter": "0e9174f80d3b49479df87d070ce3a01cc79d73974c672120d6ddc66194cb60de"
+  }
+}

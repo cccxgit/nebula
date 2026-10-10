@@ -1,0 +1,557 @@
+Log file created at: 2026/10/10 07:06:34
+Running on machine: sch-PC
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20261010 07:06:34.294510 87998 StorageDaemon.cpp:132] localhost = "127.0.0.1":21631
+I20261010 07:06:34.294678 87998 StorageDaemon.cpp:147] data path= /home/sch/nebula-run/nebula-index/data/storage
+I20261010 07:06:34.307916 87998 MetaClient.cpp:80] Create meta client to "127.0.0.1":21431
+I20261010 07:06:34.307955 87998 MetaClient.cpp:81] root path: /home/sch/nebula-run/nebula-index, data path size: 1
+W20261010 07:06:34.308017 87998 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:06:37.325475 87998 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+I20261010 07:06:37.325556 87998 MetaClient.cpp:137] Waiting for the metad to be ready!
+W20261010 07:06:38.327857 87998 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:06:41.344524 87998 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+I20261010 07:06:41.344601 87998 MetaClient.cpp:137] Waiting for the metad to be ready!
+W20261010 07:06:42.344682 87998 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+I20261010 07:06:42.350040 88225 MetaClient.cpp:2672] Persist the cluster Id from metad 5970072175483379995
+I20261010 07:06:42.350129 88225 FileBasedClusterIdMan.cpp:21] Remove the existed file cluster.id
+I20261010 07:06:42.350230 88225 FileBasedClusterIdMan.cpp:34] Persist clusterId 5970072175483379995 succeeded!
+I20261010 07:06:42.377749 87998 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 0 space
+I20261010 07:06:42.377769 87998 MetaClient.cpp:3269] Load leader ok
+I20261010 07:06:42.382890 87998 MetaClient.cpp:162] Register time task for heartbeat!
+I20261010 07:06:42.383014 87998 StorageServer.cpp:250] Init schema manager
+I20261010 07:06:42.383031 87998 StorageServer.cpp:253] Init index manager
+I20261010 07:06:42.383041 87998 StorageServer.cpp:256] Init kvstore
+I20261010 07:06:42.383119 87998 NebulaStore.cpp:48] Start the raft service...
+I20261010 07:06:42.383942 87998 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20261010 07:06:42.406916 87998 RaftexService.cpp:46] Start raft service on 21632
+I20261010 07:06:42.407066 87998 NebulaStore.cpp:82] Scan the local path, and init the spaces_
+E20261010 07:06:42.407078 87998 FileUtils.cpp:377] Failed to read the directory "/home/sch/nebula-run/nebula-index/data/storage/nebula" (2): No such file or directory
+I20261010 07:06:42.407109 87998 NebulaStore.cpp:292] Init data from partManager for "127.0.0.1":21631
+I20261010 07:06:42.407135 87998 NebulaStore.cpp:75] Register handler...
+I20261010 07:06:42.407142 87998 StorageServer.cpp:259] Init LogMonitor
+I20261010 07:06:42.407230 87998 StorageServer.cpp:126] Starting Storage HTTP Service
+I20261010 07:06:42.407333 87998 StorageServer.cpp:130] Http Thread Pool started
+I20261010 07:06:42.408636 88398 WebService.cpp:124] Web service started on HTTP[22631]
+I20261010 07:06:42.409020 87998 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20261010 07:06:42.409035 87998 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20261010 07:06:42.409039 87998 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20261010 07:06:42.409145 87998 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20261010 07:06:42.436767 87998 RocksEngine.cpp:107] open rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/0/data
+I20261010 07:06:42.436949 87998 AdminTaskManager.cpp:22] max concurrent subtasks: 10
+I20261010 07:06:42.437021 87998 AdminTaskManager.cpp:40] exit AdminTaskManager::init()
+I20261010 07:06:42.437024 88422 AdminTaskManager.cpp:224] waiting for incoming task
+I20261010 07:06:42.456418 87998 MemoryTracker.h:106] MemoryTracker update limit 8589934592.000GiB -> 24.829GiB
+I20261010 07:06:42.456453 87998 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20261010 07:07:31.603022 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 0 space
+I20261010 07:07:31.603052 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:07:31.603149 88387 NebulaStore.cpp:417] Create data space 1
+I20261010 07:07:31.603633 89022 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20261010 07:07:31.603650 89022 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20261010 07:07:31.603655 89022 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20261010 07:07:31.603796 89022 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20261010 07:07:31.632683 89022 RocksEngine.cpp:107] open rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/1/data
+I20261010 07:07:31.633065 88387 NebulaStore.cpp:480] Space 1, part 1 has been added, asLearner 0
+I20261010 07:07:33.660424 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 1 space
+I20261010 07:07:33.660459 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:07:36.668220 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 1 space
+I20261010 07:07:36.668241 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:07:41.694784 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 1 space
+I20261010 07:07:41.694800 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:07:46.375128 88054 AdminTask.cpp:21] createAdminTask (2, 0)
+I20261010 07:07:46.375175 88054 RebuildIndexTask.cpp:40] Rebuild index task is rate limited to 524288 for each subtask by default
+I20261010 07:07:46.375274 88054 AdminTaskManager.cpp:155] enqueue task(2, 0)
+I20261010 07:07:46.375314 88422 AdminTaskManager.cpp:236] dequeue task(2, 0)
+I20261010 07:07:46.375383 88422 AdminTaskManager.cpp:279] run task(2, 0), 1 subtasks in 1 thread
+I20261010 07:07:46.375566 88422 AdminTaskManager.cpp:224] waiting for incoming task
+I20261010 07:07:46.375789 89224 RebuildIndexTask.cpp:113] Start building index
+I20261010 07:08:03.642467 89224 RebuildIndexTask.cpp:119] Building index successful, space=1, part=1
+I20261010 07:08:03.642493 89224 RebuildIndexTask.cpp:122] Processing operation logs, space=1, part=1
+I20261010 07:08:03.642498 89224 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=1 part=1 round=1
+I20261010 07:08:03.642596 89224 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=1 batch_bytes=0 entries=0 encoded_bytes=13 limit_ms=0 append_ms=0 rc=0
+I20261010 07:08:03.642601 89224 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=1 part=1 round=1 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:08:03.642622 89224 RebuildIndexTask.cpp:218] INDEX_DIAG locked_wait_begin space=1 part=1
+I20261010 07:08:03.642782 89224 RebuildIndexTask.cpp:233] INDEX_DIAG locked_wait_end space=1 part=1
+I20261010 07:08:03.642788 89224 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=1 part=1 round=2
+I20261010 07:08:03.642843 89224 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=2 batch_bytes=0 entries=0 encoded_bytes=13 limit_ms=0 append_ms=0 rc=0
+I20261010 07:08:03.642846 89224 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=1 part=1 round=2 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:08:03.642855 89224 RebuildIndexTask.cpp:130] RebuildIndexTask Finished, space=1, part=1
+I20261010 07:08:03.642861 89224 AdminTaskManager.cpp:315] subtask of task(2, 0) finished, unfinished task 0
+I20261010 07:08:03.642869 89224 RebuildIndexTask.cpp:21] Finish rebuild index task in space 1
+I20261010 07:08:03.642881 89224 AdminTask.h:129] task(2, 0) finished, rc=[SUCCEEDED]
+I20261010 07:08:03.643821 88423 AdminTaskManager.cpp:92] reportTaskFinish(), job=2, task=0, task_rc=SUCCEEDED
+I20261010 07:08:03.645535 88423 AdminTaskManager.cpp:134] reportTaskFinish(), job=2, task=0, report_rc=SUCCEEDED
+I20261010 07:08:04.424491 88052 AdminTask.cpp:21] createAdminTask (3, 0)
+I20261010 07:08:04.424525 88052 RebuildIndexTask.cpp:40] Rebuild index task is rate limited to 524288 for each subtask by default
+I20261010 07:08:04.424602 88052 AdminTaskManager.cpp:155] enqueue task(3, 0)
+I20261010 07:08:04.424613 88422 AdminTaskManager.cpp:236] dequeue task(3, 0)
+I20261010 07:08:04.424690 88422 AdminTaskManager.cpp:279] run task(3, 0), 1 subtasks in 1 thread
+I20261010 07:08:04.424896 88422 AdminTaskManager.cpp:224] waiting for incoming task
+I20261010 07:08:04.425130 89496 RebuildIndexTask.cpp:113] Start building index
+I20261010 07:08:20.902407 89496 RebuildIndexTask.cpp:119] Building index successful, space=1, part=1
+I20261010 07:08:20.902436 89496 RebuildIndexTask.cpp:122] Processing operation logs, space=1, part=1
+I20261010 07:08:20.902439 89496 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=1 part=1 round=1
+I20261010 07:08:21.217229 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=3 batch_bytes=131840 entries=32 encoded_bytes=132141 limit_ms=314 append_ms=0 rc=0
+I20261010 07:08:21.799243 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=4 batch_bytes=140080 entries=34 encoded_bytes=140399 limit_ms=581 append_ms=0 rc=0
+I20261010 07:08:21.799678 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=5 batch_bytes=148320 entries=36 encoded_bytes=148657 limit_ms=0 append_ms=0 rc=0
+I20261010 07:08:26.599303 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=16 batch_bytes=238960 entries=58 encoded_bytes=239495 limit_ms=1013 append_ms=1 rc=0
+I20261010 07:08:28.558009 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=20 batch_bytes=271920 entries=66 encoded_bytes=272527 limit_ms=993 append_ms=0 rc=0
+I20261010 07:08:32.372198 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=27 batch_bytes=329600 entries=80 encoded_bytes=330333 limit_ms=1064 append_ms=1 rc=0
+I20261010 07:08:34.499955 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=30 batch_bytes=354320 entries=86 encoded_bytes=355107 limit_ms=1044 append_ms=1 rc=0
+I20261010 07:08:36.850847 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=33 batch_bytes=379040 entries=92 encoded_bytes=379881 limit_ms=1166 append_ms=1 rc=0
+I20261010 07:08:38.944952 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=36 batch_bytes=403760 entries=98 encoded_bytes=404655 limit_ms=1429 append_ms=1 rc=0
+I20261010 07:08:40.191354 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=38 batch_bytes=420240 entries=102 encoded_bytes=421171 limit_ms=1016 append_ms=2 rc=0
+I20261010 07:08:43.216449 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=41 batch_bytes=444960 entries=108 encoded_bytes=445945 limit_ms=1515 append_ms=2 rc=0
+I20261010 07:08:44.868633 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=43 batch_bytes=461440 entries=112 encoded_bytes=462461 limit_ms=1260 append_ms=4 rc=0
+I20261010 07:08:46.099761 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=45 batch_bytes=477920 entries=116 encoded_bytes=478977 limit_ms=1067 append_ms=2 rc=0
+I20261010 07:08:47.099056 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=46 batch_bytes=486160 entries=118 encoded_bytes=487235 limit_ms=994 append_ms=4 rc=0
+I20261010 07:08:48.039502 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=47 batch_bytes=494400 entries=120 encoded_bytes=495493 limit_ms=937 append_ms=2 rc=0
+I20261010 07:08:48.941983 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=48 batch_bytes=502640 entries=122 encoded_bytes=503751 limit_ms=896 append_ms=5 rc=0
+I20261010 07:08:51.699545 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=51 batch_bytes=527360 entries=128 encoded_bytes=528525 limit_ms=1000 append_ms=17 rc=0
+I20261010 07:08:52.707684 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=52 batch_bytes=535600 entries=130 encoded_bytes=536783 limit_ms=1000 append_ms=7 rc=0
+I20261010 07:08:53.712996 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=53 batch_bytes=543840 entries=132 encoded_bytes=545041 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:08:54.721920 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=54 batch_bytes=552080 entries=134 encoded_bytes=553299 limit_ms=1000 append_ms=8 rc=0
+I20261010 07:08:55.726328 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=55 batch_bytes=560320 entries=136 encoded_bytes=561557 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:08:56.733018 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=56 batch_bytes=568560 entries=138 encoded_bytes=569815 limit_ms=1000 append_ms=5 rc=0
+I20261010 07:08:57.738018 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=57 batch_bytes=576800 entries=140 encoded_bytes=578073 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:08:58.743515 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=58 batch_bytes=585040 entries=142 encoded_bytes=586331 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:08:59.749655 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=59 batch_bytes=593280 entries=144 encoded_bytes=594589 limit_ms=1000 append_ms=5 rc=0
+I20261010 07:09:00.757196 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=60 batch_bytes=601520 entries=146 encoded_bytes=602847 limit_ms=1000 append_ms=6 rc=0
+I20261010 07:09:01.762092 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=61 batch_bytes=609760 entries=148 encoded_bytes=611105 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:09:02.764874 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=62 batch_bytes=618000 entries=150 encoded_bytes=619363 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:09:03.767179 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=63 batch_bytes=626240 entries=152 encoded_bytes=627621 limit_ms=1000 append_ms=1 rc=0
+I20261010 07:09:04.772332 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=64 batch_bytes=634480 entries=154 encoded_bytes=635879 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:09:05.775740 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=65 batch_bytes=642720 entries=156 encoded_bytes=644137 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:09:06.778087 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=66 batch_bytes=650960 entries=158 encoded_bytes=652395 limit_ms=1000 append_ms=1 rc=0
+I20261010 07:09:07.782263 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=67 batch_bytes=659200 entries=160 encoded_bytes=660653 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:09:08.786029 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=68 batch_bytes=667440 entries=162 encoded_bytes=668911 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:09:09.790843 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=69 batch_bytes=675680 entries=164 encoded_bytes=677169 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:09:10.795570 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=70 batch_bytes=683920 entries=166 encoded_bytes=685427 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:09:11.799791 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=71 batch_bytes=692160 entries=168 encoded_bytes=693685 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:09:12.809262 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=72 batch_bytes=700400 entries=170 encoded_bytes=701943 limit_ms=1000 append_ms=7 rc=0
+I20261010 07:09:13.817487 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=73 batch_bytes=708640 entries=172 encoded_bytes=710201 limit_ms=1000 append_ms=6 rc=0
+I20261010 07:09:14.823038 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=74 batch_bytes=716880 entries=174 encoded_bytes=718459 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:09:15.828403 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=75 batch_bytes=725120 entries=176 encoded_bytes=726717 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:09:16.837832 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=76 batch_bytes=733360 entries=178 encoded_bytes=734975 limit_ms=1000 append_ms=8 rc=0
+I20261010 07:09:17.861567 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=77 batch_bytes=741600 entries=180 encoded_bytes=743233 limit_ms=1000 append_ms=22 rc=0
+I20261010 07:09:18.865061 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=78 batch_bytes=749840 entries=182 encoded_bytes=751491 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:09:19.868569 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=79 batch_bytes=758080 entries=184 encoded_bytes=759749 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:09:20.871161 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=80 batch_bytes=766320 entries=186 encoded_bytes=768007 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:09:21.881520 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=81 batch_bytes=774560 entries=188 encoded_bytes=776265 limit_ms=1000 append_ms=9 rc=0
+I20261010 07:09:22.896720 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=82 batch_bytes=782800 entries=190 encoded_bytes=784523 limit_ms=1000 append_ms=14 rc=0
+I20261010 07:09:23.901149 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=83 batch_bytes=791040 entries=192 encoded_bytes=792781 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:09:24.906260 89496 RebuildIndexTask.cpp:308] INDEX_DIAG append space=1 part=1 seq=84 batch_bytes=791040 entries=192 encoded_bytes=792781 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:09:24.906311 89496 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=1 part=1 round=1 operations=96 retained_bytes=791040 retained_entries=192
+I20261010 07:09:24.906456 89496 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=1 part=1 round=2
+I20261010 07:09:24.907178 89496 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=1 part=1 round=2 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:09:24.907205 89496 RebuildIndexTask.cpp:218] INDEX_DIAG locked_wait_begin space=1 part=1
+I20261010 07:09:24.907368 89496 RebuildIndexTask.cpp:233] INDEX_DIAG locked_wait_end space=1 part=1
+I20261010 07:09:24.907390 89496 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=1 part=1 round=3
+I20261010 07:09:24.907961 89496 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=1 part=1 round=3 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:09:24.907987 89496 RebuildIndexTask.cpp:130] RebuildIndexTask Finished, space=1, part=1
+I20261010 07:09:24.908000 89496 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 0
+I20261010 07:09:24.908007 89496 RebuildIndexTask.cpp:21] Finish rebuild index task in space 1
+I20261010 07:09:24.908020 89496 AdminTask.h:129] task(3, 0) finished, rc=[SUCCEEDED]
+I20261010 07:09:24.908134 88423 AdminTaskManager.cpp:92] reportTaskFinish(), job=3, task=0, task_rc=SUCCEEDED
+I20261010 07:09:24.909087 88423 AdminTaskManager.cpp:134] reportTaskFinish(), job=3, task=0, report_rc=SUCCEEDED
+I20261010 07:09:26.710327 88461 LookupProcessor.cpp:176] 1
+I20261010 07:09:26.710345 88461 LookupProcessor.cpp:177] 0x7e283460f1b8
+I20261010 07:09:26.710348 88461 LookupProcessor.cpp:178] {"index_id":3,"filter":"","column_hints":[{"column_name":"YzA","scan_type":1,"begin_value":{"sVal":"Y29uY3VycmVudA"},"end_value":{},"include_begin":true,"include_end":false}]}
+I20261010 07:09:26.710553 88461 LookupProcessor.cpp:446] 0x7e2834621060
+I20261010 07:09:26.710565 88461 LookupProcessor.cpp:446] 0x7e2834621100
+I20261010 07:09:26.710578 88461 LookupProcessor.cpp:446] 0x7e2834601540
+I20261010 07:09:26.714787 88461 LookupProcessor.cpp:333] finish
+I20261010 07:09:34.959821 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 1 space
+I20261010 07:09:34.959842 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:09:34.959957 88387 NebulaStore.cpp:417] Create data space 4
+I20261010 07:09:34.960359 90691 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20261010 07:09:34.960372 90691 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20261010 07:09:34.960382 90691 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20261010 07:09:34.960513 90691 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20261010 07:09:34.998054 90691 RocksEngine.cpp:107] open rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/4/data
+I20261010 07:09:34.998332 88387 NebulaStore.cpp:480] Space 4, part 1 has been added, asLearner 0
+I20261010 07:09:37.012337 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 2 space
+I20261010 07:09:37.012355 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:09:40.020954 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 2 space
+I20261010 07:09:40.020970 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:09:45.040215 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 2 space
+I20261010 07:09:45.040239 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:09:49.392822 88053 AdminTask.cpp:21] createAdminTask (5, 0)
+I20261010 07:09:49.392872 88053 RebuildIndexTask.cpp:40] Rebuild index task is rate limited to 524288 for each subtask by default
+I20261010 07:09:49.392975 88422 AdminTaskManager.cpp:236] dequeue task(5, 0)
+I20261010 07:09:49.393041 88422 AdminTaskManager.cpp:279] run task(5, 0), 1 subtasks in 1 thread
+I20261010 07:09:49.393415 88422 AdminTaskManager.cpp:224] waiting for incoming task
+I20261010 07:09:49.393698 90949 RebuildIndexTask.cpp:113] Start building index
+I20261010 07:09:49.393797 88053 AdminTaskManager.cpp:155] enqueue task(5, 0)
+I20261010 07:10:06.287025 90949 RebuildIndexTask.cpp:119] Building index successful, space=4, part=1
+I20261010 07:10:06.287051 90949 RebuildIndexTask.cpp:122] Processing operation logs, space=4, part=1
+I20261010 07:10:06.287057 90949 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=4 part=1 round=1
+I20261010 07:10:06.287118 90949 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=4 part=1 round=1 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:10:06.287150 90949 RebuildIndexTask.cpp:218] INDEX_DIAG locked_wait_begin space=4 part=1
+I20261010 07:10:06.287312 90949 RebuildIndexTask.cpp:233] INDEX_DIAG locked_wait_end space=4 part=1
+I20261010 07:10:06.287319 90949 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=4 part=1 round=2
+I20261010 07:10:06.287384 90949 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=4 part=1 round=2 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:10:06.287390 90949 RebuildIndexTask.cpp:130] RebuildIndexTask Finished, space=4, part=1
+I20261010 07:10:06.287396 90949 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 0
+I20261010 07:10:06.287400 90949 RebuildIndexTask.cpp:21] Finish rebuild index task in space 4
+I20261010 07:10:06.287408 90949 AdminTask.h:129] task(5, 0) finished, rc=[SUCCEEDED]
+I20261010 07:10:06.287467 88423 AdminTaskManager.cpp:92] reportTaskFinish(), job=5, task=0, task_rc=SUCCEEDED
+I20261010 07:10:06.288177 88423 AdminTaskManager.cpp:134] reportTaskFinish(), job=5, task=0, report_rc=SUCCEEDED
+I20261010 07:10:07.449008 88054 AdminTask.cpp:21] createAdminTask (6, 0)
+I20261010 07:10:07.449028 88054 RebuildIndexTask.cpp:40] Rebuild index task is rate limited to 524288 for each subtask by default
+I20261010 07:10:07.449080 88054 AdminTaskManager.cpp:155] enqueue task(6, 0)
+I20261010 07:10:07.449088 88422 AdminTaskManager.cpp:236] dequeue task(6, 0)
+I20261010 07:10:07.449141 88422 AdminTaskManager.cpp:279] run task(6, 0), 1 subtasks in 1 thread
+I20261010 07:10:07.449282 88422 AdminTaskManager.cpp:224] waiting for incoming task
+I20261010 07:10:07.449441 91227 RebuildIndexTask.cpp:113] Start building index
+I20261010 07:10:24.425042 91227 RebuildIndexTask.cpp:119] Building index successful, space=4, part=1
+I20261010 07:10:24.425067 91227 RebuildIndexTask.cpp:122] Processing operation logs, space=4, part=1
+I20261010 07:10:24.425071 91227 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=4 part=1 round=1
+I20261010 07:10:28.610651 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=100 batch_bytes=223344 entries=54 encoded_bytes=223843 limit_ms=197 append_ms=1 rc=0
+I20261010 07:10:31.626535 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=106 batch_bytes=272976 entries=66 encoded_bytes=273583 limit_ms=1082 append_ms=0 rc=0
+I20261010 07:10:34.417696 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=111 batch_bytes=314336 entries=76 encoded_bytes=315033 limit_ms=922 append_ms=2 rc=0
+I20261010 07:10:37.588258 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=116 batch_bytes=355696 entries=86 encoded_bytes=356483 limit_ms=1157 append_ms=1 rc=0
+I20261010 07:10:40.329324 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=120 batch_bytes=388784 entries=94 encoded_bytes=389643 limit_ms=1029 append_ms=4 rc=0
+I20261010 07:10:43.028523 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=123 batch_bytes=413600 entries=100 encoded_bytes=414513 limit_ms=1348 append_ms=1 rc=0
+I20261010 07:10:44.157486 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=125 batch_bytes=430144 entries=104 encoded_bytes=431093 limit_ms=973 append_ms=1 rc=0
+I20261010 07:10:47.164242 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=128 batch_bytes=454960 entries=110 encoded_bytes=455963 limit_ms=1529 append_ms=1 rc=0
+I20261010 07:10:48.894914 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=130 batch_bytes=471504 entries=114 encoded_bytes=472543 limit_ms=1312 append_ms=3 rc=0
+I20261010 07:10:50.284576 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=132 batch_bytes=488048 entries=118 encoded_bytes=489123 limit_ms=1158 append_ms=1 rc=0
+I20261010 07:10:51.391026 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=133 batch_bytes=496320 entries=120 encoded_bytes=497413 limit_ms=1104 append_ms=1 rc=0
+I20261010 07:10:52.460534 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=134 batch_bytes=504592 entries=122 encoded_bytes=505703 limit_ms=1067 append_ms=2 rc=0
+I20261010 07:10:53.529350 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=135 batch_bytes=512864 entries=124 encoded_bytes=513993 limit_ms=1045 append_ms=23 rc=0
+I20261010 07:10:54.577411 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=136 batch_bytes=521136 entries=126 encoded_bytes=522283 limit_ms=1042 append_ms=5 rc=0
+I20261010 07:10:55.585098 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=137 batch_bytes=529408 entries=128 encoded_bytes=530573 limit_ms=1000 append_ms=7 rc=0
+I20261010 07:10:56.587580 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=138 batch_bytes=537680 entries=130 encoded_bytes=538863 limit_ms=1000 append_ms=1 rc=0
+I20261010 07:10:57.597898 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=139 batch_bytes=545952 entries=132 encoded_bytes=547153 limit_ms=1001 append_ms=8 rc=0
+I20261010 07:10:58.601289 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=140 batch_bytes=554224 entries=134 encoded_bytes=555443 limit_ms=1000 append_ms=1 rc=0
+I20261010 07:10:59.604379 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=141 batch_bytes=562496 entries=136 encoded_bytes=563733 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:00.606600 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=142 batch_bytes=570768 entries=138 encoded_bytes=572023 limit_ms=1000 append_ms=1 rc=0
+I20261010 07:11:01.610394 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=143 batch_bytes=579040 entries=140 encoded_bytes=580313 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:02.618955 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=144 batch_bytes=587312 entries=142 encoded_bytes=588603 limit_ms=1000 append_ms=8 rc=0
+I20261010 07:11:03.621338 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=145 batch_bytes=595584 entries=144 encoded_bytes=596893 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:04.623946 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=146 batch_bytes=603856 entries=146 encoded_bytes=605183 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:05.628034 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=147 batch_bytes=612128 entries=148 encoded_bytes=613473 limit_ms=1001 append_ms=2 rc=0
+I20261010 07:11:06.637101 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=148 batch_bytes=620400 entries=150 encoded_bytes=621763 limit_ms=1000 append_ms=7 rc=0
+I20261010 07:11:07.645284 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=149 batch_bytes=628672 entries=152 encoded_bytes=630053 limit_ms=1002 append_ms=5 rc=0
+I20261010 07:11:08.648797 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=150 batch_bytes=636944 entries=154 encoded_bytes=638343 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:09.655916 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=151 batch_bytes=645216 entries=156 encoded_bytes=646633 limit_ms=1001 append_ms=4 rc=0
+I20261010 07:11:10.664001 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=152 batch_bytes=653488 entries=158 encoded_bytes=654923 limit_ms=1003 append_ms=4 rc=0
+I20261010 07:11:11.670063 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=153 batch_bytes=661760 entries=160 encoded_bytes=663213 limit_ms=1002 append_ms=3 rc=0
+I20261010 07:11:12.672551 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=154 batch_bytes=670032 entries=162 encoded_bytes=671503 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:13.675091 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=155 batch_bytes=678304 entries=164 encoded_bytes=679793 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:14.677731 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=156 batch_bytes=686576 entries=166 encoded_bytes=688083 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:15.680814 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=157 batch_bytes=694848 entries=168 encoded_bytes=696373 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:16.683449 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=158 batch_bytes=703120 entries=170 encoded_bytes=704663 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:17.687368 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=159 batch_bytes=711392 entries=172 encoded_bytes=712953 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:18.691838 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=160 batch_bytes=719664 entries=174 encoded_bytes=721243 limit_ms=1000 append_ms=4 rc=0
+I20261010 07:11:19.712515 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=161 batch_bytes=727936 entries=176 encoded_bytes=729533 limit_ms=1001 append_ms=18 rc=0
+I20261010 07:11:20.716552 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=162 batch_bytes=736208 entries=178 encoded_bytes=737823 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:21.719604 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=163 batch_bytes=744480 entries=180 encoded_bytes=746113 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:22.722549 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=164 batch_bytes=752752 entries=182 encoded_bytes=754403 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:23.726718 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=165 batch_bytes=761024 entries=184 encoded_bytes=762693 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:24.730710 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=166 batch_bytes=769296 entries=186 encoded_bytes=770983 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:25.736389 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=167 batch_bytes=777568 entries=188 encoded_bytes=779273 limit_ms=1002 append_ms=2 rc=0
+I20261010 07:11:26.740625 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=168 batch_bytes=785840 entries=190 encoded_bytes=787563 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:27.743762 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=169 batch_bytes=794112 entries=192 encoded_bytes=795853 limit_ms=1000 append_ms=2 rc=0
+I20261010 07:11:28.747393 91227 RebuildIndexTask.cpp:308] INDEX_DIAG append space=4 part=1 seq=170 batch_bytes=794112 entries=192 encoded_bytes=795853 limit_ms=1000 append_ms=3 rc=0
+I20261010 07:11:28.747414 91227 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=4 part=1 round=1 operations=96 retained_bytes=794112 retained_entries=192
+I20261010 07:11:28.747450 91227 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=4 part=1 round=2
+I20261010 07:11:28.748037 91227 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=4 part=1 round=2 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:11:28.748056 91227 RebuildIndexTask.cpp:218] INDEX_DIAG locked_wait_begin space=4 part=1
+I20261010 07:11:28.748211 91227 RebuildIndexTask.cpp:233] INDEX_DIAG locked_wait_end space=4 part=1
+I20261010 07:11:28.748216 91227 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=4 part=1 round=3
+I20261010 07:11:28.748631 91227 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=4 part=1 round=3 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:11:28.748643 91227 RebuildIndexTask.cpp:130] RebuildIndexTask Finished, space=4, part=1
+I20261010 07:11:28.748652 91227 AdminTaskManager.cpp:315] subtask of task(6, 0) finished, unfinished task 0
+I20261010 07:11:28.748656 91227 RebuildIndexTask.cpp:21] Finish rebuild index task in space 4
+I20261010 07:11:28.748663 91227 AdminTask.h:129] task(6, 0) finished, rc=[SUCCEEDED]
+I20261010 07:11:28.748731 88423 AdminTaskManager.cpp:92] reportTaskFinish(), job=6, task=0, task_rc=SUCCEEDED
+I20261010 07:11:28.749445 88423 AdminTaskManager.cpp:134] reportTaskFinish(), job=6, task=0, report_rc=SUCCEEDED
+I20261010 07:11:29.730734 88461 LookupProcessor.cpp:176] 1
+I20261010 07:11:29.730751 88461 LookupProcessor.cpp:177] 0x7e283460f1b8
+I20261010 07:11:29.730755 88461 LookupProcessor.cpp:178] {"index_id":6,"filter":"","column_hints":[{"column_name":"YzA","scan_type":1,"begin_value":{"sVal":"Y29uY3VycmVudA"},"end_value":{},"include_begin":true,"include_end":false}]}
+I20261010 07:11:29.730968 88461 LookupProcessor.cpp:446] 0x7e2834621060
+I20261010 07:11:29.730983 88461 LookupProcessor.cpp:446] 0x7e2834621100
+I20261010 07:11:29.730996 88461 LookupProcessor.cpp:446] 0x7e2834601540
+I20261010 07:11:29.734870 88459 LookupProcessor.cpp:333] finish
+I20261010 07:11:35.379657 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 2 space
+I20261010 07:11:35.379679 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:11:35.379791 88387 NebulaStore.cpp:417] Create data space 7
+I20261010 07:11:35.380162 92387 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20261010 07:11:35.380177 92387 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20261010 07:11:35.380182 92387 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20261010 07:11:35.380312 92387 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20261010 07:11:35.413808 92387 RocksEngine.cpp:107] open rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/7/data
+I20261010 07:11:35.414033 88387 NebulaStore.cpp:480] Space 7, part 1 has been added, asLearner 0
+I20261010 07:11:37.424618 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 3 space
+I20261010 07:11:37.424655 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:11:40.440876 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 3 space
+I20261010 07:11:40.440901 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:11:45.473680 88387 MetaClient.cpp:3263] Load leader of "127.0.0.1":21631 in 3 space
+I20261010 07:11:45.473719 88387 MetaClient.cpp:3269] Load leader ok
+I20261010 07:11:49.731696 88054 AdminTask.cpp:21] createAdminTask (8, 0)
+I20261010 07:11:49.731743 88054 RebuildIndexTask.cpp:40] Rebuild index task is rate limited to 4194304 for each subtask by default
+I20261010 07:11:49.731840 88054 AdminTaskManager.cpp:155] enqueue task(8, 0)
+I20261010 07:11:49.731868 88422 AdminTaskManager.cpp:236] dequeue task(8, 0)
+I20261010 07:11:49.731961 88422 AdminTaskManager.cpp:279] run task(8, 0), 1 subtasks in 1 thread
+I20261010 07:11:49.732203 88422 AdminTaskManager.cpp:224] waiting for incoming task
+I20261010 07:11:49.732532 92597 RebuildIndexTask.cpp:113] Start building index
+I20261010 07:11:51.831470 92597 RebuildIndexTask.cpp:119] Building index successful, space=7, part=1
+I20261010 07:11:51.831502 92597 RebuildIndexTask.cpp:122] Processing operation logs, space=7, part=1
+I20261010 07:11:51.831508 92597 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=7 part=1 round=1
+I20261010 07:11:51.831655 92597 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=7 part=1 round=1 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:11:51.831844 92597 RebuildIndexTask.cpp:218] INDEX_DIAG locked_wait_begin space=7 part=1
+I20261010 07:11:51.832006 92597 RebuildIndexTask.cpp:233] INDEX_DIAG locked_wait_end space=7 part=1
+I20261010 07:11:51.832016 92597 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=7 part=1 round=2
+I20261010 07:11:51.832100 92597 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=7 part=1 round=2 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:11:51.832127 92597 RebuildIndexTask.cpp:130] RebuildIndexTask Finished, space=7, part=1
+I20261010 07:11:51.832135 92597 AdminTaskManager.cpp:315] subtask of task(8, 0) finished, unfinished task 0
+I20261010 07:11:51.832144 92597 RebuildIndexTask.cpp:21] Finish rebuild index task in space 7
+I20261010 07:11:51.832158 92597 AdminTask.h:129] task(8, 0) finished, rc=[SUCCEEDED]
+I20261010 07:11:51.832265 88423 AdminTaskManager.cpp:92] reportTaskFinish(), job=8, task=0, task_rc=SUCCEEDED
+I20261010 07:11:51.833425 88423 AdminTaskManager.cpp:134] reportTaskFinish(), job=8, task=0, report_rc=SUCCEEDED
+I20261010 07:11:53.757478 88054 AdminTask.cpp:21] createAdminTask (9, 0)
+I20261010 07:11:53.757544 88054 RebuildIndexTask.cpp:40] Rebuild index task is rate limited to 4194304 for each subtask by default
+I20261010 07:11:53.757691 88054 AdminTaskManager.cpp:155] enqueue task(9, 0)
+I20261010 07:11:53.757721 88422 AdminTaskManager.cpp:236] dequeue task(9, 0)
+I20261010 07:11:53.757913 88422 AdminTaskManager.cpp:279] run task(9, 0), 1 subtasks in 1 thread
+I20261010 07:11:53.758584 88422 AdminTaskManager.cpp:224] waiting for incoming task
+I20261010 07:11:53.759347 92644 RebuildIndexTask.cpp:113] Start building index
+I20261010 07:11:57.166833 92644 RebuildIndexTask.cpp:119] Building index successful, space=7, part=1
+I20261010 07:11:57.166872 92644 RebuildIndexTask.cpp:122] Processing operation logs, space=7, part=1
+I20261010 07:11:57.166878 92644 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=7 part=1 round=1
+I20261010 07:12:04.485527 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=200 batch_bytes=1260720 entries=306 encoded_bytes=1263487 limit_ms=184 append_ms=25 rc=0
+I20261010 07:12:16.600534 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=235 batch_bytes=1549120 entries=376 encoded_bytes=1552517 limit_ms=942 append_ms=16 rc=0
+I20261010 07:12:23.639016 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=253 batch_bytes=1697440 entries=412 encoded_bytes=1701161 limit_ms=926 append_ms=17 rc=0
+I20261010 07:12:28.477182 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=265 batch_bytes=1796320 entries=436 encoded_bytes=1800257 limit_ms=936 append_ms=18 rc=0
+I20261010 07:12:31.479194 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=272 batch_bytes=1854000 entries=450 encoded_bytes=1858063 limit_ms=989 append_ms=33 rc=0
+I20261010 07:12:36.360060 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=283 batch_bytes=1944640 entries=472 encoded_bytes=1948901 limit_ms=980 append_ms=7 rc=0
+I20261010 07:12:44.232456 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=300 batch_bytes=2084720 entries=506 encoded_bytes=2089287 limit_ms=163 append_ms=8 rc=0
+I20261010 07:12:47.862691 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=306 batch_bytes=2134160 entries=518 encoded_bytes=2138835 limit_ms=1186 append_ms=16 rc=0
+I20261010 07:12:53.573993 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=317 batch_bytes=2224800 entries=540 encoded_bytes=2229673 limit_ms=913 append_ms=16 rc=0
+I20261010 07:12:55.655537 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=321 batch_bytes=2257760 entries=548 encoded_bytes=2262705 limit_ms=1055 append_ms=22 rc=0
+I20261010 07:12:56.530540 88404 EventListener.h:21] Rocksdb start compaction column family: default because of LevelL0FilesNum, status: OK, compacted 4 files into 0, base level is 0, output level is 1
+I20261010 07:12:56.530730 88404 CompactionFilter.h:81] Do full/manual compaction!
+I20261010 07:12:56.577723 88404 EventListener.h:35] Rocksdb compaction completed column family: default because of LevelL0FilesNum, status: OK, compacted 4 files into 1, base level is 0, output level is 1
+I20261010 07:13:01.578927 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=332 batch_bytes=2348400 entries=570 encoded_bytes=2353543 limit_ms=1105 append_ms=21 rc=0
+I20261010 07:13:04.672113 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=337 batch_bytes=2389600 entries=580 encoded_bytes=2394833 limit_ms=934 append_ms=13 rc=0
+I20261010 07:13:08.474661 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=344 batch_bytes=2447280 entries=594 encoded_bytes=2452639 limit_ms=977 append_ms=20 rc=0
+I20261010 07:13:11.281800 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=349 batch_bytes=2488480 entries=604 encoded_bytes=2493929 limit_ms=924 append_ms=19 rc=0
+I20261010 07:13:14.048166 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=353 batch_bytes=2521440 entries=612 encoded_bytes=2526961 limit_ms=1317 append_ms=12 rc=0
+I20261010 07:13:15.747674 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=356 batch_bytes=2546160 entries=618 encoded_bytes=2551735 limit_ms=1132 append_ms=7 rc=0
+I20261010 07:13:17.125142 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=359 batch_bytes=2570880 entries=624 encoded_bytes=2576509 limit_ms=965 append_ms=17 rc=0
+I20261010 07:13:18.942072 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=361 batch_bytes=2587360 entries=628 encoded_bytes=2593025 limit_ms=1197 append_ms=29 rc=0
+I20261010 07:13:20.503616 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=364 batch_bytes=2612080 entries=634 encoded_bytes=2617799 limit_ms=1060 append_ms=26 rc=0
+I20261010 07:13:22.509440 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=367 batch_bytes=2636800 entries=640 encoded_bytes=2642573 limit_ms=940 append_ms=23 rc=0
+I20261010 07:13:25.805622 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=372 batch_bytes=2678000 entries=650 encoded_bytes=2683863 limit_ms=1112 append_ms=16 rc=0
+I20261010 07:13:27.298411 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=375 batch_bytes=2702720 entries=656 encoded_bytes=2708637 limit_ms=1040 append_ms=19 rc=0
+I20261010 07:13:29.364202 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=378 batch_bytes=2727440 entries=662 encoded_bytes=2733411 limit_ms=985 append_ms=15 rc=0
+I20261010 07:13:31.308933 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=381 batch_bytes=2752160 entries=668 encoded_bytes=2758185 limit_ms=947 append_ms=23 rc=0
+I20261010 07:13:33.163303 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=384 batch_bytes=2776880 entries=674 encoded_bytes=2782959 limit_ms=927 append_ms=15 rc=0
+I20261010 07:13:34.991938 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=387 batch_bytes=2801600 entries=680 encoded_bytes=2807733 limit_ms=925 append_ms=25 rc=0
+I20261010 07:13:36.896238 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=389 batch_bytes=2818080 entries=684 encoded_bytes=2824249 limit_ms=1267 append_ms=21 rc=0
+I20261010 07:13:38.871397 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=392 batch_bytes=2842800 entries=690 encoded_bytes=2849023 limit_ms=1295 append_ms=20 rc=0
+I20261010 07:13:40.916055 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=395 batch_bytes=2867520 entries=696 encoded_bytes=2873797 limit_ms=1340 append_ms=17 rc=0
+I20261010 07:13:43.250068 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=399 batch_bytes=2900480 entries=704 encoded_bytes=2906829 limit_ms=1094 append_ms=12 rc=0
+I20261010 07:13:44.055214 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=400 batch_bytes=2908720 entries=706 encoded_bytes=2915087 limit_ms=788 append_ms=16 rc=0
+I20261010 07:13:45.769443 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=402 batch_bytes=2925200 entries=710 encoded_bytes=2931603 limit_ms=1180 append_ms=28 rc=0
+I20261010 07:13:47.685702 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=405 batch_bytes=2949920 entries=716 encoded_bytes=2956377 limit_ms=1285 append_ms=21 rc=0
+I20261010 07:13:48.700896 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=406 batch_bytes=2958160 entries=718 encoded_bytes=2964635 limit_ms=990 append_ms=22 rc=0
+I20261010 07:13:52.718547 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=412 batch_bytes=3007600 entries=730 encoded_bytes=3014183 limit_ms=1263 append_ms=35 rc=0
+I20261010 07:13:54.902667 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=415 batch_bytes=3032320 entries=736 encoded_bytes=3038957 limit_ms=1426 append_ms=14 rc=0
+I20261010 07:13:55.969349 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=417 batch_bytes=3048800 entries=740 encoded_bytes=3055473 limit_ms=878 append_ms=22 rc=0
+I20261010 07:13:57.971623 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=419 batch_bytes=3065280 entries=744 encoded_bytes=3071989 limit_ms=1337 append_ms=28 rc=0
+I20261010 07:14:00.746569 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=423 batch_bytes=3098240 entries=752 encoded_bytes=3105021 limit_ms=1280 append_ms=15 rc=0
+I20261010 07:14:00.790639 88404 EventListener.h:21] Rocksdb start compaction column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 0, base level is 0, output level is 1
+I20261010 07:14:00.790678 88404 CompactionFilter.h:81] Do full/manual compaction!
+I20261010 07:14:00.814729 88404 EventListener.h:35] Rocksdb compaction completed column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 1, base level is 0, output level is 1
+I20261010 07:14:03.093900 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=426 batch_bytes=3122960 entries=758 encoded_bytes=3129795 limit_ms=1508 append_ms=22 rc=0
+I20261010 07:14:04.394104 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=428 batch_bytes=3139440 entries=762 encoded_bytes=3146311 limit_ms=1003 append_ms=9 rc=0
+I20261010 07:14:06.988771 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=431 batch_bytes=3164160 entries=768 encoded_bytes=3171085 limit_ms=1260 append_ms=24 rc=0
+I20261010 07:14:09.710041 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=435 batch_bytes=3197120 entries=776 encoded_bytes=3204117 limit_ms=1298 append_ms=23 rc=0
+I20261010 07:14:12.268828 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=438 batch_bytes=3221840 entries=782 encoded_bytes=3228891 limit_ms=1596 append_ms=18 rc=0
+I20261010 07:14:13.831032 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=440 batch_bytes=3238320 entries=786 encoded_bytes=3245407 limit_ms=1138 append_ms=23 rc=0
+I20261010 07:14:16.060308 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=443 batch_bytes=3263040 entries=792 encoded_bytes=3270181 limit_ms=1466 append_ms=16 rc=0
+I20261010 07:14:17.374332 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=445 batch_bytes=3279520 entries=796 encoded_bytes=3286697 limit_ms=1028 append_ms=8 rc=0
+I20261010 07:14:20.452854 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=449 batch_bytes=3312480 entries=804 encoded_bytes=3319729 limit_ms=1175 append_ms=20 rc=0
+I20261010 07:14:21.451920 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=450 batch_bytes=3320720 entries=806 encoded_bytes=3327987 limit_ms=967 append_ms=28 rc=0
+I20261010 07:14:24.381570 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=454 batch_bytes=3353680 entries=814 encoded_bytes=3361019 limit_ms=1154 append_ms=29 rc=0
+I20261010 07:14:25.374960 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=455 batch_bytes=3361920 entries=816 encoded_bytes=3369277 limit_ms=955 append_ms=34 rc=0
+I20261010 07:14:28.354543 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=459 batch_bytes=3394880 entries=824 encoded_bytes=3402309 limit_ms=1181 append_ms=28 rc=0
+I20261010 07:14:29.384440 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=460 batch_bytes=3403120 entries=826 encoded_bytes=3410567 limit_ms=992 append_ms=36 rc=0
+I20261010 07:14:32.607177 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=464 batch_bytes=3436080 entries=834 encoded_bytes=3443599 limit_ms=1257 append_ms=36 rc=0
+I20261010 07:14:33.710049 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=465 batch_bytes=3444320 entries=836 encoded_bytes=3451857 limit_ms=1079 append_ms=21 rc=0
+I20261010 07:14:36.072300 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=468 batch_bytes=3469040 entries=842 encoded_bytes=3476631 limit_ms=1554 append_ms=40 rc=0
+I20261010 07:14:37.713258 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=470 batch_bytes=3485520 entries=846 encoded_bytes=3493147 limit_ms=1214 append_ms=17 rc=0
+I20261010 07:14:38.712634 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=472 batch_bytes=3502000 entries=850 encoded_bytes=3509663 limit_ms=882 append_ms=43 rc=0
+I20261010 07:14:41.040187 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=474 batch_bytes=3518480 entries=854 encoded_bytes=3526179 limit_ms=1558 append_ms=33 rc=0
+I20261010 07:14:42.745329 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=476 batch_bytes=3534960 entries=858 encoded_bytes=3542695 limit_ms=1241 append_ms=42 rc=0
+I20261010 07:14:43.793999 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=478 batch_bytes=3551440 entries=862 encoded_bytes=3559211 limit_ms=933 append_ms=10 rc=0
+I20261010 07:14:46.259765 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=480 batch_bytes=3567920 entries=866 encoded_bytes=3575727 limit_ms=1632 append_ms=31 rc=0
+I20261010 07:14:48.360916 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=483 batch_bytes=3592640 entries=872 encoded_bytes=3600501 limit_ms=1196 append_ms=24 rc=0
+I20261010 07:14:49.459558 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=484 batch_bytes=3600880 entries=874 encoded_bytes=3608759 limit_ms=1055 append_ms=42 rc=0
+I20261010 07:14:50.387935 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=485 batch_bytes=3609120 entries=876 encoded_bytes=3617017 limit_ms=915 append_ms=10 rc=0
+I20261010 07:14:53.794389 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=489 batch_bytes=3642080 entries=884 encoded_bytes=3650049 limit_ms=1377 append_ms=16 rc=0
+I20261010 07:14:55.188555 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=491 batch_bytes=3658560 entries=888 encoded_bytes=3666565 limit_ms=1119 append_ms=14 rc=0
+I20261010 07:14:56.224176 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=492 batch_bytes=3666800 entries=890 encoded_bytes=3674823 limit_ms=993 append_ms=40 rc=0
+I20261010 07:15:00.101234 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=496 batch_bytes=3699760 entries=898 encoded_bytes=3707855 limit_ms=1510 append_ms=34 rc=0
+I20261010 07:15:01.820477 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=498 batch_bytes=3716240 entries=902 encoded_bytes=3724371 limit_ms=1280 append_ms=18 rc=0
+I20261010 07:15:03.111960 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=500 batch_bytes=3732720 entries=906 encoded_bytes=3740887 limit_ms=1058 append_ms=38 rc=0
+I20261010 07:15:04.086977 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=501 batch_bytes=3740960 entries=908 encoded_bytes=3749145 limit_ms=950 append_ms=22 rc=0
+I20261010 07:15:05.735545 88404 EventListener.h:21] Rocksdb start compaction column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 0, base level is 0, output level is 1
+I20261010 07:15:05.735579 88404 CompactionFilter.h:81] Do full/manual compaction!
+I20261010 07:15:05.759487 88404 EventListener.h:35] Rocksdb compaction completed column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 1, base level is 0, output level is 1
+I20261010 07:15:07.978665 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=505 batch_bytes=3773920 entries=916 encoded_bytes=3782177 limit_ms=1537 append_ms=33 rc=0
+I20261010 07:15:09.808393 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=507 batch_bytes=3790400 entries=920 encoded_bytes=3798693 limit_ms=1343 append_ms=15 rc=0
+I20261010 07:15:11.286918 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=509 batch_bytes=3806880 entries=924 encoded_bytes=3815209 limit_ms=1156 append_ms=29 rc=0
+I20261010 07:15:12.386376 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=510 batch_bytes=3815120 entries=926 encoded_bytes=3823467 limit_ms=1066 append_ms=30 rc=0
+I20261010 07:15:13.389014 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=511 batch_bytes=3823360 entries=928 encoded_bytes=3831725 limit_ms=977 append_ms=23 rc=0
+I20261010 07:15:14.322667 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=512 batch_bytes=3831600 entries=930 encoded_bytes=3839983 limit_ms=891 append_ms=41 rc=0
+I20261010 07:15:18.197144 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=516 batch_bytes=3864560 entries=938 encoded_bytes=3873015 limit_ms=1564 append_ms=49 rc=0
+I20261010 07:15:20.506853 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=519 batch_bytes=3889280 entries=944 encoded_bytes=3897789 limit_ms=1340 append_ms=30 rc=0
+I20261010 07:15:21.805392 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=520 batch_bytes=3897520 entries=946 encoded_bytes=3906047 limit_ms=1270 append_ms=26 rc=0
+I20261010 07:15:23.178702 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=522 batch_bytes=3914000 entries=950 encoded_bytes=3922563 limit_ms=1134 append_ms=11 rc=0
+I20261010 07:15:24.286952 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=523 batch_bytes=3922240 entries=952 encoded_bytes=3930821 limit_ms=1069 append_ms=37 rc=0
+I20261010 07:15:25.320988 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=524 batch_bytes=3930480 entries=954 encoded_bytes=3939079 limit_ms=1006 append_ms=25 rc=0
+I20261010 07:15:26.277110 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=525 batch_bytes=3938720 entries=956 encoded_bytes=3947337 limit_ms=945 append_ms=9 rc=0
+I20261010 07:15:27.182761 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=526 batch_bytes=3946960 entries=958 encoded_bytes=3955595 limit_ms=886 append_ms=18 rc=0
+I20261010 07:15:31.288017 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=530 batch_bytes=3979920 entries=966 encoded_bytes=3988627 limit_ms=1670 append_ms=27 rc=0
+I20261010 07:15:34.119748 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=533 batch_bytes=4004640 entries=972 encoded_bytes=4013401 limit_ms=1528 append_ms=30 rc=0
+I20261010 07:15:36.103695 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=535 batch_bytes=4021120 entries=976 encoded_bytes=4029917 limit_ms=1444 append_ms=31 rc=0
+I20261010 07:15:37.943994 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=537 batch_bytes=4037600 entries=980 encoded_bytes=4046433 limit_ms=1367 append_ms=17 rc=0
+I20261010 07:15:39.632645 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=539 batch_bytes=4054080 entries=984 encoded_bytes=4062949 limit_ms=1298 append_ms=25 rc=0
+I20261010 07:15:40.947196 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=540 batch_bytes=4062320 entries=986 encoded_bytes=4071207 limit_ms=1267 append_ms=46 rc=0
+I20261010 07:15:42.433833 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=542 batch_bytes=4078800 entries=990 encoded_bytes=4087723 limit_ms=1210 append_ms=18 rc=0
+I20261010 07:15:43.648759 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=543 batch_bytes=4087040 entries=992 encoded_bytes=4095981 limit_ms=1184 append_ms=28 rc=0
+I20261010 07:15:44.850209 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=544 batch_bytes=4095280 entries=994 encoded_bytes=4104239 limit_ms=1161 append_ms=35 rc=0
+I20261010 07:15:46.157565 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=546 batch_bytes=4111760 entries=998 encoded_bytes=4120755 limit_ms=1119 append_ms=28 rc=0
+I20261010 07:15:47.284431 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=547 batch_bytes=4120000 entries=1000 encoded_bytes=4129013 limit_ms=1102 append_ms=22 rc=0
+I20261010 07:15:48.414955 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=548 batch_bytes=4128240 entries=1002 encoded_bytes=4137271 limit_ms=1086 append_ms=41 rc=0
+I20261010 07:15:49.513002 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=549 batch_bytes=4136480 entries=1004 encoded_bytes=4145529 limit_ms=1072 append_ms=23 rc=0
+I20261010 07:15:50.610905 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=550 batch_bytes=4144720 entries=1006 encoded_bytes=4153787 limit_ms=1060 append_ms=35 rc=0
+I20261010 07:15:51.693060 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=551 batch_bytes=4152960 entries=1008 encoded_bytes=4162045 limit_ms=1050 append_ms=28 rc=0
+I20261010 07:15:52.834867 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=553 batch_bytes=4169440 entries=1012 encoded_bytes=4178561 limit_ms=1037 append_ms=23 rc=0
+I20261010 07:15:53.908113 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=554 batch_bytes=4177680 entries=1014 encoded_bytes=4186819 limit_ms=1033 append_ms=38 rc=0
+I20261010 07:15:54.976289 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=555 batch_bytes=4185920 entries=1016 encoded_bytes=4195077 limit_ms=1031 append_ms=35 rc=0
+I20261010 07:15:56.048194 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=556 batch_bytes=4194160 entries=1018 encoded_bytes=4203335 limit_ms=1031 append_ms=38 rc=0
+I20261010 07:15:57.073900 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=557 batch_bytes=4202400 entries=1020 encoded_bytes=4211593 limit_ms=1000 append_ms=23 rc=0
+I20261010 07:15:58.087173 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=558 batch_bytes=4210640 entries=1022 encoded_bytes=4219851 limit_ms=1000 append_ms=12 rc=0
+I20261010 07:15:59.128347 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=559 batch_bytes=4218880 entries=1024 encoded_bytes=4228109 limit_ms=1000 append_ms=40 rc=0
+I20261010 07:16:00.153914 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=560 batch_bytes=4227120 entries=1026 encoded_bytes=4236367 limit_ms=1000 append_ms=23 rc=0
+I20261010 07:16:01.190920 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=561 batch_bytes=4235360 entries=1028 encoded_bytes=4244625 limit_ms=1000 append_ms=32 rc=0
+I20261010 07:16:02.235247 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=562 batch_bytes=4243600 entries=1030 encoded_bytes=4252883 limit_ms=1000 append_ms=40 rc=0
+I20261010 07:16:03.280524 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=563 batch_bytes=4251840 entries=1032 encoded_bytes=4261141 limit_ms=1000 append_ms=40 rc=0
+I20261010 07:16:04.315910 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=564 batch_bytes=4260080 entries=1034 encoded_bytes=4269399 limit_ms=1000 append_ms=30 rc=0
+I20261010 07:16:05.363330 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=565 batch_bytes=4268320 entries=1036 encoded_bytes=4277657 limit_ms=1000 append_ms=44 rc=0
+I20261010 07:16:06.399998 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=566 batch_bytes=4276560 entries=1038 encoded_bytes=4285915 limit_ms=1000 append_ms=33 rc=0
+I20261010 07:16:07.426625 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=567 batch_bytes=4284800 entries=1040 encoded_bytes=4294173 limit_ms=1000 append_ms=23 rc=0
+I20261010 07:16:08.469187 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=568 batch_bytes=4293040 entries=1042 encoded_bytes=4302431 limit_ms=1000 append_ms=38 rc=0
+I20261010 07:16:09.502697 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=569 batch_bytes=4301280 entries=1044 encoded_bytes=4310689 limit_ms=1000 append_ms=30 rc=0
+I20261010 07:16:10.533847 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=570 batch_bytes=4309520 entries=1046 encoded_bytes=4318947 limit_ms=1000 append_ms=27 rc=0
+I20261010 07:16:10.565807 88404 EventListener.h:21] Rocksdb start compaction column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 0, base level is 0, output level is 1
+I20261010 07:16:10.565834 88404 CompactionFilter.h:81] Do full/manual compaction!
+I20261010 07:16:10.585662 88404 EventListener.h:35] Rocksdb compaction completed column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 1, base level is 0, output level is 1
+I20261010 07:16:11.572811 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=571 batch_bytes=4317760 entries=1048 encoded_bytes=4327205 limit_ms=1000 append_ms=36 rc=0
+I20261010 07:16:12.609335 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=572 batch_bytes=4326000 entries=1050 encoded_bytes=4335463 limit_ms=1000 append_ms=34 rc=0
+I20261010 07:16:13.640749 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=573 batch_bytes=4334240 entries=1052 encoded_bytes=4343721 limit_ms=1000 append_ms=28 rc=0
+I20261010 07:16:14.688514 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=574 batch_bytes=4342480 entries=1054 encoded_bytes=4351979 limit_ms=1000 append_ms=44 rc=0
+I20261010 07:16:15.717363 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=575 batch_bytes=4350720 entries=1056 encoded_bytes=4360237 limit_ms=1000 append_ms=25 rc=0
+I20261010 07:16:16.752600 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=576 batch_bytes=4358960 entries=1058 encoded_bytes=4368495 limit_ms=1000 append_ms=31 rc=0
+I20261010 07:16:17.783231 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=577 batch_bytes=4367200 entries=1060 encoded_bytes=4376753 limit_ms=1000 append_ms=27 rc=0
+I20261010 07:16:18.805871 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=578 batch_bytes=4375440 entries=1062 encoded_bytes=4385011 limit_ms=1000 append_ms=19 rc=0
+I20261010 07:16:19.846588 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=579 batch_bytes=4383680 entries=1064 encoded_bytes=4393269 limit_ms=1000 append_ms=35 rc=0
+I20261010 07:16:20.901290 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=580 batch_bytes=4391920 entries=1066 encoded_bytes=4401527 limit_ms=1000 append_ms=51 rc=0
+I20261010 07:16:21.925371 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=581 batch_bytes=4400160 entries=1068 encoded_bytes=4409785 limit_ms=1000 append_ms=20 rc=0
+I20261010 07:16:22.952852 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=582 batch_bytes=4408400 entries=1070 encoded_bytes=4418043 limit_ms=1000 append_ms=23 rc=0
+I20261010 07:16:23.994495 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=583 batch_bytes=4416640 entries=1072 encoded_bytes=4426301 limit_ms=1000 append_ms=38 rc=0
+I20261010 07:16:25.031093 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=584 batch_bytes=4424880 entries=1074 encoded_bytes=4434559 limit_ms=1000 append_ms=33 rc=0
+I20261010 07:16:26.076814 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=585 batch_bytes=4433120 entries=1076 encoded_bytes=4442817 limit_ms=1000 append_ms=37 rc=0
+I20261010 07:16:27.111338 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=586 batch_bytes=4441360 entries=1078 encoded_bytes=4451075 limit_ms=1000 append_ms=29 rc=0
+I20261010 07:16:28.150105 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=587 batch_bytes=4449600 entries=1080 encoded_bytes=4459333 limit_ms=1000 append_ms=35 rc=0
+I20261010 07:16:29.182734 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=588 batch_bytes=4457840 entries=1082 encoded_bytes=4467591 limit_ms=1000 append_ms=23 rc=0
+I20261010 07:16:30.214582 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=589 batch_bytes=4466080 entries=1084 encoded_bytes=4475849 limit_ms=1000 append_ms=28 rc=0
+I20261010 07:16:31.251515 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=590 batch_bytes=4474320 entries=1086 encoded_bytes=4484107 limit_ms=1000 append_ms=32 rc=0
+I20261010 07:16:32.287046 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=591 batch_bytes=4482560 entries=1088 encoded_bytes=4492365 limit_ms=1000 append_ms=31 rc=0
+I20261010 07:16:33.345921 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=592 batch_bytes=4490800 entries=1090 encoded_bytes=4500623 limit_ms=1000 append_ms=54 rc=0
+I20261010 07:16:34.393157 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=593 batch_bytes=4499040 entries=1092 encoded_bytes=4508881 limit_ms=1000 append_ms=41 rc=0
+I20261010 07:16:35.424320 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=594 batch_bytes=4507280 entries=1094 encoded_bytes=4517139 limit_ms=1000 append_ms=28 rc=0
+I20261010 07:16:36.477391 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=595 batch_bytes=4515520 entries=1096 encoded_bytes=4525397 limit_ms=1000 append_ms=47 rc=0
+I20261010 07:16:37.521238 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=596 batch_bytes=4523760 entries=1098 encoded_bytes=4533655 limit_ms=1000 append_ms=37 rc=0
+I20261010 07:16:38.547457 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=597 batch_bytes=4532000 entries=1100 encoded_bytes=4541913 limit_ms=1000 append_ms=20 rc=0
+I20261010 07:16:39.595990 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=598 batch_bytes=4540240 entries=1102 encoded_bytes=4550171 limit_ms=1000 append_ms=45 rc=0
+I20261010 07:16:40.627301 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=599 batch_bytes=4548480 entries=1104 encoded_bytes=4558429 limit_ms=1000 append_ms=28 rc=0
+I20261010 07:16:41.662273 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=600 batch_bytes=4556720 entries=1106 encoded_bytes=4566687 limit_ms=1000 append_ms=31 rc=0
+I20261010 07:16:42.811167 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=601 batch_bytes=4564960 entries=1108 encoded_bytes=4574945 limit_ms=1000 append_ms=144 rc=0
+I20261010 07:16:43.837611 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=602 batch_bytes=4573200 entries=1110 encoded_bytes=4583203 limit_ms=1000 append_ms=23 rc=0
+I20261010 07:16:44.879451 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=603 batch_bytes=4581440 entries=1112 encoded_bytes=4591461 limit_ms=1000 append_ms=38 rc=0
+I20261010 07:16:45.948406 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=604 batch_bytes=4589680 entries=1114 encoded_bytes=4599719 limit_ms=1000 append_ms=62 rc=0
+I20261010 07:16:46.977212 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=605 batch_bytes=4597920 entries=1116 encoded_bytes=4607977 limit_ms=1000 append_ms=25 rc=0
+I20261010 07:16:48.009086 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=606 batch_bytes=4606160 entries=1118 encoded_bytes=4616235 limit_ms=1000 append_ms=29 rc=0
+I20261010 07:16:49.057469 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=607 batch_bytes=4614400 entries=1120 encoded_bytes=4624493 limit_ms=1000 append_ms=43 rc=0
+I20261010 07:16:50.091480 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=608 batch_bytes=4622640 entries=1122 encoded_bytes=4632751 limit_ms=1000 append_ms=30 rc=0
+I20261010 07:16:51.130074 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=609 batch_bytes=4630880 entries=1124 encoded_bytes=4641009 limit_ms=1000 append_ms=35 rc=0
+I20261010 07:16:52.195945 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=610 batch_bytes=4639120 entries=1126 encoded_bytes=4649267 limit_ms=1000 append_ms=57 rc=0
+I20261010 07:16:53.239444 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=611 batch_bytes=4647360 entries=1128 encoded_bytes=4657525 limit_ms=1000 append_ms=38 rc=0
+I20261010 07:16:54.284232 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=612 batch_bytes=4655600 entries=1130 encoded_bytes=4665783 limit_ms=1000 append_ms=41 rc=0
+I20261010 07:16:55.352530 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=613 batch_bytes=4663840 entries=1132 encoded_bytes=4674041 limit_ms=1000 append_ms=62 rc=0
+I20261010 07:16:56.388231 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=614 batch_bytes=4672080 entries=1134 encoded_bytes=4682299 limit_ms=1000 append_ms=30 rc=0
+I20261010 07:16:57.423534 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=615 batch_bytes=4680320 entries=1136 encoded_bytes=4690557 limit_ms=1000 append_ms=32 rc=0
+I20261010 07:16:58.487620 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=616 batch_bytes=4688560 entries=1138 encoded_bytes=4698815 limit_ms=1000 append_ms=60 rc=0
+I20261010 07:16:59.525345 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=617 batch_bytes=4696800 entries=1140 encoded_bytes=4707073 limit_ms=1000 append_ms=33 rc=0
+I20261010 07:17:00.567788 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=618 batch_bytes=4705040 entries=1142 encoded_bytes=4715331 limit_ms=1000 append_ms=39 rc=0
+I20261010 07:17:01.625238 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=619 batch_bytes=4713280 entries=1144 encoded_bytes=4723589 limit_ms=1000 append_ms=53 rc=0
+I20261010 07:17:02.645174 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=620 batch_bytes=4721520 entries=1146 encoded_bytes=4731847 limit_ms=1000 append_ms=16 rc=0
+I20261010 07:17:03.690361 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=621 batch_bytes=4729760 entries=1148 encoded_bytes=4740105 limit_ms=1000 append_ms=40 rc=0
+I20261010 07:17:04.751098 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=622 batch_bytes=4738000 entries=1150 encoded_bytes=4748363 limit_ms=1000 append_ms=48 rc=0
+I20261010 07:17:05.773952 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=623 batch_bytes=4746240 entries=1152 encoded_bytes=4756621 limit_ms=1000 append_ms=19 rc=0
+I20261010 07:17:06.796407 92644 RebuildIndexTask.cpp:308] INDEX_DIAG append space=7 part=1 seq=624 batch_bytes=4746240 entries=1152 encoded_bytes=4756621 limit_ms=1000 append_ms=18 rc=0
+I20261010 07:17:06.796434 92644 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=7 part=1 round=1 operations=576 retained_bytes=4746240 retained_entries=1152
+I20261010 07:17:06.797354 92644 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=7 part=1 round=2
+I20261010 07:17:06.801996 92644 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=7 part=1 round=2 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:17:06.802023 92644 RebuildIndexTask.cpp:218] INDEX_DIAG locked_wait_begin space=7 part=1
+I20261010 07:17:06.802178 92644 RebuildIndexTask.cpp:233] INDEX_DIAG locked_wait_end space=7 part=1
+I20261010 07:17:06.802186 92644 RebuildIndexTask.cpp:151] INDEX_DIAG replay_begin space=7 part=1 round=3
+I20261010 07:17:06.807248 92644 RebuildIndexTask.cpp:197] INDEX_DIAG replay_end space=7 part=1 round=3 operations=0 retained_bytes=0 retained_entries=0
+I20261010 07:17:06.807271 92644 RebuildIndexTask.cpp:130] RebuildIndexTask Finished, space=7, part=1
+I20261010 07:17:06.807278 92644 AdminTaskManager.cpp:315] subtask of task(9, 0) finished, unfinished task 0
+I20261010 07:17:06.807282 92644 RebuildIndexTask.cpp:21] Finish rebuild index task in space 7
+I20261010 07:17:06.807291 92644 AdminTask.h:129] task(9, 0) finished, rc=[SUCCEEDED]
+I20261010 07:17:06.807354 88423 AdminTaskManager.cpp:92] reportTaskFinish(), job=9, task=0, task_rc=SUCCEEDED
+I20261010 07:17:06.807837 88423 AdminTaskManager.cpp:134] reportTaskFinish(), job=9, task=0, report_rc=SUCCEEDED
+I20261010 07:17:08.814934 88459 LookupProcessor.cpp:176] 1
+I20261010 07:17:08.814954 88459 LookupProcessor.cpp:177] 0x7e283500f1b8
+I20261010 07:17:08.814958 88459 LookupProcessor.cpp:178] {"index_id":9,"filter":"","column_hints":[{"column_name":"YzA","scan_type":1,"begin_value":{"sVal":"Y29uY3VycmVudA"},"end_value":{},"include_begin":true,"include_end":false}]}
+I20261010 07:17:08.815276 88459 LookupProcessor.cpp:446] 0x7e2835021060
+I20261010 07:17:08.815292 88459 LookupProcessor.cpp:446] 0x7e2835021100
+I20261010 07:17:08.815313 88459 LookupProcessor.cpp:446] 0x7e2835001540
+I20261010 07:17:08.840333 88459 LookupProcessor.cpp:333] finish
+I20261010 07:17:58.328356 87998 StorageDaemon.cpp:201] Signal 15(Terminated) received, stopping this server
+I20261010 07:17:58.328764 87998 NebulaStore.cpp:343] Stop the raft service...
+I20261010 07:17:58.328775 87998 RaftexService.cpp:67] Stopping the raftex service on port 21632
+I20261010 07:17:58.328791 87998 RaftexService.cpp:77] All partitions have stopped
+I20261010 07:17:58.328799 87998 NebulaStore.cpp:346] Stop kv engine...
+I20261010 07:17:58.334352 87998 AdminTaskManager.cpp:176] enter AdminTaskManager::shutdown()
+I20261010 07:17:58.334412 88423 AdminTaskManager.cpp:146] Unreported-Admin-Thread stopped
+I20261010 07:17:58.342211 88422 AdminTaskManager.cpp:231] detect AdminTaskManager::shutdown()
+I20261010 07:17:58.342661 87998 RocksEngine.h:247] Release rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/0
+I20261010 07:17:58.342875 87998 AdminTaskManager.cpp:193] exit AdminTaskManager::shutdown()
+I20261010 07:17:58.342911 87998 NebulaStore.cpp:343] Stop the raft service...
+I20261010 07:17:58.342912 87998 RaftexService.cpp:67] Stopping the raftex service on port 21632
+I20261010 07:17:58.342917 87998 RaftexService.cpp:77] All partitions have stopped
+I20261010 07:17:58.342921 87998 NebulaStore.cpp:346] Stop kv engine...
+I20261010 07:17:58.342931 87998 NebulaStore.cpp:36] Cut off the relationship with meta client
+I20261010 07:17:58.343114 87998 Part.h:59] [Port: 21632, Space: 7, Part: 1] ~Part()
+I20261010 07:17:58.349933 87998 RocksEngine.h:247] Release rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/7
+I20261010 07:17:58.350164 87998 Part.h:59] [Port: 21632, Space: 4, Part: 1] ~Part()
+I20261010 07:17:58.352142 87998 RocksEngine.h:247] Release rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/4
+I20261010 07:17:58.352957 87998 Part.h:59] [Port: 21632, Space: 1, Part: 1] ~Part()
+I20261010 07:17:58.354092 87998 RocksEngine.h:247] Release rocksdb on /home/sch/nebula-run/nebula-index/data/storage/nebula/1
+I20261010 07:17:58.354277 87998 NebulaStore.cpp:44] ~NebulaStore()
+I20261010 07:17:58.354416 87998 StorageDaemon.cpp:186] The storage Daemon stopped
+I20261010 07:17:58.357996 87998 RebuildIndexTask.h:31] Release Rebuild Task
+I20261010 07:17:58.358016 87998 RebuildIndexTask.h:31] Release Rebuild Task
+I20261010 07:17:58.358018 87998 RebuildIndexTask.h:31] Release Rebuild Task
+I20261010 07:17:58.358022 87998 RebuildIndexTask.h:31] Release Rebuild Task
+I20261010 07:17:58.358026 87998 RebuildIndexTask.h:31] Release Rebuild Task
+I20261010 07:17:58.358028 87998 RebuildIndexTask.h:31] Release Rebuild Task

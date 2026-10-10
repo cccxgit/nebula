@@ -1,0 +1,8 @@
+{
+  "timestamp_utc": "2026-10-09T22:41:25.498967+00:00",
+  "repository": "/home/sch/nebula/nebula-index",
+  "runtime": "/home/sch/nebula-run/nebula-index",
+  "commit": "de9b3ed800a6627d9845e9289b6bbc5b6faf460a",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "note": "Started make -j8 per initial AGENTS.md, interrupted on user instruction, resumed make -j5. Only observation logs added to RebuildIndexTask.cpp. Runtime uses isolated ports, one replica, one partition per experiment."
+}

@@ -1,0 +1,29 @@
+{
+  "recorded_utc": "2026-10-09T23:07:53.079177+00:00",
+  "configure_exit": 0,
+  "resumed_make_j5_exit": 0,
+  "make_install_exit": 0,
+  "processes": {
+    "metad": {
+      "pid": 87917,
+      "exe": "/home/sch/nebula-run/nebula-index/bin/nebula-metad",
+      "max_open_files": [
+        "Max open files            65536                65536                files     "
+      ]
+    },
+    "graphd": {
+      "pid": 88057,
+      "exe": "/home/sch/nebula-run/nebula-index/bin/nebula-graphd",
+      "max_open_files": [
+        "Max open files            65536                65536                files     "
+      ]
+    },
+    "storaged": {
+      "pid": 87998,
+      "exe": "/home/sch/nebula-run/nebula-index/bin/nebula-storaged",
+      "max_open_files": [
+        "Max open files            65536                65536                files     "
+      ]
+    }
+  }
+}

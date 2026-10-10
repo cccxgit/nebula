@@ -1,0 +1,20 @@
+{
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "nebula3-python": "3.8.3",
+  "cmake": "cmake version 3.26.5",
+  "g++": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+  "kernel": "Linux sch-PC 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux",
+  "third_party": "/opt/vesoft/third-party/3.3",
+  "build_jobs": 5,
+  "runtime_ports": {
+    "meta": 21431,
+    "meta_raft": 21432,
+    "graph": 21531,
+    "storage": 21631,
+    "storage_admin": 21630,
+    "storage_raft": 21632,
+    "http_meta": 22431,
+    "http_graph": 22531,
+    "http_storage": 22631
+  }
+}

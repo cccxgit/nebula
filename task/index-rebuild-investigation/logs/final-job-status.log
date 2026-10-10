@@ -1,0 +1,15 @@
+(root@nebula) [(none)]> USE ir_tag_flags_01; SHOW JOBS; SHOW TAG INDEX STATUS; USE ir_edge_flags_01; SHOW JOBS; SHOW EDGE INDEX STATUS; USE ir_tag_template_01; SHOW JOBS; SHOW TAG INDEX STATUS;
++--------------+--------------+
+| Name         | Index Status |
++--------------+--------------+
+| "sample_idx" | "FINISHED"   |
++--------------+--------------+
+Got 1 rows (time spent 6.502ms/6.940139ms)
+
+Sat, 10 Oct 2026 07:17:58 CST
+
+
+
+Bye root!
+Sat, 10 Oct 2026 07:17:58 CST
+

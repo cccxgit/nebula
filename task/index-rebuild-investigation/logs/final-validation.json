@@ -1,0 +1,34 @@
+{
+  "time_utc": "2026-10-09T23:20:21.663306+00:00",
+  "live_all_cases_valid": true,
+  "live_case_count": 3,
+  "live_jobs_finished": 6,
+  "source_change": "43 observation-only lines in RebuildIndexTask.cpp",
+  "production_logs_supplied": false,
+  "services_stopped": true,
+  "service_process_checks": {
+    "metad": {
+      "pid": 87917,
+      "expected_executable": "/home/sch/nebula-run/nebula-index/bin/nebula-metad",
+      "current_executable": null,
+      "same_process_running": false
+    },
+    "graphd": {
+      "pid": 88057,
+      "expected_executable": "/home/sch/nebula-run/nebula-index/bin/nebula-graphd",
+      "current_executable": null,
+      "same_process_running": false
+    },
+    "storaged": {
+      "pid": 87998,
+      "expected_executable": "/home/sch/nebula-run/nebula-index/bin/nebula-storaged",
+      "current_executable": null,
+      "same_process_running": false
+    }
+  },
+  "stop_evidence": "stop-and-status.log reports all three services Exited; original PID executable identities absent. Remaining pidfiles are not running processes.",
+  "report_links_valid": true,
+  "reproduction_scripts_syntax_valid": true,
+  "saved_observation_patch_matches_worktree": true,
+  "git_diff_check_passed": true
+}

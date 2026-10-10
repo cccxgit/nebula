@@ -1,0 +1,35 @@
+baseline=de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+compile=g++ -std=c++17 -O2 -pthread -I/home/sch/nebula/nebula-index/src -I/opt/vesoft/third-party/3.3/include /home/sch/nebula/nebula-index/task/index-rebuild-investigation/audit/source_harness.cpp -o /home/sch/nebula/nebula-index/task/index-rebuild-investigation/audit/source_harness
+source_harness: original HEAD methods, mock snapshot KVStore/async callback/limiter; real encoder/BatchHolder/IndexCountWrapper.
+batch n=2000 key_len=24 row_payload=64 batch=131072 rate=524288 cancel_after_first=0 code=0 append_calls=2 prefix_calls=2 replayed_lowlevel_ops=4000 encoded_bytes=164026 consumed_bytes=128000 calls_over_burst=0 remaining_ops=0 final_index_keys=2000 elapsed_ms=1.80287
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (128000,4000,164013) (0,0,13)
+ last_calls: (128000,4000,164013) (0,0,13)
+batch n=2200 key_len=24 row_payload=64 batch=131072 rate=524288 cancel_after_first=0 code=0 append_calls=155 prefix_calls=3 replayed_lowlevel_ops=650248 encoded_bytes=26662183 consumed_bytes=20807936 calls_over_burst=0 remaining_ops=0 final_index_keys=2200 elapsed_ms=85.2645
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (131136,4098,168031) (131200,4100,168113) (131264,4102,168195) (131328,4104,168277) (131392,4106,168359)
+ last_calls: (140800,4400,180413) (0,0,13) (0,0,13)
+batch n=8250 key_len=24 row_payload=64 batch=131072 rate=524288 cancel_after_first=0 code=0 append_calls=6205 prefix_calls=3 replayed_lowlevel_ops=63890898 encoded_bytes=2619607483 consumed_bytes=2044508736 calls_over_burst=59 remaining_ops=0 final_index_keys=8250 elapsed_ms=7992.51
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (131136,4098,168031) (131200,4100,168113) (131264,4102,168195) (131328,4104,168277) (131392,4106,168359)
+ last_calls: (528000,16500,676513) (0,0,13) (0,0,13)
+batch n=5500 key_len=40 row_payload=96 batch=131072 rate=524288 cancel_after_first=0 code=0 append_calls=4138 prefix_calls=3 replayed_lowlevel_ops=28401910 encoded_bytes=1618962664 consumed_bytes=1363291680 calls_over_burst=40 remaining_ops=0 final_index_keys=5500 elapsed_ms=3612.08
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (131136,2732,155737) (131232,2734,155851) (131328,2736,155965) (131424,2738,156079) (131520,2740,156193)
+ last_calls: (528000,11000,627013) (0,0,13) (0,0,13)
+batch n=500 key_len=1040 row_payload=2096 batch=1048576 rate=4194304 cancel_after_first=0 code=0 append_calls=2 prefix_calls=2 replayed_lowlevel_ops=1000 encoded_bytes=1057026 consumed_bytes=1048000 calls_over_burst=0 remaining_ops=0 final_index_keys=500 elapsed_ms=0.854212
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (1048000,1000,1057013) (0,0,13)
+ last_calls: (1048000,1000,1057013) (0,0,13)
+batch n=510 key_len=1040 row_payload=2096 batch=1048576 rate=4194304 cancel_after_first=0 code=0 append_calls=13 prefix_calls=3 replayed_lowlevel_ops=11130 encoded_bytes=11764579 consumed_bytes=11664240 calls_over_burst=0 remaining_ops=0 final_index_keys=510 elapsed_ms=6.06983
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (1050096,1002,1059127) (1052192,1004,1061241) (1054288,1006,1063355) (1056384,1008,1065469) (1058480,1010,1067583)
+ last_calls: (1068960,1020,1078153) (0,0,13) (0,0,13)
+batch n=2030 key_len=1040 row_payload=2096 batch=1048576 rate=4194304 cancel_after_first=0 code=0 append_calls=1533 prefix_calls=3 replayed_lowlevel_ops=3876490 encoded_bytes=4097469859 consumed_bytes=4062561520 calls_over_burst=30 remaining_ops=0 final_index_keys=2030 elapsed_ms=6099.27
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (1050096,1002,1059127) (1052192,1004,1061241) (1054288,1006,1063355) (1056384,1008,1065469) (1058480,1010,1067583)
+ last_calls: (4254880,4060,4291433) (0,0,13) (0,0,13)
+batch n=2200 key_len=24 row_payload=64 batch=131072 rate=524288 cancel_after_first=1 code=1 append_calls=153 prefix_calls=1 replayed_lowlevel_ops=650248 encoded_bytes=26662157 consumed_bytes=20807936 calls_over_burst=0 remaining_ops=0 final_index_keys=2200 elapsed_ms=116.517
+ first_calls(batch_payload,lowlevel_ops,encoded_bytes): (131136,4098,168031) (131200,4100,168113) (131264,4102,168195) (131328,4104,168277) (131392,4106,168359)
+ last_calls: (140736,4398,180331) (140800,4400,180413) (140800,4400,180413)
+wait cancel=0 locked=1 pending_operation_records=0 count_unrelated_request=1 completed_after_350ms=0
+wait_after_release count=0 completed=1 code=0 elapsed_ms=352
+wait cancel=1 locked=1 pending_operation_records=0 count_unrelated_request=1 completed_after_350ms=0
+wait_after_release count=0 completed=1 code=1 elapsed_ms=350.376
+compile=g++ -std=c++17 -O2 -pthread -I/home/sch/nebula/nebula-index/src -I/opt/vesoft/third-party/3.3/include /home/sch/nebula/nebula-index/task/index-rebuild-investigation/audit/rate_harness.cpp -o /home/sch/nebula/nebula-index/task/index-rebuild-investigation/audit/rate_harness -L/opt/vesoft/third-party/3.3/lib -lfolly -lglog -lgflags -ldouble-conversion -levent -lssl -lcrypto -ldl
+original_RateLimiter bytes=524289 rate_and_burst=524288 elapsed_ms=1000.09
+original_RateLimiter bytes=4.1943e+06 rate_and_burst=4.1943e+06 elapsed_ms=1000.06
+

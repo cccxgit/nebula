@@ -1,0 +1,19 @@
+enum LogType : char {
+  OP_PUT = 0x01,
+  OP_MULTI_PUT = 0x02,
+  OP_REMOVE = 0x03,
+  OP_MULTI_REMOVE = 0x04,
+  OP_REMOVE_RANGE = 0x06,
+  OP_ADD_LEARNER = 0x07,
+  OP_TRANS_LEADER = 0x08,
+  OP_ADD_PEER = 0x09,
+  OP_REMOVE_PEER = 0x10,
+  OP_BATCH_WRITE = 0x11,
+};
+
+enum BatchLogType : char {
+  OP_BATCH_PUT = 0x01,
+  OP_BATCH_REMOVE = 0x02,
+  OP_BATCH_REMOVE_RANGE = 0x03,
+};
+

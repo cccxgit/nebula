@@ -1,0 +1,4 @@
+Wrote /home/sch/nebula/nebula-index/task/index-rebuild-investigation/live/summary.json and /home/sch/nebula/nebula-index/task/index-rebuild-investigation/live/summary.csv; cases=3, all_valid=True
+edge_flags: baseline=18.059s, experiment=82.28s, rounds=[96, 0, 0], sampled_appends=48, valid=True
+tag_flags: baseline=18.047s, experiment=82.289s, rounds=[96, 0, 0], sampled_appends=50, valid=True
+tag_template: baseline=4.017s, experiment=315.063s, rounds=[576, 0, 0], sampled_appends=173, valid=True

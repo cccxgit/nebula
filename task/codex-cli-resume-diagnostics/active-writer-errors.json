@@ -1,0 +1,20 @@
+[
+  {
+    "id": 21807956,
+    "ts": 1791590140,
+    "level": "ERROR",
+    "target": "codex_core::session::session",
+    "feedback_log_body": "app_server.request{otel.kind=\"server\" otel.name=\"thread/resume\" rpc.system=\"jsonrpc\" rpc.method=\"thread/resume\" rpc.transport=\"unix_socket\" rpc.request_id=7 app_server.connection_id=5 app_server.api_version=\"v2\" app_server.client_name=\"codex-tui\" app_server.client_version=\"0.162.1\"}:resume_thread_with_history:thread_spawn{otel.name=\"thread_spawn\"}:session_init: failed to initialize thread persistence: thread-store conflict: thread 01a122bc-efa6-7351-8ea5-7a9569f4bce0 already has an active writer",
+    "process_uuid": "pid:114652:886bab76-c89c-452c-b966-9493bdf0e6cc",
+    "utc": "2026-10-09T23:55:40+00:00"
+  },
+  {
+    "id": 21807957,
+    "ts": 1791590140,
+    "level": "ERROR",
+    "target": "codex_core::session",
+    "feedback_log_body": "app_server.request{otel.kind=\"server\" otel.name=\"thread/resume\" rpc.system=\"jsonrpc\" rpc.method=\"thread/resume\" rpc.transport=\"unix_socket\" rpc.request_id=7 app_server.connection_id=5 app_server.api_version=\"v2\" app_server.client_name=\"codex-tui\" app_server.client_version=\"0.162.1\"}:resume_thread_with_history:thread_spawn{otel.name=\"thread_spawn\"}: Failed to create session: thread-store conflict: thread 01a122bc-efa6-7351-8ea5-7a9569f4bce0 already has an active writer",
+    "process_uuid": "pid:114652:886bab76-c89c-452c-b966-9493bdf0e6cc",
+    "utc": "2026-10-09T23:55:40+00:00"
+  }
+]

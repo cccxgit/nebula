@@ -1,0 +1,13 @@
+2026-10-10T06:39:42+08:00 job-lifecycle audit
+Repository: /home/sch/nebula/nebula-index
+Baseline: de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+Instructions: read /home/sch/nebula/nebula-index/AGENTS.md first; no service start/stop performed in this subtask.
+Method: rg source searches; nl -ba source reads; git show HEAD:src/storage/admin/RebuildIndexTask.cpp for original line numbering; git status --short; git rev-parse HEAD.
+Reviewed graph submission: AdminJobValidator, SubmitJobExecutor.
+Reviewed meta lifecycle: AdminJobProcessor, JobManager, RebuildJobExecutor, StorageJobExecutor, RebuildTagJobExecutor, TaskDescription, JobDescription, JobStatus, ListTagIndexStatusProcessor, ListEdgeIndexStatusProcessor, ReportTaskProcessor, AdminClient, MetaClient.
+Reviewed storage lifecycle: AdminTaskProcessor, AdminTaskManager, AdminTask, StopAdminTaskProcessor, RebuildIndexTask, RebuildTagIndexTask, RebuildEdgeIndexTask, StorageServer, CommonUtils, RateLimiter.
+Existing tests read but NOT run: JobManagerTest.StopAndRecoverRunningJob, related report/recover tests.
+Verified findings: no expiry for RUNNING/QUEUE; job aggregates all host tasks; host task aggregates all partition subtasks; async finish report retries; STOP is cooperative; operation inner loop lacks cancel checks; meta missing executor branch saves STOPPED without storage stop; storage restart reports old persisted unfinished status as failure; SHOW JOB task error code displays job code.
+Artifact: task/index-rebuild-investigation/04-job-lifecycle.md
+Code changes by this subtask: none.
+Runtime fault injection by this subtask: none.
