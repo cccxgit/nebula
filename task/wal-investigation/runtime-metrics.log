@@ -1,0 +1,23 @@
+/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/runtime-metrics.json
+phase-03-default30 s1 12 165.01399999999998 RSS_VmRSS_delta_KiB 828.0 Rocks_delta_MiB 0.0 WAL_per_sec 96.92328480632553
+phase-03-default30 s2 12 165.00300000000001 RSS_VmRSS_delta_KiB 732.0 Rocks_delta_MiB 0.0 WAL_per_sec 96.83408994637168
+phase-03-default30 s3 12 165.001 RSS_VmRSS_delta_KiB 1008.0 Rocks_delta_MiB 0.0 WAL_per_sec 96.76605952751612
+phase-04-transition1 s1 6 50.009 RSS_VmRSS_delta_KiB -25344.0 Rocks_delta_MiB 0.0 WAL_per_sec 1696.697738375662
+phase-04-transition1 s2 6 50.010999999999996 RSS_VmRSS_delta_KiB -25356.0 Rocks_delta_MiB 0.0 WAL_per_sec 1700.2363304547457
+phase-04-transition1 s3 6 50.174 RSS_VmRSS_delta_KiB -25388.0 Rocks_delta_MiB 0.0 WAL_per_sec 1699.6003716921289
+phase-05-accelerated1 s1 60 885.014 RSS_VmRSS_delta_KiB 161548.0 Rocks_delta_MiB 86.0 WAL_per_sec 1715.0920595652074
+phase-05-accelerated1 s2 60 884.978 RSS_VmRSS_delta_KiB 160860.0 Rocks_delta_MiB 94.0 WAL_per_sec 1715.0843343727574
+phase-05-accelerated1 s3 60 884.892 RSS_VmRSS_delta_KiB 161432.0 Rocks_delta_MiB 100.0 WAL_per_sec 1715.0798887793405
+phase-06-transition30 s1 3 20.009999999999998 RSS_VmRSS_delta_KiB -764.0 Rocks_delta_MiB 0.0 WAL_per_sec 92.35300564727434
+phase-06-transition30 s2 3 20.073 RSS_VmRSS_delta_KiB -700.0 Rocks_delta_MiB 0.0 WAL_per_sec 88.08129570839048
+phase-06-transition30 s3 3 20.108999999999998 RSS_VmRSS_delta_KiB -1236.0 Rocks_delta_MiB 0.0 WAL_per_sec 83.55453812866395
+phase-07-restored30 s1 12 165.016 RSS_VmRSS_delta_KiB 2012.0 Rocks_delta_MiB 5.0 WAL_per_sec 99.67396795004001
+phase-07-restored30 s2 12 165.017 RSS_VmRSS_delta_KiB 1816.0 Rocks_delta_MiB 0.0 WAL_per_sec 99.80057874870401
+phase-07-restored30 s3 12 164.964 RSS_VmRSS_delta_KiB 1812.0 Rocks_delta_MiB 0.0 WAL_per_sec 99.86442617883311
+phase-08-beforeflush s1 1 0.0 RSS_VmRSS_delta_KiB 0.0 Rocks_delta_MiB 0.0 WAL_per_sec None
+phase-08-beforeflush s2 1 0.0 RSS_VmRSS_delta_KiB 0.0 Rocks_delta_MiB 0.0 WAL_per_sec None
+phase-08-beforeflush s3 1 0.0 RSS_VmRSS_delta_KiB 0.0 Rocks_delta_MiB 0.0 WAL_per_sec None
+phase-09-afterflush s1 18 170.00799999999998 RSS_VmRSS_delta_KiB -110228.0 Rocks_delta_MiB -35.148719787597656 WAL_per_sec 95.06429238786833
+phase-09-afterflush s2 18 170.02599999999998 RSS_VmRSS_delta_KiB -109728.0 Rocks_delta_MiB -13.2481689453125 WAL_per_sec 95.22354519925467
+phase-09-afterflush s3 18 170.03699999999998 RSS_VmRSS_delta_KiB -111016.0 Rocks_delta_MiB -6.0992889404296875 WAL_per_sec 95.35125974481979
+Snapshot terms: 3000 0 0

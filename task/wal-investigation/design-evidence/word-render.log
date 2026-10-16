@@ -1,0 +1,28 @@
+[render_docx] $ /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice -env:UserInstallation=file:///tmp/soffice_profile_92gfkcb6 --invisible --headless --norestore --convert-to pdf --outdir /tmp/soffice_convert_uqo4il6z /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.docx
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.38' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)
+
+[render_docx] $ /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice -env:UserInstallation=file:///tmp/soffice_profile_92gfkcb6 --invisible --headless --norestore --convert-to odt --outdir /tmp/soffice_convert_uqo4il6z /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.docx
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.38' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)
+
+Traceback (most recent call last):
+  File "/home/sch/.codex/plugins/cache/openai-primary-runtime/documents/26.1009.11318/skills/documents/render_docx.py", line 546, in <module>
+    main()
+  File "/home/sch/.codex/plugins/cache/openai-primary-runtime/documents/26.1009.11318/skills/documents/render_docx.py", line 538, in main
+    rasterize(render_input_path, out_dir, dpi, verbose=args.verbose, emit_pdf=args.emit_pdf)
+  File "/home/sch/.codex/plugins/cache/openai-primary-runtime/documents/26.1009.11318/skills/documents/render_docx.py", line 423, in rasterize
+    raise RuntimeError(
+RuntimeError: Failed to produce PDF for rasterization (direct and ODT fallback).
+--- DOCX->PDF ---
+CMD: /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice -env:UserInstallation=file:///tmp/soffice_profile_92gfkcb6 --invisible --headless --norestore --convert-to pdf --outdir /tmp/soffice_convert_uqo4il6z /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.docx
+EXIT: 1
+STDERR:
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.38' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)
+--- DOCX->ODT ---
+CMD: /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice -env:UserInstallation=file:///tmp/soffice_profile_92gfkcb6 --invisible --headless --norestore --convert-to odt --outdir /tmp/soffice_convert_uqo4il6z /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.docx
+EXIT: 1
+STDERR:
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)
+/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/oosplash: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.38' not found (required by /home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/program/libuno_sal.so.3)

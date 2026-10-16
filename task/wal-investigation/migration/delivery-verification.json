@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-10-16T02:33:00.996687+00:00",
+  "passed": true,
+  "scope": "Publication preparation validated on a fresh local checkout. Not a remote host or production deployment.",
+  "original_material_changed_paths": [
+    "AGENTS.md",
+    "task/wal-investigation/README.md"
+  ],
+  "preserved_original_evidence": true,
+  "product_diff_sha256": "c9004dbb122f887c37b9bfd3ee9f35618f95dbcafc384aa433ff02756478acc7",
+  "product_diff_unchanged": true,
+  "space_level_configuration_implemented": false,
+  "component_rebuilds": {
+    "smoke": {
+      "status": "passed",
+      "source_report": "component-smoke-20261016/run.json"
+    },
+    "full": {
+      "status": "passed",
+      "source_report": "component-full-20261016/run.json"
+    }
+  },
+  "clean_export": {
+    "file_manifest_passed": true,
+    "parser_synthetic_checks": 10,
+    "wal": {
+      "files": 3000,
+      "records": 6730574,
+      "empty_records": 6730574,
+      "nonempty_records": 0,
+      "snapshot_bytes": 215378368,
+      "unvalidated_bytes": 0
+    }
+  },
+  "staging_check": {
+    "explicit_selection_accepted": true,
+    "cached_diff_check_exit_code": 0,
+    "source_index_modified": false,
+    "note": "Staging was exercised only inside disposable local clone; archived evidence bytes retained using scoped attributes."
+  },
+  "source_git_commit_or_push_performed": false,
+  "nebula_services_started": false,
+  "remote_development_host_validated": false,
+  "notes": [
+    "Initial clone validation found archived whitespace; scoped attributes then passed in a second clean clone.",
+    "The report is frozen before the final manifest. Final read-only packaging logs stay under ignored runs/.",
+    "Historical checksum manifests and candidate lists remain snapshots; current selection is publish-files.txt."
+  ],
+  "original_regular_files_checked": 299
+}

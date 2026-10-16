@@ -1,0 +1,2620 @@
+{
+  "time_utc": "2026-10-09T23:05:54.981543+00:00",
+  "service_options": [
+    {
+      "process": "s1",
+      "space_id": "0",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/0/data/OPTIONS-000007",
+      "sha256": "d2af46c6b99c573affbf8054ca326637e05427b282dc0460198fbcb032e3d51f",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.20",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "1",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/1/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "10",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/10/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "11",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/11/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "12",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/12/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "13",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/13/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "14",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/14/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "15",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/15/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "16",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/16/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "17",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/17/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "18",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/18/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "19",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/19/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "2",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/2/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "20",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/20/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "21",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/21/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "22",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/22/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "23",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/23/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "24",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/24/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "25",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/25/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "26",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/26/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "27",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/27/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "28",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/28/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "29",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/29/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "3",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/3/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "30",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/30/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "31",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/31/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "32",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/32/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "33",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/33/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "34",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/34/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "35",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/35/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "36",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/36/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "37",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/37/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "38",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/38/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "39",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/39/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "4",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/4/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "40",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/40/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "41",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/41/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "42",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/42/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "43",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/43/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "44",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/44/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "45",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/45/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "46",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/46/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "47",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/47/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "48",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/48/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "49",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/49/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "5",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/5/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "50",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/50/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "6",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/6/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "7",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/7/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "8",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/8/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s1",
+      "space_id": "9",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage1/nebula/9/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "0",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/0/data/OPTIONS-000007",
+      "sha256": "d2af46c6b99c573affbf8054ca326637e05427b282dc0460198fbcb032e3d51f",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.20",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "1",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/1/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "10",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/10/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "11",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/11/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "12",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/12/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "13",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/13/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "14",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/14/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "15",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/15/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "16",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/16/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "17",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/17/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "18",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/18/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "19",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/19/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "2",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/2/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "20",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/20/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "21",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/21/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "22",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/22/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "23",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/23/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "24",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/24/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "25",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/25/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "26",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/26/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "27",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/27/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "28",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/28/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "29",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/29/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "3",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/3/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "30",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/30/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "31",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/31/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "32",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/32/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "33",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/33/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "34",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/34/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "35",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/35/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "36",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/36/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "37",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/37/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "38",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/38/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "39",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/39/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "4",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/4/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "40",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/40/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "41",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/41/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "42",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/42/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "43",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/43/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "44",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/44/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "45",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/45/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "46",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/46/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "47",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/47/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "48",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/48/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "49",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/49/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "5",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/5/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "50",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/50/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "6",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/6/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "7",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/7/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "8",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/8/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s2",
+      "space_id": "9",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage2/nebula/9/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "0",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/0/data/OPTIONS-000007",
+      "sha256": "d2af46c6b99c573affbf8054ca326637e05427b282dc0460198fbcb032e3d51f",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.20",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "1",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/1/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "10",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/10/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "11",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/11/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "12",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/12/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "13",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/13/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "14",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/14/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "15",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/15/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "16",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/16/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "17",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/17/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "18",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/18/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "19",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/19/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "2",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/2/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "20",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/20/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "21",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/21/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "22",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/22/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "23",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/23/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "24",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/24/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "25",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/25/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "26",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/26/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "27",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/27/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "28",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/28/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "29",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/29/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "3",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/3/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "30",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/30/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "31",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/31/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "32",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/32/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "33",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/33/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "34",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/34/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "35",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/35/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "36",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/36/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "37",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/37/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "38",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/38/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "39",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/39/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "4",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/4/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "40",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/40/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "41",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/41/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "42",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/42/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "43",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/43/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "44",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/44/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "45",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/45/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "46",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/46/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "47",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/47/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "48",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/48/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "49",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/49/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "5",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/5/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "50",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/50/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "6",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/6/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "7",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/7/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "8",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/8/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    },
+    {
+      "process": "s3",
+      "space_id": "9",
+      "path": "/home/sch/nebula-run/nebula-memory/data/storage3/nebula/9/data/OPTIONS-000007",
+      "sha256": "4cca55423929d6f59ed83a7f87a4a6bd98d56eefb5446e01c46b1786af24b3bd",
+      "values": {
+        "allow_concurrent_memtable_write": "true",
+        "prefix_extractor": "rocksdb.CappedPrefix.36",
+        "max_write_buffer_number": "4",
+        "memtable_prefix_bloom_size_ratio": "0.000000",
+        "arena_block_size": "1048576",
+        "write_buffer_size": "67108864",
+        "inplace_update_support": "false",
+        "memtable_factory": "SkipListFactory",
+        "block_size": "8192"
+      }
+    }
+  ],
+  "probe_options": {
+    "path": "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/rocks-probe-data/db0/OPTIONS-000007",
+    "values": {
+      "allow_concurrent_memtable_write": "true",
+      "prefix_extractor": "nullptr",
+      "max_write_buffer_number": "4",
+      "memtable_prefix_bloom_size_ratio": "0.000000",
+      "arena_block_size": "1048576",
+      "write_buffer_size": "67108864",
+      "inplace_update_support": "false",
+      "memtable_factory": "SkipListFactory",
+      "block_size": "4096"
+    }
+  }
+}

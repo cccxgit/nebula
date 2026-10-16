@@ -1,0 +1,19 @@
+{
+  "time": "2026-10-11T16:12:30.602073+08:00",
+  "scope": "design and document revision only; proposed flags and runtime policy not implemented",
+  "checked_links": 63,
+  "fixed_commit_line_links": 46,
+  "link_errors": [],
+  "example_json_syntax_valid": true,
+  "example_is_not_current_binary_configuration": true,
+  "existing_source_observation_patch_unchanged": true,
+  "previous_capacity_experiment_not_rerun": true,
+  "previous_manifest_unchanged_evidence_files": 17,
+  "new_design_tests_executed": false,
+  "services_started": false,
+  "documents": [
+    "task/wal-investigation/SPACE-LEVEL-KERNEL-PARAMETERS.md",
+    "task/wal-investigation/PRODUCTION-PARAMETER-TUNING.md",
+    "task/wal-investigation/production-tuning-evidence/README.md"
+  ]
+}

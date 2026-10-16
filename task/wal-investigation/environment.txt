@@ -1,0 +1,16 @@
+2026-10-10T06:29:13+08:00
+de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+Linux sch-PC 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux
+cmake version 3.26.5
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/nvme0n1p11  638G  403G  204G  67% /home
+               total        used        free      shared  buff/cache   available
+Mem:            31Gi       4.4Gi        20Gi       630Mi       5.9Gi        25Gi
+Swap:           30Gi       2.9Gi        27Gi

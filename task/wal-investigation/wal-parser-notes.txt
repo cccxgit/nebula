@@ -1,0 +1,39 @@
+parse_wal.py：逐条只读验证 Nebula 3.6 WAL
+
+运行示例：
+python3 task/wal-investigation/parse_wal.py \
+  --data-dir s1=/home/sch/nebula-run/nebula-memory/data/storage1 \
+  --data-dir s2=/home/sch/nebula-run/nebula-memory/data/storage2 \
+  --data-dir s3=/home/sch/nebula-run/nebula-memory/data/storage3 \
+  --output task/wal-investigation/wal-full
+
+无后缀 output 同时生成 .json 和 .csv。也可以重复 --output 指定 .json/.csv。
+为避免覆盖证据，已有输出路径会拒绝。多个 --data-dir 可共用 label（多个磁盘），
+同 label 下同真实文件路径去重；不同 label 表示不同实例，不跨 label 去重。
+正常连续文件退出 0；任何不完整/损坏、ID/term 异常或不可访问数据退出 2，但仍保存报告。
+
+格式依据：src/kvstore/wal/FileBasedWal.cpp:442-468 写入序列：
+LogID int64 + TermID int64 + payload length int32 + ClusterID int64 + payload + length int32。
+当前 x86-64 小端机器对应 struct <qqiq（28 字节）及尾 <i（4 字节）。
+总记录大小 32 + payload length；RAM Record::size() 为 16 + payload length，不能混用。
+脚本递归发现 *.wal，校验每一条完整记录的头与尾长度（不是首尾 ID 推估总条数），
+按文件、分片、实例和总计输出空记录/非空记录/payload 字节、term/cluster 直方图，
+检查文件内和按首 ID 文件名排列的跨文件 ID 间隙、重复/倒退以及 term 倒退。
+遇到无法可信继续的负长度/尾长度不匹配/不完整记录时停止该文件，记录已验证前缀
+与未验证字节量；不跳过损坏字节猜测后续边界。WAL 本格式没有 payload checksum，
+通过验证不证明消息内容语义正确，空消息只表示 payload length=0。
+
+运行时快照：每个文件打开后 fstat 得到 st_size，严格只解释该范围。记录前后大小、
+mtime、inode、读取时间，已在打开之后追加的数据不计入本文件这次快照。
+本方法不是跨文件/跨实例同一时刻快照；inventory 后新建文件不会计入本次。
+文件句柄可继续读取已 unlink 的 inode，但发生截断/原地重写仍有并发影响。
+partial_tail 明确标注可能为并发写入/截断或文件损坏，不能仅凭部分尾记录下结论。
+所有计数为当前磁盘可见的有效前缀条目，不代表进程启动以来总条数，也不代表
+AtomicLogBuffer 留存节点；启动前已有 WAL、TTL 删除等都会造成两者不同。
+
+自验：
+python3 task/wal-investigation/test_parse_wal.py
+10 项合成数据检查通过，日志 wal-parser-selftest.log。包括多文件、多 label、超过
+1 MiB payload 的分块读取、头/尾截断、负长度、尾长不符、ID 间隙/重复、term 倒退，
+模拟 fstat 后追加和截断，JSON/CSV 输出。合成样本仅在 wal-parser-selftest/ 下生成。
+没有运行服务，没有解析实际数据库；实际运行由主实验统一记录。

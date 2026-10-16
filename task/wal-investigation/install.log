@@ -1,0 +1,129 @@
+[  0%] Built target common_thrift_generator
+[  0%] Built target wkt_parser_target
+[  0%] Built target datetime_parser_target
+[  0%] Built target graph_thrift_generator
+[  0%] Built target parser_target
+[  1%] Built target storage_thrift_generator
+[  1%] Built target raftex_thrift_generator
+[  1%] Built target meta_thrift_generator
+[  1%] Built target file_based_cluster_id_man_obj
+[  1%] Built target common_thrift_obj
+[  1%] Built target graph_thrift_obj
+[  1%] Built target meta_client_obj
+[  1%] Built target raftex_thrift_obj
+[  1%] Built target meta_client_stats_obj
+[  1%] Built target storage_client_obj
+[  1%] Built target storage_client_stats_obj
+[  3%] Built target storage_client_base_obj
+[  3%] Built target internal_storage_client_obj
+[  3%] Built target codec_obj
+[  4%] Built target time_obj
+[  6%] Built target base_obj
+[  6%] Built target network_obj
+[  6%] Built target datetime_parser_obj
+[  6%] Built target time_utils_obj
+[  6%] Built target thrift_obj
+[  6%] Built target fs_obj
+[  6%] Built target thread_obj
+[  6%] Built target process_obj
+[  6%] Built target hdfs_helper_obj
+[  6%] Built target http_client_obj
+[  6%] Built target stats_obj
+[  6%] Built target charset_obj
+[  6%] Built target nebula_algo_obj
+[  6%] Built target conf_obj
+[  8%] Built target datatypes_obj
+[  9%] Built target function_manager_obj
+[  9%] Built target agg_function_manager_obj
+[  9%] Built target graph_obj
+[  9%] Built target es_adapter_obj
+[ 11%] Built target meta_obj
+[ 11%] Built target ssl_obj
+[ 11%] Built target keyutils_obj
+[ 11%] Built target meta_keyutils_obj
+[ 11%] Built target log_str_list_iterator_obj
+[ 16%] Built target expression_obj
+[ 16%] Built target geo_index_obj
+[ 18%] Built target wkt_wkb_io_obj
+[ 19%] Built target memory_obj
+[ 19%] Built target snowflake_obj
+[ 19%] Built target ws_common_obj
+[ 19%] Built target log_monitor_obj
+[ 19%] Built target uuid_obj
+[ 19%] Built target segment_id_obj
+[ 19%] Built target disk_man_obj
+[ 21%] Built target meta_thrift_obj
+[ 22%] Built target kvstore_obj
+[ 24%] Built target storage_thrift_obj
+[ 24%] Built target raftex_obj
+[ 24%] Built target wal_obj
+[ 24%] Built target kv_stats_obj
+[ 24%] Built target listener_obj
+[ 24%] Built target meta_stats_obj
+[ 26%] Built target ast_match_path_obj
+[ 26%] Built target storage_common_obj
+[ 26%] Built target internal_storage_service_handler
+[ 27%] Built target storage_http_handler
+[ 27%] Built target storage_server
+[ 27%] Built target storage_stats_obj
+[ 29%] Built target storage_admin_service_handler
+[ 32%] Built target storage_transaction_executor
+[ 32%] Built target version_obj
+[ 32%] Built target meta_v2_thrift_obj
+[ 32%] Built target meta_http_handler
+[ 34%] Built target ws_obj
+[ 39%] Built target graph_storage_service_handler
+[ 40%] Built target graph_context_obj
+[ 40%] Built target scheduler_obj
+[ 42%] Built target plan_obj
+[ 42%] Built target graph_flags_obj
+[ 42%] Built target service_obj
+[ 44%] Built target query_engine_obj
+[ 45%] Built target graph_auth_obj
+[ 45%] Built target graph_session_obj
+[ 45%] Built target graph_stats_obj
+[ 45%] Built target idgenerator_obj
+[ 50%] Built target planner_obj
+[ 52%] Built target util_obj
+[ 52%] Built target plan_node_visitor_obj
+[ 52%] Built target gc_obj
+[ 54%] Built target expr_visitor_obj
+[ 57%] Built target validator_obj
+[ 60%] Built target parser_obj
+[ 60%] Built target fake_http_server_obj
+[ 62%] Built target storage_local_server_obj
+[ 63%] Built target mock_obj
+[ 63%] Built target meta_version_man_obj
+[ 63%] Built target nebula-storaged
+[ 63%] Built target meta_data_upgrade_obj
+[ 72%] Built target optimizer_obj
+[ 83%] Built target executor_obj
+[ 85%] Built target nebula-graphd
+[ 98%] Built target meta_service_handler
+[100%] Built target meta_dump
+[100%] Built target db_dump
+[100%] Built target nebula-metad
+[100%] Built target db_upgrader
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: /home/sch/nebula-run/nebula-memory/bin/nebula-graphd
+-- Installing: /home/sch/nebula-run/nebula-memory/bin/nebula-storaged
+-- Installing: /home/sch/nebula-run/nebula-memory/bin/nebula-metad
+-- Installing: /home/sch/nebula-run/nebula-memory/bin/meta_dump
+-- Installing: /home/sch/nebula-run/nebula-memory/bin/db_upgrader
+-- Installing: /home/sch/nebula-run/nebula-memory/etc/nebula-graphd.conf.default
+-- Installing: /home/sch/nebula-run/nebula-memory/etc/nebula-graphd.conf.production
+-- Installing: /home/sch/nebula-run/nebula-memory/etc/nebula-metad.conf.default
+-- Installing: /home/sch/nebula-run/nebula-memory/etc/nebula-metad.conf.production
+-- Installing: /home/sch/nebula-run/nebula-memory/etc/nebula-storaged.conf.default
+-- Installing: /home/sch/nebula-run/nebula-memory/etc/nebula-storaged.conf.production
+-- Installing: /home/sch/nebula-run/nebula-memory/etc/nebula-storaged-listener.conf.production
+-- Installing: /home/sch/nebula-run/nebula-memory/share/resources/gflags.json
+-- Installing: /home/sch/nebula-run/nebula-memory/share/resources/date_time_zonespec.csv
+-- Installing: /home/sch/nebula-run/nebula-memory/scripts/nebula-storaged.service
+-- Installing: /home/sch/nebula-run/nebula-memory/scripts/nebula-metad.service
+-- Installing: /home/sch/nebula-run/nebula-memory/scripts/nebula-graphd.service
+-- Installing: /home/sch/nebula-run/nebula-memory/scripts/nebula.service
+-- Installing: /home/sch/nebula-run/nebula-memory/scripts/utils.sh
+-- Installing: /home/sch/nebula-run/nebula-memory/scripts/meta-transfer-tools.sh
+-- Installing: /home/sch/nebula-run/nebula-memory/scripts/nebula-storaged-listener.service

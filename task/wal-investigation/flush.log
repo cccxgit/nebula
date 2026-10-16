@@ -1,0 +1,505 @@
+(root@nebula) [(none)]> USE wal_idle_01; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 51         |
++------------+
+Got 1 rows (time spent 8.343ms/8.549702ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_01]> USE wal_idle_02; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 52         |
++------------+
+Got 1 rows (time spent 1.024ms/1.153068ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_02]> USE wal_idle_03; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 53         |
++------------+
+Got 1 rows (time spent 837µs/937.209µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_03]> USE wal_idle_04; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 54         |
++------------+
+Got 1 rows (time spent 826µs/922.045µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_04]> USE wal_idle_05; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 55         |
++------------+
+Got 1 rows (time spent 696µs/792.286µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_05]> USE wal_idle_06; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 56         |
++------------+
+Got 1 rows (time spent 744µs/834.693µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_06]> USE wal_idle_07; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 57         |
++------------+
+Got 1 rows (time spent 621µs/717.877µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_07]> USE wal_idle_08; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 58         |
++------------+
+Got 1 rows (time spent 792µs/895.593µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_08]> USE wal_idle_09; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 59         |
++------------+
+Got 1 rows (time spent 802µs/934.85µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_09]> USE wal_idle_10; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 60         |
++------------+
+Got 1 rows (time spent 2.84ms/3.156659ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_10]> USE wal_idle_11; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 61         |
++------------+
+Got 1 rows (time spent 3.754ms/4.115582ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_11]> USE wal_idle_12; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 62         |
++------------+
+Got 1 rows (time spent 1.399ms/1.544447ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_12]> USE wal_idle_13; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 63         |
++------------+
+Got 1 rows (time spent 1.403ms/1.521557ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_13]> USE wal_idle_14; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 64         |
++------------+
+Got 1 rows (time spent 1.167ms/1.312387ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_14]> USE wal_idle_15; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 65         |
++------------+
+Got 1 rows (time spent 1.334ms/1.475175ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_15]> USE wal_idle_16; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 66         |
++------------+
+Got 1 rows (time spent 1.338ms/1.467543ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_16]> USE wal_idle_17; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 67         |
++------------+
+Got 1 rows (time spent 1.202ms/1.324441ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_17]> USE wal_idle_18; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 68         |
++------------+
+Got 1 rows (time spent 831µs/924.501µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_18]> USE wal_idle_19; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 69         |
++------------+
+Got 1 rows (time spent 693µs/776.236µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_19]> USE wal_idle_20; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 70         |
++------------+
+Got 1 rows (time spent 835µs/921.5µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_20]> USE wal_idle_21; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 71         |
++------------+
+Got 1 rows (time spent 1.231ms/1.553313ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_21]> USE wal_idle_22; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 72         |
++------------+
+Got 1 rows (time spent 1.764ms/2.050807ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_22]> USE wal_idle_23; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 73         |
++------------+
+Got 1 rows (time spent 1.34ms/1.468988ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_23]> USE wal_idle_24; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 74         |
++------------+
+Got 1 rows (time spent 1.264ms/1.396701ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_24]> USE wal_idle_25; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 75         |
++------------+
+Got 1 rows (time spent 1.039ms/1.139175ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_25]> USE wal_idle_26; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 76         |
++------------+
+Got 1 rows (time spent 910µs/998.181µs)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_26]> USE wal_idle_27; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 77         |
++------------+
+Got 1 rows (time spent 1.158ms/1.243377ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_27]> USE wal_idle_28; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 78         |
++------------+
+Got 1 rows (time spent 962µs/1.053327ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_28]> USE wal_idle_29; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 79         |
++------------+
+Got 1 rows (time spent 1.452ms/1.666764ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_29]> USE wal_idle_30; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 80         |
++------------+
+Got 1 rows (time spent 4.31ms/4.734998ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_30]> USE wal_idle_31; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 81         |
++------------+
+Got 1 rows (time spent 3.433ms/3.770443ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_31]> USE wal_idle_32; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 82         |
++------------+
+Got 1 rows (time spent 2.349ms/2.541246ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_32]> USE wal_idle_33; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 83         |
++------------+
+Got 1 rows (time spent 2.172ms/2.344756ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_33]> USE wal_idle_34; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 84         |
++------------+
+Got 1 rows (time spent 1.525ms/1.715359ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_34]> USE wal_idle_35; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 85         |
++------------+
+Got 1 rows (time spent 1.538ms/1.810181ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_35]> USE wal_idle_36; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 86         |
++------------+
+Got 1 rows (time spent 2.274ms/2.545748ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_36]> USE wal_idle_37; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 87         |
++------------+
+Got 1 rows (time spent 2.256ms/2.510409ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_37]> USE wal_idle_38; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 88         |
++------------+
+Got 1 rows (time spent 1.61ms/1.807397ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_38]> USE wal_idle_39; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 89         |
++------------+
+Got 1 rows (time spent 1.811ms/2.055736ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_39]> USE wal_idle_40; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 90         |
++------------+
+Got 1 rows (time spent 2.133ms/2.40362ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_40]> USE wal_idle_41; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 91         |
++------------+
+Got 1 rows (time spent 3.062ms/3.503729ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_41]> USE wal_idle_42; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 92         |
++------------+
+Got 1 rows (time spent 2.934ms/3.236789ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_42]> USE wal_idle_43; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 93         |
++------------+
+Got 1 rows (time spent 1.741ms/1.919613ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_43]> USE wal_idle_44; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 94         |
++------------+
+Got 1 rows (time spent 1.514ms/1.633248ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_44]> USE wal_idle_45; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 95         |
++------------+
+Got 1 rows (time spent 1.612ms/1.739027ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_45]> USE wal_idle_46; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 96         |
++------------+
+Got 1 rows (time spent 1.299ms/1.491601ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_46]> USE wal_idle_47; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 97         |
++------------+
+Got 1 rows (time spent 1.334ms/1.582667ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_47]> USE wal_idle_48; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 98         |
++------------+
+Got 1 rows (time spent 2.837ms/3.099433ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_48]> USE wal_idle_49; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 99         |
++------------+
+Got 1 rows (time spent 1.765ms/1.985576ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+(root@nebula) [wal_idle_49]> USE wal_idle_50; SUBMIT JOB FLUSH;
++------------+
+| New Job Id |
++------------+
+| 100        |
++------------+
+Got 1 rows (time spent 3.096ms/3.356ms)
+
+Sat, 10 Oct 2026 07:35:45 CST
+
+
+
+Bye root!
+Sat, 10 Oct 2026 07:35:45 CST
+

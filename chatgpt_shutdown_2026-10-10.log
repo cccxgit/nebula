@@ -1,0 +1,5 @@
+2026-10-10 Asia/Shanghai
+Operation: close the desktop ChatGPT application on this machine.
+Detected main process: PID 34132, executable /usr/lib/chatgpt/ChatGPT.
+Action: send SIGTERM to PID 34132 for a graceful shutdown.
+Result: main process and all /usr/lib/chatgpt/ChatGPT child processes exited successfully.

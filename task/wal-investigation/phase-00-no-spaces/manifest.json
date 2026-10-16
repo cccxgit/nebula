@@ -1,0 +1,48 @@
+{
+  "created_utc": "2026-10-09T23:00:31.686+00:00",
+  "targets": {
+    "s1": {
+      "pid_file": "/home/sch/nebula-run/nebula-memory/pids/nebula-storaged-s1.pid",
+      "data_dirs": [
+        "/home/sch/nebula-run/nebula-memory/data/storage1"
+      ],
+      "endpoint": "http://127.0.0.1:39779"
+    },
+    "s2": {
+      "pid_file": "/home/sch/nebula-run/nebula-memory/pids/nebula-storaged-s2.pid",
+      "data_dirs": [
+        "/home/sch/nebula-run/nebula-memory/data/storage2"
+      ],
+      "endpoint": "http://127.0.0.1:39789"
+    },
+    "s3": {
+      "pid_file": "/home/sch/nebula-run/nebula-memory/pids/nebula-storaged-s3.pid",
+      "data_dirs": [
+        "/home/sch/nebula-run/nebula-memory/data/storage3"
+      ],
+      "endpoint": "http://127.0.0.1:39799"
+    }
+  },
+  "spaces": [],
+  "properties": [
+    "rocksdb.cur-size-active-mem-table",
+    "rocksdb.cur-size-all-mem-tables",
+    "rocksdb.size-all-mem-tables",
+    "rocksdb.num-entries-active-mem-table",
+    "rocksdb.num-entries-imm-mem-tables",
+    "rocksdb.num-immutable-mem-table",
+    "rocksdb.estimate-table-readers-mem",
+    "rocksdb.block-cache-usage",
+    "rocksdb.block-cache-pinned-usage",
+    "rocksdb.block-cache-capacity",
+    "rocksdb.estimate-num-keys"
+  ],
+  "duration_seconds": 60.0,
+  "interval_seconds": 10.0,
+  "shared_properties_aggregation": "max",
+  "other_properties_aggregation": "sum",
+  "proc_units": "KiB except Threads",
+  "rocksdb_memory_units": "bytes",
+  "wal_record_method": "first/last ID range per file, assuming contiguous entries; fixed record overhead 32 bytes",
+  "proc_note": "RSS includes allocator retained pages and non-WAL allocations; not equivalent to live heap bytes"
+}

@@ -1,0 +1,160 @@
+{
+  "generated_at": "2026-10-16T01:57:27.321517+00:00",
+  "head": "194958131042df77301072eb99dccbc64fb34246",
+  "baseline_commit": "de9b3ed800a6627d9845e9289b6bbc5b6faf460a",
+  "product_changed_paths": [
+    "src/kvstore/wal/AtomicLogBuffer.cpp"
+  ],
+  "diff_numstat": "124\t0\tsrc/kvstore/wal/AtomicLogBuffer.cpp",
+  "diff_sha256": "c9004dbb122f887c37b9bfd3ee9f35618f95dbcafc384aa433ff02756478acc7",
+  "patch_sha256": "c9004dbb122f887c37b9bfd3ee9f35618f95dbcafc384aa433ff02756478acc7",
+  "patch_equals_worktree_diff": true,
+  "baseline_copies_match_commit": {
+    "src/kvstore/wal/AtomicLogBuffer.cpp": true,
+    "src/kvstore/wal/AtomicLogBuffer.h": true
+  },
+  "files": {
+    "src/kvstore/wal/AtomicLogBuffer.cpp": {
+      "sha256": "bd4a0b0f3c850ac8c2bcf0c542db1cb3663a906e9cba42f62cf7abd87a5388a2",
+      "baseline_sha256": "3af5641a37c66d5a80ed27670857c9beb8538a6406ff7fa1bd74ccc4b7a2e47a",
+      "head_equals_baseline": true
+    },
+    "src/kvstore/wal/AtomicLogBuffer.h": {
+      "sha256": "da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd",
+      "baseline_sha256": "da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd",
+      "head_equals_baseline": true
+    },
+    "task/wal-investigation/observation.patch": {
+      "sha256": "c9004dbb122f887c37b9bfd3ee9f35618f95dbcafc384aa433ff02756478acc7",
+      "size_bytes": 8935
+    },
+    "task/wal-investigation/atomic-buffer-probe.cpp": {
+      "sha256": "86519c36fb3b0f1805c88e4e78633fe59fe85c7e77cf4755bd01aac3d3cfc2c9",
+      "size_bytes": 3823
+    },
+    "task/wal-investigation/rocks-commit-probe.cpp": {
+      "sha256": "e6646196d80f3345ee688b099d8389e5eb4159f9bb31cd7d3db8fecf79fde71f",
+      "size_bytes": 7104
+    },
+    "task/wal-investigation/write-idle-comparison-20261011/payload-probe.cpp": {
+      "sha256": "bd3ed6d076f6f37bf004b58c3e5eee98425b729426f6f9639a88f68ae8c5d94f",
+      "size_bytes": 4581
+    },
+    "task/wal-investigation/atomic-buffer-probe": {
+      "sha256": "1d5cd3c0a0de27d4c73403fa7d4d9cb277d67b03e39dddb416a7f2c548c82dfe",
+      "size_bytes": 1701000
+    },
+    "task/wal-investigation/atomic-buffer-probe-jemalloc": {
+      "sha256": "331e49b31a1414b2949b3d0a0956a1d2ae037cf7c6c90cf17c54423623bc2995",
+      "size_bytes": 2399128
+    },
+    "task/wal-investigation/rocks-commit-probe": {
+      "sha256": "92aa20818326f749acd199c7b4ebf82769fb2ab32cb817acd989907704a249ba",
+      "size_bytes": 10739360
+    },
+    "task/wal-investigation/write-idle-comparison-20261011/payload-probe": {
+      "sha256": "a8df86059690744ad6b1fb4ee9a578a8740d83a8394850a7ca9dd1482a14b1ba",
+      "size_bytes": 2289472
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "src/kvstore/wal/AtomicLogBuffer.cpp"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--reverse",
+        "--check",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "error: patch failed: src/kvstore/wal/AtomicLogBuffer.cpp:5\nerror: src/kvstore/wal/AtomicLogBuffer.cpp: patch does not apply\n"
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--reverse",
+        "--check",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--reverse",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "patch_round_trip": {
+    "applied_matches_worktree": true,
+    "reversed_matches_baseline": true
+  },
+  "new_compilation_or_runtime_test_performed": false,
+  "limitations": [
+    "No Nebula services were started",
+    "No ThreadSanitizer or enabled/disabled performance comparison was run in this audit",
+    "Patch application was exercised only in a temporary directory",
+    "Current worktree and original evidence were not modified"
+  ],
+  "passed": true,
+  "audit_document": {
+    "path": "task/wal-investigation/migration/CODE-CHANGE-AUDIT.md",
+    "sha256": "72a0b59c2aea082f7dbccc94a46316cc64b0ecb041674bcc46f2d16ffc94d204",
+    "lines": 155,
+    "missing_relative_link_targets": [],
+    "code_fences_balanced": true
+  }
+}

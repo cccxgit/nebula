@@ -1,0 +1,218 @@
+diff --git a/src/kvstore/wal/AtomicLogBuffer.cpp b/src/kvstore/wal/AtomicLogBuffer.cpp
+index d4934bf5c..9fea0ed20 100644
+--- a/src/kvstore/wal/AtomicLogBuffer.cpp
++++ b/src/kvstore/wal/AtomicLogBuffer.cpp
+@@ -5,13 +5,95 @@
+ 
+ #include "kvstore/wal/AtomicLogBuffer.h"
+ 
++#include <chrono>
++
+ DEFINE_int32(max_log_buffer_size,
+              16 * 1024 * 1024,
+              "Max atomic log buffer size, if the size exceeds it, will trigger gc");
++DEFINE_bool(wal_memory_observe, false, "Enable startup-only AtomicLogBuffer memory observations");
++DEFINE_uint32(wal_memory_observe_interval_secs,
++              10,
++              "Minimum seconds between WAL memory observations");
+ 
+ namespace nebula {
+ namespace wal {
+ 
++namespace {
++
++// Process-wide observations, not a heap profiler. Individual relaxed loads do not form a
++// simultaneous snapshot. Enabling is latched on first use so node lifetimes cannot be half-counted
++// by changing the flag after buffers have already been populated.
++struct WalMemoryObservations {
++  const bool enabled{FLAGS_wal_memory_observe};
++  std::atomic<int64_t> liveNodes{0};
++  std::atomic<int64_t> created{0};
++  std::atomic<int64_t> freed{0};
++  std::atomic<int64_t> pushes{0};
++  std::atomic<int64_t> emptyPushes{0};
++  std::atomic<int64_t> liveLogicalBytes{0};
++  std::atomic<int64_t> releases{0};
++  std::atomic<int64_t> gcRuns{0};
++  std::atomic<int64_t> gcFreed{0};
++  std::atomic<int64_t> resets{0};
++  std::atomic<int64_t> lastLogSecond{0};
++};
++
++WalMemoryObservations& memoryObservations() {
++  static WalMemoryObservations observations;
++  return observations;
++}
++
++// Called only at existing ownership-safe deletion sites; never walks a concurrently modified list.
++void observeNodeDeletion(const Node* node, bool byGc) {
++  auto& observation = memoryObservations();
++  if (!observation.enabled) {
++    return;
++  }
++  observation.liveLogicalBytes.fetch_sub(node->size_, std::memory_order_relaxed);
++  observation.liveNodes.fetch_sub(1, std::memory_order_relaxed);
++  observation.freed.fetch_add(1, std::memory_order_relaxed);
++  if (byGc) {
++    observation.gcFreed.fetch_add(1, std::memory_order_relaxed);
++  }
++}
++
++void observeMemory(const void* buffer,
++                   const char* event,
++                   int32_t size,
++                   int32_t capacity,
++                   int32_t dirtyNodes,
++                   int32_t refs) {
++  auto& observation = memoryObservations();
++  auto now = std::chrono::duration_cast<std::chrono::seconds>(
++                 std::chrono::steady_clock::now().time_since_epoch())
++                 .count();
++  auto previous = observation.lastLogSecond.load(std::memory_order_relaxed);
++  auto interval = std::max<uint32_t>(1, FLAGS_wal_memory_observe_interval_secs);
++  if (now - previous < interval || !observation.lastLogSecond.compare_exchange_strong(
++                                       previous, now, std::memory_order_relaxed)) {
++    return;
++  }
++  auto liveNodes = observation.liveNodes.load(std::memory_order_relaxed);
++  LOG(INFO) << "WAL_MEMORY_OBSERVE event=" << event << " buffer=" << buffer
++            << " live_nodes=" << liveNodes
++            << " created=" << observation.created.load(std::memory_order_relaxed)
++            << " freed=" << observation.freed.load(std::memory_order_relaxed)
++            << " pushes=" << observation.pushes.load(std::memory_order_relaxed)
++            << " empty_pushes=" << observation.emptyPushes.load(std::memory_order_relaxed)
++            << " live_logical_bytes="
++            << observation.liveLogicalBytes.load(std::memory_order_relaxed)
++            << " releases=" << observation.releases.load(std::memory_order_relaxed)
++            << " gc_runs=" << observation.gcRuns.load(std::memory_order_relaxed)
++            << " gc_freed=" << observation.gcFreed.load(std::memory_order_relaxed)
++            << " resets=" << observation.resets.load(std::memory_order_relaxed)
++            << " sizeof_record=" << sizeof(Record) << " sizeof_node=" << sizeof(Node)
++            << " node_object_bytes=" << liveNodes * static_cast<int64_t>(sizeof(Node))
++            << " buffer_size=" << size << " buffer_capacity=" << capacity
++            << " buffer_dirty_nodes=" << dirtyNodes << " buffer_refs=" << refs;
++}
++
++}  // namespace
++
+ LogIterator& AtomicLogBuffer::Iterator::operator++() {
+   currIndex_++;
+   currLogId_++;
+@@ -60,22 +142,38 @@ AtomicLogBuffer::~AtomicLogBuffer() {
+   auto* prev = curr;
+   while (curr != nullptr) {
+     curr = curr->next_;
++    observeNodeDeletion(prev, false);
+     delete prev;
+     prev = curr;
+   }
+   if (prev != nullptr) {
++    observeNodeDeletion(prev, false);
+     delete prev;
+   }
+ }
+ 
+ void AtomicLogBuffer::push(LogID logId, Record&& record) {
++  auto& observation = memoryObservations();
++  if (observation.enabled) {
++    observation.pushes.fetch_add(1, std::memory_order_relaxed);
++    if (record.msg_.empty()) {
++      observation.emptyPushes.fetch_add(1, std::memory_order_relaxed);
++    }
++  }
+   auto* head = head_.load(std::memory_order_relaxed);
+   auto recSize = record.size();
+   if (head == nullptr || head->isFull() || head->markDeleted_.load(std::memory_order_relaxed)) {
+     auto* newNode = new Node();
++    if (observation.enabled) {
++      observation.created.fetch_add(1, std::memory_order_relaxed);
++      observation.liveNodes.fetch_add(1, std::memory_order_relaxed);
++    }
+     newNode->firstLogId_ = logId;
+     newNode->next_ = head;
+     newNode->push_back(std::move(record));
++    if (observation.enabled) {
++      observation.liveLogicalBytes.fetch_add(recSize, std::memory_order_relaxed);
++    }
+     if (head == nullptr || head->markDeleted_.load(std::memory_order_relaxed)) {
+       // It is the first Node in current list, or head has been marked as
+       // deleted
+@@ -86,6 +184,9 @@ void AtomicLogBuffer::push(LogID logId, Record&& record) {
+     }
+     size_.fetch_add(recSize, std::memory_order_relaxed);
+     head_.store(newNode, std::memory_order_relaxed);
++    if (observation.enabled) {
++      observeMemory(this, "push_new_node", size_, capacity_, dirtyNodes_, refs_);
++    }
+     return;
+   }
+   if (size_ + recSize > capacity_) {
+@@ -116,6 +217,10 @@ void AtomicLogBuffer::push(LogID logId, Record&& record) {
+   }
+   size_.fetch_add(recSize, std::memory_order_relaxed);
+   head->push_back(std::move(record));
++  if (observation.enabled) {
++    observation.liveLogicalBytes.fetch_add(recSize, std::memory_order_relaxed);
++    observeMemory(this, "push", size_, capacity_, dirtyNodes_, refs_);
++  }
+ }
+ 
+ void AtomicLogBuffer::reset() {
+@@ -133,6 +238,11 @@ void AtomicLogBuffer::reset() {
+   size_.store(0, std::memory_order_relaxed);
+   firstLogId_.store(0, std::memory_order_relaxed);
+   dirtyNodes_.fetch_add(count, std::memory_order_release);
++  auto& observation = memoryObservations();
++  if (observation.enabled) {
++    observation.resets.fetch_add(1, std::memory_order_relaxed);
++    observeMemory(this, "reset", size_, capacity_, dirtyNodes_, refs_);
++  }
+ }
+ 
+ Node* AtomicLogBuffer::seek(LogID logId) {
+@@ -169,10 +279,17 @@ void AtomicLogBuffer::releaseRef() {
+   // so we could ensure the tail used in GC is older than new coming readers.
+   auto* tail = tail_.load(std::memory_order_acquire);
+   auto readers = refs_.fetch_sub(1, std::memory_order_relaxed);
++  auto& observation = memoryObservations();
++  if (observation.enabled) {
++    observation.releases.fetch_add(1, std::memory_order_relaxed);
++  }
+   VLOG(5) << "Release ref, readers = " << readers << ", size = " << size_
+           << ", dirty node = " << dirtyNodes_;
+   // todo(doodle): https://github.com/vesoft-inc/nebula-storage/issues/390
+   if (readers > 1) {
++    if (observation.enabled) {
++      observeMemory(this, "release_shared", size_, capacity_, dirtyNodes_, refs_);
++    }
+     return;
+   }
+   // In this position, maybe there are some new readers coming in
+@@ -186,6 +303,9 @@ void AtomicLogBuffer::releaseRef() {
+ 
+   if (dirtyNodes > dirtyNodesLimit_ || size_ > FLAGS_max_log_buffer_size) {
+     if (gcOnGoing_.compare_exchange_strong(gcRunning, true, std::memory_order_acquire)) {
++      if (observation.enabled) {
++        observation.gcRuns.fetch_add(1, std::memory_order_relaxed);
++      }
+       VLOG(4) << "GC begins!";
+       // It means no readers on the deleted nodes.
+       // Cut-off the list.
+@@ -200,6 +320,7 @@ void AtomicLogBuffer::releaseRef() {
+         VLOG(5) << "Delete node " << curr->firstLogId_;
+         auto* del = curr;
+         curr = curr->next_;
++        observeNodeDeletion(del, true);
+         delete del;
+         dirtyNodes_.fetch_sub(1, std::memory_order_release);
+         CHECK_GE(dirtyNodes_, 0);
+@@ -211,6 +332,9 @@ void AtomicLogBuffer::releaseRef() {
+       VLOG(5) << "Current list is in gc now!";
+     }
+   }
++  if (observation.enabled) {
++    observeMemory(this, "release_last", size_, capacity_, dirtyNodes_, refs_);
++  }
+ }
+ 
+ }  // namespace wal

@@ -1,0 +1,248 @@
+{
+  "verified_utc": "2026-10-11T08:45:27.034475+00:00",
+  "action": "Read existing evidence and script interfaces; no services started; no product source changed; no existing evidence written",
+  "links": [
+    {
+      "target": "../REPORT.md",
+      "exists": true
+    },
+    {
+      "target": "../EXPERIMENT-DETAILS.md",
+      "exists": true
+    },
+    {
+      "target": "../phase-03-default30/manifest.json",
+      "exists": true
+    },
+    {
+      "target": "../phase-05-accelerated1/manifest.json",
+      "exists": true
+    },
+    {
+      "target": "../phase-08-beforeflush/manifest.json",
+      "exists": true
+    },
+    {
+      "target": "../phase-09-afterflush/manifest.json",
+      "exists": true
+    },
+    {
+      "target": "../wal-observe-s1.csv",
+      "exists": true
+    },
+    {
+      "target": "../wal-observe-s2.csv",
+      "exists": true
+    },
+    {
+      "target": "../wal-observe-s3.csv",
+      "exists": true
+    },
+    {
+      "target": "../wal-full.json",
+      "exists": true
+    },
+    {
+      "target": "../wal-archive-verification.json",
+      "exists": true
+    },
+    {
+      "target": "../cluster.py",
+      "exists": true
+    },
+    {
+      "target": "../sample_runtime.py",
+      "exists": true
+    },
+    {
+      "target": "../parse_wal.py",
+      "exists": true
+    },
+    {
+      "target": "../production-tuning-evidence/README.md",
+      "exists": true
+    },
+    {
+      "target": "../write-idle-comparison-20261011/README.md",
+      "exists": true
+    },
+    {
+      "target": "../rocks-commit-probe-reproduction.txt",
+      "exists": true
+    }
+  ],
+  "phases_from_raw_csv": {
+    "phase-03-default30": {
+      "s1": {
+        "rows": 12,
+        "elapsed_span_seconds": 165.01399999999998,
+        "rss_first_kib": 151252,
+        "rss_last_kib": 152080,
+        "rss_delta_mib": 0.80859375,
+        "memtable_first_bytes": 52531200,
+        "memtable_last_bytes": 52531200,
+        "increasing_rss_pairs": 9
+      },
+      "s2": {
+        "rows": 12,
+        "elapsed_span_seconds": 165.00300000000001,
+        "rss_first_kib": 151160,
+        "rss_last_kib": 151892,
+        "rss_delta_mib": 0.71484375,
+        "memtable_first_bytes": 52531200,
+        "memtable_last_bytes": 52531200,
+        "increasing_rss_pairs": 8
+      },
+      "s3": {
+        "rows": 12,
+        "elapsed_span_seconds": 165.001,
+        "rss_first_kib": 150872,
+        "rss_last_kib": 151880,
+        "rss_delta_mib": 0.984375,
+        "memtable_first_bytes": 52531200,
+        "memtable_last_bytes": 52531200,
+        "increasing_rss_pairs": 8
+      }
+    },
+    "phase-05-accelerated1": {
+      "s1": {
+        "rows": 60,
+        "elapsed_span_seconds": 885.014,
+        "rss_first_kib": 131964,
+        "rss_last_kib": 293512,
+        "rss_delta_mib": 157.76171875,
+        "memtable_first_bytes": 52531200,
+        "memtable_last_bytes": 142708736,
+        "increasing_rss_pairs": 59
+      },
+      "s2": {
+        "rows": 60,
+        "elapsed_span_seconds": 884.978,
+        "rss_first_kib": 132756,
+        "rss_last_kib": 293616,
+        "rss_delta_mib": 157.08984375,
+        "memtable_first_bytes": 52531200,
+        "memtable_last_bytes": 151097344,
+        "increasing_rss_pairs": 59
+      },
+      "s3": {
+        "rows": 60,
+        "elapsed_span_seconds": 884.892,
+        "rss_first_kib": 132248,
+        "rss_last_kib": 293680,
+        "rss_delta_mib": 157.6484375,
+        "memtable_first_bytes": 52531200,
+        "memtable_last_bytes": 157388800,
+        "increasing_rss_pairs": 59
+      }
+    },
+    "phase-08-beforeflush": {
+      "s1": {
+        "rows": 1,
+        "elapsed_span_seconds": 0.0,
+        "rss_first_kib": 352912,
+        "rss_last_kib": 352912,
+        "rss_delta_mib": 0.0,
+        "memtable_first_bytes": 181506048,
+        "memtable_last_bytes": 181506048,
+        "increasing_rss_pairs": 0
+      },
+      "s2": {
+        "rows": 1,
+        "elapsed_span_seconds": 0.0,
+        "rss_first_kib": 352920,
+        "rss_last_kib": 352920,
+        "rss_delta_mib": 0.0,
+        "memtable_first_bytes": 157388800,
+        "memtable_last_bytes": 157388800,
+        "increasing_rss_pairs": 0
+      },
+      "s3": {
+        "rows": 1,
+        "elapsed_span_seconds": 0.0,
+        "rss_first_kib": 353784,
+        "rss_last_kib": 353784,
+        "rss_delta_mib": 0.0,
+        "memtable_first_bytes": 182554624,
+        "memtable_last_bytes": 182554624,
+        "increasing_rss_pairs": 0
+      }
+    },
+    "phase-09-afterflush": {
+      "s1": {
+        "rows": 18,
+        "elapsed_span_seconds": 170.00799999999998,
+        "rss_first_kib": 356740,
+        "rss_last_kib": 246512,
+        "rss_delta_mib": -107.64453125,
+        "memtable_first_bytes": 89387304,
+        "memtable_last_bytes": 52531200,
+        "increasing_rss_pairs": 16
+      },
+      "s2": {
+        "rows": 18,
+        "elapsed_span_seconds": 170.02599999999998,
+        "rss_first_kib": 356732,
+        "rss_last_kib": 247004,
+        "rss_delta_mib": -107.15625,
+        "memtable_first_bytes": 66422912,
+        "memtable_last_bytes": 52531200,
+        "increasing_rss_pairs": 16
+      },
+      "s3": {
+        "rows": 18,
+        "elapsed_span_seconds": 170.03699999999998,
+        "rss_first_kib": 357596,
+        "rss_last_kib": 246580,
+        "rss_delta_mib": -108.4140625,
+        "memtable_first_bytes": 58926768,
+        "memtable_last_bytes": 52531200,
+        "increasing_rss_pairs": 15
+      }
+    }
+  },
+  "archive_sha256": "acb2e767bf72b9b715879c6a911e53ef115e30469f2185e8e4b3205ad988fd55",
+  "wal_total": {
+    "records": 6730574,
+    "empty_records": 6730574,
+    "nonempty_records": 0,
+    "payload_bytes": 0,
+    "snapshot_bytes": 215378368,
+    "validated_bytes": 215378368,
+    "unvalidated_bytes": 0,
+    "id_gap_count": 0,
+    "id_missing_count": 0,
+    "id_nonincreasing_count": 0,
+    "term_regressions": 0,
+    "first_id": null,
+    "last_id": null,
+    "first_term": null,
+    "last_term": null,
+    "term_counts": {
+      "1": 2663947,
+      "2": 4066627
+    },
+    "cluster_counts": {
+      "0": 6730574
+    },
+    "scope": "total",
+    "files": 3000,
+    "partitions": 3000,
+    "issues": [],
+    "status_counts": {
+      "complete": 3000
+    },
+    "changed_files": 0,
+    "partial_tail_files": 0
+  },
+  "audited_script_sha256": {
+    "cluster.py": "78679b1cd732e5613503b261e191581fb36c65d18b354cae518ef8240e4e3192",
+    "sample_runtime.py": "1ef818a82c25fc59ae63cca208760c728d10f19be47655aad63b6ded06535d19",
+    "parse_wal.py": "96d61297fe2fdaabfa6c91871aa6d127bed7c3da752d0024320abc0cedd04e26",
+    "run-atomic-buffer-probe.sh": "05f7c42b3a2be837c3f15d04739199dc4938cb7004780a6936f1a049648526d6",
+    "production-tuning-evidence/run-capacity-probe.sh": "ce35f690d94f28747eb6fffb37ddd888d43d0ac56c5e33b235484aebe58e023d",
+    "write-idle-comparison-20261011/run.sh": "54b490893d58a20bb7889ffd0ec00b815fda6abc8493ddd06f557a47b9083ead",
+    "rocks-commit-probe-reproduction.txt": "4d4579ee9c6188d129dae3c019b6efa949ce71097422f175c3da06e5dde01f61"
+  },
+  "document_sha256": "30b83cb473f17b5de5edf51988441062ccfded58c78c2aeec246fc6cb89fe2a1"
+}

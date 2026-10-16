@@ -1,0 +1,62 @@
+{
+  "generated_utc": "2026-10-16T02:17:57.458522+00:00",
+  "reviewed_files": {
+    "task/wal-investigation/DELIVERY-AND-MIGRATION.md": "3ed90b328c7cad8870131661f985fafb300992d9bb88e28db3f7e5e8d399584b",
+    "task/wal-investigation/migration/build_delivery.py": "b8c68ba260bccc75d00f81f7e0ca163820a8b61cf59dc1eb88d92237889f7006",
+    "task/wal-investigation/.gitignore": "14074ecffb92a3de4ccbf2df8cdc3198650922ef744c67ed4a65bfb96367211f",
+    "task/wal-investigation/migration/verify_delivery.py": "2e46883dea591c4c8e09c37527af07ac2f42f83e8425ce0a3a76fe9b276af7d3"
+  },
+  "document_scope_correct": true,
+  "initial_inventory_numbers_correct": true,
+  "reviewed_data": {
+    "initial_paths": 519,
+    "initial_regular_files": 506,
+    "initial_symlinks": 13,
+    "initial_candidates": 299,
+    "safe_relative_links_to_append": 13,
+    "original_delivery_basis": 312,
+    "tracked_scope_files": 9,
+    "prior_task_document_files": 8
+  },
+  "ignored_initial_candidates": [
+    "task/wal-investigation/wal-parser-selftest/append-during-read/nebula/4/wal/2/1.wal",
+    "task/wal-investigation/wal-parser-selftest/gaps/nebula/4/wal/2/1.wal",
+    "task/wal-investigation/wal-parser-selftest/gaps/nebula/4/wal/2/8.wal",
+    "task/wal-investigation/wal-parser-selftest/good/nebula/4/wal/2/1.wal",
+    "task/wal-investigation/wal-parser-selftest/good/nebula/4/wal/2/3.wal",
+    "task/wal-investigation/wal-parser-selftest/negative/nebula/4/wal/2/1.wal",
+    "task/wal-investigation/wal-parser-selftest/report.csv",
+    "task/wal-investigation/wal-parser-selftest/report.json",
+    "task/wal-investigation/wal-parser-selftest/short-header/nebula/4/wal/2/1.wal",
+    "task/wal-investigation/wal-parser-selftest/short-record/nebula/4/wal/2/1.wal",
+    "task/wal-investigation/wal-parser-selftest/shrink-during-read/nebula/4/wal/2/1.wal",
+    "task/wal-investigation/wal-parser-selftest/wrong-footer/nebula/4/wal/2/1.wal"
+  ],
+  "findings": [
+    {
+      "id": "R01",
+      "severity": "must_resolve_before_staging",
+      "issue": "12 selected synthetic fixture/report files are ignored by the new .gitignore; plain git add using explicit pathspec will reject them.",
+      "resolution": "Either keep these fixed old fixtures and remove their directory ignore, or explicitly exclude them from final publication selection and describe the selection delta."
+    },
+    {
+      "id": "R02",
+      "severity": "wording",
+      "issue": "preflight.py records evidence symlink existence only; verify_delivery.py enforces relative safe selected targets.",
+      "resolution": "Separate these two claims in the migration table."
+    },
+    {
+      "id": "R03",
+      "severity": "wording",
+      "issue": "8 is the count of prior task documents and figures; full scoped tracked paths are 9 including AtomicLogBuffer.cpp.",
+      "resolution": "Label the 8 explicitly, or give the full 9 count."
+    }
+  ],
+  "non_findings": [
+    "No missing major original evidence or important source among the original candidates.",
+    "build_delivery.py excludes host ELF and uncontrolled subdirectories; preserves relative log links and validates their selected targets.",
+    "Selection, checksums and manifest form a non-circular dependency; manifest self-exclusion is explicit.",
+    "The document clearly states no Git commit/push this turn and no space-level policy implementation."
+  ],
+  "verification_boundary": "Read-only review; no builder, Git staging/commit/push or service operation was executed. Findings refer to the recorded source hashes; final versions may resolve them."
+}

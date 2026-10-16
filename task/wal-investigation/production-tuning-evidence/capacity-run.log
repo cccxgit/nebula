@@ -1,0 +1,104 @@
++ date --iso-8601=seconds
+2026-10-11T15:04:30+08:00
++ git rev-parse HEAD
+194958131042df77301072eb99dccbc64fb34246
++ uname -a
+Linux sch-PC 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux
++ for source in AtomicLogBuffer.cpp AtomicLogBuffer.h
++ git show de9b3ed800a6627d9845e9289b6bbc5b6faf460a:src/kvstore/wal/AtomicLogBuffer.cpp
++ cmp - task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp
++ for source in AtomicLogBuffer.cpp AtomicLogBuffer.h
++ git show de9b3ed800a6627d9845e9289b6bbc5b6faf460a:src/kvstore/wal/AtomicLogBuffer.h
++ cmp - task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.h
++ sha256sum task/wal-investigation/atomic-buffer-probe-jemalloc task/wal-investigation/atomic-buffer-probe.cpp task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.h
+331e49b31a1414b2949b3d0a0956a1d2ae037cf7c6c90cf17c54423623bc2995  task/wal-investigation/atomic-buffer-probe-jemalloc
+86519c36fb3b0f1805c88e4e78633fe59fe85c7e77cf4755bd01aac3d3cfc2c9  task/wal-investigation/atomic-buffer-probe.cpp
+3af5641a37c66d5a80ed27670857c9beb8538a6406ff7fa1bd74ccc4b7a2e47a  task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp
+da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd  task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.h
++ for capacity in 8388608 4194304 2097152 1048576 262144
++ records=524288
++ checkpoints=0,1,64,65,524288,524289,524290,524608,1048576,2097152
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1 8388608 each 0,1,64,65,524288,524289,524290,524608,1048576,2097152
++ cat task/wal-investigation/production-tuning-evidence/capacity-8388608.csv
+phase,partitions,records_per_partition,logical_bytes,nodes,dirty_nodes,refs,node_struct_bytes,node_malloc_usable_bytes,rss_kib,hwm_kib
+push,1,0,0,0,0,0,0,0,4596,4600
+push,1,1,16,1,0,0,3200,3584,4604,4604
+push,1,64,1024,1,0,0,3200,3584,4604,4604
+push,1,65,1040,2,0,0,6400,7168,4608,4608
+push,1,524288,8388608,8192,0,0,26214400,29360128,33524,33524
+push,1,524289,8388624,8193,0,0,26217600,29363712,33528,33528
+push,1,524290,8387616,8193,1,0,26217600,29363712,33528,33528
+push,1,524608,8388608,8197,5,0,26230400,29378048,33544,33544
+push,1,1048576,8388608,8194,2,0,26220800,29367296,33548,33548
+push,1,2097152,8388608,8192,0,0,26214400,29360128,33548,33548
+destroy_all,0,2097152,0,0,0,0,0,0,33548,33548
++ for capacity in 8388608 4194304 2097152 1048576 262144
++ records=262144
++ checkpoints=0,1,64,65,262144,262145,262146,262464,524288,1048576
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1 4194304 each 0,1,64,65,262144,262145,262146,262464,524288,1048576
++ cat task/wal-investigation/production-tuning-evidence/capacity-4194304.csv
+phase,partitions,records_per_partition,logical_bytes,nodes,dirty_nodes,refs,node_struct_bytes,node_malloc_usable_bytes,rss_kib,hwm_kib
+push,1,0,0,0,0,0,0,0,4592,4596
+push,1,1,16,1,0,0,3200,3584,4600,4600
+push,1,64,1024,1,0,0,3200,3584,4600,4600
+push,1,65,1040,2,0,0,6400,7168,4604,4604
+push,1,262144,4194304,4096,0,0,13107200,14680064,19060,19060
+push,1,262145,4194320,4097,0,0,13110400,14683648,19064,19064
+push,1,262146,4193312,4097,1,0,13110400,14683648,19064,19064
+push,1,262464,4194304,4101,5,0,13123200,14697984,19080,19080
+push,1,524288,4194304,4100,4,0,13120000,14694400,19084,19084
+push,1,1048576,4194304,4096,0,0,13107200,14680064,19084,19084
+destroy_all,0,1048576,0,0,0,0,0,0,19084,19084
++ for capacity in 8388608 4194304 2097152 1048576 262144
++ records=131072
++ checkpoints=0,1,64,65,131072,131073,131074,131392,262144,524288
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1 2097152 each 0,1,64,65,131072,131073,131074,131392,262144,524288
++ cat task/wal-investigation/production-tuning-evidence/capacity-2097152.csv
+phase,partitions,records_per_partition,logical_bytes,nodes,dirty_nodes,refs,node_struct_bytes,node_malloc_usable_bytes,rss_kib,hwm_kib
+push,1,0,0,0,0,0,0,0,4540,4544
+push,1,1,16,1,0,0,3200,3584,4548,4548
+push,1,64,1024,1,0,0,3200,3584,4548,4548
+push,1,65,1040,2,0,0,6400,7168,4552,4552
+push,1,131072,2097152,2048,0,0,6553600,7340032,11776,11776
+push,1,131073,2097168,2049,0,0,6556800,7343616,11780,11780
+push,1,131074,2096160,2049,1,0,6556800,7343616,11780,11780
+push,1,131392,2097152,2053,5,0,6569600,7357952,11796,11796
+push,1,262144,2097152,2050,2,0,6560000,7347200,11800,11800
+push,1,524288,2097152,2048,0,0,6553600,7340032,11800,11800
+destroy_all,0,524288,0,0,0,0,0,0,11800,11800
++ for capacity in 8388608 4194304 2097152 1048576 262144
++ records=65536
++ checkpoints=0,1,64,65,65536,65537,65538,65856,131072,262144
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1 1048576 each 0,1,64,65,65536,65537,65538,65856,131072,262144
++ cat task/wal-investigation/production-tuning-evidence/capacity-1048576.csv
+phase,partitions,records_per_partition,logical_bytes,nodes,dirty_nodes,refs,node_struct_bytes,node_malloc_usable_bytes,rss_kib,hwm_kib
+push,1,0,0,0,0,0,0,0,4604,4608
+push,1,1,16,1,0,0,3200,3584,4612,4612
+push,1,64,1024,1,0,0,3200,3584,4612,4612
+push,1,65,1040,2,0,0,6400,7168,4616,4616
+push,1,65536,1048576,1024,0,0,3276800,3670016,8228,8228
+push,1,65537,1048592,1025,0,0,3280000,3673600,8232,8232
+push,1,65538,1047584,1025,1,0,3280000,3673600,8232,8232
+push,1,65856,1048576,1029,5,0,3292800,3687936,8248,8248
+push,1,131072,1048576,1028,4,0,3289600,3684352,8252,8252
+push,1,262144,1048576,1024,0,0,3276800,3670016,8252,8252
+destroy_all,0,262144,0,0,0,0,0,0,8252,8252
++ for capacity in 8388608 4194304 2097152 1048576 262144
++ records=16384
++ checkpoints=0,1,64,65,16384,16385,16386,16704,32768,65536
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1 262144 each 0,1,64,65,16384,16385,16386,16704,32768,65536
++ cat task/wal-investigation/production-tuning-evidence/capacity-262144.csv
+phase,partitions,records_per_partition,logical_bytes,nodes,dirty_nodes,refs,node_struct_bytes,node_malloc_usable_bytes,rss_kib,hwm_kib
+push,1,0,0,0,0,0,0,0,4608,4612
+push,1,1,16,1,0,0,3200,3584,4616,4616
+push,1,64,1024,1,0,0,3200,3584,4616,4616
+push,1,65,1040,2,0,0,6400,7168,4620,4620
+push,1,16384,262144,256,0,0,819200,917504,5520,5520
+push,1,16385,262160,257,0,0,822400,921088,5524,5524
+push,1,16386,261152,257,1,0,822400,921088,5524,5524
+push,1,16704,262144,261,5,0,835200,935424,5540,5540
+push,1,32768,262144,260,4,0,832000,931840,5544,5544
+push,1,65536,262144,256,0,0,819200,917504,5544,5544
+destroy_all,0,65536,0,0,0,0,0,0,5544,5544
++ date --iso-8601=seconds
+2026-10-11T15:04:30+08:00

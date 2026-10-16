@@ -1,0 +1,99 @@
+{
+  "created_utc": "2026-10-09T23:28:01.148+00:00",
+  "targets": {
+    "s1": {
+      "pid_file": "/home/sch/nebula-run/nebula-memory/pids/nebula-storaged-s1.pid",
+      "data_dirs": [
+        "/home/sch/nebula-run/nebula-memory/data/storage1"
+      ],
+      "endpoint": "http://127.0.0.1:39779"
+    },
+    "s2": {
+      "pid_file": "/home/sch/nebula-run/nebula-memory/pids/nebula-storaged-s2.pid",
+      "data_dirs": [
+        "/home/sch/nebula-run/nebula-memory/data/storage2"
+      ],
+      "endpoint": "http://127.0.0.1:39789"
+    },
+    "s3": {
+      "pid_file": "/home/sch/nebula-run/nebula-memory/pids/nebula-storaged-s3.pid",
+      "data_dirs": [
+        "/home/sch/nebula-run/nebula-memory/data/storage3"
+      ],
+      "endpoint": "http://127.0.0.1:39799"
+    }
+  },
+  "spaces": [
+    "wal_idle_01",
+    "wal_idle_02",
+    "wal_idle_03",
+    "wal_idle_04",
+    "wal_idle_05",
+    "wal_idle_06",
+    "wal_idle_07",
+    "wal_idle_08",
+    "wal_idle_09",
+    "wal_idle_10",
+    "wal_idle_11",
+    "wal_idle_12",
+    "wal_idle_13",
+    "wal_idle_14",
+    "wal_idle_15",
+    "wal_idle_16",
+    "wal_idle_17",
+    "wal_idle_18",
+    "wal_idle_19",
+    "wal_idle_20",
+    "wal_idle_21",
+    "wal_idle_22",
+    "wal_idle_23",
+    "wal_idle_24",
+    "wal_idle_25",
+    "wal_idle_26",
+    "wal_idle_27",
+    "wal_idle_28",
+    "wal_idle_29",
+    "wal_idle_30",
+    "wal_idle_31",
+    "wal_idle_32",
+    "wal_idle_33",
+    "wal_idle_34",
+    "wal_idle_35",
+    "wal_idle_36",
+    "wal_idle_37",
+    "wal_idle_38",
+    "wal_idle_39",
+    "wal_idle_40",
+    "wal_idle_41",
+    "wal_idle_42",
+    "wal_idle_43",
+    "wal_idle_44",
+    "wal_idle_45",
+    "wal_idle_46",
+    "wal_idle_47",
+    "wal_idle_48",
+    "wal_idle_49",
+    "wal_idle_50"
+  ],
+  "properties": [
+    "rocksdb.cur-size-active-mem-table",
+    "rocksdb.cur-size-all-mem-tables",
+    "rocksdb.size-all-mem-tables",
+    "rocksdb.num-entries-active-mem-table",
+    "rocksdb.num-entries-imm-mem-tables",
+    "rocksdb.num-immutable-mem-table",
+    "rocksdb.estimate-table-readers-mem",
+    "rocksdb.block-cache-usage",
+    "rocksdb.block-cache-pinned-usage",
+    "rocksdb.block-cache-capacity",
+    "rocksdb.estimate-num-keys"
+  ],
+  "duration_seconds": 30.0,
+  "interval_seconds": 10.0,
+  "shared_properties_aggregation": "max",
+  "other_properties_aggregation": "sum",
+  "proc_units": "KiB except Threads",
+  "rocksdb_memory_units": "bytes",
+  "wal_record_method": "first/last ID range per file, assuming contiguous entries; fixed record overhead 32 bytes",
+  "proc_note": "RSS includes allocator retained pages and non-WAL allocations; not equivalent to live heap bytes"
+}

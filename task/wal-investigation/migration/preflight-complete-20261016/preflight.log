@@ -1,0 +1,10 @@
+Migration preflight
+repo: /home/sch/nebula/nebula-3.6-memory
+Python/shell files checked: 13
+host-path occurrences: 11
+historical ELF binaries: 8
+failures: 0
+warnings: 2
+WARN: Historical scripts contain host-specific paths; see hardcoded_path_locations
+WARN: Historical ELF binaries are machine-specific; rebuild probes on the target host
+No service/network/build/config mutation; output directory only. Passing is not build/runtime/functional validation.

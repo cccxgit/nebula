@@ -1,0 +1,164 @@
+WAL / Raft 空闲内存增长：只读代码分析与独立真实实现实验
+分析代理：wal_analysis
+记录日期：2026-10-10（Asia/Shanghai）
+代码基线：de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+范围：不修改业务行为；不启动/停止服务。服务端复现由主代理负责。
+已读：根 AGENTS.md、task/task-wal.md；src、task 未发现子目录 AGENTS.md。
+
+一、结论边界
+1. “图空间没有业务写入”不等于其分片 WAL 不增长：leader 在空闲时持续把空字符串作为正常日志追加，followers 也缓存这些日志。
+2. 每个 FileBasedWal 独立持有 AtomicLogBuffer。默认 wal_buffer_size 是 8MiB 的逻辑消息字节计账，并非 8MiB 实际堆上限，更不是全进程共享上限。
+3. 空消息每条只计 16B；本机实际 Record=48B，Node=3200B/64槽；本库 jemalloc 的该 Node usable size 为3584B，即填满时平均56B/条。默认8MiB容量可保有约28MiB Node分配/本地分片副本，另有对象/分配器元数据。
+4. 缓存低于容量没有时间清理/空闲收缩，空闲分片的小日志会经历很长的填充增长期。该路径通常是仍可达的缓存持有，而不是遗失指针式内存泄漏。
+5. 正常产生并释放 WAL iterator 时，容量阈值后的有效节点会趋于平台；不能把本次发现直接说成“默认配置无上限泄漏”。另有GC延迟条件：没有iterator销毁，或始终有reader持有，会让已标脏节点继续累积。实验能构造该条件，但尚无证据证明生产场景存在常驻reader。
+6. RSS不降不是“仍有同量活跃缓存”的充分证据。jemalloc实验在缓存被delete后RSS仍保持高位，必须区分live Node、allocator留存、整个进程RSS。
+7. 空日志提交仍写入RocksDB commit-id元数据，会有额外memtable等内存。必须靠对象计数/heap或RocksDB统计分离，不能把全部RSS变化只归为WAL。
+
+二、完整代码链路（以下 AtomicLogBuffer.cpp 行号按记录的未修改基线）
+A. 周期触发：src/kvstore/raftex/RaftPart.cpp
+- 30：raft_heartbeat_interval_secs 的源码/gflags默认5秒。但 conf/nebula-storaged.conf.default 与 conf/nebula-storaged.conf.production 第46行均显式设置为30秒，正常使用模板时应以30秒计算，不应套源码默认5秒。
+- 1138-1141：needToSendHeartbeat 只检查 RUNNING && LEADER，没有“当前任期是否已提交”等门槛。
+- 1401-1434：statusPolling 每次等待 heartbeat_secs*1000/3 + rand32(500) 毫秒后再次执行；正常leader每轮 sendHeartbeat。源码默认5秒对应基础轮询1666..2165ms；配置模板30秒对应10000..10499ms，均需再加调度与执行时间。不能粗略把参数值直接当实际空日志间隔。
+- 2041-2048：sendHeartbeat 在 !replicatingLogs_ 时异步 appendLogAsync(NORMAL, "")；注释说新任期需要空日志，但实现没有检查 commitInThisTerm_，所以空闲期间反复追加。这里同时发送独立 Heartbeat RPC，RPC自身与空WAL记录应区分。
+- 874-915：leader appendLogsInternal 经 wal_->appendLogs 写盘及内存缓存，再 replicateLogs。
+- 1757-1773：follower processAppendLogRequest 同样 wal_->appendLogs，故增长倍率取本地分片副本总数而不是仅leader数。
+- 1068-1078 与1793-1797：leader/follower提交时正常构造WAL iterator；其生命周期结束通常使refs回到0，解释为什么正常场景下可回收脏节点。
+
+B. 一分片一缓存：src/kvstore/raftex/RaftPart.cpp 357-365
+- 每个RaftPart构建自己的FileBasedWalPolicy，bufferSize=FLAGS_wal_buffer_size。
+- src/kvstore/wal/FileBasedWal.cpp 17：默认wal_buffer_size=8*1024*1024。
+- FileBasedWal.cpp 59：logBuffer_=AtomicLogBuffer::instance(policy_.bufferSize)。instance名字不是全局单例；AtomicLogBuffer.h 252-254 每次new一个实例。
+- FileBasedWal.h 282：shared_ptr<AtomicLogBuffer> 是FileBasedWal成员。iterator也持shared_ptr，能够延长缓存对象生命。
+
+C. 空日志必入缓存：src/kvstore/wal/FileBasedWal.cpp
+- 457-480：WAL记录格式为 int64 LogID + int64 TermID + int32 length + int64 ClusterID + payload + int32 length，空payload恰32B磁盘字节；应使用此布局解析原始WAL，而非以磁盘文件增长当RSS增长。
+- 499：每个成功写入记录均 logBuffer_->push(id,term,cluster,msg)，没有msg.empty过滤。
+- 515-524：appendLogs逐条调用appendLogInternal。
+- 530-536：iterator优先使用logBuffer，找不到再使用WalFileIterator。
+
+D. 实际内存与计账不一致：src/kvstore/wal/AtomicLogBuffer.h
+- 18：kMaxLength=64。
+- 23-39：Record 包含ClusterID、TermID、std::string；size()只返回两个ID大小+msg_.size()。
+- src/common/thrift/ThriftTypes.h 14、17：两类ID均int64_t，因此空日志逻辑计账16B。
+- 44-110：Node带64个Record的cacheline-aligned数组，加链表指针、位置、标志；即便Node刚存一条，也已分配64槽。
+- 136-138：Iterator析构触发releaseRef。
+- 191-195：Iterator创建addRef。
+- 359-366：size_逻辑计账、capacity_=8MiB、dirtyNodesLimit_=5。
+
+E. 驱逐和GC：原始 src/kvstore/wal/AtomicLogBuffer.cpp
+- 71-89：当前head不存在、已满、已标删时new Node，并立即return。新节点首条不检查capacity，故会短暂越过容量。
+- 91-118：非新节点分支发现size_+recSize>capacity_，且tail!=head时，仅把一个tail标删，推进tail，逻辑size扣掉其计账，dirtyNodes++；不在此处delete。
+- 167-182：仅在iterator releaseRef时考虑GC；如果此前readers>1，直接return。
+- 184-209：仅dirtyNodes>5或逻辑size>max_log_buffer_size（默认16MiB）才尝试GC；将tail之后的脏链表切断并delete。所谓16MiB也不是堆硬上限，更不能强制绕过reader生命周期。
+- 121-135：reset只是markDeleted并清零逻辑size/firstLogId，不直接delete所有节点。
+- 56-69：AtomicLogBuffer最终析构遍历节点delete。
+- 实验结果说明：refs=0不等于GC已被触发；若从来没有创建/销毁iterator，releaseRef根本不调用，脏节点仍保留。
+
+F. TTL只清理磁盘：src/kvstore/wal/FileBasedWal.cpp
+- 640-674和676-707：cleanWAL扫描walFiles_，检查TTL/commit id/至少保留两文件条件后unlink和erase。没有logBuffer.reset或容量调整。
+- 617、624：buffer.reset仅在rollback/reset路径调用，而非cleanWAL。
+- src/kvstore/NebulaStore.cpp 1293-1320：定时cleanWAL（默认600秒）调用分片cleanWal；不会触发AtomicLogBuffer按时间收缩。
+
+G. 空日志仍有RocksDB写入：src/kvstore/Part.cpp
+- 225-232：先设置lastId/lastTerm，然后发现空log跳过业务操作。
+- 349-358：仍putCommitMsg并commitBatchWrite，不能把空space等同于RocksDB零写入。
+
+三、独立实验设计与复现命令
+工作目录：/home/sch/nebula/nebula-3.6-memory
+执行：
+  ./task/wal-investigation/run-atomic-buffer-probe.sh > task/wal-investigation/atomic-buffer-probe-build.log 2>&1
+
+文件：
+- atomic-buffer-probe.cpp：仅诊断程序，直接调用真实AtomicLogBuffer的push/iterator。所有依赖头先包含，再对该类临时暴露private读取字段；不改变布局、不修改生产头、不改任何算法。
+- run-atomic-buffer-probe.sh：将基线提交的AtomicLogBuffer.cpp/h原样git show到baseline/kvstore/wal，随后链接原始实现；避免并行添加观测日志时污染基线实验。
+- baseline/kvstore/wal/AtomicLogBuffer.cpp SHA256=3af5641a37c66d5a80ed27670857c9beb8538a6406ff7fa1bd74ccc4b7a2e47a
+- baseline/kvstore/wal/AtomicLogBuffer.h SHA256=da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd
+- atomic-buffer-probe-environment.txt：时间、系统、GCC11.4、GLIBC2.35、提交、源文件校验和。
+- atomic-buffer-probe-build.log：逐条编译/运行命令；链接原始cpp，-O2仅加快实验，算法与结构体不变。
+- glibc与本项目/opt/vesoft/third-party/3.3/lib/libjemalloc.a两组。jemalloc二进制nm可确认malloc/aligned_alloc/malloc_usable_size符号来自可执行文件。
+
+CSV字段：
+phase / partitions / records_per_partition / logical_bytes / nodes / dirty_nodes / refs /
+node_struct_bytes / node_malloc_usable_bytes / rss_kib / hwm_kib。
+- 所有计数在单线程、无并发写时遍历；比服务端松弛原子采样更适合精确算量。
+- node_struct_bytes只计sizeof(Node)，node_malloc_usable_bytes汇总malloc_usable_size；空string在本实现不用额外payload堆块。
+- RSS读取/proc/self/status；它是进程级，包含库/allocator等，不能与Node数量等同。
+- 这些是压缩“记录数量”的组件实验，不是假装已经运行十几天的完整数据库实验；不会触发Raft选举、RPC或RocksDB。
+
+四、实测证据（最终基线重跑，2026-10-10 06:32:28+08开始）
+A. 1/100/1000缓存线性放大及64条阶梯
+查看atomic-default-{1,100,1000}.csv与atomic-jemalloc-default-{1,100,1000}.csv。
+jemalloc，1000缓存：
+  每缓存0条：0 Node，RSS4716KiB。
+  每缓存1条：1000 Node，结构3200000B，usable3584000B，RSS8248KiB。
+  每缓存64条：仍1000 Node，RSS8248KiB。
+  每缓存65条：2000 Node，usable7168000B，RSS11776KiB。
+  每缓存4096条：64000 Node，logical65536000B，结构204800000B，usable229376000B，RSS230612KiB。
+  上述所有状态dirty_nodes=0、refs=0，证明持续增长无需读者阻塞GC，也无需业务数据。
+  destroy_all后live Node=0，RSS仍230612KiB，证明jemalloc留存可以使RSS不降。
+
+B. 默认8MiB阈值及平台
+查看atomic-jemalloc-default-threshold.csv（glibc对照atomic-default-threshold.csv）。
+单缓存、每条都创建销毁iterator：
+  524288条：logical8388608B，8192 Node，结构26214400B=25MiB，usable29360128B=28MiB，dirty0。
+  524289条：8193 Node，logical8388624B，dirty0（newNode分支先return）。
+  524290条：仍8193 Node，logical8387616B，dirty1（开始标脏）。
+  524608条：8197 Node，dirty5，尚未达到>5的GC条件。
+  525000条：8192 Node，dirty0，RSS33536KiB。
+  600000条：8193 Node，dirty1，RSS33536KiB。
+  1100000条：8194 Node，dirty2，RSS33536KiB。
+这直接否定“正常reader生命周期下，无限持续增长”的说法；但直到阈值前，单分片会逐步涨到约28MiB分配而非8MiB。
+
+C. 小容量对照验证容量及GC触发
+查看atomic-jemalloc-small-each.csv；100缓存，capacity4096B=每缓存256空记录有效计账：
+  每缓存256条：400 Node、dirty0。
+  每缓存512条：800 Node、dirty400（每缓存4个脏节点未满>5）。
+  每缓存1024/4096/16384条：均400 Node、dirty0，usable1433600B；RSS8156KiB平台。
+这是诊断参数对照，不是建议把生产参数改小来规避问题，也不是代码修复。
+
+D. 不出现releaseRef / 常驻reader对照
+查看atomic-jemalloc-small-none.csv、atomic-jemalloc-small-held.csv。
+100缓存、capacity4096B：
+  从不创建iterator：refs始终0，但每缓存16384条后有25600 Node，其中25200 dirty，usable91750400B；只创建销毁一次iterator后降到400 Node、dirty0、usable1433600B。
+  一直持有最早iterator，同时每次push创建销毁另一个iterator：refs100，16384条时同样25600 Node/25200 dirty；释放held后400 Node/dirty0/refs0。
+  这两个对照说明：容量约束的是有效逻辑内容，不保证及时物理delete；GC的真实触发条件确实是最后reader析构。它们不能独立证明实际服务遇到了同样异常reader模式。
+
+五、定量模型与生产现象的校准
+设某进程本地分片副本数P，每分片自最近缓存重置后的空日志数N（尚未达容量）：
+  Node数量约 P * ceil(N/64)
+  Node对象字节 = 节点数 * 3200
+  本机jemalloc usable字节 = 节点数 * 3584
+  满节点均摊约56B/空日志，逻辑计账仅16B；计账与分配相差3.5倍。
+
+必须区分源码默认值与随仓库附带的配置模板，以下都未含排队/执行时间，且假设空闲时每轮都成功追加：
+  源码默认 heartbeat=5秒：轮询mean=1666+249.5=1915.5ms；每分片每日约45105.7条。1000个本地副本的Node usable每日约2.35GiB，8MiB逻辑阈值约11.62天。
+  仓库default/production配置模板 heartbeat=30秒：轮询mean=10000+249.5=10249.5ms；每分片每日约8429.7条。1000个本地副本的Node usable每日约450.2MiB，8MiB逻辑阈值约62.20天。
+  两种节奏的最终容量相同，约1000*28MiB=27.34GiB（仅WAL Node usable），差异在填满时间。
+  50空间*20分片*3副本/3台=平均每台1000本地副本；不能只取约333个leader，因为followers也缓存。
+
+配置模板30秒的约450MiB/天与用户“每天几百MB”的量级吻合，也说明为何两个月前都可能持续上涨。但尚未拿到生产真实heartbeat参数、真正本地空闲副本数、服务负载/调度周期、既有缓存填充量；不能把模板推算说成生产实测。正确比较应使用服务复现测得的empty_pushes/s或WAL实际日志数增量，代入56B/条并考虑节点阶梯。
+
+六、可证伪预测 / 低侵入观测建议
+H1：低于容量的空WAL缓存填充是显著来源。
+预测：无DML时empty_pushes持续增、每64次/缓冲新建一Node，free近0、dirty0，实际WAL payload长度全为0；live Node分配和本地分片数线性相关。
+证伪：RSS上涨而empty_pushes/liveNodes不涨，或者活跃堆增量主要在RocksDB/其它调用栈，则不是主要解释。
+
+H2：容量阈值后的GC受reader生命周期阻塞。
+预测：logical size近capacity，但dirty nodes持续增长；refs长期非0或没有releaseRef；最后reader释放后liveNodes骤降。
+证伪：refs经常回0、gc_runs/gc_freed正常，dirty长期小于等于5，则无需用该假设解释空闲填充。
+
+H3：RSS高位还有allocator留存。
+预测：liveNodes/free计数已经减少，allocator allocated下降但resident/RSS未同步下降。
+证伪：live allocations依然同量，则不能仅归allocator。
+
+建议最少观测：进程累计push/emptyPush/newNode/deleteNode/GC/deleteByGC/reset，及每个采样buffer的capacity/size/dirtyNodes/refs；记录sizeof(Node)/sizeof(Record)。
+禁止在并发服务中无锁追踪next链表做统计：GC会物理delete而造成观测本身UAF；可以在既有安全的构造、释放点计数。服务端日志只需几秒或十秒聚合一行，避免逐记录日志影响心跳节奏。
+原始WAL只读解析应记录文件路径、文件大小、完整记录数、首末id、payload空/非空数、部分尾记录；并发写入时允许末尾半条，下次重采。
+RocksDB采样建议all-mem-tables、block-cache-usage、estimate-table-readers-mem，以及系统/proc/PID/smaps_rollup的Anonymous/Rss；服务的RSS与多个组件共同变化时分别呈现，不做强归因。
+
+七、主代理诊断补丁只读复核（2026-10-10）
+复核对象：src/kvstore/wal/AtomicLogBuffer.cpp 的124行新增diff。
+未改变原有Raft心跳、WAL内容、size计账、容量、标脏判定、GC判定或next/prev链修改顺序；观察只在原本new/delete/reset/release位置增减原子计数和限频日志。未发现业务修复混入。
+Node字段只在原本安全的删除点读取，不额外遍历并发链表，未见新增UAF风险。enabled第一次调用后锁存，避免运行中开启导致半生命周期计数。
+live_logical_bytes是尚未delete节点的总逻辑字节，含dirty；buffer_size是仍有效的逻辑容量计账，两者不应混为同一指标。relaxed多字段是近似同时快照，并非一致性快照。
+观测开启后会引入全局原子、时钟和少量日志开销，可能改变调度节奏；用真实日志速率校准，而不是假定观测零扰动。组件实验使用固定基线、没有观测补丁，已作为独立对照。

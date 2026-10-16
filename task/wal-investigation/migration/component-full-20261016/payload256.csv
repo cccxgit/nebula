@@ -1,0 +1,9 @@
+phase,total_pushed,active_logical_bytes,retained_nodes,dirty_nodes,retained_records,retained_nonempty_records,retained_payload_bytes,node_usable_bytes,payload_usable_bytes,node_and_payload_usable_bytes,rss_kib
+initial,0,0,0,0,0,0,0,0,0,0,4608
+constant_payload,1,272,1,0,1,1,256,3584,320,3904,4616
+constant_payload,64,17408,1,0,64,64,16384,3584,20480,24064,4636
+constant_payload,65,17680,2,0,65,65,16640,7168,20800,27968,4640
+constant_payload,8192,2228224,128,0,8192,8192,2097152,458752,2621440,3080192,7660
+constant_payload,32768,8373248,482,1,30848,30848,7897088,1727488,9871360,11598848,16180
+constant_payload,65536,8373248,484,3,30976,30976,7929856,1734656,9912320,11646976,16200
+constant_payload,131072,8373248,482,1,30848,30848,7897088,1727488,9871360,11598848,16208

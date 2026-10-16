@@ -1,0 +1,296 @@
+真实 storaged 运行：RocksDB memtable 基线、arena 台阶与证据口径
+
+范围与状态
+只读分析真实集群的CSV、日志和OPTIONS；未操纵服务、未改运行配置。
+目标拓扑为3个storaged，每个包含50个目标space×20个本地分片副本。
+目标HTTP端口39779/39789/39799。phase-01/phase-02因HTTP proxy/逗号转义失败，
+不用于RocksDB数值归因；以phase-03-default30及后续完整成功样本为准。
+本文中的“初始”是采样阶段起点，不是刚完成DB::Open尚未写入任何数据的时刻。
+
+1. 核心结论：1050624B不是Nebula独有的额外1MB缓存
+
+实际OPTIONS中：
+  write_buffer_size=67108864
+  arena_block_size=1048576
+  memtable_prefix_bloom_size_ratio=0.000000
+  inplace_update_support=false
+  memtable_factory=SkipListFactory
+与原rocks-commit-probe组件实验中的对应OPTIONS一致。
+1050624 = 2048 + 1048576；是该环境下memtable分配统计进入首个1MiB arena台阶后的值。
+
+直接配置来源：
+  conf/nebula-storaged.conf.default:102设置64MiB write_buffer_size，并未设置arena_block_size。
+  src/kvstore/RocksEngineConfig.cpp:258-268读取CF options，未额外覆写arena块大小。
+  /opt/vesoft/third-party/3.3/include/rocksdb/advanced_options.h:477-493说明：
+  arena_block_size默认0，自动推导值通常为write_buffer_size/8按4KiB调整，且不超过1MiB。
+  因而64MiB/8=8MiB，经上限限制得到1MiB；实际OPTIONS确认了规范化后的1048576。
+
+证据快照：runtime-rocks-options-comparison.json保存实际153个OPTIONS路径、sha256和关键字段。
+其中150个属于目标50space×3进程，另3个为每台space0的adminStore。
+所有153个arena_block_size均1048576，memtable_prefix_bloom_size_ratio均0。
+原组件OPTIONS：rocks-probe-data/db0/OPTIONS-000007；服务示例：
+  /home/sch/nebula-run/nebula-memory/data/storage1/nebula/1/data/OPTIONS-000007
+
+2. 为何原组件opened只有2048B，而服务“刚开始采样”已有约1MB/space
+
+这是观察时点与累计写入量不同，不是已找到两者memtable配置不同。
+原组件opened在DB::Open之后、0次Put之前采样；真实服务此时每个space已有约240-260个entries。
+Nebula创建空间/分片本身会写内部记录：
+  RocksEngine.cpp:83-90 DB打开后，缺失时写dataVersionKey。
+  RocksEngine.cpp:363-372 addPart会写systemPartKey，非normal peers还会写balanceKey。
+  Part.cpp:225-233,349-358以及403-410，后续每次空日志提交仍覆盖systemCommitKey。
+所以“没有插入用户顶点或边”并不等于“DB中从未发生过Put”。
+
+使用原组件的现有二进制补做了同配置小实验，没有修改Nebula源码或服务：
+  rocks-commit-first-write.csv：1DB×1key×1轮，0->1条entry，memtable仍2048B。
+  rocks-commit-20-writes.csv：1DB×20key×1轮，0->20条entry，memtable仍2048B。
+  rocks-commit-60-writes.csv：1DB×20key×3轮，0->60条entry，memtable变1050624B。
+  三组最终flush后都回到2048B；相应meta验证逻辑key数与最新值一致。
+  60次覆盖已经在原“最小组件配置”中重现了服务的1050624B读数。
+上述20/60是本次观察到的两个端点，没有试图声称精确第几条entry必定跨台阶；
+skiplist、分配和多线程访问的细节可能影响跨越时点。
+
+可复跑命令（需换一个未存在的data目录；驱动拒绝复用数据）：
+ulimit -n 65536
+task/wal-investigation/rocks-commit-probe NEW_DIRECTORY 1 20 3
+驱动源码与完整编译参数见rocks-commit-probe.cpp和rocks-commit-probe-reproduction.txt。
+
+3. 实际存在的配置差异，不足以解释这个1MiB台阶
+
+服务prefix_extractor=rocksdb.CappedPrefix.36，原组件prefix_extractor=nullptr。
+服务BlockBasedTable block_size=8192，原组件4096；服务lz4，原组件snappy。
+但是两者memtable_prefix_bloom_size_ratio都为0，因此不能将当前1MiB基线解释为
+“开启prefix bloom后每space额外分配1MiB memtable bloom”。
+BlockBasedTable block_size是SST表块配置，不是arena_block_size。
+本次组件小实验已经在没有prefix extractor且采用不同SST块大小时得到完全相同台阶。
+
+4. 这对后续斜率解释的影响
+
+RocksDB memtable属性在本次环境中明显包含arena申请空间的块粒度：
+  2048B -> 1050624B -> 后续更多1MiB块。
+数据继续写进已申请arena的空余空间时，num-entries-active-mem-table可以持续增加，
+而cur-size-all-mem-tables在一段时间内保持不变。
+因此不能用“memtable字节没变”推导“空心跳没写RocksDB”，也不能机械排除它对RSS的所有贡献：
+已分配虚拟/allocator空间后续触页、其他内部对象，以及多线程分配都可能改变驻留页。
+反过来，某一采样点memtable属性跳增1MiB，也不能要求同一时刻RSS必然增加整整1MiB。
+
+具体实验中每space有20分片；按组件约52B/entry的观测量纲，填满1MiB块需约2万条entry。
+30秒配置实际约10.25秒每part一次心跳，单space约2条/秒，跨一个arena块可能需要小时量级。
+1秒配置实际约0.58秒每part一次，单space约34条/秒，跨arena块可能在数百秒量级。
+这仅用于决定观察窗口；不能替代真实每space entry速率或把组件字节/entry视为普适常量。
+跨50个space聚合时，各space跨阈值并不完全同时，会出现连续一串1MiB级台阶。
+
+5. phase-03-default30的完整有效观察
+
+phase03已结束，每实例12行，实际首尾约165秒（不是配置duration的180秒）；
+所有行50space/50engine成功、1000 WAL分片，errors为空，各实例PID/starttime始终一致。
+首尾时间：s1 2026-10-09T23:03:35.810Z -> 23:06:20.824Z，165.014秒。
+  s1 RSS(VmRSS)151252->152080KiB（+828）；entries12358->28409；WAL records11929->27988。
+  s2 RSS(VmRSS)151160->151892KiB（+732）；entries12519->28555；WAL records11949->27990。
+  s3 RSS(VmRSS)150872->151880KiB（+1008）；entries12132->28157；WAL records11962->27991。
+三个实例memtable全程52531200B=50×1050624，block-cache-usage96B，table-readers-mem0。
+这个时段active entries增加、WAL records增加，已直接证明空闲仍有内部写入。
+
+对12个有效点作OLS拟合，s1/s2/s3：
+  WAL records速率分别96.9233 / 96.8341 / 96.7661条/秒（全1000副本总和）。
+  active memtable entries速率96.8939 / 96.8071 / 96.7274条/秒。
+  RSS速率5.2856 / 4.4917 / 6.2744KiB/秒；这是本段观测，不能直接推广成数日恒定RSS增长率。
+两条记录计数速率近似一致，与空日志提交仍写commitMsg一致；首尾绝对条目差还包含
+engine创建/part注册的系统写和follower提交稍滞后的影响，不能要求两个总计完全相等。
+
+同时每台服务在该CSV时间范围内有16条WAL_MEMORY_OBSERVE诊断记录，
+全部live_nodes=1000、node_object_bytes=3200000；每个part还没有写满第一个64条Node。
+不能把该短时段的RSS小幅变化说成新WAL Node分配。
+后续hb1跨越64条/Node后，再依据Node累计分配、memtable、RSS同步变化做服务层归因。
+hb1及恢复/flush阶段完成后，应另外汇总其最终CSV，不能混入phase03的拟合。
+
+6. HTTP50space以外的已知RocksDB范围
+
+每个storaged还有一个adminStore(spaceId=0)：
+  src/storage/StorageServer.cpp:152-156 new RocksEngine(0,...)；
+  159-173 getAdminStoreSeqId也会读写内部key。
+因此每台磁盘上实际看到51个DB的OPTIONS，不能把HTTP中50个业务space的memtable和reader求和
+当成该进程所有RocksDB内存的精确全量。特别是显式SUBMIT JOB FLUSH会关联admin任务处理，
+此时除目标space flush外，管理存储与任务对象也可能变化。
+这不否定50space的有效观测，但应列为RSS残差的已知范围，不应强行使分项总和等于RSS。
+
+7. 有效样本与失败样本边界
+
+分析至少要求http_spaces_ok=50、http_spaces_failed=0、http_engines=50、
+wal_part_dirs=1000、wal_parse_errors=0；PID与proc_starttime_ticks阶段内固定。
+阶段间不能在未核对PID/重启情况下直接拼接；应按实际elapsed/time_utc求速率。
+phase01/02的HTTP错误意味着缺失RocksDB证据，不能将空字段转换为0参与拟合。
+采样脚本已按主任务修正为强制no proxy，HTTP property逗号不作%2C编码；
+端口以manifest和原始响应URL为准，不使用旧例子中的19779/19789/19799。
+
+8. phase-05-accelerated1完整结果：真正的多点持续增长
+
+来源：phase-05-accelerated1/s1.csv、s2.csv、s3.csv。
+每实例60个点，总180行全部满足前述有效性条件，所有PID/starttime固定。
+三者实际时间跨度885.014 / 884.978 / 884.892秒；s1为：
+  2026-10-09T23:08:08.994Z -> 23:22:54.008Z。
+以下RSS统一使用status_VmRSS_kib；同时保留smaps_Rss_kib在runtime-metrics.json供对照。
+s3首点smaps为132252KiB，而status为132248KiB，故两个口径的净增相差4KiB。
+
+实例   RSS首尾(KiB)        净增KiB  MemTable首尾(B)           净增MiB
+s1     131964 -> 293512    161548   52531200 -> 142708736     86
+s2     132756 -> 293616    160860   52531200 -> 151097344     94
+s3     132248 -> 293680    161432   52531200 -> 157388800    100
+
+三个实例各59个相邻RSS差分全部为正；合计177/177次上涨。
+OLS RSS斜率为182.4751 / 182.3192 / 182.4775KiB/s；R²分别约
+0.999734 / 0.999773 / 0.999747。前30点与后30点分别拟合仍约181.0~184.0KiB/s。
+这排除了“只挑两个端点碰巧升高”的解释；但没有将15分钟加速斜率外推成数日恒定增长。
+
+WAL与RocksDB内部写入数量：
+实例  磁盘WAL records首尾       WAL OLS(/s)  active entries首尾        entries OLS(/s)
+s1    134128 -> 1651964         1715.0921    134190 -> 1652021         1715.0912
+s2    134333 -> 1652071         1715.0843    134549 -> 1652232         1715.0676
+s3    134590 -> 1652178         1715.0799    134529 -> 1652024         1715.0682
+两种计数的持续增长速率高度一致，与“空Raft日志提交时写入commitMsg”直接吻合。
+CSV中wal_payload_bytes_estimate一直0；是否每条都是空消息还由全量WAL遍历独立确认。
+
+三个实例全阶段共享block-cache-usage/pinned均96B、capacity4194304B，table-readers-mem为0，
+immutable memtable数量与条目为0。它们没有在本窗口内解释百MiB增长。
+不过active memtable确实增长86/94/100MiB，不能把全部RSS增长只归给Raft内存WAL。
+
+9. phase05的1MiB/2MiB/3MiB memtable台阶如何解读
+
+每space观测到的典型值为2048 + N×1048576，N是已申请arena块数，不是修改了write_buffer_size。
+例如3147776B = 2048 + 3×1MiB；实际write_buffer_size仍64MiB，没有设为3MiB。
+phase05/raw-samples.jsonl最后一组原始HTTP快照是sample54、约810秒，不是CSV末点885秒：
+  s1 23:21:39.008Z：30个space为3147776B，20个为2099200B。
+  s2 23:21:39.072Z：44个space为3147776B，6个为2099200B。
+  s3 23:21:39.137Z：50个space全部3147776B。
+不能把810秒的分布冒称为885秒末点的精确逐space分布；各CSV末点总和在第8节另列。
+
+phase05 memtable聚合值只分别有9/7/19次相邻增长，其余50/52/40次采样保持平台；
+entries却每次采样都增长。这是arena分配台阶的直接实测表现。
+因此MemTable OLS的R²只有约0.82~0.84，不能把它描述成逐字节平滑线性增长。
+相同写入量在3进程呈现不同arena申请总量，也说明不能按组件单线程52.43B/entry比例
+硬算多线程服务的分配总量；本次证据没有进一步逐分配栈拆分这种进程间差异。
+
+同样不能把“WAL sizeof(Node)总字节 + RocksDB memtable属性”强行等同RSS：
+sizeof计量不包含allocator大小类别开销，memtable属性包含分配空余，RSS是驻留页，
+还有管理DB、RPC、线程栈和其他对象。这些量反映不同口径，存在不同采样时间。
+
+10. WAL诊断与全量文件快照必须独立报告窗口
+
+phase05 CSV时间范围内，各实例有88条WAL_MEMORY_OBSERVE，实际诊断窗口约：
+  23:08:15.607Z -> 23:22:45.607Z，870秒。
+三个实例该窗口数据一致：
+  pushes/empty_pushes 145419 -> 1637577，新增1492158，全部新增为空消息。
+  live_nodes 3000 -> 26005，新增23005。
+  node_object_bytes 9600000 -> 83216000，新增73616000B。
+  live_logical_bytes 2326704 -> 26201232，新增23874528B。
+  freed=0、gc_runs=0、resets=0始终不变。
+这是实际服务WAL对象持续存活增加的直接证据，但它的870秒不能混作CSV的885秒端点。
+
+全量文件遍历窗口：
+  wal-accelerated-start.json：23:08:38.070Z -> 23:08:38.788Z。
+  wal-accelerated-end.json：23:28:02.232Z -> 23:28:08.284Z。
+它比phase05结束更晚，而且开始也晚于phase05首点；不是885秒同边界样本。
+按(label,space_id,partition_id,文件名)匹配，3000文件全部存在；没有新文件或丢失文件。
+3000文件last_term变化数为0；逐term计数相减，所有新增记录的term都等于该文件起始快照last_term，
+其他term新增数为0。两次遍历均无结构异常、ID gap、term regression或非空记录。
+因此这对快照覆盖的后续记录不支持“反复产生新任期/不停选举导致增长”的解释。
+不同分片处于term1或term2，是切换时历史不同；不能仅因全局有两种term就说期间不停选举。
+关于精确CSV885秒的最初约29秒，不扩大上述两快照的时间覆盖范围。
+
+11. 恢复30秒配置后：增长减速，已持有的对象没有清空
+
+phase-07-restored30已完成，每实例12个点全部有效、PID/starttime未变，实际约165秒。
+s1窗口23:28:31.334Z -> 23:31:16.349Z；其他实例相差不足0.3秒。
+  WAL records OLS：99.6740 / 99.8006 / 99.8644条/秒。
+  active entries OLS：99.7243 / 99.8360 / 99.8881条/秒。
+  RSS净增：2012 / 1816 / 1812KiB；OLS为11.9651 / 10.8267 / 10.0916KiB/s。
+这比加速阶段约1715条/秒、182KiB/s明显降低。
+恢复阶段RSS有少数采样回落，不能称此阶段每一点严格单调；净趋势仍为正。
+
+MemTable：s1为157388800 -> 162631680B，跨5个1MiB块；s2保持157388800B，
+s3保持182554624B。shared cache仍96B、table-readers仍0。
+部分进程的memtable平台不能说明停止提交，因为entries持续按约100条/秒增加。
+phase05结束后到恢复配置前仍有几分钟加速运行，故phase07首值高于phase05末值；
+不能用这两个不连续阶段的端点差除以phase07的165秒。
+
+恢复阶段CSV窗口内16条WAL诊断，独立跨度约152.794秒；三个实例均：
+  pushes/empty_pushes新增15000，live_nodes新增273，node_object_bytes新增873600B；
+  freed、gc_runs、resets仍全0。
+这表明降低心跳频率降低新增速率，并不会自动释放此前仍在容量内的缓存历史。
+
+12. 机器可重算的独立分析文件
+
+runtime-metrics.json保留每阶段/每进程输入CSV的sha256、完整性、PID身份、首尾时间、
+每个指标首末值/最小最大/OLS/R²/相邻增减次数，并单独记录WAL observer窗口。
+还保存最近原始HTTP的memtable分布和全量WAL文件任期对比。
+重算命令：python3 task/wal-investigation/analyze_runtime_rocks.py
+该脚本只读现有证据，写runtime-metrics.json，不请求数据库、不操作服务。
+阶段completed根据events.jsonl标记；本次最终JSON中phase09已completed=true、每实例18行。
+前期JSON中的中间值不代表最终flush结论；重算脚本保留输入SHA用于核对版本。
+主RSS口径统一status_VmRSS_kib；smaps_Rss_kib单独保留，不混合求端点差。
+
+
+13. 显式FLUSH对照：MemTable释放后RSS明显下降，内存WAL仍继续积累
+
+输入：phase-08-beforeflush/s*.csv单点，与phase-09-afterflush/s*.csv的18点。
+phase09每实例实际首尾170秒；54行全部50space/50engine成功、无HTTP/WAL解析错误，
+各实例PID与启动tick始终相同，也与phase08相同，排除了进程重启造成RSS下降。
+phase09首点已经是FLUSH进行中，不能将它当成flush前基线。
+flush-job-verification.json记录checked_at=2026-10-09T23:36:41.301337+00:00，
+50个不同space的50个任务均FINISHED（任务ID51至100）。
+以下时刻均为2026-10-09 UTC；本机Asia/Shanghai为次日早上加8小时。
+
+                         s1             s2             s3
+08前时刻                 23:35:45.404   23:35:45.464   23:35:45.529
+08前VmRSS(KiB)           352912         352920         353784
+08前MemTable(B)          181506048      157388800      182554624
+09谷值时刻(sample1)      23:35:55.913   23:35:55.984   23:35:56.047
+09谷值VmRSS(KiB)         243652         243904         243716
+09谷值MemTable(B)        102400         102400         102400
+09稳定点时刻(sample3)    23:36:15.914   23:36:15.984   23:36:16.038
+09稳定点VmRSS(KiB)       244352         244888         244580
+09稳定点MemTable(B)      52531200       52531200       52531200
+09末时刻(sample17)       23:38:35.913   23:38:35.992   23:38:36.063
+09末VmRSS(KiB)           246512         247004         246580
+09末MemTable(B)          52531200       52531200       52531200
+08→09稳定RSS差(KiB)      -108560        -108032        -109204
+08→09末RSS差(KiB)        -106400        -105916        -107204
+08→09稳定/末Mem差(MiB)   -123           -100           -124
+
+10秒处MemTable谷值严格是102400B=100KiB（50×2048B），不是10KB。
+此时active entries每实例都是1000，平均每space20条，说明flush后心跳已经继续写入。
+20秒处三实例已回到52531200B=50×(2048+1048576)，active entries为1999/2000/2000，
+随后MemTable总字节一直维持该平台至最后，但active entries增至16216/16231/16249。
+这与组件20条仍2048B、60条已申请1MiB的实验以及1MiB arena配置一致：
+flush建立新memtable后，继续内部commit写很快重新跨过初始内联存储的容量。
+不能把回到约50.1MiB理解成flush失败，也不能把50.1MiB平台理解成不再写入。
+本次仅从公开配置、组件结果和属性台阶描述arena机制，没有查阅缺失的第三方内部实现文件，
+不声称精确定位了每个版本/每线程的所有节点分配尺寸。
+
+HTTP50space聚合table-readers-mem由0增至110150B，符合产生SST后的新table reader开销；
+共享block-cache-usage/pinned始终96B，没有与百MiB RSS变化对应的cache增长。
+flush前各space MemTable约3~4MiB、远低于每space64MiB write_buffer_size，
+持续覆盖同一组commit key仍会积累内存版本；显式flush将这些版本移出MemTable。
+当时MemTable属性减少100~124MiB且RSS减少约103~107MiB，是RocksDB确有显著贡献的真实服务对照。
+这些数字不是逐字节归因公式：MemTable统计近似已分配空间，RSS统计驻留物理页，
+RSS还包含adminStore(space0)、任务对象、线程栈、RPC、allocator保留等。
+
+为确认flush没有把内存WAL也清空，分别选08前和09末各自最近的前置WAL诊断：
+  s1 23:35:39.746901Z -> 23:38:33.394024Z（相对CSV端点早5.657/2.519秒）；
+  s2 23:35:39.742787Z -> 23:38:33.394445Z（早5.721/2.598秒）；
+  s3 23:35:39.740928Z -> 23:38:33.394418Z（早5.788/2.669秒）。
+三个实例该独立窗口数据一致：
+  pushes=empty_pushes：2223565 -> 2240565（+17000，全为空消息）；
+  live_nodes：35076 -> 35501（+425）；
+  node_object_bytes：112243200 -> 113603200（+1360000B）；
+  freed=gc_runs=resets=0。
+因此flush明显降低了MemTable和RSS，同时内存WAL没有发生释放并仍在增加。
+不能把两套非同时的端点强行相减得到“RSS残值就是WAL”，也不能据此声称没有别的内存来源。
+
+服务与独立组件flush后的RSS表现不同并不矛盾：组件没有Nebula后台内存监控循环；
+服务构建启用jemalloc且MemoryUtils周期purge配置开启，后台路径在满足条件时会运行。
+本次没有逐次mallctl成功/失败或释放页计数，不能把全部RSS下降精确归因到某次purge；
+也不能把purge理解成能释放仍被WAL Node或active MemTable引用的活对象。
+
+runtime-metrics.json的flush_comparison现保存明确pre样本和0/1/2/3/末点的逐指标对照，
+并保存job验证、独立WAL诊断时间/偏移与进程身份检查。

@@ -1,0 +1,28 @@
+{"check": "preflight from unrelated working directory", "argv": ["/usr/bin/python3", "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/preflight.py", "--output", "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/preflight-complete-20261016", "--third-party", "/opt/vesoft/third-party/3.3"], "cwd": "/tmp", "expected_exit": 0, "actual_exit": 0}
+Migration preflight
+repo: /home/sch/nebula/nebula-3.6-memory
+Python/shell files checked: 13
+host-path occurrences: 11
+historical ELF binaries: 8
+failures: 0
+warnings: 2
+WARN: Historical scripts contain host-specific paths; see hardcoded_path_locations
+WARN: Historical ELF binaries are machine-specific; rebuild probes on the target host
+No service/network/build/config mutation; output directory only. Passing is not build/runtime/functional validation.
+
+{"check": "preflight refuses existing output", "argv": ["/usr/bin/python3", "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/preflight.py", "--output", "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/preflight-complete-20261016"], "cwd": "/home/sch/nebula/nebula-3.6-memory", "expected_exit": 2, "actual_exit": 2}
+usage: preflight.py [-h] [--repo REPO] --output OUTPUT [--install INSTALL]
+                    [--console CONSOLE] [--third-party THIRD_PARTY]
+                    [--pid PID]
+preflight.py: error: Refusing to overwrite existing output: /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/preflight-complete-20261016
+
+PASS: refused preflight output was unchanged
+{"check": "component runner refuses existing output", "argv": ["/usr/bin/python3", "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/run_components.py", "--third-party", "/opt/vesoft/third-party/3.3", "--output", "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016"], "cwd": "/home/sch/nebula/nebula-3.6-memory", "expected_exit": 2, "actual_exit": 2}
+usage: run_components.py [-h] [--repo REPO] --third-party THIRD_PARTY
+                         [--build-dir BUILD_DIR] [--compiler COMPILER]
+                         --output OUTPUT [--mode {smoke,full}]
+run_components.py: error: Refusing to overwrite existing output: /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016
+
+PASS: refused component output was unchanged
+PASS: full component report contains five successful capacity checks; all payload commands exited 0
+No service was started, stopped or reconfigured. No prior evidence or product source was modified.

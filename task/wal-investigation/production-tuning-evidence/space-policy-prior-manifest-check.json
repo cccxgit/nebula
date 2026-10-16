@@ -1,0 +1,81 @@
+{
+  "time": "2026-10-11T16:10:49.798632+08:00",
+  "expected_changed_document": [
+    "task/wal-investigation/PRODUCTION-PARAMETER-TUNING.md"
+  ],
+  "previous_evidence_files_unchanged": 17,
+  "checks": [
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/README.md",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-1048576.csv",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-1048576.meta",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-2097152.csv",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-2097152.meta",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-262144.csv",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-262144.meta",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-4194304.csv",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-4194304.meta",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-8388608.csv",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-8388608.meta",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/capacity-run.log",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/memory-limits.txt",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/rocks-scope.txt",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/run-capacity-probe.sh",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/verification.json",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/wal-review.txt",
+      "matches_prior_manifest": true
+    },
+    {
+      "path": "task/wal-investigation/PRODUCTION-PARAMETER-TUNING.md",
+      "matches_prior_manifest": false
+    }
+  ]
+}

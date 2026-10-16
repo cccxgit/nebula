@@ -1,0 +1,48 @@
+RocksDB 参数作用范围与生产限制核对
+核对时间：2026-10-11；分支：3.6-memory；产品源码基线：de9b3ed800a6627d9845e9289b6bbc5b6faf460a。
+只读核对源码和本机已安装依赖头文件，未启动服务、未执行生产参数变更、未新增性能实验。
+
+直接结论
+本版本不能通过标准配置命令，在同一个 storaged 中给高、中、低频空间分别设置 write_buffer_size 或 max_write_buffer_number。配置最终会应用到该进程各空间的 RocksDB 实例；Meta 配置模式下，还会传播到其他接收同一 STORAGE 模块配置的进程。因此，对混合业务直接统一缩小 MemTable，可能降低高频写入的缓冲能力。可按空间执行的 FLUSH 只清理该空间的 RocksDB 内存写缓冲，不清理 Raft WAL 缓存；它适合验证和临时缓解，不能代替 WAL 容量治理。
+
+通俗因果
+每个空间、每条 data_path 建立独立 RocksDB 实例，写入先进入该实例的 MemTable（等待整理成磁盘 SST 文件的内存写缓冲）。小空间没有业务写入时，Raft 提交位置等内部记录仍会写入，因此 MemTable 仍可能增长。write_buffer_size 限制单个缓冲的目标大小，max_write_buffer_number 控制允许积累的缓冲个数；减小前者会使热业务更频繁刷盘，减小后者会减少磁盘刷盘/整理落后时的容纳空间。两者不是全部进程内存的硬上限，也不作用于 Raft AtomicLogBuffer。
+
+一个假设例子
+假设一个 storaged 存有 50 个空间，每空间一个 RocksDB 实例，write_buffer_size=64MiB、max_write_buffer_number=4。50×64MiB=3.125GiB 是每实例一张写缓冲都接近目标大小时的量级，50×64MiB×4=12.5GiB 是配置推算的多缓冲量级；均不是启动立即分配量，也不是 RSS 或容器硬上限。若空闲空间只有一张活动 MemTable，修改 max_write_buffer_number=4→2 不会主动清空这张缓冲，不能期待它立即释放一半内存。所有空间混部署时，把 write_buffer_size 从 64MiB 缩到 8MiB 也会同时让 5 亿点边空间更早刷盘，所以本次不能给出无代价的统一数值。
+
+源码证据与边界
+
+1. 实例数量：src/kvstore/NebulaStore.cpp:395–423 addSpace() 对每条 options_.dataPaths_ 创建一个引擎；:354–377 newEngineAsync/newEngine() 创建 RocksEngine。src/kvstore/RocksEngine.cpp:33–82 用 data_path/nebula/<space>/data 打开 RocksDB。证明空间×数据路径会增加 MemTable/DB 对象；不能据此推断每个对象已经达到最大配置占用。
+
+2. 初始配置：src/kvstore/RocksEngineConfig.cpp:222–268 initRocksdbOptions() 从全局 FLAGS_rocksdb_db_options 和 FLAGS_rocksdb_column_family_options 生成 DBOptions/ColumnFamilyOptions。spaceId 用于路径等，不从每空间配置表读取专属写缓冲配置。生产模板 conf/nebula-storaged.conf.production:87 设置 write_buffer_size=67108864、max_write_buffer_number=4、max_bytes_for_level_base=268435456；默认模板 conf/nebula-storaged.conf.default:102 也为这些容量。模板不是现场实参。
+
+3. 标准动态配置不是按空间：src/clients/meta/MetaClient.cpp:3185–3225 updateGflagsValue()/updateNestedGflags() 更新进程 gflag 后，把同一 optionMap 遍历 metadata.localCache_，对每个 space 调 onSpaceOptionUpdated。src/kvstore/PartManager.cpp:103–163 允许 write_buffer_size/max_write_buffer_number/arena_block_size 等，再调 updateSpaceOption。src/kvstore/NebulaStore.cpp:719–732 异步执行 setOption；:1014–1045 对空间的全部引擎执行。最后 src/kvstore/RocksEngine.cpp:489–514 调 db_->SetOptions/SetDBOptions。内部有 spaceId 参数，不代表用户有按空间持久化调参入口。src/parser/parser.yy:3461–3471 的 ALTER SPACE 仅支持 ADD ZONE；:3547–3570 CREATE SPACE 属性中没有 RocksDB 参数。USE cold_space 后执行 UPDATE CONFIGS 并不能把影响限定在 cold_space。
+
+4. 必须确认配置来源与真正生效：src/storage/StorageServer.cpp:40 的 local_config 默认 true；:194 设置 MetaClient options.skipConfig_；src/clients/meta/MetaClient.cpp:3144–3183 在 skipConfig_ 时不加载 Meta 配置。Meta 动态配置必须在现有 local_config=false 配置管理模式下才会传播，不能为了做一次灰度擅自切换全局配置来源。HTTP PUT /flags 在 src/webservice/SetFlagsHandler.cpp:79–86 仅修改 gflag，不调用现有 RocksDB 的 SetOptions，因此 HTTP 返回成功、GET /flags 已改变不等于存量 DB 生效。
+
+5. 动态配置回执限制：src/meta/processors/config/SetConfigProcessor.cpp:13–78 的成功表示配置写入 Meta；src/graph/executor/admin/ConfigExecutor.cpp:59–96 返回该 Meta 请求的结果。存储实际应用在之后异步执行，而且 NebulaStore.cpp:719–732 丢弃 setOption 的返回码。应查 RocksEngine.cpp:495/498 的 SetOption Succeeded/Failed 日志，必要时核对该 DB 最新 OPTIONS/LOG 和对应内存、刷盘指标，不可只用 SHOW CONFIGS 判断存储全部更新完成。SetConfigProcessor:76–77 保存的是传入完整 Value；配置更新前需保存整个旧 Map，不应假设只写一个键自动保留其它键。
+
+6. RocksDB 本机依赖是 7.5.3：build/CMakeCache.txt:462 指向 /opt/vesoft/third-party/3.3/include；该目录 rocksdb/version.h:15–17 记录 7/5/3。options.h:172–188 明确 write_buffer_size 为每 ColumnFamily、默认64MiB、支持 SetOptions；advanced_options.h:250–261 说明 max_write_buffer_number 默认/最小2，允许一张刷盘时另一张接收写入，缓冲不足会减速。advanced_options.h:477–493 说明 arena_block_size 默认0时通常取 write_buffer_size/8 与1MiB中较小值并对齐，支持动态修改。降低 write_buffer_size=64→32MiB 并不会把默认1MiB分配块等比变成512KiB。头文件可证明参数语义；未读取依赖完整实现，本次不声称存量 MemTable 调小配置后立即释放、不声称精确瞬时硬限额、不声称任何数值已通过生产压测。
+
+7. 读缓存为每进程共享：src/kvstore/RocksEngineConfig.cpp:307–319 使用函数 static shared_ptr 创建 blockCache 和 rowCache，并分配给各 DB。rocksdb_block_cache 单位MiB，源码默认1024（:49–51），生产模板 conf/nebula-storaged.conf.production:64 是4096，默认模板 conf/nebula-storaged.conf.default:64 是4。不能算成每空间4GiB。调整参数不会重建已经存在的静态 cache；应按重启配置处理，不能承诺 HTTP 热改释放缓存。减小 block cache 可能增加 SST 读取、磁盘等待和查询长尾，尤其不宜在尚未确认其占用/命中率时作为大量空闲空间问题的首要手段。按每空间接口得到的 block-cache-usage 若指向同一共享 cache，不要把相同值重复相加。
+
+8. FLUSH 可按空间：src/parser/parser.yy:3216–3218 支持 SUBMIT JOB FLUSH；src/meta/processors/job/FlushJobExecutor.cpp:18–24 带 space_ 下发；src/meta/processors/job/StorageJobExecutor.cpp:30–53 找该空间的全部副本所在 host；src/storage/admin/FlushTask.cpp:17–35 对所选空间所有引擎 flush；src/kvstore/RocksEngine.cpp:540–548 调 db_->Flush。依赖 rocksdb/options.h:1779–1789 的 FlushOptions 默认 wait=true, allow_write_stall=false。作用是完成 MemTable 刷盘，不触碰 AtomicLogBuffer。建议验证命令（本次未执行）：USE `目标冷空间`; SUBMIT JOB FLUSH; 然后 SHOW JOB <返回ID>; 等 FINISHED 后比较该空间所有副本进程的 cur-size-all-mem-tables、RSS、cgroup内存。须低峰逐空间执行，不能对数百空间并发刷盘造成共享磁盘瞬时压力。历史已完成实验中 FLUSH 后 MemTable/RSS下降、WAL节点继续增长；那是隔离测试事实，不是本次生产已验证结果。
+
+9. 不应借关闭 RocksDB WAL 来换定期刷盘：src/kvstore/RocksEngineConfig.cpp:24 默认 rocksdb_disable_wal=false；src/kvstore/Part.cpp:358 等把这个值传入写入路径；RocksEngine.cpp:124–140 设置 options.disableWAL。NebulaStore.cpp:1293–1311 只在 rocksdb_disable_wal=true 时每轮 cleanWAL 前先 flush 各 DB。这条路径说明 clean_wal_interval_secs 不能在默认配置下充当通用 MemTable 刷盘周期；为获得周期 FLUSH 而改变另一套 WAL 的恢复/写入策略，已超出本问题应采取的低风险纯内存调参。
+
+10. 不是跨空间统一 MemTable 总预算：本分支源码未创建共享 rocksdb::WriteBufferManager（全树检索）；本机 options.h:892–918 明确 db_write_buffer_size 仅覆盖一个 DB 的 CF，跨 DB 要共享 WriteBufferManager 对象。由于本版本每空间不同 DB，不能把 db_write_buffer_size 理解为全 storaged 的 MemTable 总限额。
+
+分区数与隔离的版本边界
+现有空间不能靠修改 default_parts_num 或 ALTER SPACE 在线减少分区数。src/meta/processors/parts/CreateSpaceProcessor.cpp:44–64 在创建时取分区数并保存，:236–265 为每个分区分配副本；parser.yy:3461–3471 的 ALTER SPACE 没有修改 partition_num 的语法。减少分区应视为新建空间、迁移和切换的独立工程，不能纳入立即上线的参数灰度。
+
+新空间支持 CREATE SPACE ... ON zone_list（src/parser/parser.yy:3483–3486、3505–3509）；CreateSpaceProcessor.cpp:115–137 没有显式指定 zone 时使用全部已有 zone，:147–152 要求 zone 数不小于副本数。通过互不重叠的宿主进程集合承载冷热空间，才能用不同的进程启动参数；zone 是放置约束，不是同进程内存隔离。已有空间 ALTER SPACE ADD ZONE 只是增加允许集合（src/meta/processors/parts/AlterSpaceProcessor.cpp:32–75），不会把旧空间直接变为冷池独占。不要据此承诺无迁移、无中断的快速隔离。尤其本分支 AdminJobValidator.cpp:14–19 对 DATA_BALANCE/ZONE_BALANCE 要求 enable_experimental_feature && enable_data_balance；生产模板 graphd 的 experimental=false，不能为了本内存问题顺手启用实验性迁移。
+
+适用建议与反证
+1. 混部署且高频空间严格延迟：先用按空间 RocksDB 属性分解占用，不动 read cache、不统一大幅缩小 MemTable；若空闲空间 MemTable 合计很小，调这些参数不是主要收益来源。
+2. 确认冷空间 MemTable 很大：先选一低峰冷空间 FLUSH，确认任务成功、MemTable下降、磁盘延迟无明显抖动，再评估按需维护。若 MemTable下降而总RSS/cgroup无明显改善，说明有 WAL 活对象/allocator保留/页缓存等其他成分，不能据此持续提高 FLUSH 频率。
+3. 只有在隔离测试验证热业务峰值读写、刷盘整理和副本追赶后，才评估较小 write_buffer_size（例如从实际64MiB向32MiB的一档候选，而非认定32MiB必安全）。max_write_buffer_number 不是默认先改项；冷空间通常只有一个活动缓冲，降低4→2的收益有限而热业务突发承受力可能下降。
+4. 真正希望三类业务不同参数，应规划不同 storaged 进程集合、容器预算和本地配置，或独立集群。这个方案改变部署/数据放置，需要独立验证和迁移方案，不能表述为已有混合空间仅改三份参数即可生效。
+
+最后结论
+本版本已确认的低风险范围区分是：FLUSH 能选择空间，RocksDB 标准配置不能给同一 storaged 内的三类空间独立限额。减少 MemTable/读缓存会把压力转为磁盘和延迟，是否可接受必须用实际热业务负载验证；本次源码核对不能保证零性能变化，也不能确认现场超过80%的那部分一定由 MemTable 主导。

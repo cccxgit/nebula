@@ -1,0 +1,10 @@
+# Preserve delivery bytes: Git must not normalize CSV CRLF or other evidence.
+* -text
+*.csv whitespace=cr-at-eol
+
+# Archived evidence preserves exact bytes, including tool-generated whitespace.
+# Source code, scripts and current prose keep normal Git whitespace checks.
+*.log -whitespace
+*.svg -whitespace
+observation.patch -whitespace
+EXPERIMENT-DETAILS.md whitespace=-blank-at-eof

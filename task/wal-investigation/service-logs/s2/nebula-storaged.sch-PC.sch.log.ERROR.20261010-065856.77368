@@ -1,0 +1,28 @@
+Log file created at: 2026/10/10 06:58:56
+Running on machine: sch-PC
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20261010 06:58:56.412242 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:00.416432 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:04.424551 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:08.438362 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:12.449105 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:16.457773 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:20.461371 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:24.465016 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:28.468182 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:32.472350 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:36.480794 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:40.492003 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:44.508366 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:48.517355 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:52.531800 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 06:59:56.541435 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:00.548369 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:04.560709 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:08.571619 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:12.577144 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:16.583386 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:20.588354 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:24.593353 77368 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+E20261010 07:00:26.619619 77368 FileUtils.cpp:377] Failed to read the directory "/home/sch/nebula-run/nebula-memory/data/storage2/nebula" (2): No such file or directory

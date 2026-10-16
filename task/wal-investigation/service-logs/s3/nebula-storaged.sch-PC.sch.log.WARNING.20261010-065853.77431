@@ -1,0 +1,52 @@
+Log file created at: 2026/10/10 06:58:53
+Running on machine: sch-PC
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W20261010 06:58:53.412025 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:58:56.432552 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:58:57.432757 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:00.438464 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:01.440814 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:04.449709 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:05.449812 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:08.468690 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:09.468811 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:12.475447 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:13.475581 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:16.481355 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:17.481472 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:20.487418 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:21.487550 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:24.491343 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:25.493500 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:28.497452 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:29.497618 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:32.501453 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:33.501603 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:36.510793 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:37.510910 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:40.520362 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:41.520476 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:44.529382 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:45.532805 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:48.549794 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:49.549926 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:52.557017 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:53.557142 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 06:59:56.564282 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 06:59:57.564410 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:00.581343 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 07:00:01.581446 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:04.594795 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 07:00:05.594918 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:08.601428 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 07:00:09.601555 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:12.607429 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 07:00:13.607539 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:16.611415 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 07:00:17.611542 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:20.615458 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 07:00:21.615653 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:24.619427 77431 MetaClient.cpp:112] Heartbeat failed, status:Machine not existed!
+W20261010 07:00:25.619593 77431 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+E20261010 07:00:26.653757 77431 FileUtils.cpp:377] Failed to read the directory "/home/sch/nebula-run/nebula-memory/data/storage3/nebula" (2): No such file or directory

@@ -1,0 +1,14 @@
+PASS atomic default 1: exact node staircase, 16B accounting, no dirty nodes
+PASS atomic default 100: exact node staircase, 16B accounting, no dirty nodes
+PASS atomic default 1000: exact node staircase, 16B accounting, no dirty nodes
+PASS atomic default threshold: 8192 nodes at 8MiB, plateau beyond 1.1M records
+PASS atomic small each: reader-dependent GC behavior
+PASS atomic small none: reader-dependent GC behavior
+PASS atomic small held: reader-dependent GC behavior
+PASS atomic-jemalloc default 1: exact node staircase, 16B accounting, no dirty nodes
+PASS atomic-jemalloc default 100: exact node staircase, 16B accounting, no dirty nodes
+PASS atomic-jemalloc default 1000: exact node staircase, 16B accounting, no dirty nodes
+PASS atomic-jemalloc default threshold: 8192 nodes at 8MiB, plateau beyond 1.1M records
+PASS atomic-jemalloc small each: reader-dependent GC behavior
+PASS atomic-jemalloc small none: reader-dependent GC behavior
+PASS atomic-jemalloc small held: reader-dependent GC behavior

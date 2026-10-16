@@ -1,0 +1,99 @@
+WAL 参数调优独立复核
+核对日期：2026-10-11
+目标源码：3.6-memory，产品源码基线 de9b3ed800a6627d9845e9289b6bbc5b6faf460a。
+只读核对源码，没有改变参数、启动服务或执行生产试验。本文是调参报告的证据附录。
+
+直接结论
+
+降低 wal_buffer_size 确实能降低每个分片副本长期保留的有效 WAL 缓存量，是“许多图空间几个月无业务写入”场景中有针对性的候选措施。它是每个 storaged 进程统一提供、每个分片构造时复制的参数，不能直接给同一进程内不同图空间设不同值。8→4→2 MiB 只能作为灰度试验梯度，不能据此保证热业务无性能回退。内存未命中会读 WAL 文件，leader 提交、follower 提交和复制请求构建均可能受影响；极端峰值还可能超过所设容量。
+
+为什么缩小缓存可能影响热业务
+
+每条 Raft 日志先写 WAL 文件，再放入内存缓存。缓存小一些，会更早淘汰较老日志。复制或提交需要的起始日志仍在缓存中时，可以从内存读取；否则创建文件迭代器，从 WAL 文件寻找并读取日志。因此，缩小缓存不是少保存一份持久日志，而是缩短“无需读文件就能取到最近日志”的范围。
+
+文件回退不仅可能产生磁盘读，也会增加 open、pread、close 等操作。WalFileIterator 没有直接按 logId 定位到字节地址；它先选择文件，再从所选文件开头循环读取日志头，直到找到目标 logId。即便文件数据已在内核页缓存中，仍然有系统调用和扫描成本。实际 I/O、CPU 与延迟变化必须用生产同类业务压测确认。
+
+假设性例子：某个热点分片每秒产生 1 MiB 的逻辑 WAL，候选缓存从 8 MiB 改为 2 MiB，其近期日志覆盖时间可粗略从 8 秒缩为 2 秒。落后 5 秒的 follower 过去可能命中内存，现在更可能读文件。这是解释用估算，忽略 64 条一组的管理粒度、大记录和读者引用；不是实际系统的精确留存时间，更不是用户现场测量。
+
+已确认源码证据与边界
+
+1. 参数作用范围与生效方式
+src/kvstore/wal/FileBasedWal.cpp:17：DEFINE_int32(wal_buffer_size, 8 * 1024 * 1024, ...)。
+src/kvstore/raftex/RaftPart.cpp:357–369：每个 RaftPart 构造时把 FLAGS_wal_buffer_size 复制到 policy.bufferSize，再构造 FileBasedWal。
+src/kvstore/wal/FileBasedWal.cpp:49、59：保存 policy，并以 policy_.bufferSize 创建 AtomicLogBuffer。
+src/kvstore/wal/AtomicLogBuffer.h:327、363：capacity_ 在构造时赋值；未提供运行中 resize 接口。
+证明：同进程新建分片读取统一 flag，已有分片不会因 flag 数值改变而缩容。
+不能证明：HTTP 显示了新 flag，所有既有缓存就已经用了新容量；更不能把 HTTP PUT 成功当作缩容成功。
+
+2. 先写文件，再填缓存
+src/kvstore/wal/FileBasedWal.cpp:457–499：先 write(currFd_, ...)，条件式 fsync，再 logBuffer_->push(...)。
+证明：改 wal_buffer_size 不会直接改变 wal_sync、文件写入或持久化顺序。
+不能证明：任意小值都没有延迟、吞吐、容器内存峰值和可用性风险。相关变化可能导致超时或积压。
+
+3. 缓存未命中时读取文件
+src/kvstore/wal/FileBasedWal.cpp:530–535：先构造缓存 iterator；起始位置有效则返回，否则构造 WalFileIterator。
+src/kvstore/wal/WalFileIterator.cpp:23–48：核对起始 id 是否还在文件保留范围内，打开相关 WAL 文件。
+src/kvstore/wal/WalFileIterator.cpp:64–97：从所选文件 currPos_=0 开始循环读日志头定位起始 id。
+src/kvstore/wal/WalFileIterator.cpp:186–214：pread 读取 cluster 与消息正文。
+证明：内存淘汰后有文件回退，回退包含文件定位、系统调用和数据读取。
+不能证明：每次回退都有真实块设备读；若命中页缓存，可能主要增加 CPU/系统调用开销。不能只观察 storaged RSS，忽略容器计费的文件缓存。
+
+4. 正常提交和复制都可能走回退路径
+src/kvstore/raftex/RaftPart.cpp:891–914：先向本地 WAL 写完整批日志，再启动复制。
+src/kvstore/raftex/Host.cpp:323–342：从 WAL 迭代器读取日志并复制到请求内存，构建复制 RPC；函数返回时本地迭代器析构。
+src/kvstore/raftex/RaftPart.cpp:1069–1078：leader 提交从 WAL 读取待提交日志。
+src/kvstore/raftex/RaftPart.cpp:1733–1737：follower 比较已有日志 term 时也读取 WAL。
+src/kvstore/raftex/RaftPart.cpp:1794–1797：follower 提交从 WAL 读取。
+src/kvstore/Part.cpp:215–358：commitLogs 持有传入迭代器，解析日志构造 RocksDB batch，调用 commitBatchWrite 后才返回。迭代器寿命覆盖这段执行。
+证明：缓存太小的影响不局限于故障后追赶；大批次已经写完但其开头已被淘汰时，正常复制或提交也可能从文件读。
+不能证明：网络慢必然一直持有 AtomicLogBuffer 迭代器；Host 已把日志复制进 RPC，对端响应等待和该本地迭代器不是同一生命周期。
+
+5. 缓存未命中不等于立刻传快照
+src/kvstore/raftex/Host.cpp:306–309：是否启动快照，比较的是 lastLogIdSent_+1 与 FileBasedWal::firstLogId()。
+src/kvstore/wal/FileBasedWal.cpp:640–674、676–706：磁盘 WAL 清理依据 wal_ttl、文件数及可清理 logId 范围，更新 FileBasedWal::firstLogId_；不引用缓存容量。
+证明：只减内存缓存，不会直接缩短磁盘日志保留范围，也不会因一次缓存未命中直接触发快照。
+待验证风险：文件回退使追赶变慢，而磁盘日志后来被正常清理，可能间接增加快照需求；应观察追赶时间和 num_send_snapshot，不能预先宣称必然发生。
+
+6. wal_buffer_size 不是整个 WAL 内存的硬上限
+以下 AtomicLogBuffer.cpp 行号以原始基线 commit 为准；当前工作树诊断代码使行号后移。
+src/kvstore/wal/AtomicLogBuffer.h:18、32–34、104：每组 Node 放 64 条日志；逻辑大小只算 clusterId、termId、消息长度，遗漏 std::string、Node 管理字段、内存分配器取整。
+原始 AtomicLogBuffer.cpp:71–89：新建 Node 的分支加完一条日志就返回，没有逐字节硬阻止分配。
+原始 AtomicLogBuffer.cpp:91–118：超逻辑容量时至多标记一个旧 Node；tail==head 时无法淘汰，源码注释明确容许超过 capacity。
+原始 AtomicLogBuffer.cpp:167–213：真正 delete 被淘汰 Node 只发生在读者释放时；若 readers>1，本次不回收。
+AtomicLogBuffer.h:136–138：Iterator 析构触发 releaseRef。
+FileBasedWal.cpp:515–527：一批 WAL 追加连续执行 push，中间没有显式 GC。
+证明：大记录、一个批次写完前积累的待释放节点、并发读者持有节点等都可使实际峰值高于配置。降低容量可降低稳态有效留存，却不能给所有负载的瞬时内存设硬上限。
+不能证明：生产当前就有长时间不释放读者；此前空闲空间复现没有发现这类积压是主因。
+
+7. max_log_buffer_size 不能替代 wal_buffer_size
+原始 AtomicLogBuffer.cpp:8–10 默认 16 MiB；:175–177 必须等最后一个现存读者释放；:187 判断 dirtyNodes>5 或 size_>FLAGS_max_log_buffer_size；:193–205 只删除 tail 后面已经被标记删除的节点。
+证明：它是某次读者释放时尝试清理已淘汰节点的触发条件，不是有效缓存容量，也不会从仍有效的节点中选一批删掉。
+因此，仅把它从 16 MiB 改成更小，不能清除未到 wal_buffer_size 的空闲空间有效日志。保持默认作为本轮单变量试验的对照更易解释结果。
+
+8. wal_buffer_size=0 不代表关闭缓存
+原始 AtomicLogBuffer.cpp:74–89、91–118：0 值没有禁用分支，仍创建 Node、存放日志、按既有条件淘汰。AtomicLogBuffer.h:327 只是保存传入容量。
+证明：0 不是已由实现定义的“完全不缓存”开关。不建议在生产尝试 0 或负数，也不把极小值当作零风险手段。
+
+运行参数如何只读核对
+
+建议命令（尚未在生产执行）：在每个 storaged 容器内或其已有管理网络读取，把 19779 替换为现网 HTTP 端口：
+curl --fail --silent --show-error 'http://127.0.0.1:19779/flags?flags=wal_buffer_size,max_log_buffer_size,wal_ttl,wal_file_size,wal_sync&format=json&verbose=true'
+
+src/webservice/GetFlagsHandler.cpp:24–41 支持 flags/format/verbose 查询；:91–141 输出 current_value 和可选 default；:150–172 查询进程的 gflags 注册表。
+注意返回值只证明当前全局 flag；对构造时复制的 wal_buffer_size，仍需结合启动配置、最近重启时间及是否曾在线改 flag 判断分片实际容量。
+
+resources/gflags.json 未把 wal_buffer_size 与 max_log_buffer_size 列为 Meta 动态项。
+src/common/meta/GflagsManager.cpp:49–90、114–153：仅注册可变配置列表；默认列表也没有这两个参数。
+src/webservice/SetFlagsHandler.cpp:78–85 确实可调用 SetCommandLineOption，但不调用分片缩容接口。因此不能用“HTTP PUT 能改 flag”推导“运行中能缩小已有 WAL 缓存”。本建议采用持久配置后分实例滚动重启验证，而非在线改 flag 后等内存自然下降。
+
+应怎样判定 4 MiB 或 2 MiB 是否可用
+
+1. 优先看每个热点分片的日志字节速率、实际单条日志/最大写入批次、正常及故障追赶时延，不依据 5 亿总点边数单独确定缓存大小。
+2. 同硬件、同业务数据与最大批次，比较原值与候选值的业务 p95/p99、错误率、吞吐；观察 commit_log_latency_us、replicate_log_latency_us、append_log_latency_us、append_wal_latency_us（注册见 src/kvstore/stats/KVStats.cpp:23–38）。
+3. 测副本重启后的追赶和短暂网络/磁盘变慢时恢复；同时看磁盘读取、CPU、页缓存、memory.current、RSS，以及选主和快照计数。本文没有执行这些试验。
+4. 在当前值和候选值都充分运行后比较长期 WAL 平台。重启会创建空缓存，短期下降不能单独归功于候选参数；低频写入缓存可能需要数天到数周才填满。组件试验可以验证容量机制，不能代替整机性能与故障恢复试验。
+5. 每一阶段设定业务原有 SLO 与可接受增量；出现持续 p99 退化、复制积压、异常选主、快照增加或 I/O 饱和，停止扩大灰度并按原配置滚动回退。回退到原 flag 同样需要重建已有分片，不能仅改 HTTP 当前值。
+
+最终结论
+
+wal_buffer_size 是本轮最直接的 WAL 留存调优项，但只降低有效缓存目标，不能承诺整体存储内存硬封顶或所有热业务零回退。冷热分片混在同一进程时，必须以最敏感热点业务的实际压力与副本恢复试验决定可接受容量；若热业务不能接受更小缓存，应考虑进程资源隔离后分别调参。

@@ -1,0 +1,9 @@
+{
+  "start_scan_utc": "2026-10-09T23:08:38.070+00:00",
+  "end_scan_utc": "2026-10-09T23:28:02.232+00:00",
+  "common_wal_files": 3000,
+  "last_term_changed_files": 0,
+  "changes": [],
+  "end_records_per_file_min": 2141,
+  "end_records_per_file_max": 2217
+}

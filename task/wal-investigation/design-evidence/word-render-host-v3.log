@@ -1,0 +1,8 @@
+Explicit fallback: bundled LibreOffice requires GLIBC_2.38 / GLIBCXX_3.4.31 unavailable on this host.
+Using host LibreOffice 7.3.7.2 and /usr/bin Poppler; bundled Python and original renderer retained.
+[render_docx] $ /usr/bin/soffice -env:UserInstallation=file:///tmp/soffice_profile_7zc0myzz --invisible --headless --norestore --convert-to pdf --outdir /tmp/soffice_convert_92vqgkbs /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.docx
+convert /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.docx -> /tmp/soffice_convert_92vqgkbs/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.pdf using filter : writer_pdf_Export
+
+Warning: failed to launch javaldx - java may not function correctly
+
+Pages rendered to /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/design-evidence/word-qa-v3

@@ -1,3 +1,5 @@
+本分支 WAL 内存研究与开发交接：[入门指南](task/wal-investigation/DEVELOPER-HANDOFF.md) · [完整成果索引](task/wal-investigation/ARTIFACT-INDEX.md)。空间级 WAL 参数机制待开发，现有代码改动用于观测。
+
 <p align="center">
   <img src="https://docs-cdn.nebula-graph.com.cn/figures/nebularepo-logo-new.png"/>
   <br> English | <a href="README-CN.md">中文</a>

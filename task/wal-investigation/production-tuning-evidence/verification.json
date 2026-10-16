@@ -1,0 +1,169 @@
+{
+  "date": "2026-10-11",
+  "scope": "original-source empty-record component capacity comparison only; no service or production performance tests",
+  "link_count": 36,
+  "link_errors": [],
+  "existing_product_observation_patch_unchanged": true,
+  "capacities": [
+    {
+      "capacity_bytes": 8388608,
+      "single_buffer_node_mib": 28.0,
+      "thousand_buffers_node_gib_conditional": 27.34375,
+      "first_fill_days_at_10_25_seconds_per_empty_record": 62.19851851851852,
+      "full_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "524288",
+        "logical_bytes": "8388608",
+        "nodes": "8192",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "26214400",
+        "node_malloc_usable_bytes": "29360128",
+        "rss_kib": "33524",
+        "hwm_kib": "33524"
+      },
+      "last_push_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "2097152",
+        "logical_bytes": "8388608",
+        "nodes": "8192",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "26214400",
+        "node_malloc_usable_bytes": "29360128",
+        "rss_kib": "33548",
+        "hwm_kib": "33548"
+      }
+    },
+    {
+      "capacity_bytes": 4194304,
+      "single_buffer_node_mib": 14.0,
+      "thousand_buffers_node_gib_conditional": 13.671875,
+      "first_fill_days_at_10_25_seconds_per_empty_record": 31.09925925925926,
+      "full_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "262144",
+        "logical_bytes": "4194304",
+        "nodes": "4096",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "13107200",
+        "node_malloc_usable_bytes": "14680064",
+        "rss_kib": "19060",
+        "hwm_kib": "19060"
+      },
+      "last_push_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "1048576",
+        "logical_bytes": "4194304",
+        "nodes": "4096",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "13107200",
+        "node_malloc_usable_bytes": "14680064",
+        "rss_kib": "19084",
+        "hwm_kib": "19084"
+      }
+    },
+    {
+      "capacity_bytes": 2097152,
+      "single_buffer_node_mib": 7.0,
+      "thousand_buffers_node_gib_conditional": 6.8359375,
+      "first_fill_days_at_10_25_seconds_per_empty_record": 15.54962962962963,
+      "full_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "131072",
+        "logical_bytes": "2097152",
+        "nodes": "2048",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "6553600",
+        "node_malloc_usable_bytes": "7340032",
+        "rss_kib": "11776",
+        "hwm_kib": "11776"
+      },
+      "last_push_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "524288",
+        "logical_bytes": "2097152",
+        "nodes": "2048",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "6553600",
+        "node_malloc_usable_bytes": "7340032",
+        "rss_kib": "11800",
+        "hwm_kib": "11800"
+      }
+    },
+    {
+      "capacity_bytes": 1048576,
+      "single_buffer_node_mib": 3.5,
+      "thousand_buffers_node_gib_conditional": 3.41796875,
+      "first_fill_days_at_10_25_seconds_per_empty_record": 7.774814814814815,
+      "full_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "65536",
+        "logical_bytes": "1048576",
+        "nodes": "1024",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "3276800",
+        "node_malloc_usable_bytes": "3670016",
+        "rss_kib": "8228",
+        "hwm_kib": "8228"
+      },
+      "last_push_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "262144",
+        "logical_bytes": "1048576",
+        "nodes": "1024",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "3276800",
+        "node_malloc_usable_bytes": "3670016",
+        "rss_kib": "8252",
+        "hwm_kib": "8252"
+      }
+    },
+    {
+      "capacity_bytes": 262144,
+      "single_buffer_node_mib": 0.875,
+      "thousand_buffers_node_gib_conditional": 0.8544921875,
+      "first_fill_days_at_10_25_seconds_per_empty_record": 1.9437037037037037,
+      "full_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "16384",
+        "logical_bytes": "262144",
+        "nodes": "256",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "819200",
+        "node_malloc_usable_bytes": "917504",
+        "rss_kib": "5520",
+        "hwm_kib": "5520"
+      },
+      "last_push_sample": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "65536",
+        "logical_bytes": "262144",
+        "nodes": "256",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "819200",
+        "node_malloc_usable_bytes": "917504",
+        "rss_kib": "5544",
+        "hwm_kib": "5544"
+      }
+    }
+  ]
+}

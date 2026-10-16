@@ -1,0 +1,57 @@
+图空间级 WAL 参数机制：独立源码评审
+日期：2026-10-11
+目录：/home/sch/nebula/nebula-3.6-memory
+分支：3.6-memory；HEAD：194958131042df77301072eb99dccbc64fb34246
+产品基线：de9b3ed800a6627d9845e9289b6bbc5b6faf460a
+范围：只读源码核验及方案设计；未修改产品实现、未启动数据库、未做新机制性能实验。
+
+直接结论
+可行。当前缓存本来就是每个 Raft 分片副本独立创建，并已携带 spaceId；缺的是把“全进程同一个容量”变成“按空间解析出的容量”。首期应只覆盖 wal_buffer_size，启动时冻结配置、创建分片时传入容量。这样不需要改日志格式、复制协议或 AtomicLogBuffer 淘汰算法。配置选择可以做到空间级，但进程中的 CPU、磁盘和总内存仍共享，不能保证热点业务完全无间接影响。
+
+一、最小且明确的改造范围（设计建议，当前代码不支持）
+1. 保留现有 wal_buffer_size，作为未匹配空间及旧行为的默认值。
+2. 新增 string gflag 承载 GraphSpaceID -> WAL 容量字节数映射；示例候选名 wal_buffer_size_by_space，不是现有参数。
+3. 启动时只解析一次，校验类型、重复键、未知字段、非正数、溢出，冻结默认值和覆盖表为不可变配置对象。AtomicLogBuffer::instance 的参数类型是 int32_t，不能把任意 size_t 无检查传入。0 不能当作“关闭缓存”。
+4. 在 storage 创建普通业务 Part 时查表，把已解析容量通过构造参数/配置对象传给 RaftPart，再生成 FileBasedWalPolicy。每次写入不解析 JSON，不临时修改 FLAGS_wal_buffer_size，也不使用线程局部全局 flag 模拟空间参数。
+5. 默认构造路径保留兼容行为；Meta、Listener、测试分片不自动继承业务空间覆盖。推荐从 StorageServer/KVOptions 注入数据存储专用策略，在 NebulaStore::newPart 解析，而不是在无角色信息的通用 RaftPart 中直接套用整个全局映射。
+6. 输出“配置版本或摘要、空间 ID、分片 ID、角色、实际 buffer capacity、默认/覆盖来源”；查看 raw gflag 不足以证明对象实际生效。
+7. 首期明确拒绝在线修改，实际变更通过配置文件及滚动重启；新建/重建/迁移入本机的分片使用同一启动快照。运行中把 raw flag 改成新值但只对未来分片生效，会出现同空间同进程混用容量的难排查状态。
+
+推荐 ID 而非名称：日志和构造路径已有 spaceId；名称解析会增加 Meta 依赖、缓存时序及同名重建语义。部署工具可以从名字生成 ID 映射并记录核对结果。删除重建、备份恢复、导入另一集群时必须重新核对映射，不能假定空间名称相同就继承参数。映射存在非本机空间属于正常的统一配置部署场景，不应单凭本地未加载就拒绝。集群未知 ID 的校验应放在部署预检及告警中，不能给缓存初始化强加一次阻塞 Meta RPC。
+
+二、已确认的源码机制
+1. NebulaStore::newPart，src/kvstore/NebulaStore.cpp:484–501：已有 spaceId、partId、engine，make_shared<Part> 传递空间和分片身份。新增分片调用位于 :478–479。可以在此选择空间容量并传入普通 Part。
+2. Part 构造，src/kvstore/Part.cpp:23–45：将 spaceId/partId 传入 RaftPart。RaftPart 构造 src/kvstore/raftex/RaftPart.cpp:330–372：保存空间 ID，357–360 行从全局 flags 生成 FileBasedWalPolicy。
+   必要原代码：policy.bufferSize = FLAGS_wal_buffer_size;
+   它证明集中替换点已存在，不证明新增解析器、部署一致性和角色边界已经完成。
+3. FileBasedWal，src/kvstore/wal/FileBasedWal.cpp:45–60：保存 policy，使用 AtomicLogBuffer::instance(policy_.bufferSize) 新建缓存；FileBasedWal.h:265 policy_ 为 const。AtomicLogBuffer.h:327 构造记录 capacity_，:363 是普通 int32_t 成员。没有现成 resize API。
+4. Listener 也调用相同 RaftPart 构造，src/kvstore/listener/Listener.cpp:20–37；src/kvstore/NebulaStore.cpp:644–669 在 newListener 构造 ESListener。若仅因空间 ID 匹配就在 RaftPart 自动覆盖，会同时影响全文索引 listener，需要显式排除或另行验证。
+5. Meta 使用相同 NebulaStore，src/daemons/MetaDaemonInit.cpp:65–95，只有 space=0, part=0。Storage 管理库直接 new RocksEngine(0)，src/storage/StorageServer.cpp:152–156，不是普通业务 Part 的 Raft WAL；业务 WAL map 不应影响它。空间 0 应保留系统语义。
+6. 原产品 AtomicLogBuffer.cpp:71–119（工作树诊断版对应 :155–224）：push 超容量时只标记最多一个旧 Node；新 Node 分支直接 return；tail==head 时不能淘汰。Node 使用的 kMaxLength 常量为 64 条，见 AtomicLogBuffer.h:18 及 Node/Record 定义。
+7. 原产品 AtomicLogBuffer.cpp:167–210（工作树 :277–334）：releaseRef 仅最后一位读者离开后，满足 dirtyNodes > 5 或 logical size > max_log_buffer_size 时回收已淘汰节点。不能把这个阈值当作有效缓存大小上限。
+8. FileBasedWal.cpp:457–499 先写文件后 push 缓存；:530–535 缓存迭代器无效时回退 WalFileIterator。RaftPart.cpp:1069、:1794 是正常提交读取；Host.cpp:323–342 是复制请求读取。缩容会使回退路径更频繁的可能性已有源码依据，性能幅度必须实验。
+9. Host.cpp:306–308 判定日志太老需 snapshot 时，用的是文件 WAL 的 firstLogId，不是 AtomicLogBuffer 的 firstLogId。只缩缓存不能直接等同于删除文件日志/直接触发快照；间接影响如 I/O 滞后扩大仍需压测。
+
+三、为什么不把“在线缩容”顺手加进首期
+capacity_ 不是原子变量，外部写它首先有数据竞争问题；改成原子也只解决数值读写，不解决淘汰速度、并发读者安全和已有节点释放。举例：8 MiB 空日志缓存已填满，改为 1 MiB 后即使允许每次新空日志淘汰一个 64 条 Node，也需要大约 7 MiB/(1024 B-16 B) 次新日志，约 7,282 次；按每 10.25 秒一个空日志粗算约 20.7 小时，而且这是忽略新 Node 分支等影响的教学估算，不是实测承诺。若没有新日志，现有 push 路径根本不推动缩容。
+直接调用 reset 或换掉 logBuffer_ 也不能当作无风险释放：reset 明确要求与 push 线程安全，迭代器可能仍持有原缓存及节点。若未来必须热更新，应单独设计 writer 串行域中的分批淘汰、读者生命周期、配置版本确认、旧缓存归还时机、升容无预热、失败回滚等机制，并做并发工具和故障测试。
+
+四、怎样修改原生产方案
+原方案因全局限制，建议统一 8 -> 4 -> 2 MiB，并让热业务决定是否能继续降低。
+新方案应改为：高频空间先继承实际现网默认；仅对已确认冷空间按 ID 显式覆盖，经测试评估 2 MiB、1 MiB 等候选；中频空间后续独立评估。值是候选，不是按数据量直接决定的生产配方。第一阶段避免同时改变 heartbeat、wal_ttl、wal_sync 和 RocksDB 写入持久性参数。
+
+假设例子：一台 storage 有 600 个冷空间分片副本，均长期仅写空日志。沿用已有容量实验的本机 Node 分配口径，8 MiB 填满时约 600*28 MiB=16.41 GiB；1 MiB 时约 600*3.5 MiB=2.05 GiB，条件差额约 14.36 GiB。热空间仍用原值，不把其缓存覆盖时间缩短。该差额仅为冷 WAL 满平台对比，不是容器 RSS 节约承诺，也不能忽略热空间、RocksDB、分配器和临时批次内存。
+
+配置版本不一致的解释：WAL 缓存是本地性能状态，副本容量不同并不直接改变持久化格式或投票规则，不需要把瞬时所有节点同版本当作 Raft 安全前提；但会造成内存预算/追赶性能不一致。滚动发布可允许短暂差异，同时记录各副本实际配置。扩容和迁移目标必须先装相同映射，防止冷副本迁移后退回 8 MiB。
+
+五、必须覆盖的验证与反证
+1. 解析单测：默认空表行为、合法多空间、未知键、重复 ID、非法 ID、负值、零、溢出、错误 JSON、有效配置摘要稳定性。错误配置必须在开始接受业务前清楚失败，不能悄悄用默认值。
+2. 同进程冷热至少两空间：读取每个副本实际 capacity，高频值不变、冷值正确；只看 /flags 不算通过。未命中空间和 space 0 默认值应保持原行为。
+3. 生命周期：存量数据启动、新建空间、新增/删除/重加 Part、迁移/扩容、重启恢复、删除重建同名空间、Listener 启用、Meta 路径；所有路径均验证空间策略选对对象。
+4. 容量验证：冷空间充分填充、缓存淘汰、长读者持有/释放、大于容量的单条日志、64 条节点边界；计数正确、日志迭代内容正确。冷缓存应落在相应平台附近；若不符先排查实际容量、活跃读者和大记录，不把每字节 gflag 当硬 RSS 限额。
+5. 数据与复制：高峰并发读写、最大业务批次、节点重启追赶、Leader 切换、文件 WAL 回退、日志超出文件保留区间后的快照恢复。核对已确认写入、查询结果、提交进度与延迟；不仅检查 RPC 成功率。
+6. 混部性能：测热空间 P95/P99、超时、磁盘延迟、复制滞后、CPU 和整体 cgroup 内存；冷空间批量写入/导入时会增加文件读取，可能间接影响热空间。
+7. 回退：先部署新二进制+空 map验证兼容，再启用冷空间覆盖；保留默认值和全部旧配置。关闭 map/回退旧二进制会使冷缓存恢复 8 MiB 增长轨迹，不能因为重启后低内存就认为回退永久安全。回退需要按未来回填内存预算保留空间或准备有验证的临时全局保守值，不可盲目全量关闭覆盖。
+
+结论边界
+可行性及最小插入点已由目标分支源码确认；此前组件实验能支持“小容量降低空日志长期 Node 平台”的方向。新增空间配置机制尚未实现，其解析正确性、生命周期覆盖、生产混部性能和发布回退表现都属于待验证项。

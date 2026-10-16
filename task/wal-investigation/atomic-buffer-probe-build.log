@@ -1,0 +1,62 @@
++ cd /home/sch/nebula/nebula-3.6-memory
++ OUT=task/wal-investigation
++ BASE=de9b3ed800a6627d9845e9289b6bbc5b6faf460a
++ mkdir -p task/wal-investigation/baseline/kvstore/wal
++ for source in AtomicLogBuffer.cpp AtomicLogBuffer.h
++ git show de9b3ed800a6627d9845e9289b6bbc5b6faf460a:src/kvstore/wal/AtomicLogBuffer.cpp
++ for source in AtomicLogBuffer.cpp AtomicLogBuffer.h
++ git show de9b3ed800a6627d9845e9289b6bbc5b6faf460a:src/kvstore/wal/AtomicLogBuffer.h
++ date --iso-8601=seconds
++ uname -a
++ /usr/bin/c++ --version
++ ldd --version
++ git rev-parse HEAD
++ sha256sum task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.h task/wal-investigation/atomic-buffer-probe.cpp
++ for allocator in glibc jemalloc
++ extra=()
++ suffix=
++ [[ glibc == jemalloc ]]
++ /usr/bin/c++ -std=c++17 -O2 -g -DENABLE_JEMALLOC -DENABLE_MEMORY_TRACKER -DS2_USE_GFLAGS -DS2_USE_GLOG -D__STDC_FORMAT_MACROS -I task/wal-investigation/baseline -I src -I build/src -isystem /opt/vesoft/third-party/3.3/include task/wal-investigation/atomic-buffer-probe.cpp task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp -L /opt/vesoft/third-party/3.3/lib -lfolly -lglog -lgflags -ldl -pthread -o task/wal-investigation/atomic-buffer-probe
++ prefix=atomic
++ [[ glibc == jemalloc ]]
++ for parts in 1 100 1000
++ task/wal-investigation/atomic-buffer-probe 1 8388608 each 0,1,64,65,128,256,512,1024,2048,4096
++ for parts in 1 100 1000
++ task/wal-investigation/atomic-buffer-probe 100 8388608 each 0,1,64,65,128,256,512,1024,2048,4096
++ for parts in 1 100 1000
++ task/wal-investigation/atomic-buffer-probe 1000 8388608 each 0,1,64,65,128,256,512,1024,2048,4096
++ task/wal-investigation/atomic-buffer-probe 1 8388608 each 0,1,64,65,524288,524289,524290,524608,525000,600000,1100000
++ for mode in each none held
++ task/wal-investigation/atomic-buffer-probe 100 4096 each 0,1,64,65,256,512,1024,4096,16384
++ for mode in each none held
++ task/wal-investigation/atomic-buffer-probe 100 4096 none 0,1,64,65,256,512,1024,4096,16384
++ for mode in each none held
++ task/wal-investigation/atomic-buffer-probe 100 4096 held 0,1,64,65,256,512,1024,4096,16384
++ for allocator in glibc jemalloc
++ extra=()
++ suffix=
++ [[ jemalloc == jemalloc ]]
++ extra=(-ljemalloc)
++ suffix=-jemalloc
++ /usr/bin/c++ -std=c++17 -O2 -g -DENABLE_JEMALLOC -DENABLE_MEMORY_TRACKER -DS2_USE_GFLAGS -DS2_USE_GLOG -D__STDC_FORMAT_MACROS -I task/wal-investigation/baseline -I src -I build/src -isystem /opt/vesoft/third-party/3.3/include task/wal-investigation/atomic-buffer-probe.cpp task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp -L /opt/vesoft/third-party/3.3/lib -lfolly -lglog -lgflags -ljemalloc -ldl -pthread -o task/wal-investigation/atomic-buffer-probe-jemalloc
++ prefix=atomic
++ [[ jemalloc == jemalloc ]]
++ prefix=atomic-jemalloc
++ for parts in 1 100 1000
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1 8388608 each 0,1,64,65,128,256,512,1024,2048,4096
++ for parts in 1 100 1000
++ task/wal-investigation/atomic-buffer-probe-jemalloc 100 8388608 each 0,1,64,65,128,256,512,1024,2048,4096
++ for parts in 1 100 1000
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1000 8388608 each 0,1,64,65,128,256,512,1024,2048,4096
++ task/wal-investigation/atomic-buffer-probe-jemalloc 1 8388608 each 0,1,64,65,524288,524289,524290,524608,525000,600000,1100000
++ for mode in each none held
++ task/wal-investigation/atomic-buffer-probe-jemalloc 100 4096 each 0,1,64,65,256,512,1024,4096,16384
++ for mode in each none held
++ task/wal-investigation/atomic-buffer-probe-jemalloc 100 4096 none 0,1,64,65,256,512,1024,4096,16384
++ for mode in each none held
++ task/wal-investigation/atomic-buffer-probe-jemalloc 100 4096 held 0,1,64,65,256,512,1024,4096,16384
++ nm task/wal-investigation/atomic-buffer-probe-jemalloc
++ rg ' T (malloc|aligned_alloc|malloc_usable_size)$'
+000000000004c540 T aligned_alloc
+000000000004b670 T malloc
+000000000005c8e0 T malloc_usable_size

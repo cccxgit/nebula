@@ -1,0 +1,87 @@
+{
+  "phase-03-default30": {
+    "s1": {
+      "rows": 12,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s2": {
+      "rows": 12,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s3": {
+      "rows": 12,
+      "all_valid": true,
+      "stable_pid": true
+    }
+  },
+  "phase-05-accelerated1": {
+    "s1": {
+      "rows": 60,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s2": {
+      "rows": 60,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s3": {
+      "rows": 60,
+      "all_valid": true,
+      "stable_pid": true
+    }
+  },
+  "phase-07-restored30": {
+    "s1": {
+      "rows": 12,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s2": {
+      "rows": 12,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s3": {
+      "rows": 12,
+      "all_valid": true,
+      "stable_pid": true
+    }
+  },
+  "phase-08-beforeflush": {
+    "s1": {
+      "rows": 1,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s2": {
+      "rows": 1,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s3": {
+      "rows": 1,
+      "all_valid": true,
+      "stable_pid": true
+    }
+  },
+  "phase-09-afterflush": {
+    "s1": {
+      "rows": 18,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s2": {
+      "rows": 18,
+      "all_valid": true,
+      "stable_pid": true
+    },
+    "s3": {
+      "rows": 18,
+      "all_valid": true,
+      "stable_pid": true
+    }
+  }
+}

@@ -1,0 +1,8 @@
+2026-10-10T06:58:47+08:00
+889f91816d70821ec7fae843d137073ccb869c28714bee5310410cf4d557c674  /home/sch/nebula-run/nebula-memory/bin/nebula-graphd
+e2eb1dc81fad54439a14b7fce0171c0706b2ecd1ad38ece5bb323c42c3258128  /home/sch/nebula-run/nebula-memory/bin/nebula-metad
+cab7389db65484d973e388b9883f7f9695f675a42f6467eb17b2930e559b8b51  /home/sch/nebula-run/nebula-memory/bin/nebula-storaged
+               total        used        free      shared  buff/cache   available
+Mem:            31Gi        14Gi       8.9Gi       524Mi       7.9Gi        15Gi
+Swap:           30Gi       4.8Gi        25Gi
+20.58 18.80 16.30 8/2831 77077

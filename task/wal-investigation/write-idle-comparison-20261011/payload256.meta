@@ -1,0 +1,2 @@
+capacity=8388608 payload_bytes=256 warmup_records=0 sizeof_record=48 sizeof_node=3200 reader_mode=release_after_each_push
+verified: payload roundtrip, logical/node/dirty counters, no retained readers; RSS_after_buffer_destroy_KiB=16172

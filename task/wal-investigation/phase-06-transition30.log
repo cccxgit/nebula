@@ -1,0 +1,9 @@
+{"time_utc": "2026-10-09T23:28:01.149+00:00", "label": "s1", "pid": 77312, "status_VmRSS_kib": 349680, "wal_records_estimate": 2178720, "rocksdb.cur-size-all-mem-tables": 157388800, "errors": ""}
+{"time_utc": "2026-10-09T23:28:01.207+00:00", "label": "s2", "pid": 77368, "status_VmRSS_kib": 350072, "wal_records_estimate": 2178816, "rocksdb.cur-size-all-mem-tables": 157388800, "errors": ""}
+{"time_utc": "2026-10-09T23:28:01.280+00:00", "label": "s3", "pid": 77431, "status_VmRSS_kib": 351288, "wal_records_estimate": 2178942, "rocksdb.cur-size-all-mem-tables": 182554624, "errors": ""}
+{"time_utc": "2026-10-09T23:28:11.158+00:00", "label": "s1", "pid": 77312, "status_VmRSS_kib": 348756, "wal_records_estimate": 2179583, "rocksdb.cur-size-all-mem-tables": 157388800, "errors": ""}
+{"time_utc": "2026-10-09T23:28:11.233+00:00", "label": "s2", "pid": 77368, "status_VmRSS_kib": 349244, "wal_records_estimate": 2179619, "rocksdb.cur-size-all-mem-tables": 157388800, "errors": ""}
+{"time_utc": "2026-10-09T23:28:11.306+00:00", "label": "s3", "pid": 77431, "status_VmRSS_kib": 349996, "wal_records_estimate": 2179671, "rocksdb.cur-size-all-mem-tables": 182554624, "errors": ""}
+{"time_utc": "2026-10-09T23:28:21.159+00:00", "label": "s1", "pid": 77312, "status_VmRSS_kib": 348916, "wal_records_estimate": 2180568, "rocksdb.cur-size-all-mem-tables": 157388800, "errors": ""}
+{"time_utc": "2026-10-09T23:28:21.280+00:00", "label": "s2", "pid": 77368, "status_VmRSS_kib": 349372, "wal_records_estimate": 2180584, "rocksdb.cur-size-all-mem-tables": 157388800, "errors": ""}
+{"time_utc": "2026-10-09T23:28:21.388+00:00", "label": "s3", "pid": 77431, "status_VmRSS_kib": 350052, "wal_records_estimate": 2180622, "rocksdb.cur-size-all-mem-tables": 182554624, "errors": ""}

@@ -1,0 +1,109 @@
+生产调参证据笔记：水位线、MemoryTracker 与 Docker 内存口径
+记录时间：2026-10-11；目录：/home/sch/nebula/nebula-3.6-memory
+代码分支：3.6-memory；HEAD：194958131042df77301072eb99dccbc64fb34246
+工作边界：只读目标分支源码、阅读公开一级资料、写此笔记。未访问生产、未改参数、未启动数据库、未执行内存压力实验。
+
+直接结论
+
+不建议用提高水位线或关闭 MemoryTracker 来解决空闲空间占用。这些参数决定何时拒绝部分请求，并不删除仍在使用的 WAL 缓存；放宽保护只会使进程更接近容器硬限制。应先取原始错误区分 Graph 水位线错误和 StorageMemoryExceeded(-3600)，再用同一时刻的容器原始计数、RSS 与 MemoryTracker 日志确认内存口径。已有“空闲空间占用”机制证据不能替代这一步生产归因。
+
+1. 四类数字不能直接画等号
+
+1.1 容器 memory.current / memory.usage_in_bytes：cgroup 对该容器进程及相关缓存等资源的计数，受 memory.max / memory.limit_in_bytes 限制。不是单独 storaged 的 RSS。
+1.2 Docker CLI 的 MEM USAGE：现代 Linux Docker CLI 会扣掉一部分缓存；v1 扣 total_inactive_file，v2 扣 inactive_file。Docker API 返回原始计数和缓存分项，由调用者决定口径。监控看板可能采用自己的计算，必须保存原始字段。
+1.3 进程 RSS：该进程当前驻留的物理页；包含分配器尚未归还操作系统的部分空间，不能等同仍存活的 C++ 对象大小。
+1.4 本分支 MemoryTracker 的 usr：对重载 new/delete 计数，按 jemalloc 大小等级记录分配量，并包含每线程尚未使用的预留额度；不是 RSS，也不完整覆盖直接 malloc/free。
+
+目标源码：
+- src/common/memory/NewDelete.cpp:17-37,60-63：重载 new/delete 调用 track/untrack。
+- src/common/memory/Memory.h:80-90,107-114,127-135：nallocx/sallocx 大小计数。
+- src/common/memory/MemoryTracker.h:48-57,65-93,158-175：全局与线程配额；每线程 1 MiB 预留。只有开启 MemoryCheckGuard 且允许抛异常的分配在超过限制时抛 bad_alloc。
+- CMakeLists.txt:68-81：MemoryTracker 需要 ENABLE_MEMORY_TRACKER、jemalloc、非 ASAN；生产构建是否满足未知。
+
+外部依据（2026-10-11 阅读）：
+https://docs.docker.com/reference/cli/docker/container/stats/
+https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
+
+2. 当前版本怎样计算 sys
+
+src/common/memory/MemoryUtils.cpp:26-46,72-75,83-136。
+
+containerized 默认 false；为 false 时读取宿主 /proc/meminfo（115-127）。因此在 Docker 内不意味着一定按容器限制保护，必须读实际 flags。
+
+containerized=true 时：
+- 90：用 cgroup_v2_controllers 指定路径是否存在判断 v2，否则用 v1。
+- 93-98：匹配 ^total_(cache|inactive_file)\s+(\d+)$ 的所有行并相加为 cacheSize。
+- 100-110：读取 limit/current 指定路径。
+- 112-113：total=limit；available=limit-usage+cacheSize。
+- 132：按 (1-available/total)>system_memory_high_watermark_ratio 判断，默认 0.8（27）。
+
+由源码可确认的口径差异：
+- 通常 v1 同时存在 total_cache 与 total_inactive_file；此分支两者都加回 available，即使用量相当于 usage-total_cache-total_inactive_file。它与现代 Docker CLI 只减 total_inactive_file 不同，不能把它当作独立、无重叠的内存分项求和。
+- 标准 v2 的字段是 file、inactive_file 等，没有上述 total_ 前缀；该正则不匹配，因此 cacheSize 通常为 0，sys 相当于 raw memory.current/memory.max。Docker CLI 仍会减 inactive_file。
+- 这是本版本实际实现，不是建议依赖这些差异放宽阈值。生产的 cgroup 版本、挂载、实际路径与字段尚未知。
+- readSysContents（139-146）只检查能否打开文件；读取 uint64_t 后不检查解析成功。标准 v2 memory.max 可为字符串 max，此情况不能当作已正确识别容器上限。生产应确认读取的就是有限数值及对应本容器的控制组。
+
+假设例子（非生产实验）：容器 limit=16 GiB，raw current=13.6 GiB，inactive_file=1.6 GiB。Docker CLI 可能显示 12/16=75%，本分支标准 v2 sys 仍为 13.6/16=85%。因此“看板未到 80% 却报警”未必自相矛盾。反过来，不能因看板 80% 就断言哪一层保护触发。
+
+3. 两个 0.8 控制不同事情
+
+3.1 system_memory_high_watermark_ratio
+
+src/common/memory/MemoryUtils.cpp:83-136 计算环境内存水位线；src/storage/StorageServer.cpp:73-90 的监测线程调用，默认间隔 1 秒（41），更新 kHitMemoryHighWatermark。Graph 在 src/graph/service/QueryEngine.cpp:60-77 做相同监测。
+
+完整搜索命令：rg -n 'kHitMemoryHighWatermark|Used memory hits' src
+结果：本分支 Storage 请求路径未检索到读取 kHitMemoryHighWatermark 的位置；读这个标记并给出明确“Used memory hits the high watermark...”错误的位置是：
+- src/graph/executor/Executor.cpp:625-635：查询节点在水位线标记为 true 时拒绝。
+- src/graph/context/iterator/Iterator.cpp:16-26：满足间隔检查时抛 runtime_error。
+
+这证明字面水位线错误的来源需要检查 Graph。它不证明生产 Storage 没有内存问题，也不证明商用修改版本与此源码完全一致。Graph 与 Storage 如果共享宿主 / cgroup，彼此的环境计数也可能相关；具体部署未知。
+
+3.2 memory_tracker_limit_ratio
+
+src/common/memory/MemoryUtils.cpp:149-198：
+- 默认 0.8（59-61），正常 (0,1] 时：limit=ratio*(total-50 MiB)，50 来自 memory_tracker_untracked_reserved_memory_mb（55-58）。
+- 精确特殊值 2.0：limit=当前 tracker used + max(available-reserved,0)*memory_tracker_available_ratio，available_ratio 默认 0.8（63-65,173-184）。这改变预算算法，不会释放 WAL；未验证适合本生产环境，不推荐当作第一步。
+- 精确特殊值 3.0：把 tracker limit 设为 int64 最大值，相当于关闭此保护（185-193）。不是“允许300%”，也不是降内存方案。
+- 默认静态预算仅在 total 或 ratio 变化时重新计算（162）；只通过 HTTP 改 reserved_mb 未必触发当前 limit 重新计算。不要以 flag 回显变化代替实际 usr limit 验证。
+
+src/common/memory/MemoryTracker.h:158-165 只在当前线程启用抛异常且该次分配允许抛时拒绝配额；没有这层 guard 的后台分配仍可以计数并继续。因此这是部分分配路径的保护，不是整个进程不可突破的硬上限。
+
+Storage 查询例子：src/storage/query/GetNeighborsProcessor.cpp:77-83,174-204 开启 MemoryCheckGuard，捕获 bad_alloc 并返回 E_STORAGE_MEMORY_EXCEEDED。src/storage/BaseProcessor.h:65-83 统一把 memoryExceeded_ 转为此错误；src/storage/GraphStorageServiceHandler.cpp:34-48 捕获处理器 bad_alloc。src/interface/common.thrift:563 定义错误码 -3600。真实分配失败也能抛 bad_alloc（src/common/memory/Memory.h:23-28），不能仅凭 -3600 区分 tracker 拒绝与真实分配失败。
+
+src/interface/common.thrift:448 的 E_GRAPH_MEMORY_EXCEEDED=-2600 与上述 -3600 不同。src/graph/executor/StorageAccessExecutor.h:141-145 区别转换二者。写请求失败仍需取得实际代码与日志；不能概括为“所有 Storage 读写在 raw Docker 80% 被同一个开关拒绝”。
+
+4. purge 能做什么，不能做什么
+
+src/common/memory/MemoryUtils.cpp:48-49 默认 memory_purge_enabled=true，memory_purge_interval_seconds=10。149-150,200-209 将主动 jemalloc arena purge 放在 ENABLE_MEMORY_TRACKER 条件内，且时间差需严格大于 interval，所以不是精确每 10 秒。
+
+jemalloc arena purge 针对分配器 unused dirty pages，即已经不再承载活对象的可归还页面。仍在 WAL 有效链上持有的 Node、仍存活的字符串、RocksDB 活跃 MemTable 不会因此被删除或刷盘。降低 purge 间隔不会把这类长期缓存变短；更频繁回收/重新申请页还需要评估 CPU 与延迟成本。
+
+依据：https://jemalloc.net/jemalloc.3.html#arena.i.purge
+以及目标版本调用：src/common/memory/MemoryUtils.cpp:206。
+
+特别边界：system_memory_high_watermark_ratio>=1.0 会在 MemoryUtils.cpp:84-85 提前返回，连后面的 handleMemoryTracker、主动 purge 与 detail_log 都不再执行。若此前设过 tracker limit，旧值仍可能保留，不能称为“只关闭 sys 水位线”。
+
+因此建议保持现有已验证的保护阈值与 purge 默认行为。若现场配置 memory_purge_enabled=false，先确认原因及 allocator 实际情况；可在预发评估恢复 true，但它只可能改善已释放内存的归还，不能解决 live WAL 积累。
+
+5. 参数作用范围、生效方式与取证
+
+这些 flags 均是进程全局，没有按高/中/低频图空间区分的参数范围。
+
+src/webservice/SetFlagsHandler.cpp:79-85 的 HTTP PUT /flags 直接调用 gflags::SetCommandLineOption；没有在此检查 resources/gflags.json 的 MUTABLE 清单。MemoryUtils 每轮读取 containerized、路径、两个ratio、purge、detail_log，故在正确设置变量后相关后续检查可使用新值。此调用不写持久配置，不保证对象构造时读过的其他 flag 动态改变其对象。
+
+resources/gflags.json:2-19 将 system_memory_high_watermark_ratio 列为 MUTABLE；没有把 memory_tracker_*、memory_purge_* 或 containerized 列入本次清单。src/common/meta/GflagsManager.cpp:114-153 只注册可变清单项；src/clients/meta/MetaClient.cpp:3144-3149 受 skipConfig_（对应 local_config）控制。因此不能对这些未注册 flag 直接给出统一 UPDATE CONFIGS 命令。生产先 GET 核对实际值，持久化使用部署配置，必要时按正常变更窗口滚动重启。
+
+check_memory_interval_in_secs 在 StorageServer.cpp:89-90 创建定时任务时取值；运行中只改 flag 不会重新注册该定时任务。与每轮读取的 detail_log/purge interval 不同。
+
+优先建议验证（本次未在生产执行）：
+
+A. 在发生错误的同一时段取原始请求错误全文、码与具体 Graph/Storage 实例，区分 -3600、-2600、Used memory hits...、真实 OOM。对齐时间后才讨论阈值。
+B. 针对涉事 Graph/Storage 用已有运维通道读取实际 /flags，至少包含：containerized、local_config、system_memory_high_watermark_ratio、memory_tracker_limit_ratio、memory_tracker_available_ratio、memory_tracker_untracked_reserved_memory_mb、memory_purge_enabled、memory_purge_interval_seconds、memory_tracker_detail_log、memory_tracker_detail_log_interval_ms、check_memory_interval_in_secs 及全部 cgroup_*路径。GET /flags?flags=逗号分隔的上述名字&format=json。返回字段支持见 src/webservice/GetFlagsHandler.cpp:31-42,61-67,91-145。
+C. 若可控地增加观测，memory_tracker_detail_log=true、interval_ms=60000 是先行候选；原值记档后单实例开启，观察日志量，再恢复原值。会增加周期 INFO 日志；要求构建启用 tracker、sys ratio<1、cgroup读取成功。不要声称日志为空就没有内存问题。
+D. 此日志在 MemoryUtils.cpp:224-235 输出 sys:used/total 与 usr:used/limit。前者是上文环境计算，后者是 tracker。记录原始值不要只保留百分比。若 -3600 与 usr 接近限制同步，支持 tracker 预算压力；若 usr 低而 raw cgroup/anonymous/RSS 高，需进一步检查直接 malloc、分配器残留、其他进程、文件缓存等，不能直接认定 WAL 是唯一来源。
+E. 同时读取涉事容器的实际 cgroup：版本、memory.current/max/stat/events（v2，包含 anon/file/inactive_file、high/max/oom/oom_kill事件增量）或 v1 usage/limit/stat/failcnt/oom_control。保存 /proc/<storaged_pid>/status（VmRSS/RssAnon/RssFile/VmSwap/Threads）及适度频率的 smaps_rollup；不要混用宿主 PID 与容器 PID。没有 smaps_rollup 就明确缺失。
+F. 存活 WAL 对象、Rocks MemTable、分配器 allocated/active/resident（如已有观测）与以上数值联合比较。purge 前后 RSS 降、live分配不降可支持已释放页残留；live WAL/Node 仍持续增加时，purge无权删除它们。严禁用清系统 page cache 代替验证，它会改变所有业务 IO 行为。
+
+最终结论
+
+保护参数与缓存大小参数必须分别处理：前者改变请求何时失败，后者才可能减少长期存活数据。此源码还存在 Docker/cgroup 统计口径差异和 Graph/Storage 错误来源差异，生产需先用原始计数与错误确认，然后在不放松保护的前提下验证缓存调小的收益与性能代价。

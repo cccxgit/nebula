@@ -1,0 +1,3 @@
+RocksDB 7.5.3 dbs=5 parts_per_db=20 rounds=10000 key_bytes=8 value_bytes=16 write_buffer_size=67108864 max_write_buffer_number=4 inplace_update_support=false disableWAL=false sync=false allocator=jemalloc
+key(part1)_hex=0401000001000000 value(log1,term1)_hex=01000000000000000100000000000000
+verified_logical_keys_after_flush=100 latest_value_matches=true

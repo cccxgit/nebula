@@ -1,0 +1,90 @@
+图空间参数扩展范围审阅（只读源码评估，未实现、未运行新的性能实验）
+日期：2026-10-11
+代码：3.6-memory，HEAD 194958131042df77301072eb99dccbc64fb34246。
+相关产品基线 de9b3ed800a6627d9845e9289b6bbc5b6faf460a；当前 AtomicLogBuffer.cpp 的行号含既有观测插桩，其他列出的源文件未修改。
+
+直接结论
+按图空间选择 WAL 缓存容量和 RocksDB 写缓冲参数具备实现基础：前者本来就是每分片对象的容量，后者本来就是每空间、每数据目录的数据库实例参数。关键工作不在 gflag 解析，而在把空间配置传到正确对象、保持继承规则一致，并阻止其他配置入口悄悄覆盖它。第一期宜只做 WAL 容量的启动时选择；随后扩展少量 RocksDB CF 参数。共享缓存、内存总水位线和 Raft 心跳不适合一并泛化。
+
+一、为什么这些参数不能使用同一种改法
+
+1. wal_buffer_size：适合第一期。
+每个本地分片副本拥有自己的 AtomicLogBuffer。RaftPart 构造时把进程 FLAGS_wal_buffer_size 放入 FileBasedWalPolicy，AtomicLogBuffer 构造时将容量存为成员。把取值改为“按 spaceId 解析的有效配置”，天然可以区分冷热空间；不是为整个 space 只分配一个总缓存。
+证据：src/kvstore/raftex/RaftPart.cpp:358-360；src/kvstore/wal/AtomicLogBuffer.h:327、363。
+它证明对象边界合适，不能证明调小后性能无影响，更不能把容量视为实际 malloc/RSS 上限。
+
+2. write_buffer_size / max_write_buffer_number / arena_block_size：适合后续小范围扩展。
+RocksEngine 初始化已经接收 spaceId；每个空间、每个配置的数据目录分别有 engine，因此可以对该空间所有 engine 合成相同 CF 配置。
+证据：src/kvstore/NebulaStore.cpp:395-421；src/kvstore/RocksEngine.cpp:64-80；src/kvstore/RocksEngineConfig.cpp:222-268。
+三项已经列在 PartManager::onSpaceOptionUpdated 的支持列表：src/kvstore/PartManager.cpp:103-129。
+现有 NebulaStore::setOption(spaceId, ...) 遍历该空间 engines_，最终调用 db_->SetOptions：src/kvstore/NebulaStore.cpp:1014-1028；src/kvstore/RocksEngine.cpp:489-500。
+这证明现有下层有按空间应用参数的基础，不证明已有面向用户的按空间动态调参功能，也不证明修改后立即回收当前 MemTable 页面。小 write_buffer_size 增加 flush 次数，小 max_write_buffer_number 降低突发容纳能力，小 arena_block_size 增加分配次数；必须分别验证。
+
+3. block cache / row cache：本期保留共享。
+src/kvstore/RocksEngineConfig.cpp:307-319 明确使用函数内 static shared_ptr<rocksdb::Cache>，随后不同 engine 复用同一对象。仅替换输入参数为按 space 查表，仍只会按首个实例创建一个共享对象，其他值不会自然变成空间预算。
+若要真正按空间拆分，需要另做 cache registry、所有权/销毁、预算总额与未用额度共享策略；复制每空间一份既有默认容量可能反而放大内存。当前资源共享也意味着即使热空间参数原值不变，冷空间增加 I/O 仍可能干扰热空间延迟。
+
+4. max_log_buffer_size：不是有效 WAL 缓存的第二个容量上限。
+src/kvstore/wal/AtomicLogBuffer.cpp:277-325 中，只有当前退出的迭代器是最后一个读者后，才检查 dirtyNodes > dirtyNodesLimit_ 或 size_ > FLAGS_max_log_buffer_size，然后释放已 markDeleted 的节点。
+src/kvstore/wal/AtomicLogBuffer.cpp:192-215 在淘汰有效节点时已从 size_ 扣去该节点逻辑字节数，因此 size_ 是有效部分的逻辑量，不能将这个条件解释为所有已分配内存超限。
+第一期如果只把空间容量从 8 MiB 往下调，可以保持既有全局 16 MiB GC 条件和 dirtyNodesLimit_=5，不必同时新增一个面向运维的旋钮。若将来允许容量大于 16 MiB，则应审阅每次最后读者退出都进入 GC 判断的成本，必要时把 GC 策略一并作为对象成员，但不能宣称调整该值可以主动淘汰仍有效的日志。若要保证配置快照不可变，也必须认识到 releaseRef 当前仍直接读全局 FLAGS_max_log_buffer_size。
+
+5. heartbeat：本期排除。
+一个 Raft 心跳参数同时影响 follower 选举、leader lease、轮询节奏和 peer 存活判断，不只是空日志生成速度。
+证据：RaftPart.cpp:1143-1154（选举）、1407-1417（轮询）、2259-2267（租约）；Host.cpp:431-441（暂停 peer）；RaftPart.cpp:628-638 中 checkAlive 还使用函数 static const 超时，它会在首次执行时捕获全局值。
+如果改为按空间，需要统一全部时间条件、消除首次空间决定 static 值的问题，并验证同一分片各副本及混合版本的时间配置相容。不要只改定时器来源。
+
+6. wal_ttl / wal_file_size：不是本期减内存手段。
+src/kvstore/wal/FileBasedWal.cpp:657、693 每次清理直接读取全局 wal_ttl；清理条件涉及保留至少两个文件、文件 mtime 和给定 committed logId。它控制磁盘日志保留，不清理 AtomicLogBuffer。
+wal_file_size 在 RaftPart 构造时进入 policy.fileSize，FileBasedWal.cpp:469-477 用于滚动文件。二者未来可以按对象传入，但缩短保留会影响落后副本能否走日志追赶；文件大小也影响至少两个文件的实际保留量。此次为降低冷空间有效缓存容量不需改它们。
+
+7. wal_sync / rocksdb_disable_wal / rocksdb_wal_sync：本期排除。
+Raft FileBasedWal.cpp:480-486 是 write 后按 policy.sync 决定是否 fsync；这属于持久化策略，不是缓存容量。RocksDB 的开关还被多个写路径直接读全局值，不能只改 RocksEngine 初始化：RocksEngine.cpp:287-345；Part.cpp:358、396、561、583；NebulaStore.cpp:1402。
+NebulaStore.cpp:1293-1308 在清理 Raft WAL 前，依据全局 rocksdb_disable_wal 决定是否先 flush engine。只把业务写路径空间化而漏掉清理路径会破坏原来的恢复前置条件。这些参数需独立持久化与故障恢复评审。
+
+8. MemoryTracker / system_memory_high_watermark_ratio：保留进程级总保护。
+src/common/memory/MemoryTracker.h:50-83 是进程 singleton + thread-local 预留计数；MemoryUtils.cpp:89-113 读取整个容器的 limit/current，149-165 设置全局 MemoryStats limit。把 flag 改成 space map 无法知道某次释放属于哪个空间，也不能把同一个容器限额复制给各空间。
+若未来需要空间内存配额，必须独立增加归属记录、跨线程继承、共享对象计费和全局父级预算；不应把此工程伪装成普通按空间参数覆盖。
+
+二、配置继承和更新必须处理的具体问题
+
+建议合成顺序：既有全局参数作为缺省值 → 指定 profile 的字段覆盖 → 指定 spaceId 的字段覆盖。若第一期不需要 profile，可省略中间层。缺字段意味着继承，不意味着置 0，也不意味着永久保留上次值。明确的数值 0 是参数值，应按参数本身校验，不能被误判为“未配置”。
+
+举一个假设例子：全局 write_buffer_size=64 MiB；冷空间 override=8 MiB；热空间未设置。全局后来变为 32 MiB时，冷空间应仍为 8 MiB，热空间应成为 32 MiB。删除冷空间 override 后，它才应回到有效缺省的 32 MiB。该例只是期望的新设计语义，当前版本没有此功能。
+
+当前全局更新容易破坏新覆盖：
+- MetaClient.cpp:3185-3206 先 SetCommandLineOption，再将 map 值交给 updateNestedGflags；该函数 3221-3225 遍历所有本地空间，并传同一 optionMap。
+- 所以如果只在创建 engine 时做空间覆盖，后来的全局 UPDATE CONFIGS 将覆盖冷空间已设置的值。必须按每个空间重新合成有效配置，不能直接沿用全局广播。
+- MetaClient.cpp:3198-3201 将空 map 写成 "{}"，随后空 options 进入 PartManager.cpp:145-161 时没有 setOption 动作。旧 engine 会保留先前值，新 engine 初始化却从 {} 走 RocksDB 缺省；因此空 map/删除字段不等于恢复继承，需显式比较旧/新有效值并应用恢复值。
+- Meta 目前仅按 module+name 存配置：SetConfigProcessor.cpp:55-78。不要把加一个 NESTED 标记等同于获得空间 key、版本、应用结果协议。GflagsManager.cpp:28-41 的 map 解析对每个值调用 asString，不能未经改造就认定任意多层 JSON 都支持。
+
+第一期启动时冻结配置是合理减风险路径，但必须覆盖所有创建途径（服务启动、动态空间/分片加入、balance、恢复），都从同一不可变 registry 解析，而不是每创建一个对象就重读可被热改的字符串。
+
+三、全局运行时入口不能绕过规则
+
+src/webservice/SetFlagsHandler.cpp:78-86 直接调用 gflags::SetCommandLineOption，不调用 GflagsManager::onModified，也不依据 Meta MUTABLE 清单过滤。因此：
+- 不在 resources/gflags.json 的 MUTABLE/NESTED 中声明，只能避免正常 Meta 动态配置注册，不自动阻止 HTTP 变更 flag 字符串。
+- 若第一期不支持热改，应统一拒绝/明确标记需重启，并通过有效配置输出区别“输入字符串值”和“对象正在使用的值”。不要让接口返回成功就显示已经应用。
+- 若将来支持热改，需要统一解析/校验/版本发布入口，使用不可变快照或同等线程安全机制；不能令业务线程直接读可能并发修改的 std::string，再每次解析 JSON。
+
+现有 Rocks 动态更新并非完整的可靠执行协议：NebulaStore.cpp:719-732 只是向 storeWorker 排异步任务，每个 key 单独调用 setOption/setDBOption且丢弃返回码；NebulaStore.cpp:1022-1026 中的 setOption 又可能在某个 engine 失败前已改完前面的 engine。
+新机制若支持动态更新，要能报告 desired/applied 版本、每个 engine 的有效值和失败原因，定义重复应用、部分成功、回退、空间删除并发。相关参数组最好统一校验并按同一个生效批次应用，不能把 Meta 写入成功等同于所有 RocksDB 实例生效。
+
+四、建议开发与验证边界
+
+阶段 A：仅允许按空间设置 wal_buffer_size，启动前解析和校验，容量传入新对象；未设置时精确继承原全局值。第一轮不改有效日志淘汰和 reader 回收算法，不加在线 resize。跨节点配置可能暂时不同，但这只是缓存性能参数，不改变 Raft 消息格式/日志内容；仍需迁移与重启验证，不能推出无性能风险。
+
+阶段 B：补 write_buffer_size、max_write_buffer_number、arena_block_size，先保证启动初始化与现有全局配置更新不会相互覆盖，再讨论在线变更。每个空间多数据目录的 engine 均需应用。
+
+阶段 C：若业务确需无重启热改，单独设计原子快照、参数生效回执和 WAL 缩容的并发算法。仅增加 map 或修改非原子 capacity_ 不足以完成此阶段。
+
+建议验收用例（本轮未执行）：
+1. 热/冷两个空间不同值，逐副本/逐 engine 检查 effective config；未设置空间和 spaceId=0 的管理存储保持既有行为。
+2. 全局 CF 配置更新时，显式空间覆盖不变；删除覆盖、字段缺失、空 map 都按明确定义恢复，不出现旧 engine 与新 engine 不同值。
+3. 不支持动态更新时，HTTP/Meta 入口不能制造“已生效”的假象；支持动态更新时，非法输入不能污染当前有效快照。
+4. 多数据目录中一个 engine 设置失败，能观察部分失败并按设计回退或重试；不把成功提交 Meta 当作所有实例成功。
+5. 删除重建空间、迁移分片、新节点加入、旧新版本混部后，检查配置继承及实际容量。按 spaceId 配置应防止名称复用误继承；未知空间 ID 如何处理需预先规定。
+6. 同机冷热混合压力，热空间保持原值仍测 P99/超时率、I/O、复制落后。此测试可推翻“保持热空间参数原值就等于热业务性能完全不变”的错误假设。
+
+结论
+空间级 WAL 和有限的 CF 参数值得实现，但应把“按空间选值”与“在线改变既有对象”拆成两个明确能力。当前源码足以支持前者的可行性判断；后者涉及并发、配置覆盖和部分生效，需要独立设计与测试，现有实验不能替它背书。

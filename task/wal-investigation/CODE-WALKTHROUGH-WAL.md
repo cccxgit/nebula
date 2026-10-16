@@ -46,11 +46,11 @@ flowchart TD
 
 缓存通过raw pointer串联Node，并不意味着无人拥有。Node的创建、标删、物理delete和最终析构由`AtomicLogBuffer`负责；只要仍挂在链上就是可达内存。
 
-`FileBasedWal::getWal()`和`AtomicLogBuffer::instance()`都是工厂，每次创建新对象，名字中有`instance`不代表全局共享单例。每个RaftPart会按照policy建立自己的缓存，见 [RaftPart.cpp:357](../../src/kvstore/raftex/RaftPart.cpp:357)、[FileBasedWal.cpp:59](../../src/kvstore/wal/FileBasedWal.cpp:59)、[AtomicLogBuffer.h:252](../../src/kvstore/wal/AtomicLogBuffer.h:252)。
+`FileBasedWal::getWal()`和`AtomicLogBuffer::instance()`都是工厂，每次创建新对象，名字中有`instance`不代表全局共享单例。每个RaftPart会按照policy建立自己的缓存，见 [RaftPart.cpp:357](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L357)、[FileBasedWal.cpp:59](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L59)、[AtomicLogBuffer.h:252](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L252)。
 
 ## 3. Record：消息内容与容量计账
 
-定义在 [AtomicLogBuffer.h:23](../../src/kvstore/wal/AtomicLogBuffer.h:23)。
+定义在 [AtomicLogBuffer.h:23](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L23)。
 
 `Record(clusterId, termId, StringPiece msg)`会把`msg`转成自己拥有的`std::string`。传入`StringPiece`只是一个非拥有视图；Record构造完成后并不依赖原调用者字符串继续存在。
 
@@ -74,7 +74,7 @@ sizeof(ClusterID) + sizeof(TermID) + msg_.size()
 
 ## 4. Node：为什么一条空记录也要分配64槽
 
-定义在 [AtomicLogBuffer.h:44](../../src/kvstore/wal/AtomicLogBuffer.h:44)。`kMaxLength=64`，`records_`是固定数组而不是按记录数动态增长的vector。
+定义在 [AtomicLogBuffer.h:44](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L44)。`kMaxLength=64`，`records_`是固定数组而不是按记录数动态增长的vector。
 
 ### 4.1 字段的真实含义
 
@@ -92,9 +92,9 @@ sizeof(ClusterID) + sizeof(TermID) + msg_.size()
 
 ### 4.2 `isFull()`与`push_back()`
 
-[Node::isFull():50](../../src/kvstore/wal/AtomicLogBuffer.h:50)判断`pos_==64`，不是检查字节容量。
+[Node::isFull():50](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L50)判断`pos_==64`，不是检查字节容量。
 
-[Node::push_back():60](../../src/kvstore/wal/AtomicLogBuffer.h:60)按以下顺序做事：
+[Node::push_back():60](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L60)按以下顺序做事：
 
 1. 如果64槽已满，返回false。
 2. 将Record的逻辑size累加到Node::size_。
@@ -105,13 +105,13 @@ reader读取`pos_`时使用acquire，使“看到位置增加”与“能看到�
 
 ### 4.3 `rec()`与ID边界
 
-[Node::rec():77](../../src/kvstore/wal/AtomicLogBuffer.h:77)返回指定槽位Record的地址，不复制对象，也不增加Node级引用。实际使用安全性依赖iterator生命周期和已发布位置。
+[Node::rec():77](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L77)返回指定槽位Record的地址，不复制对象，也不增加Node级引用。实际使用安全性依赖iterator生命周期和已发布位置。
 
-阅读时要注意一个命名细节：[Node::lastLogId():92](../../src/kvstore/wal/AtomicLogBuffer.h:92)原实现返回`firstLogId_ + pos_`，并非字面上“最后一个已写槽位ID”的`first+pos-1`。普通遍历还会在到达`pos_`时转向下一个Node或结束。本报告不依赖这个名字反推准确记录数，而用显式push计数和文件记录解析。这里保留原实现进行解读，没有把边界细节作为此次内存增长原因或进行改写。
+阅读时要注意一个命名细节：[Node::lastLogId():92](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L92)原实现返回`firstLogId_ + pos_`，并非字面上“最后一个已写槽位ID”的`first+pos-1`。普通遍历还会在到达`pos_`时转向下一个Node或结束。本报告不依赖这个名字反推准确记录数，而用显式push计数和文件记录解析。这里保留原实现进行解读，没有把边界细节作为此次内存增长原因或进行改写。
 
 ## 5. 链表方向：head最新，tail最老有效，tail之后仍可能有节点
 
-缓冲字段定义在 [AtomicLogBuffer.h:353](../../src/kvstore/wal/AtomicLogBuffer.h:353)。在正常状态下，沿`next_`看是从新到旧：
+缓冲字段定义在 [AtomicLogBuffer.h:353](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L353)。在正常状态下，沿`next_`看是从新到旧：
 
 ```text
 head_
@@ -138,13 +138,13 @@ head_
 
 ### 6.1 构造不预分配8MiB
 
-[构造函数:327](../../src/kvstore/wal/AtomicLogBuffer.h:327)只是保存capacity。head/tail初始为空，size/refs/dirty初始为0。
+[构造函数:327](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L327)只是保存capacity。head/tail初始为空，size/refs/dirty初始为0。
 
 因此创建1000个buffer，并不立即分配1000×8MiB。大量实际Node是在后续空日志积累过程中渐进分配的；这也解释“空间建好后继续慢慢涨”。
 
 ### 6.2 `push(logId,term,cluster,msg)`包装层
 
-[头文件:270](../../src/kvstore/wal/AtomicLogBuffer.h:270)先构建拥有payload的Record，再调用`push(logId, Record&&)`。实际链表与容量逻辑在 [原始cpp:71](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:71)。
+[头文件:270](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L270)先构建拥有payload的Record，再调用`push(logId, Record&&)`。实际链表与容量逻辑在 [原始cpp:71](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L71)。
 
 ### 6.3 分支A：必须创建新Node
 
@@ -165,7 +165,7 @@ reset之后第一次push也走这个分支：建立新的有效head/tail，而�
 
 ### 6.4 分支B：向现有未满head追加
 
-只有分支A不满足时，才来到 [原始cpp:91](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:91)。
+只有分支A不满足时，才来到 [原始cpp:91](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L91)。
 
 如果`size_+recSize>capacity_`，取tail并检查`tail!=head`：
 
@@ -194,7 +194,7 @@ Buffer::size_      = 当前有效区间的逻辑计账，不含已标删Node
 
 ### 7.1 构造与`addRef()`
 
-[iterator():315](../../src/kvstore/wal/AtomicLogBuffer.h:315)创建`unique_ptr<Iterator>`。Iterator内部持有buffer的shared_ptr；[构造函数:191](../../src/kvstore/wal/AtomicLogBuffer.h:191)先`addRef()`，再固定end并seek起点。
+[iterator():315](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L315)创建`unique_ptr<Iterator>`。Iterator内部持有buffer的shared_ptr；[构造函数:191](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L191)先`addRef()`，再固定end并seek起点。
 
 `addRef()`只是全buffer计数`refs_.fetch_add(1)`。即便seek失败、iterator一开始无效，也已经增加了refs；退出时仍会减回去并可能触发GC。这对FileBasedWal回退文件iterator时的行为很重要。
 
@@ -202,7 +202,7 @@ end固定在创建时，之后writer继续追加的日志不会让这个iterator
 
 ### 7.2 `AtomicLogBuffer::seek(logId)`
 
-见 [原始cpp:138](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:138)。
+见 [原始cpp:138](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L138)。
 
 它先处理空head和过新的ID，然后从head沿next向旧节点查找，限定在当前有效区间附近，并拒绝已标删节点。找到第一个`logId >= node.firstLogId_`的Node后返回。复杂度最坏随节点数增长；最近日志通常就在head，所以常见读取很短。
 
@@ -210,13 +210,13 @@ end固定在创建时，之后writer继续追加的日志不会让这个iterator
 
 ### 7.3 `Iterator::seek()`、`record()`、`logMsg()`
 
-[原始cpp:42](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:42)取得Node后，计算`currIndex_=logId-node.firstLogId_`，保存当前Record指针；找不到则valid=false。
+[原始cpp:42](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L42)取得Node后，计算`currIndex_=logId-node.firstLogId_`，保存当前Record指针；找不到则valid=false。
 
 `logTerm()`、`logSource()`、`logMsg()`分别读取当前Record字段。`logMsg()`返回StringPiece，不复制payload；调用者若需要比iterator更长的生命期，必须自己复制。Raft Host准备RPC时确实调用`toString()`，把内容拷贝到请求结构。
 
 ### 7.4 `Iterator::operator++()`
 
-见 [原始cpp:15](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:15)：
+见 [原始cpp:15](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L15)：
 
 1. currIndex和currLogId递增。
 2. 超过创建时固定的end，立刻失效。
@@ -228,7 +228,7 @@ end固定在创建时，之后writer继续追加的日志不会让这个iterator
 
 ## 8. releaseRef与GC：逻辑删除何时变为物理释放
 
-Iterator析构 [AtomicLogBuffer.h:136](../../src/kvstore/wal/AtomicLogBuffer.h:136)调用 [原始releaseRef():167](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:167)。它是本类常规GC的入口；没有独立定时GC线程。
+Iterator析构 [AtomicLogBuffer.h:136](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L136)调用 [原始releaseRef():167](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L167)。它是本类常规GC的入口；没有独立定时GC线程。
 
 ### 8.1 为什么先读tail，再减refs
 
@@ -287,7 +287,7 @@ GC还要通过`gcOnGoing_`的compare-exchange，避免多个回收者同时切�
 
 ### 9.1 `AtomicLogBuffer::reset()`
 
-见 [原始cpp:121](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:121)。它沿head→next给尚未标删节点设置markDeleted；遇到已经标删的节点便停止，因为之后应已经是dirty区间。然后：
+见 [原始cpp:121](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L121)。它沿head→next给尚未标删节点设置markDeleted；遇到已经标删的节点便停止，因为之后应已经是dirty区间。然后：
 
 ```text
 size_ = 0
@@ -303,7 +303,7 @@ dirtyNodes += 新标删节点数
 
 ### 9.2 `~AtomicLogBuffer()`
 
-见 [原始cpp:56](../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:56)。析构时CHECK refs为0，从head沿next遍历，直接delete所有仍在链上的Node，包含有效与脏节点。
+见 [原始cpp:56](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L56)。析构时CHECK refs为0，从head沿next遍历，直接delete所有仍在链上的Node，包含有效与脏节点。
 
 iterator的shared_ptr通常保证它们存在时buffer不会进入最终析构。没有缓存对象或Node自己形成的shared_ptr回环；Node之间是raw pointer，析构遍历负责清理。因此不能只看“长期持有”就认定存在所有权回环泄漏。
 
@@ -311,13 +311,13 @@ iterator的shared_ptr通常保证它们存在时buffer不会进入最终析构�
 
 ### 10.1 工厂、构造和文件索引
 
-[FileBasedWal::getWal():31](../../src/kvstore/wal/FileBasedWal.cpp:31)创建对象。构造函数检查目录、创建空AtomicLogBuffer、扫描WAL文件，然后从最早/最新WalFileInfo恢复first/last/term，打开最后文件追加。
+[FileBasedWal::getWal():31](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L31)创建对象。构造函数检查目录、创建空AtomicLogBuffer、扫描WAL文件，然后从最早/最新WalFileInfo恢复first/last/term，打开最后文件追加。
 
 成员中的`walFiles_`是`map<firstLogId, shared_ptr<WalFileInfo>>`，不是全部日志内容。WalFileInfo记录路径、首末ID、末term、mtime和size；每条payload并不因此留在这个map。
 
 ### 10.2 `scanAllWalFiles()`与`scanLastWal()`：恢复不等于缓存预热
 
-[scanAllWalFiles():85](../../src/kvstore/wal/FileBasedWal.cpp:85)识别`<首条ID>.wal`文件名，读取文件元数据和首尾记录信息，建立按ID有序索引。最后文件再交给 [scanLastWal():371](../../src/kvstore/wal/FileBasedWal.cpp:371) 逐条检查ID连续性和前后长度字段，发现有效前缀后的坏尾时截断。扫描还检查文件间ID缺口，对最后缺口之前的文件执行清理。
+[scanAllWalFiles():85](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L85)识别`<首条ID>.wal`文件名，读取文件元数据和首尾记录信息，建立按ID有序索引。最后文件再交给 [scanLastWal():371](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L371) 逐条检查ID连续性和前后长度字段，发现有效前缀后的坏尾时截断。扫描还检查文件间ID缺口，对最后缺口之前的文件执行清理。
 
 这段流程涉及文件恢复和一致性校验，但没有调用`logBuffer_->push()`。因此：
 
@@ -335,7 +335,7 @@ iterator的shared_ptr通常保证它们存在时buffer不会进入最终析构�
 
 ### 10.3 `appendLogInternal()`：先文件，后缓存
 
-见 [FileBasedWal.cpp:442](../../src/kvstore/wal/FileBasedWal.cpp:442)。
+见 [FileBasedWal.cpp:442](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L442)。
 
 1. 有已有连续范围时，检查新ID应为last+1。
 2. 调用preProcessor。Part对空日志不会进入非空业务/成员变更解析分支。
@@ -347,17 +347,17 @@ iterator的shared_ptr通常保证它们存在时buffer不会进入最终析构�
 
 新建文件、文件滚动、每条fsync、内存缓存容量各是独立机制。16MiB `wal_file_size`不是8MiB `wal_buffer_size`，更不是实际RSS上限。
 
-[appendLog():503](../../src/kvstore/wal/FileBasedWal.cpp:503)和[appendLogs():515](../../src/kvstore/wal/FileBasedWal.cpp:515)先检查DiskManager剩余空间，再调用内部函数；批量版本逐条迭代，并非只缓存一条批次元信息。
+[appendLog():503](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L503)和[appendLogs():515](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L515)先检查DiskManager剩余空间，再调用内部函数；批量版本逐条迭代，并非只缓存一条批次元信息。
 
 ### 10.4 `prepareNewFile()`、`closeCurrFile()`
 
-[prepareNewFile():292](../../src/kvstore/wal/FileBasedWal.cpp:292)按首条ID创建文件、WalFileInfo和map条目，设置当前fd/info。
+[prepareNewFile():292](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L292)按首条ID创建文件、WalFileInfo和map条目，设置当前fd/info。
 
-[closeCurrFile():263](../../src/kvstore/wal/FileBasedWal.cpp:263)在非逐条sync模式下fsync，关闭fd，更新WalFileInfo和文件mtime，再释放当前info引用。这里没有清空AtomicLogBuffer；文件滚动不是缓存清空的触发点。
+[closeCurrFile():263](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L263)在非逐条sync模式下fsync，关闭fd，更新WalFileInfo和文件mtime，再释放当前info引用。这里没有清空AtomicLogBuffer；文件滚动不是缓存清空的触发点。
 
 ### 10.5 `iterator()`：内存命中与文件回退
 
-[FileBasedWal::iterator():530](../../src/kvstore/wal/FileBasedWal.cpp:530)先创建AtomicLogBuffer iterator；有效则返回它，无效则创建WalFileIterator。
+[FileBasedWal::iterator():530](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L530)先创建AtomicLogBuffer iterator；有效则返回它，无效则创建WalFileIterator。
 
 注意，那个无效的内存iterator同样经历addRef和releaseRef。因此“最后走了文件读取”并不表示完全没有碰到buffer的reader计数；临时iterator退出本身也可能触发已有dirty节点GC。
 
@@ -365,7 +365,7 @@ iterator的shared_ptr通常保证它们存在时buffer不会进入最终析构�
 
 ### 10.6 `WalFileIterator`：打开文件，按需pread，不把全文件装入缓存
 
-构造位于 [WalFileIterator.cpp:15](../../src/kvstore/wal/WalFileIterator.cpp:15)。它持有FileBasedWal的shared_ptr，通过`accessAllWalInfo()`取得所需文件及ID范围，打开文件描述符，然后在起始文件中扫描到目标ID。
+构造位于 [WalFileIterator.cpp:15](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/WalFileIterator.cpp#L15)。它持有FileBasedWal的shared_ptr，通过`accessAllWalInfo()`取得所需文件及ID范围，打开文件描述符，然后在起始文件中扫描到目标ID。
 
 - `operator++()`按记录大小推进offset，跨文件时关闭当前fd并切换。
 - `logTerm()`使用已经读取的当前term。
@@ -379,15 +379,15 @@ iterator的shared_ptr通常保证它们存在时buffer不会进入最终析构�
 
 ### 10.7 `rollbackToLog()`与`reset()`
 
-[rollbackToLog():569](../../src/kvstore/wal/FileBasedWal.cpp:569)检查目标范围、关闭当前文件、删除目标之后整段文件，必要时用`rollbackInFile()`找到目标记录末尾并ftruncate。最后调用buffer.reset，使旧内存记录整体逻辑失效；它不会只在缓存中剪掉几个槽位，也不会从剩余磁盘内容重新预热缓存。
+[rollbackToLog():569](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L569)检查目标范围、关闭当前文件、删除目标之后整段文件，必要时用`rollbackInFile()`找到目标记录末尾并ftruncate。最后调用buffer.reset，使旧内存记录整体逻辑失效；它不会只在缓存中剪掉几个槽位，也不会从剩余磁盘内容重新预热缓存。
 
-[FileBasedWal::reset():622](../../src/kvstore/wal/FileBasedWal.cpp:622)关闭当前文件、标记buffer重置、清空文件索引、unlink文件并清零首末ID与term。buffer.reset的延迟物理释放语义仍然适用。
+[FileBasedWal::reset():622](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L622)关闭当前文件、标记buffer重置、清空文件索引、unlink文件并清零首末ID与term。buffer.reset的延迟物理释放语义仍然适用。
 
 这些操作针对Raft回退、重置等状态变化，不是空闲缓存的定时管理方式。
 
 ### 10.8 两个`cleanWAL()`：TTL只作用于磁盘层
 
-无参数重载 [FileBasedWal.cpp:640](../../src/kvstore/wal/FileBasedWal.cpp:640)在walFilesMutex保护下检查mtime与TTL，并至少保留最新两个文件。带ID重载 [FileBasedWal.cpp:676](../../src/kvstore/wal/FileBasedWal.cpp:676)还要求被清理文件lastId小于给定commit id。
+无参数重载 [FileBasedWal.cpp:640](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L640)在walFilesMutex保护下检查mtime与TTL，并至少保留最新两个文件。带ID重载 [FileBasedWal.cpp:676](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L676)还要求被清理文件lastId小于给定commit id。
 
 实际清理动作是unlink和map.erase。它们不检查内存Node年龄，不访问buffer.size，也不reset内存缓存。
 
@@ -395,44 +395,44 @@ iterator的shared_ptr通常保证它们存在时buffer不会进入最终析构�
 
 ### 10.9 其它相关入口
 
-- [accessAllWalInfo():709](../../src/kvstore/wal/FileBasedWal.cpp:709)：在文件索引锁下从新到旧遍历WalFileInfo供callback使用，是WalFileIterator打开文件的入口；它不是Node遍历器。
-- [getLogTerm():723](../../src/kvstore/wal/FileBasedWal.cpp:723)：用通用iterator读取单个ID的term，找不到返回INVALID_TERM；它同样可能命中内存或回退磁盘。
-- [linkCurrentWAL():538](../../src/kvstore/wal/FileBasedWal.cpp:538)：先关闭当前追加文件，再给WAL文件建立硬链接用于相应文件保留流程；不清空内存buffer。
-- [~FileBasedWal():77](../../src/kvstore/wal/FileBasedWal.cpp:77)：关闭当前文件，成员析构释放buffer shared_ptr；若仍有内存iterator的shared_ptr，buffer自身生命期会继续。
+- [accessAllWalInfo():709](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L709)：在文件索引锁下从新到旧遍历WalFileInfo供callback使用，是WalFileIterator打开文件的入口；它不是Node遍历器。
+- [getLogTerm():723](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L723)：用通用iterator读取单个ID的term，找不到返回INVALID_TERM；它同样可能命中内存或回退磁盘。
+- [linkCurrentWAL():538](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L538)：先关闭当前追加文件，再给WAL文件建立硬链接用于相应文件保留流程；不清空内存buffer。
+- [~FileBasedWal():77](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L77)：关闭当前文件，成员析构释放buffer shared_ptr；若仍有内存iterator的shared_ptr，buffer自身生命期会继续。
 
 ## 11. Raft：空日志如何产生、复制和提交
 
 ### 11.1 轮询与任期
 
-[statusPolling():1401](../../src/kvstore/raftex/RaftPart.cpp:1401)检查启动代次，处理选举或leader心跳，再安排下一轮延迟任务。正常leader的 [needToSendHeartbeat():1138](../../src/kvstore/raftex/RaftPart.cpp:1138)仅判断RUNNING和LEADER。
+[statusPolling():1401](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1401)检查启动代次，处理选举或leader心跳，再安排下一轮延迟任务。正常leader的 [needToSendHeartbeat():1138](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1138)仅判断RUNNING和LEADER。
 
 参数源码默认5秒，配置模板30秒；轮询延迟是参数的三分之一再加0–499ms随机值。模板下正常基础均值约10.2495秒。
 
-选举成功时会把`commitInThisTerm_`置false并立即sendHeartbeat；首次commit后会置true触发onLeaderReady。但 [sendHeartbeat():2041](../../src/kvstore/raftex/RaftPart.cpp:2041)追加空日志的if没有使用这个字段，所以它不是“一任期只追加一次”。
+选举成功时会把`commitInThisTerm_`置false并立即sendHeartbeat；首次commit后会置true触发onLeaderReady。但 [sendHeartbeat():2041](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L2041)追加空日志的if没有使用这个字段，所以它不是“一任期只追加一次”。
 
 ### 11.2 `appendLogAsync()`与短期队列
 
-[RaftPart.cpp:786](../../src/kvstore/raftex/RaftPart.cpp:786)允许心跳空日志绕过业务blocking限制，检查队列overflow，把日志和promise放入`logs_`，通过`replicatingLogs_`决定谁启动这一轮复制。之后获取当前term和firstId，转移到sendingLogs并交给AppendLogsIterator。
+[RaftPart.cpp:786](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L786)允许心跳空日志绕过业务blocking限制，检查队列overflow，把日志和promise放入`logs_`，通过`replicatingLogs_`决定谁启动这一轮复制。之后获取当前term和firstId，转移到sendingLogs并交给AppendLogsIterator。
 
-[AppendLogsIteratorFactory:162](../../src/kvstore/raftex/RaftPart.cpp:162)将可一起处理的日志放进批次；对空NORMAL日志返回MERGE_BOTH。这里的“merge”是批处理兼容性，不是把若干空记录消去成为零条：iterator仍逐条提供logId/logMsg，FileBasedWal逐条追加。
+[AppendLogsIteratorFactory:162](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L162)将可一起处理的日志放进批次；对空NORMAL日志返回MERGE_BOTH。这里的“merge”是批处理兼容性，不是把若干空记录消去成为零条：iterator仍逐条提供logId/logMsg，FileBasedWal逐条追加。
 
 这些短期logs_/sendingLogs_队列与长期AtomicLogBuffer不是同一层缓存。正常复制commit后会完成promise并继续下一批；本次Node增长证据不能直接被解释为发送队列积压。
 
 ### 11.3 leader先写本地WAL，再复制
 
-[appendLogsInternal():874](../../src/kvstore/raftex/RaftPart.cpp:874)验证状态/任期，在raftLock内调用wal.appendLogs。此时leader的文件和AtomicLogBuffer已增加记录，然后才replicateLogs。
+[appendLogsInternal():874](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L874)验证状态/任期，在raftLock内调用wal.appendLogs。此时leader的文件和AtomicLogBuffer已增加记录，然后才replicateLogs。
 
-[Host.cpp:323](../../src/kvstore/raftex/Host.cpp:323)使用WAL iterator准备AppendLog RPC，把每条记录复制成RPC字段。这些iterator是一次请求准备过程中的短期reader；它们可能对GC触发有作用。
+[Host.cpp:323](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L323)使用WAL iterator准备AppendLog RPC，把每条记录复制成RPC字段。这些iterator是一次请求准备过程中的短期reader；它们可能对GC触发有作用。
 
 ### 11.4 follower也新增自己的Node
 
-Follower处理AppendLog时检查本地匹配位置和term；不匹配时可能rollback。正常新日志在 [RaftPart.cpp:1757](../../src/kvstore/raftex/RaftPart.cpp:1757)建立RaftLogIterator并写入本地wal。
+Follower处理AppendLog时检查本地匹配位置和term；不匹配时可能rollback。正常新日志在 [RaftPart.cpp:1757](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1757)建立RaftLogIterator并写入本地wal。
 
 所以一个逻辑分片三副本就有三套本地文件和缓存。某台只承担较少leader不能据此减少WAL缓存计数；需要数所有本地副本。
 
 ### 11.5 commit会创建WAL reader，但不会主动清除有效缓存
 
-多数副本接受后，leader在 [RaftPart.cpp:1069](../../src/kvstore/raftex/RaftPart.cpp:1069)用已提交范围的WAL iterator调用Part::commitLogs。Follower在 [RaftPart.cpp:1794](../../src/kvstore/raftex/RaftPart.cpp:1794)对leader告知可提交的范围做同类操作。
+多数副本接受后，leader在 [RaftPart.cpp:1069](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1069)用已提交范围的WAL iterator调用Part::commitLogs。Follower在 [RaftPart.cpp:1794](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1794)对leader告知可提交的范围做同类操作。
 
 Follower本次追加的最后一条与本次可commit的最后一条未必相同，commit上限取本地匹配位置与请求committed id的较小值。但这种短暂滞后不影响“记录已进入本地缓存”的事实。
 
@@ -440,15 +440,15 @@ commit结束、iterator析构可以触发脏Node GC；它不意味着把刚commi
 
 ## 12. Part与RocksDB：空payload仍然推进持久化提交位置
 
-[Part::commitLogs():215](../../src/kvstore/Part.cpp:215)按每条日志更新lastId和lastTerm。遇到空payload会记录“Skip the heartbeat”并跳过业务操作；它不是整个函数return。
+[Part::commitLogs():215](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L215)按每条日志更新lastId和lastTerm。遇到空payload会记录“Skip the heartbeat”并跳过业务操作；它不是整个函数return。
 
-循环结束仍在 [Part.cpp:349](../../src/kvstore/Part.cpp:349)执行putCommitMsg，写入分片系统提交键。这个元数据使状态机能够知道自己已经应用到哪个Raft位置。value为16B的logId+term；key为8B的分片/系统类型编码。
+循环结束仍在 [Part.cpp:349](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L349)执行putCommitMsg，写入分片系统提交键。这个元数据使状态机能够知道自己已经应用到哪个Raft位置。value为16B的logId+term；key为8B的分片/系统类型编码。
 
-[RocksEngine::commitBatchWrite():124](../../src/kvstore/RocksEngine.cpp:124)把disableWAL/sync/no_slowdown映射到RocksDB WriteOptions，再调用DB::Write。
+[RocksEngine::commitBatchWrite():124](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L124)把disableWAL/sync/no_slowdown映射到RocksDB WriteOptions，再调用DB::Write。
 
 本工程所用RocksDB默认不启用memtable原地更新。相同系统key的反复覆盖仍会产生内部条目；直到flush等生命周期推进，旧版本占用才有机会退出memtable。独立组件用100个逻辑key覆盖100万次，观察到100万个active entries和50MiB memtable增长，证明“逻辑数据集没变”不足以排除RocksDB内存增长。
 
-空间与dataPath的engine数量会影响memtable分配和flush周期。相比之下，block cache在 [RocksEngineConfig.cpp:310](../../src/kvstore/RocksEngineConfig.cpp:310) 是static共享对象，不能按空间数乘其配置上限。
+空间与dataPath的engine数量会影响memtable分配和flush周期。相比之下，block cache在 [RocksEngineConfig.cpp:310](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L310) 是static共享对象，不能按空间数乘其配置上限。
 
 另外，NebulaStore定时cleanWAL在`rocksdb_disable_wal=true`时会先flush各engine。因此这个flag会影响空提交memtable持续增长的时间形态；它并不是只控制一类磁盘写入。
 

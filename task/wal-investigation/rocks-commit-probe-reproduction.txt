@@ -1,0 +1,68 @@
+RocksDB 提交位置覆盖写的独立组件实验
+
+目的与边界
+验证Part::commitLogs对空日志最终调用putCommitMsg的后果：业务逻辑键数不变时，
+反复覆盖分片提交位置仍会积累memtable条目。这是组件级机制佐证，不是完整Nebula服务复现，
+也不能替代真实storaged的RSS归因。实验未修改Nebula业务语义，未启动服务。
+
+代码与库
+驱动：task/wal-investigation/rocks-commit-probe.cpp
+库：/opt/vesoft/third-party/3.3/lib/librocksdb.a，7.5.3，与当前CMake链接库一致。
+分配器：同third-party中的jemalloc，驱动采样stats.allocated前刷新epoch。
+key与value按照本机little-endian字节序构造：
+  key = int32((part_id << 8) | 4) + uint32(1)，与systemCommitKey完全匹配。
+  value = int64(committed_log_id) + int64(term)，与putCommitMsg完全匹配。
+  part=1时key为0401000001000000；log=1,term=1时value为01000000000000000100000000000000。
+  每次一个WriteBatch(4096)，一个Put，DB::Write(disableWAL=false,sync=false,no_slowdown=false)。
+参考源：NebulaKeyUtils.cpp:101-108；Types.h:14-28,57；Part.cpp:403-410；RocksEngine.cpp:124-133。
+
+资源与配置
+5个独立DB（模拟5个space×1dataPath），每DB 20个分片系统键，10000轮覆盖。
+总写入1000000次；最终逻辑键只有100个，每键保留本实验最后一轮logId。
+write_buffer_size=67108864、max_write_buffer_number=4、inplace_update_support=false、
+Snappy、共享block cache 4MiB/256shards、共享row cache16000000B/256shards、Bloom10bits。
+这是与本项机制相关的最小RocksDB设置，不声称模拟全部Nebula prefix extractor、后台统计或Raft开销。
+单线程写，未创建业务顶点、边、schema；同步flush前无任何主动读查询。
+
+实际编译命令（从仓库根目录运行）
+c++ -std=c++17 -O1 -g -no-pie -I/opt/vesoft/third-party/3.3/include \
+  task/wal-investigation/rocks-commit-probe.cpp \
+  -L/opt/vesoft/third-party/3.3/lib -L/opt/vesoft/third-party/3.3/lib64 \
+  -Wl,--start-group -lrocksdb -lsnappy -lz -lbz2 -llz4 -lzstd -lgflags -ljemalloc \
+  -Wl,--end-group -lpthread -ldl -lrt \
+  -o task/wal-investigation/rocks-commit-probe
+
+实际运行命令
+ulimit -n 65536
+nice -n 10 task/wal-investigation/rocks-commit-probe \
+  task/wal-investigation/rocks-probe-data 5 20 10000 \
+  > task/wal-investigation/rocks-commit-probe.csv \
+  2> task/wal-investigation/rocks-commit-probe.meta
+
+复跑时必须给一个新的data目录与CSV/meta文件名。驱动拒绝复用已存在的data目录，
+避免混入历史数据，且不自动删除任何目录。
+首次链接未加-no-pie与静态第三方库冲突，build.log保留链接失败；加-no-pie后编译退出0，运行退出0。
+
+实际结果（CSV保留每1000轮采样，下面是关键端点）
+opened：0次写，RSS11292KiB，jemalloc allocated2481912B，memtable10240B，active entries0。
+writing1000：100000次写，memtable5253120B，active entries100000。
+writing10000：1000000次写，RSS63544KiB，allocated54700736B，memtable52439040B，active entries1000000。
+flushed：同步flush全部5DB后，RSS64144KiB，allocated5881248B，memtable10240B，active entries0。
+共享block cache从opened至flushed始终96B；table-reader从0升到10950B，发生在flush。
+最后扫描验证logical keys=100且value均等于最后一轮，验证通过，见.meta。
+实际写入阶段约1.272秒，含flush约1.377秒；峰值观测RSS约62.64MiB。
+
+解释
+1. 100个逻辑键并未阻止100万次覆盖产生100万条活跃memtable entries。
+2. memtable增长52428800B=50MiB，即该设置此区间平均52.4288B/次写，
+   超过24B key/value原始内容；这是本次arena分配粒度下实测值，不是任意工作负载的固定单条成本。
+3. Flush后memtable确已回到初值、allocated下降48819488B，但RSS未下降，
+   说明“对象释放”与“操作系统观察的RSS下降”不能混用；本实验没有Raft WAL缓存。
+4. 完整服务中同时存在Raft缓存，因此必须同时采样memtable属性、WAL节点计数、jemalloc和RSS。
+   不能仅因flush后RSS仍高就排除RocksDB之前有贡献，也不能因RSS上涨就将全部上涨归因WAL。
+
+结果文件
+rocks-commit-probe.csv：组件时间序列。
+rocks-commit-probe.meta：库版本、key/value大小、配置、最终逻辑键验证。
+rocks-commit-probe-build.log：编译链接记录。
+rocks-probe-data/db0..db4：实验数据及RocksDB OPTIONS/LOG/SST，供核对。

@@ -1,0 +1,1944 @@
+[
+  {
+    "phase": "phase-03-default30",
+    "label": "s1",
+    "samples": 12,
+    "first_utc": "2026-10-09T23:03:35.810+00:00",
+    "last_utc": "2026-10-09T23:06:20.824+00:00",
+    "duration_seconds": 165.01399993896484,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 151252.0,
+      "last": 152080.0,
+      "delta": 828.0
+    },
+    "status_RssAnon_kib": {
+      "first": 113328.0,
+      "last": 114156.0,
+      "delta": 828.0
+    },
+    "smaps_Rss_kib": {
+      "first": 151252.0,
+      "last": 152080.0,
+      "delta": 828.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 113328.0,
+      "last": 114156.0,
+      "delta": 828.0
+    },
+    "wal_records_estimate": {
+      "first": 11929.0,
+      "last": 27988.0,
+      "delta": 16059.0
+    },
+    "wal_bytes": {
+      "first": 381728.0,
+      "last": 895616.0,
+      "delta": 513888.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 52531200.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:03:42.233989+00:00",
+      "last_utc": "2026-10-09T23:06:15.168494+00:00",
+      "duration_seconds": 152.93450498580933,
+      "pushes": {
+        "first": 12001,
+        "last": 27001,
+        "delta": 15000
+      },
+      "empty_pushes": {
+        "first": 12001,
+        "last": 27001,
+        "delta": 15000
+      },
+      "created": {
+        "first": 1000,
+        "last": 1000,
+        "delta": 0
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 1000,
+        "last": 1000,
+        "delta": 0
+      },
+      "live_logical_bytes": {
+        "first": 192016,
+        "last": 432016,
+        "delta": 240000
+      },
+      "node_object_bytes": {
+        "first": 3200000,
+        "last": 3200000,
+        "delta": 0
+      },
+      "releases": {
+        "first": 20340,
+        "last": 46440,
+        "delta": 26100
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 0
+    }
+  },
+  {
+    "phase": "phase-03-default30",
+    "label": "s2",
+    "samples": 12,
+    "first_utc": "2026-10-09T23:03:35.885+00:00",
+    "last_utc": "2026-10-09T23:06:20.888+00:00",
+    "duration_seconds": 165.00300002098083,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 151160.0,
+      "last": 151892.0,
+      "delta": 732.0
+    },
+    "status_RssAnon_kib": {
+      "first": 113128.0,
+      "last": 113860.0,
+      "delta": 732.0
+    },
+    "smaps_Rss_kib": {
+      "first": 151160.0,
+      "last": 151892.0,
+      "delta": 732.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 113128.0,
+      "last": 113860.0,
+      "delta": 732.0
+    },
+    "wal_records_estimate": {
+      "first": 11949.0,
+      "last": 27990.0,
+      "delta": 16041.0
+    },
+    "wal_bytes": {
+      "first": 382368.0,
+      "last": 895680.0,
+      "delta": 513312.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 52531200.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:03:42.234306+00:00",
+      "last_utc": "2026-10-09T23:06:15.167974+00:00",
+      "duration_seconds": 152.9336678981781,
+      "pushes": {
+        "first": 12001,
+        "last": 27001,
+        "delta": 15000
+      },
+      "empty_pushes": {
+        "first": 12001,
+        "last": 27001,
+        "delta": 15000
+      },
+      "created": {
+        "first": 1000,
+        "last": 1000,
+        "delta": 0
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 1000,
+        "last": 1000,
+        "delta": 0
+      },
+      "live_logical_bytes": {
+        "first": 192016,
+        "last": 432016,
+        "delta": 240000
+      },
+      "node_object_bytes": {
+        "first": 3200000,
+        "last": 3200000,
+        "delta": 0
+      },
+      "releases": {
+        "first": 24041,
+        "last": 54461,
+        "delta": 30420
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 0
+    }
+  },
+  {
+    "phase": "phase-03-default30",
+    "label": "s3",
+    "samples": 12,
+    "first_utc": "2026-10-09T23:03:35.946+00:00",
+    "last_utc": "2026-10-09T23:06:20.946+00:00",
+    "duration_seconds": 165.0,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 150872.0,
+      "last": 151880.0,
+      "delta": 1008.0
+    },
+    "status_RssAnon_kib": {
+      "first": 112772.0,
+      "last": 113780.0,
+      "delta": 1008.0
+    },
+    "smaps_Rss_kib": {
+      "first": 150872.0,
+      "last": 151880.0,
+      "delta": 1008.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 112772.0,
+      "last": 113780.0,
+      "delta": 1008.0
+    },
+    "wal_records_estimate": {
+      "first": 11962.0,
+      "last": 27991.0,
+      "delta": 16029.0
+    },
+    "wal_bytes": {
+      "first": 382784.0,
+      "last": 895712.0,
+      "delta": 512928.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 52531200.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:03:42.234344+00:00",
+      "last_utc": "2026-10-09T23:06:15.168561+00:00",
+      "duration_seconds": 152.93421697616577,
+      "pushes": {
+        "first": 12001,
+        "last": 27001,
+        "delta": 15000
+      },
+      "empty_pushes": {
+        "first": 12001,
+        "last": 27001,
+        "delta": 15000
+      },
+      "created": {
+        "first": 1000,
+        "last": 1000,
+        "delta": 0
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 1000,
+        "last": 1000,
+        "delta": 0
+      },
+      "live_logical_bytes": {
+        "first": 192016,
+        "last": 432016,
+        "delta": 240000
+      },
+      "node_object_bytes": {
+        "first": 3200000,
+        "last": 3200000,
+        "delta": 0
+      },
+      "releases": {
+        "first": 13900,
+        "last": 32380,
+        "delta": 18480
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 0
+    }
+  },
+  {
+    "phase": "phase-04-transition1",
+    "label": "s1",
+    "samples": 6,
+    "first_utc": "2026-10-09T23:07:08.862+00:00",
+    "last_utc": "2026-10-09T23:07:58.871+00:00",
+    "duration_seconds": 50.009000062942505,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 153244.0,
+      "last": 127900.0,
+      "delta": -25344.0
+    },
+    "status_RssAnon_kib": {
+      "first": 115320.0,
+      "last": 89976.0,
+      "delta": -25344.0
+    },
+    "smaps_Rss_kib": {
+      "first": 153244.0,
+      "last": 127900.0,
+      "delta": -25344.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 115320.0,
+      "last": 89976.0,
+      "delta": -25344.0
+    },
+    "wal_records_estimate": {
+      "first": 32228.0,
+      "last": 116756.0,
+      "delta": 84528.0
+    },
+    "wal_bytes": {
+      "first": 1031296.0,
+      "last": 3736192.0,
+      "delta": 2704896.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 52531200.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:07:15.606871+00:00",
+      "last_utc": "2026-10-09T23:07:55.608877+00:00",
+      "duration_seconds": 40.00200605392456,
+      "pushes": {
+        "first": 42611,
+        "last": 111105,
+        "delta": 68494
+      },
+      "empty_pushes": {
+        "first": 42611,
+        "last": 111105,
+        "delta": 68494
+      },
+      "created": {
+        "first": 1000,
+        "last": 2000,
+        "delta": 1000
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 1000,
+        "last": 2000,
+        "delta": 1000
+      },
+      "live_logical_bytes": {
+        "first": 681776,
+        "last": 1777680,
+        "delta": 1095904
+      },
+      "node_object_bytes": {
+        "first": 3200000,
+        "last": 6400000,
+        "delta": 3200000
+      },
+      "releases": {
+        "first": 72254,
+        "last": 185387,
+        "delta": 113133
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 3584000
+    }
+  },
+  {
+    "phase": "phase-04-transition1",
+    "label": "s2",
+    "samples": 6,
+    "first_utc": "2026-10-09T23:07:08.949+00:00",
+    "last_utc": "2026-10-09T23:07:58.960+00:00",
+    "duration_seconds": 50.01100015640259,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 153896.0,
+      "last": 128540.0,
+      "delta": -25356.0
+    },
+    "status_RssAnon_kib": {
+      "first": 115864.0,
+      "last": 90508.0,
+      "delta": -25356.0
+    },
+    "smaps_Rss_kib": {
+      "first": 153896.0,
+      "last": 128540.0,
+      "delta": -25356.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 115864.0,
+      "last": 90508.0,
+      "delta": -25356.0
+    },
+    "wal_records_estimate": {
+      "first": 32276.0,
+      "last": 117031.0,
+      "delta": 84755.0
+    },
+    "wal_bytes": {
+      "first": 1032832.0,
+      "last": 3744992.0,
+      "delta": 2712160.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 52531200.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:07:15.607745+00:00",
+      "last_utc": "2026-10-09T23:07:55.609222+00:00",
+      "duration_seconds": 40.001477003097534,
+      "pushes": {
+        "first": 42612,
+        "last": 111105,
+        "delta": 68493
+      },
+      "empty_pushes": {
+        "first": 42612,
+        "last": 111105,
+        "delta": 68493
+      },
+      "created": {
+        "first": 1000,
+        "last": 2000,
+        "delta": 1000
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 1000,
+        "last": 2000,
+        "delta": 1000
+      },
+      "live_logical_bytes": {
+        "first": 681792,
+        "last": 1777680,
+        "delta": 1095888
+      },
+      "node_object_bytes": {
+        "first": 3200000,
+        "last": 6400000,
+        "delta": 3200000
+      },
+      "releases": {
+        "first": 82760,
+        "last": 202543,
+        "delta": 119783
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 3584000
+    }
+  },
+  {
+    "phase": "phase-04-transition1",
+    "label": "s3",
+    "samples": 6,
+    "first_utc": "2026-10-09T23:07:09.014+00:00",
+    "last_utc": "2026-10-09T23:07:59.187+00:00",
+    "duration_seconds": 50.17300009727478,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 153348.0,
+      "last": 127960.0,
+      "delta": -25388.0
+    },
+    "status_RssAnon_kib": {
+      "first": 115248.0,
+      "last": 89860.0,
+      "delta": -25388.0
+    },
+    "smaps_Rss_kib": {
+      "first": 153348.0,
+      "last": 127960.0,
+      "delta": -25388.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 115248.0,
+      "last": 89860.0,
+      "delta": -25388.0
+    },
+    "wal_records_estimate": {
+      "first": 32315.0,
+      "last": 117295.0,
+      "delta": 84980.0
+    },
+    "wal_bytes": {
+      "first": 1034080.0,
+      "last": 3753440.0,
+      "delta": 2719360.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 52531200.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:07:15.607748+00:00",
+      "last_utc": "2026-10-09T23:07:55.608211+00:00",
+      "duration_seconds": 40.000463008880615,
+      "pushes": {
+        "first": 42612,
+        "last": 111105,
+        "delta": 68493
+      },
+      "empty_pushes": {
+        "first": 42612,
+        "last": 111105,
+        "delta": 68493
+      },
+      "created": {
+        "first": 1000,
+        "last": 2000,
+        "delta": 1000
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 1000,
+        "last": 2000,
+        "delta": 1000
+      },
+      "live_logical_bytes": {
+        "first": 681792,
+        "last": 1777680,
+        "delta": 1095888
+      },
+      "node_object_bytes": {
+        "first": 3200000,
+        "last": 6400000,
+        "delta": 3200000
+      },
+      "releases": {
+        "first": 55112,
+        "last": 164645,
+        "delta": 109533
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 3584000
+    }
+  },
+  {
+    "phase": "phase-05-accelerated1",
+    "label": "s1",
+    "samples": 60,
+    "first_utc": "2026-10-09T23:08:08.994+00:00",
+    "last_utc": "2026-10-09T23:22:54.008+00:00",
+    "duration_seconds": 885.0139999389648,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 131964.0,
+      "last": 293512.0,
+      "delta": 161548.0
+    },
+    "status_RssAnon_kib": {
+      "first": 94040.0,
+      "last": 255588.0,
+      "delta": 161548.0
+    },
+    "smaps_Rss_kib": {
+      "first": 131964.0,
+      "last": 293512.0,
+      "delta": 161548.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 94040.0,
+      "last": 255588.0,
+      "delta": 161548.0
+    },
+    "wal_records_estimate": {
+      "first": 134128.0,
+      "last": 1651964.0,
+      "delta": 1517836.0
+    },
+    "wal_bytes": {
+      "first": 4292096.0,
+      "last": 52862848.0,
+      "delta": 48570752.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 142708736.0,
+      "delta": 90177536.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:08:15.606966+00:00",
+      "last_utc": "2026-10-09T23:22:45.607565+00:00",
+      "duration_seconds": 870.0005989074707,
+      "pushes": {
+        "first": 145419,
+        "last": 1637577,
+        "delta": 1492158
+      },
+      "empty_pushes": {
+        "first": 145419,
+        "last": 1637577,
+        "delta": 1492158
+      },
+      "created": {
+        "first": 3000,
+        "last": 26005,
+        "delta": 23005
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 3000,
+        "last": 26005,
+        "delta": 23005
+      },
+      "live_logical_bytes": {
+        "first": 2326704,
+        "last": 26201232,
+        "delta": 23874528
+      },
+      "node_object_bytes": {
+        "first": 9600000,
+        "last": 83216000,
+        "delta": 73616000
+      },
+      "releases": {
+        "first": 242022,
+        "last": 2707205,
+        "delta": 2465183
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 82449920
+    }
+  },
+  {
+    "phase": "phase-05-accelerated1",
+    "label": "s2",
+    "samples": 60,
+    "first_utc": "2026-10-09T23:08:09.084+00:00",
+    "last_utc": "2026-10-09T23:22:54.061+00:00",
+    "duration_seconds": 884.9769999980927,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 132756.0,
+      "last": 293616.0,
+      "delta": 160860.0
+    },
+    "status_RssAnon_kib": {
+      "first": 94724.0,
+      "last": 255584.0,
+      "delta": 160860.0
+    },
+    "smaps_Rss_kib": {
+      "first": 132756.0,
+      "last": 293616.0,
+      "delta": 160860.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 94724.0,
+      "last": 255584.0,
+      "delta": 160860.0
+    },
+    "wal_records_estimate": {
+      "first": 134333.0,
+      "last": 1652071.0,
+      "delta": 1517738.0
+    },
+    "wal_bytes": {
+      "first": 4298656.0,
+      "last": 52866272.0,
+      "delta": 48567616.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 151097344.0,
+      "delta": 98566144.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:08:15.606838+00:00",
+      "last_utc": "2026-10-09T23:22:45.607268+00:00",
+      "duration_seconds": 870.0004301071167,
+      "pushes": {
+        "first": 145419,
+        "last": 1637577,
+        "delta": 1492158
+      },
+      "empty_pushes": {
+        "first": 145419,
+        "last": 1637577,
+        "delta": 1492158
+      },
+      "created": {
+        "first": 3000,
+        "last": 26005,
+        "delta": 23005
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 3000,
+        "last": 26005,
+        "delta": 23005
+      },
+      "live_logical_bytes": {
+        "first": 2326704,
+        "last": 26201232,
+        "delta": 23874528
+      },
+      "node_object_bytes": {
+        "first": 9600000,
+        "last": 83216000,
+        "delta": 73616000
+      },
+      "releases": {
+        "first": 262539,
+        "last": 2870537,
+        "delta": 2607998
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 82449920
+    }
+  },
+  {
+    "phase": "phase-05-accelerated1",
+    "label": "s3",
+    "samples": 60,
+    "first_utc": "2026-10-09T23:08:09.225+00:00",
+    "last_utc": "2026-10-09T23:22:54.118+00:00",
+    "duration_seconds": 884.893000125885,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 132248.0,
+      "last": 293680.0,
+      "delta": 161432.0
+    },
+    "status_RssAnon_kib": {
+      "first": 94148.0,
+      "last": 255580.0,
+      "delta": 161432.0
+    },
+    "smaps_Rss_kib": {
+      "first": 132252.0,
+      "last": 293680.0,
+      "delta": 161428.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 94152.0,
+      "last": 255580.0,
+      "delta": 161428.0
+    },
+    "wal_records_estimate": {
+      "first": 134590.0,
+      "last": 1652178.0,
+      "delta": 1517588.0
+    },
+    "wal_bytes": {
+      "first": 4306880.0,
+      "last": 52869696.0,
+      "delta": 48562816.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 52531200.0,
+      "last": 157388800.0,
+      "delta": 104857600.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:08:15.606815+00:00",
+      "last_utc": "2026-10-09T23:22:45.607036+00:00",
+      "duration_seconds": 870.0002210140228,
+      "pushes": {
+        "first": 145419,
+        "last": 1637577,
+        "delta": 1492158
+      },
+      "empty_pushes": {
+        "first": 145419,
+        "last": 1637577,
+        "delta": 1492158
+      },
+      "created": {
+        "first": 3000,
+        "last": 26005,
+        "delta": 23005
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 3000,
+        "last": 26005,
+        "delta": 23005
+      },
+      "live_logical_bytes": {
+        "first": 2326704,
+        "last": 26201232,
+        "delta": 23874528
+      },
+      "node_object_bytes": {
+        "first": 9600000,
+        "last": 83216000,
+        "delta": 73616000
+      },
+      "releases": {
+        "first": 219587,
+        "last": 2607193,
+        "delta": 2387606
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 82449920
+    }
+  },
+  {
+    "phase": "phase-06-transition30",
+    "label": "s1",
+    "samples": 3,
+    "first_utc": "2026-10-09T23:28:01.149+00:00",
+    "last_utc": "2026-10-09T23:28:21.159+00:00",
+    "duration_seconds": 20.009999990463257,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 349680.0,
+      "last": 348916.0,
+      "delta": -764.0
+    },
+    "status_RssAnon_kib": {
+      "first": 311756.0,
+      "last": 310992.0,
+      "delta": -764.0
+    },
+    "smaps_Rss_kib": {
+      "first": 349680.0,
+      "last": 348916.0,
+      "delta": -764.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 311756.0,
+      "last": 310992.0,
+      "delta": -764.0
+    },
+    "wal_records_estimate": {
+      "first": 2178720.0,
+      "last": 2180568.0,
+      "delta": 1848.0
+    },
+    "wal_bytes": {
+      "first": 69719040.0,
+      "last": 69778176.0,
+      "delta": 59136.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 157388800.0,
+      "last": 157388800.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    }
+  },
+  {
+    "phase": "phase-06-transition30",
+    "label": "s2",
+    "samples": 3,
+    "first_utc": "2026-10-09T23:28:01.207+00:00",
+    "last_utc": "2026-10-09T23:28:21.280+00:00",
+    "duration_seconds": 20.072999954223633,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 350072.0,
+      "last": 349372.0,
+      "delta": -700.0
+    },
+    "status_RssAnon_kib": {
+      "first": 312040.0,
+      "last": 311340.0,
+      "delta": -700.0
+    },
+    "smaps_Rss_kib": {
+      "first": 350072.0,
+      "last": 349372.0,
+      "delta": -700.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 312040.0,
+      "last": 311340.0,
+      "delta": -700.0
+    },
+    "wal_records_estimate": {
+      "first": 2178816.0,
+      "last": 2180584.0,
+      "delta": 1768.0
+    },
+    "wal_bytes": {
+      "first": 69722112.0,
+      "last": 69778688.0,
+      "delta": 56576.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 157388800.0,
+      "last": 157388800.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:28:11.117111+00:00",
+      "last_utc": "2026-10-09T23:28:21.182852+00:00",
+      "duration_seconds": 10.065741062164307,
+      "pushes": {
+        "first": 2179565,
+        "last": 2180565,
+        "delta": 1000
+      },
+      "empty_pushes": {
+        "first": 2179565,
+        "last": 2180565,
+        "delta": 1000
+      },
+      "created": {
+        "first": 34603,
+        "last": 34628,
+        "delta": 25
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 34603,
+        "last": 34628,
+        "delta": 25
+      },
+      "live_logical_bytes": {
+        "first": 34873040,
+        "last": 34889040,
+        "delta": 16000
+      },
+      "node_object_bytes": {
+        "first": 110729600,
+        "last": 110809600,
+        "delta": 80000
+      },
+      "releases": {
+        "first": 3817793,
+        "last": 3819541,
+        "delta": 1748
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 89600
+    }
+  },
+  {
+    "phase": "phase-06-transition30",
+    "label": "s3",
+    "samples": 3,
+    "first_utc": "2026-10-09T23:28:01.280+00:00",
+    "last_utc": "2026-10-09T23:28:21.388+00:00",
+    "duration_seconds": 20.10800004005432,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 351288.0,
+      "last": 350052.0,
+      "delta": -1236.0
+    },
+    "status_RssAnon_kib": {
+      "first": 313188.0,
+      "last": 311952.0,
+      "delta": -1236.0
+    },
+    "smaps_Rss_kib": {
+      "first": 351288.0,
+      "last": 350052.0,
+      "delta": -1236.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 313188.0,
+      "last": 311952.0,
+      "delta": -1236.0
+    },
+    "wal_records_estimate": {
+      "first": 2178942.0,
+      "last": 2180622.0,
+      "delta": 1680.0
+    },
+    "wal_bytes": {
+      "first": 69726144.0,
+      "last": 69779904.0,
+      "delta": 53760.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 182554624.0,
+      "last": 182554624.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:28:11.114104+00:00",
+      "last_utc": "2026-10-09T23:28:21.181020+00:00",
+      "duration_seconds": 10.06691598892212,
+      "pushes": {
+        "first": 2179565,
+        "last": 2180565,
+        "delta": 1000
+      },
+      "empty_pushes": {
+        "first": 2179565,
+        "last": 2180565,
+        "delta": 1000
+      },
+      "created": {
+        "first": 34603,
+        "last": 34628,
+        "delta": 25
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 34603,
+        "last": 34628,
+        "delta": 25
+      },
+      "live_logical_bytes": {
+        "first": 34873040,
+        "last": 34889040,
+        "delta": 16000
+      },
+      "node_object_bytes": {
+        "first": 110729600,
+        "last": 110809600,
+        "delta": 80000
+      },
+      "releases": {
+        "first": 3474379,
+        "last": 3475979,
+        "delta": 1600
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 89600
+    }
+  },
+  {
+    "phase": "phase-07-restored30",
+    "label": "s1",
+    "samples": 12,
+    "first_utc": "2026-10-09T23:28:31.334+00:00",
+    "last_utc": "2026-10-09T23:31:16.349+00:00",
+    "duration_seconds": 165.0149998664856,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 348912.0,
+      "last": 350924.0,
+      "delta": 2012.0
+    },
+    "status_RssAnon_kib": {
+      "first": 310988.0,
+      "last": 313000.0,
+      "delta": 2012.0
+    },
+    "smaps_Rss_kib": {
+      "first": 348912.0,
+      "last": 350924.0,
+      "delta": 2012.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 310988.0,
+      "last": 313000.0,
+      "delta": 2012.0
+    },
+    "wal_records_estimate": {
+      "first": 2181569.0,
+      "last": 2198208.0,
+      "delta": 16639.0
+    },
+    "wal_bytes": {
+      "first": 69810208.0,
+      "last": 70342656.0,
+      "delta": 532448.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 157388800.0,
+      "last": 162631680.0,
+      "delta": 5242880.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:28:41.396224+00:00",
+      "last_utc": "2026-10-09T23:31:14.188920+00:00",
+      "duration_seconds": 152.7926959991455,
+      "pushes": {
+        "first": 2182565,
+        "last": 2197565,
+        "delta": 15000
+      },
+      "empty_pushes": {
+        "first": 2182565,
+        "last": 2197565,
+        "delta": 15000
+      },
+      "created": {
+        "first": 34694,
+        "last": 34967,
+        "delta": 273
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 34694,
+        "last": 34967,
+        "delta": 273
+      },
+      "live_logical_bytes": {
+        "first": 34921040,
+        "last": 35161040,
+        "delta": 240000
+      },
+      "node_object_bytes": {
+        "first": 111020800,
+        "last": 111894400,
+        "delta": 873600
+      },
+      "releases": {
+        "first": 3607659,
+        "last": 3632439,
+        "delta": 24780
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 978432
+    }
+  },
+  {
+    "phase": "phase-07-restored30",
+    "label": "s2",
+    "samples": 12,
+    "first_utc": "2026-10-09T23:28:31.438+00:00",
+    "last_utc": "2026-10-09T23:31:16.455+00:00",
+    "duration_seconds": 165.01699995994568,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 349312.0,
+      "last": 351128.0,
+      "delta": 1816.0
+    },
+    "status_RssAnon_kib": {
+      "first": 311280.0,
+      "last": 313096.0,
+      "delta": 1816.0
+    },
+    "smaps_Rss_kib": {
+      "first": 349312.0,
+      "last": 351128.0,
+      "delta": 1816.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 311280.0,
+      "last": 313096.0,
+      "delta": 1816.0
+    },
+    "wal_records_estimate": {
+      "first": 2181586.0,
+      "last": 2198265.0,
+      "delta": 16679.0
+    },
+    "wal_bytes": {
+      "first": 69810752.0,
+      "last": 70344480.0,
+      "delta": 533728.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 157388800.0,
+      "last": 157388800.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:28:41.396212+00:00",
+      "last_utc": "2026-10-09T23:31:14.189961+00:00",
+      "duration_seconds": 152.79374885559082,
+      "pushes": {
+        "first": 2182565,
+        "last": 2197565,
+        "delta": 15000
+      },
+      "empty_pushes": {
+        "first": 2182565,
+        "last": 2197565,
+        "delta": 15000
+      },
+      "created": {
+        "first": 34694,
+        "last": 34967,
+        "delta": 273
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 34694,
+        "last": 34967,
+        "delta": 273
+      },
+      "live_logical_bytes": {
+        "first": 34921040,
+        "last": 35161040,
+        "delta": 240000
+      },
+      "node_object_bytes": {
+        "first": 111020800,
+        "last": 111894400,
+        "delta": 873600
+      },
+      "releases": {
+        "first": 3823037,
+        "last": 3849257,
+        "delta": 26220
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 978432
+    }
+  },
+  {
+    "phase": "phase-07-restored30",
+    "label": "s3",
+    "samples": 12,
+    "first_utc": "2026-10-09T23:28:31.583+00:00",
+    "last_utc": "2026-10-09T23:31:16.548+00:00",
+    "duration_seconds": 164.9650001525879,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 350124.0,
+      "last": 351936.0,
+      "delta": 1812.0
+    },
+    "status_RssAnon_kib": {
+      "first": 312024.0,
+      "last": 313836.0,
+      "delta": 1812.0
+    },
+    "smaps_Rss_kib": {
+      "first": 350124.0,
+      "last": 351936.0,
+      "delta": 1812.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 312024.0,
+      "last": 313836.0,
+      "delta": 1812.0
+    },
+    "wal_records_estimate": {
+      "first": 2181619.0,
+      "last": 2198304.0,
+      "delta": 16685.0
+    },
+    "wal_bytes": {
+      "first": 69811808.0,
+      "last": 70345728.0,
+      "delta": 533920.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 182554624.0,
+      "last": 182554624.0,
+      "delta": 0.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 0.0,
+      "last": 0.0,
+      "delta": 0.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:28:41.395910+00:00",
+      "last_utc": "2026-10-09T23:31:14.190835+00:00",
+      "duration_seconds": 152.79492497444153,
+      "pushes": {
+        "first": 2182565,
+        "last": 2197565,
+        "delta": 15000
+      },
+      "empty_pushes": {
+        "first": 2182565,
+        "last": 2197565,
+        "delta": 15000
+      },
+      "created": {
+        "first": 34694,
+        "last": 34967,
+        "delta": 273
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 34694,
+        "last": 34967,
+        "delta": 273
+      },
+      "live_logical_bytes": {
+        "first": 34921040,
+        "last": 35161040,
+        "delta": 240000
+      },
+      "node_object_bytes": {
+        "first": 111020800,
+        "last": 111894400,
+        "delta": 873600
+      },
+      "releases": {
+        "first": 3479179,
+        "last": 3503179,
+        "delta": 24000
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 978432
+    }
+  },
+  {
+    "phase": "phase-09-afterflush",
+    "label": "s1",
+    "samples": 18,
+    "first_utc": "2026-10-09T23:35:45.905+00:00",
+    "last_utc": "2026-10-09T23:38:35.913+00:00",
+    "duration_seconds": 170.00800013542175,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 356740.0,
+      "last": 246512.0,
+      "delta": -110228.0
+    },
+    "status_RssAnon_kib": {
+      "first": 317624.0,
+      "last": 207396.0,
+      "delta": -110228.0
+    },
+    "smaps_Rss_kib": {
+      "first": 356756.0,
+      "last": 246512.0,
+      "delta": -110244.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 317640.0,
+      "last": 207396.0,
+      "delta": -110244.0
+    },
+    "wal_records_estimate": {
+      "first": 2224562.0,
+      "last": 2240771.0,
+      "delta": 16209.0
+    },
+    "wal_bytes": {
+      "first": 71185984.0,
+      "last": 71704672.0,
+      "delta": 518688.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 89387304.0,
+      "last": 52531200.0,
+      "delta": -36856104.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 48466.0,
+      "last": 110150.0,
+      "delta": 61684.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:35:49.864233+00:00",
+      "last_utc": "2026-10-09T23:38:33.394024+00:00",
+      "duration_seconds": 163.5297908782959,
+      "pushes": {
+        "first": 2224565,
+        "last": 2240565,
+        "delta": 16000
+      },
+      "empty_pushes": {
+        "first": 2224565,
+        "last": 2240565,
+        "delta": 16000
+      },
+      "created": {
+        "first": 35085,
+        "last": 35501,
+        "delta": 416
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 35085,
+        "last": 35501,
+        "delta": 416
+      },
+      "live_logical_bytes": {
+        "first": 35593040,
+        "last": 35849040,
+        "delta": 256000
+      },
+      "node_object_bytes": {
+        "first": 112272000,
+        "last": 113603200,
+        "delta": 1331200
+      },
+      "releases": {
+        "first": 3677043,
+        "last": 3703475,
+        "delta": 26432
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 1490944
+    }
+  },
+  {
+    "phase": "phase-09-afterflush",
+    "label": "s2",
+    "samples": 18,
+    "first_utc": "2026-10-09T23:35:45.966+00:00",
+    "last_utc": "2026-10-09T23:38:35.992+00:00",
+    "duration_seconds": 170.02600002288818,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 356732.0,
+      "last": 247004.0,
+      "delta": -109728.0
+    },
+    "status_RssAnon_kib": {
+      "first": 317548.0,
+      "last": 207820.0,
+      "delta": -109728.0
+    },
+    "smaps_Rss_kib": {
+      "first": 356748.0,
+      "last": 247004.0,
+      "delta": -109744.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 317564.0,
+      "last": 207820.0,
+      "delta": -109744.0
+    },
+    "wal_records_estimate": {
+      "first": 2224562.0,
+      "last": 2240786.0,
+      "delta": 16224.0
+    },
+    "wal_bytes": {
+      "first": 71185984.0,
+      "last": 71705152.0,
+      "delta": 519168.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 66422912.0,
+      "last": 52531200.0,
+      "delta": -13891712.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 57278.0,
+      "last": 110150.0,
+      "delta": 52872.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:35:49.864233+00:00",
+      "last_utc": "2026-10-09T23:38:33.394445+00:00",
+      "duration_seconds": 163.5302119255066,
+      "pushes": {
+        "first": 2224565,
+        "last": 2240565,
+        "delta": 16000
+      },
+      "empty_pushes": {
+        "first": 2224565,
+        "last": 2240565,
+        "delta": 16000
+      },
+      "created": {
+        "first": 35085,
+        "last": 35501,
+        "delta": 416
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 35085,
+        "last": 35501,
+        "delta": 416
+      },
+      "live_logical_bytes": {
+        "first": 35593040,
+        "last": 35849040,
+        "delta": 256000
+      },
+      "node_object_bytes": {
+        "first": 112272000,
+        "last": 113603200,
+        "delta": 1331200
+      },
+      "releases": {
+        "first": 3896453,
+        "last": 3924421,
+        "delta": 27968
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 1490944
+    }
+  },
+  {
+    "phase": "phase-09-afterflush",
+    "label": "s3",
+    "samples": 18,
+    "first_utc": "2026-10-09T23:35:46.026+00:00",
+    "last_utc": "2026-10-09T23:38:36.063+00:00",
+    "duration_seconds": 170.0369999408722,
+    "same_pid": true,
+    "same_starttime": true,
+    "status_VmRSS_kib": {
+      "first": 357596.0,
+      "last": 246580.0,
+      "delta": -111016.0
+    },
+    "status_RssAnon_kib": {
+      "first": 318380.0,
+      "last": 207364.0,
+      "delta": -111016.0
+    },
+    "smaps_Rss_kib": {
+      "first": 357596.0,
+      "last": 246580.0,
+      "delta": -111016.0
+    },
+    "smaps_Anonymous_kib": {
+      "first": 318380.0,
+      "last": 207364.0,
+      "delta": -111016.0
+    },
+    "wal_records_estimate": {
+      "first": 2224562.0,
+      "last": 2240798.0,
+      "delta": 16236.0
+    },
+    "wal_bytes": {
+      "first": 71185984.0,
+      "last": 71705536.0,
+      "delta": 519552.0
+    },
+    "rocksdb.cur-size-all-mem-tables": {
+      "first": 58926768.0,
+      "last": 52531200.0,
+      "delta": -6395568.0
+    },
+    "rocksdb.block-cache-usage": {
+      "first": 96.0,
+      "last": 96.0,
+      "delta": 0.0
+    },
+    "rocksdb.estimate-table-readers-mem": {
+      "first": 66090.0,
+      "last": 110150.0,
+      "delta": 44060.0
+    },
+    "wal_observer": {
+      "first_utc": "2026-10-09T23:35:49.862869+00:00",
+      "last_utc": "2026-10-09T23:38:33.394418+00:00",
+      "duration_seconds": 163.5315489768982,
+      "pushes": {
+        "first": 2224565,
+        "last": 2240565,
+        "delta": 16000
+      },
+      "empty_pushes": {
+        "first": 2224565,
+        "last": 2240565,
+        "delta": 16000
+      },
+      "created": {
+        "first": 35085,
+        "last": 35501,
+        "delta": 416
+      },
+      "freed": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "live_nodes": {
+        "first": 35085,
+        "last": 35501,
+        "delta": 416
+      },
+      "live_logical_bytes": {
+        "first": 35593040,
+        "last": 35849040,
+        "delta": 256000
+      },
+      "node_object_bytes": {
+        "first": 112272000,
+        "last": 113603200,
+        "delta": 1331200
+      },
+      "releases": {
+        "first": 3546379,
+        "last": 3571979,
+        "delta": 25600
+      },
+      "gc_runs": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "resets": {
+        "first": 0,
+        "last": 0,
+        "delta": 0
+      },
+      "estimated_node_usable_delta": 1490944
+    }
+  }
+]

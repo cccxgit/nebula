@@ -1,0 +1,41 @@
+{
+  "checked_utc": "2026-10-09T23:44:17.759999+00:00",
+  "documents": {
+    "CODE-WALKTHROUGH-RAFT.md": {
+      "local_links_checked": 71,
+      "lines": 264,
+      "fences": 10
+    },
+    "CODE-WALKTHROUGH-ROCKSDB.md": {
+      "local_links_checked": 60,
+      "lines": 391,
+      "fences": 26
+    },
+    "CODE-WALKTHROUGH-WAL.md": {
+      "local_links_checked": 57,
+      "lines": 493,
+      "fences": 18
+    },
+    "COMPONENT-ANALYSIS.md": {
+      "local_links_checked": 47,
+      "lines": 318,
+      "fences": 16
+    },
+    "README.md": {
+      "local_links_checked": 5,
+      "lines": 37,
+      "fences": 0
+    },
+    "REPORT.md": {
+      "local_links_checked": 65,
+      "lines": 413,
+      "fences": 16
+    }
+  },
+  "errors": [],
+  "observation_patch_matches_worktree": true,
+  "original_component_sources_match_commit": {
+    "AtomicLogBuffer.cpp": true,
+    "AtomicLogBuffer.h": true
+  }
+}

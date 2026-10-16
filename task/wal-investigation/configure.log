@@ -1,0 +1,97 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+>>>> Options of Nebula Graph <<<<
+-- ENABLE_ASAN                     : OFF (Build with AddressSanitizer)
+-- ENABLE_BREAKPAD                 : OFF (Whether to enable breakpad)
+-- ENABLE_CCACHE                   : ON (Use ccache to speed up compiling)
+-- ENABLE_CLANG_TIDY               : OFF (Enable clang-tidy if present)
+-- ENABLE_COMPRESSED_DEBUG_INFO    : ON (Compress debug info to reduce binary size)
+-- ENABLE_CONSOLE_COMPILATION      : OFF (Enable nebula-console compilation)
+-- ENABLE_COVERAGE                 : OFF (Build with coverage report)
+-- ENABLE_CREATE_GIT_HOOKS         : ON (Enable create git hooks.)
+-- ENABLE_FRAME_POINTER            : OFF (Build with frame pointer)
+-- ENABLE_FUZZY_TESTING            : OFF (Enable Fuzzy tests)
+-- ENABLE_GDB_SCRIPT_SECTION       : OFF (Add .debug_gdb_scripts section)
+-- ENABLE_INCLUDE_WHAT_YOU_USE     : OFF (Enable include-what-you-use find  nouse include files)
+-- ENABLE_JEMALLOC                 : ON (Use jemalloc as memory allocator)
+-- ENABLE_MEMORY_TRACKER           : ON (Enable memory tracker)
+-- ENABLE_PACKAGE_TAR              : OFF (Enable package artifacts to tar.)
+-- ENABLE_PACK_ONE                 : ON (Whether to package into one)
+-- ENABLE_PIC                      : OFF (Build with -fPIC)
+-- ENABLE_STANDALONE_VERSION       : OFF (Enable standalone version build)
+-- ENABLE_STATIC_ASAN              : OFF (Statically link against libasan)
+-- ENABLE_STATIC_UBSAN             : OFF (Statically link against libubsan)
+-- ENABLE_STRICT_ALIASING          : OFF (Build with -fstrict-aliasing)
+-- ENABLE_TESTING                  : OFF (Build unit tests)
+-- ENABLE_TSAN                     : OFF (Build with ThreadSanitizer)
+-- ENABLE_UBSAN                    : OFF (Build with UndefinedBehaviourSanitizer)
+-- ENABLE_VERBOSE_BISON            : OFF (Enable Bison to report state)
+-- ENABLE_WERROR                   : ON (Regard warnings as errors)
+-- CMAKE_BUILD_TYPE                : Debug (Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel ...)
+-- CMAKE_INSTALL_PREFIX            : /home/sch/nebula-run/nebula-memory (Install path prefix, prepended onto install directories.)
+-- CMAKE_CXX_STANDARD              : 17
+-- CMAKE_CXX_COMPILER              : /usr/bin/c++ (CXX compiler)
+-- CMAKE_CXX_COMPILER_ID           : GNU
+-- NEBULA_USE_LINKER               : bfd (Linker to be used)
+CMake Warning at cmake/nebula/CompilerLauncher.cmake:28 (message):
+  ccache is enabled but was not found.  Not using it
+Call Stack (most recent call first):
+  CMakeLists.txt:48 (include)
+
+
+>>>> Configuring third party for 'Nebula Graph' <<<<
+-- NEBULA_THIRDPARTY_ROOT          : /opt/vesoft/third-party/3.3
+-- Build info of nebula third party:
+Package         : Nebula Third Party
+Version         : 3.3
+Date            : Thu Feb  2 10:42:13 UTC 2023
+glibc           : 2.34
+Arch            : x86_64
+Compiler        : GCC 11.2.0
+C++ ABI         : 11
+Vendor          : VEsoft Inc.
+
+-- CMAKE_INCLUDE_PATH              : /opt/vesoft/third-party/3.3/include
+-- CMAKE_LIBRARY_PATH              : /opt/vesoft/third-party/3.3/lib64;/opt/vesoft/third-party/3.3/lib
+-- CMAKE_PROGRAM_PATH              : /opt/vesoft/third-party/3.3/bin
+-- GLIBC_VERSION                   : 2.35
+
+-- Found ZLIB: /opt/vesoft/third-party/3.3/lib/libz.a (found version "1.2.11")  
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found OpenSSL: /opt/vesoft/third-party/3.3/lib/libcrypto.a (found version "1.1.1l")  
+-- Found Boost: /opt/vesoft/third-party/3.3/include (found version "1.76.0")  
+-- Found Libunwind: /opt/vesoft/third-party/3.3/lib/libunwind.a  
+-- Found BISON: /opt/vesoft/third-party/3.3/bin/bison (found suitable version "3.7.6", minimum required is "3.0.5") 
+-- Found FLEX: /opt/vesoft/third-party/3.3/bin/flex (found version "2.6.4") 
+-- Looking for lzma_auto_decoder in /opt/vesoft/third-party/3.3/lib/liblzma.a
+-- Looking for lzma_auto_decoder in /opt/vesoft/third-party/3.3/lib/liblzma.a - found
+-- Looking for lzma_easy_encoder in /opt/vesoft/third-party/3.3/lib/liblzma.a
+-- Looking for lzma_easy_encoder in /opt/vesoft/third-party/3.3/lib/liblzma.a - found
+-- Looking for lzma_lzma_preset in /opt/vesoft/third-party/3.3/lib/liblzma.a
+-- Looking for lzma_lzma_preset in /opt/vesoft/third-party/3.3/lib/liblzma.a - found
+-- Found LibLZMA: /opt/vesoft/third-party/3.3/lib/liblzma.a (found version "5.2.5") 
+>>>> Configuring third party for 'Nebula Graph' done <<<<
+-- Create the pre-commit hook
+-- Creating pre-commit hook done
+-- Found Git: /usr/bin/git (found version "2.34.1") 
+-- MemoryTracker is ENABLED
+-- NEBULA_BUILD_VERSION            : 
+-- HOST_SYSTEM_NAME                : Ubuntu
+-- HOST_SYSTEM_VER                 : ubuntu2204
+-- CPACK_GENERATOR                 : DEB
+-- CMAKE_HOST_SYSTEM_PROCESSOR     : amd64
+-- Configuring done (1.0s)
+-- Generating done (0.3s)
+-- Build files have been written to: /home/sch/nebula/nebula-3.6-memory/build

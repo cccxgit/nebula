@@ -1,0 +1,117 @@
+图空间级内核参数：配置架构独立审查
+日期：2026-10-11
+范围：只读目标分支源码；未实现新机制、未启动服务、未操作生产。
+代码：3.6-memory；HEAD 194958131042df77301072eb99dccbc64fb34246；此 HEAD 为文档提交。
+以下路径相对工程 /home/sch/nebula/nebula-3.6-memory。已读 AGENTS.md 及 nebula_graph_readable_analysis_prompts.md。
+
+直接结论
+
+可行。现有 WAL、分片和 RocksDB 引擎对象已经带有 spaceId，只是创建时从同一进程的 FLAGS 取值。最小改造是在创建对象时按 spaceId 选择配置，保留原 FLAGS 作为默认值。生产第一版建议只让 wal_buffer_size 支持空间覆盖，配置随进程启动固定，不改元数据格式、不做在线缩容。全量参数自动空间化不可取；共享资源参数与持久性、选举参数必须另做设计和验证。此结论由源码支持，尚无新机制运行验证。
+
+为什么这个边界较稳妥
+
+gflags 本身仍是进程配置入口；把一个 FLAGS 值替换成“按 spaceId 找到的配置值”，才会使行为按空间区分。不能在处理不同空间前临时改写全局 FLAGS：同一进程并发服务多个空间，其他线程和随后创建的对象会看到错误值。
+
+现有对象创建链已经提供了 spaceId。只需让创建 WAL 的地方收到该空间已经校验过的容量，就能让热空间继续用原值、冷空间使用更小值。底层缓存淘汰、磁盘 WAL、复制规则可以维持原机制；这减少了设计改动面，但不能据此宣称没有性能风险。
+
+第一版不做在线调整，是为了避免把“选择不同构造参数”和“并发修改运行中的缓存”混在一次变更中。现有 AtomicLogBuffer 容量在构造时写入普通 int32_t，改变 gflag 不会改变已存在对象；直接改容量字段又会引入新的并发和回收时序。
+
+最小例子（以下空间编号和容量是假设）
+
+全局 --wal_buffer_size=8388608 保持 8 MiB。新配置把 spaceId=301 指定为 2 MiB；spaceId=101 没有覆盖。
+重启后的 storaged 创建 101 的每个分片副本时仍传入 8 MiB；创建 301 的每个分片副本时传入 2 MiB。同一空间的本地副本采用同一策略值，但每个副本仍有独立缓存，2 MiB 不是整个空间合计预算。
+冷空间仍会产生空日志、仍会增长，只是更早达到更低的平台。热空间的容量值保持原值，但冷空间缓存缩小后可能增加共享磁盘上的日志读取，所以热业务仍需混合负载回归。
+
+第一阶段建议：启动时固定的空间配置
+
+建议新增一个明确限于本机启动读取的字符串 gflag，名称待实现决定，例如 space_wal_buffer_overrides；值为严格 JSON，包含 schema_version、cluster_id 和按 space_id 列出的 wal_buffer_size。不要把本文示意名称误认为当前已有参数。
+如果空间很多，可以考虑“gflag 指定本地配置文件路径”，文件中存相同结构；它仍是本地启动配置，文件分发、校验和版本一致性要纳入运维。
+按明确的空间 ID 配置；可附 expected_space_name 作防误用校验，不能仅按名称自动匹配。默认未配置空间使用原来的全局值。不要仅凭“长时间无写入”自动归为冷空间，因为低写入空间仍可能有高频查询。
+功能开关默认关闭；关闭时严格回到原行为。启用时配置格式错误、重复 ID、未知字段、非法容量、整数溢出应在对外服务前明确拒绝，不悄悄忽略错误。未配置空间与无法正确解析配置是不同情况，不能都当作默认值处理。
+如采用严格配置契约，启动前还应验证覆盖表中的所有 ID 均存在且 expected_name 匹配，unknown ID 明确失败。运行中空间删除后旧 ID 不应再有对象可应用；但遗留配置会使下次严格启动失败，必须把删空间后清理覆盖表纳入流程，并提供停机前独立 preflight 检查。
+容量保持严格正数，限制在底层 int32_t 可表达且已验证的范围。不要把 0 定义成“禁用缓存”，除非另行实现、证明和测试该语义。
+启动解析一次，生成不可变的 SpaceRuntimePolicy / SpaceWalPolicy 对象；按 spaceId 查找后把值显式传入 Part / RaftPart 的构造路径。不要让每次写入都解析 JSON、访问 Meta 或改写全局 FLAGS。
+启用机制时也冻结全局 fallback，运行中禁止改写这组启动参数，避免部分新建对象使用新默认而老对象仍用旧值。关闭机制时维持原版行为。拒绝动作要覆盖所有设置入口，并在改写 flag 之前执行；只不注册 Meta MUTABLE 仍不足以拦截 HTTP 的全局改写接口（SetFlagsHandler.cpp:83）。
+须覆盖所有创建入口：存量目录启动恢复、Meta 新增分片、balance 新副本、listener（若属于支持范围）。对 Meta 自身的内部 spaceId 和 Storage adminStore 明确排除或定义独立规则，避免数字 ID 偶然匹配。
+启动日志/只读诊断至少提供：cluster_id、space_id、配置版本或 hash、来源(default/override)、期望值、对象实际值、本地副本数。全局 flags 页只能显示默认值，不能拿它证明每个 WAL 的实际容量。
+各存储副本节点及未来迁入目标都要分发相同配置。各机不同缓存容量不会天然改变 Raft 日志内容，但会使性能和内存预算不一致；不能把“协议可运行”当作部署已完成。
+cluster_id 绑定应来自成功 Meta 心跳确认的 MetaClientOptions.clusterId_（MetaClient.cpp:2613-2616,2671-2674）；不能拿 Part.cpp:18 默认 0 的 FLAGS_cluster_id 充当可信集群身份。若需对外获取该值，应新增明确的只读 accessor，并区别 MetaClient.h 内另一同名 clusterId_ 成员；当前已读源码未发现可直接复用的公开 getter。
+可先发布开关关闭的新二进制，确认基线一致；再为冷空间启用覆盖，逐节点重启，校验实际对象值和业务指标。在线改写配置只应记为待重启，不能返回“已应用”或让新旧对象无记录地混用。
+回退时恢复旧配置并滚动重启。降级到不识别新 gflag 的旧二进制前，必须从启动命令/flagfile 移除新参数。默认值恢复为大容量可能在运行后重新占用更多内存，回退容量要提前预留。
+
+第二阶段建议：Meta 持久保存空间策略
+
+大量空间、频繁变更、扩容和分片迁移时，本地 JSON 容易漏配；长期可以让 Meta 统一保存空间策略，gflag 只保留开关和默认值。正式引入 Meta 后应规定唯一配置权威来源，不能同时把本地 JSON 和 Meta 都当成同级有效来源。
+可新增专用 space policy 表，以 cluster_id/space_id 和策略版本定位，保存有类型的白名单字段。也可新增 SpaceDesc optional 字段，但不能只因 Thrift optional 可读就认为混合版本写入安全：旧代码会反序列化再写回 SpaceDesc，未知字段的保留必须实测；专用表避开这些已有 RMW 路径，但要补齐独立表的备份、恢复、删除和复制语义。
+本次倾向专用策略结构/表，不把任意 JSON 整包塞到现有 RocksDB nested 配置。具体存储实现是待开发设计，不是目标分支已经支持的功能。
+每个策略至少有 schema_version 和单调递增 revision；提交时支持 expected_revision 或等效并发控制，防止两个操作人后写覆盖先写。gflags 模块现有全局 last_update_time 可帮助通知刷新，但不能替代每空间版本、兼容能力和应用完成状态。
+Meta 保存成功只表示 desired policy 已提交；各 storaged 的解析成功、配置兼容、对象创建/在线应用完成分别报告状态。页面或命令需区分 desired_revision、effective_revision、pending_restart、error；不要在 Meta 返回成功时声称所有副本已经生效。
+缓存刷新要保证“先完整加载并发布空间策略，再创建该空间的引擎/分片”，同时新增对存量空间策略变化的差异比较。当前 diff 仅比较分片存在与副本映射，不会因为给 SpaceDesc 添字段就自动更新已有对象。
+空间删除时，策略也要随同删除；同名重建通常得到新 spaceId，应按新空间默认策略处理，不继承旧 ID 的覆盖。CREATE SPACE AS、备份恢复、跨集群导入是否继承策略必须明确。Space ID 在不同集群可重合，因此本地配置至少加 cluster_id 校验；恢复后也要核对期望名称/生命周期。
+启动若应有策略却拉取失败，不能悄悄退回较大默认值，否则恢复过程中可能再次超出内存预算。应明确区分“不存在覆盖”和“无法确认覆盖”：首次加载未确认时不开放受影响空间；运行中加载失败时保留已校验的旧有效策略并告警。若采用本地最后有效副本，需校验集群、版本和空间生命周期。
+混合版本节点先部署支持读取但关闭功能的版本，再确认所有相关节点能力，最后激活策略。纯 WAL 缓存大小是本地性能策略，可允许可观测的短暂不同；扩展到持久性或选举参数时不能复用这一宽松假设。
+在线缩容应作为第三个独立能力评审：包括并发发布、单写者淘汰、持有迭代器、旧节点回收、一次缩容 CPU 峰值和渐进缩容。第一版的目标可先通过空间构造参数加滚动重启实现。
+
+源码证据（目标分支，已实际读取）
+
+1. src/kvstore/raftex/RaftPart.cpp:330-365
+构造入参包含 GraphSpaceID spaceId，:345 保存 spaceId_；:357-360 创建 FileBasedWalPolicy，bufferSize = FLAGS_wal_buffer_size；:363 将 spaceId_ 传入 WAL 信息。
+证明：按空间选择构造容量有明确接入点，不需要改变 WAL 文件记录结构。
+不证明：任意参数都能空间化，也不证明缩小缓存不影响性能。
+
+2. src/kvstore/wal/FileBasedWal.cpp:40-60；src/kvstore/wal/AtomicLogBuffer.h:327,363
+FileBasedWal 保存传入 policy，构造 logBuffer_ = AtomicLogBuffer::instance(policy_.bufferSize)；Atomic 构造函数保存 capacity_，该成员为普通 int32_t。
+证明：现有容量是构造时固定；仅设置 gflag 不会更新已有缓存。
+不证明：把 capacity_ 换成 atomic 就能安全支持在线缩容。
+
+3. src/storage/StorageServer.cpp:190-204,236-257；src/clients/meta/MetaClient.cpp:106-125
+Storage 先构造 MetaClient、waitForMetadReady，再创建 KVStore。isMetadReady 调用 loadData 与 loadCfg，最终返回 ready_。
+证明：启动时已经存在先获取元数据再建立引擎的流程，可接入空间 ID 校验。
+边界：ready_ 在 loadData 设置，并不等于本次新策略已经下载、验证、应用；新策略必须增加自己的就绪条件，不能仅复用布尔值名。
+
+4. src/kvstore/NebulaStore.cpp:95-105,251,291-304,354-365,395-421,484-514
+目录恢复、PartManager 加载/新增空间和分片都使用 spaceId；每个 dataPath 为一个空间创建 RocksEngine；newPart 负责构造 Part 并注册/启动。
+证明：可把同一策略在 engine/part 两个粒度显式传递。要覆盖恢复和新增两条路径。
+不证明：一个空间只有一个 RocksDB 引擎，也不证明已存在对外空间参数接口。
+
+5. src/interface/meta.thrift:108-123,778-801；src/common/utils/MetaKeyUtils.cpp:934-943
+SpaceDesc 目前没有 WAL/运行参数字段；SpaceItem 持有 space_id 和 properties；ConfigItem 包含 module/name/mode/value，没有 space_id。配置 Key 只拼 module 与 name。
+证明：当前标准配置存储不是空间级配置；需要新增数据模型或新入口。
+补充陷阱：ListConfigsReq 虽有一个名为 space 的字段（meta.thrift:803-805），ListConfigsProcessor.cpp:11-38 实际只按 req.module 列举配置，不能据字段名推断已有空间配置功能。
+
+6. src/common/meta/GflagsManager.cpp:84-89,114-139；src/clients/meta/MetaClient.cpp:3185-3225
+NESTED 被注册为 MUTABLE map；updateGflagsValue 把 map 类型当 RocksDB 配置调用 updateNestedGflags；后者把同一 optionMap 遍历发送到所有 localCache_ 空间。
+证明：直接把新 space JSON 加进 NESTED 名单会走现有全空间广播，不会自动实现按 ID 路由。应有专用解析与分发路径。
+
+7. src/clients/meta/MetaClient.cpp:347-354,389-424,1020-1080,182-199,3144-3182
+空间属性被装入 SpaceInfoCache；新 MetaData 用 store 发布；随后 diff 对比新旧本地分片映射。心跳线程先 loadData 再 loadCfg，二者依赖 metadLastUpdateTime 检查是否刷新。
+证明：有空间元数据快照可扩展，但已有 diff 不检查空间策略，现有刷新机制也无“所有 storage 应用确认”。
+
+8. src/kvstore/PartManager.cpp:103-161；src/kvstore/NebulaStore.cpp:719-732
+已有 onSpaceOptionUpdated(spaceId, options) 按白名单转发到 updateSpaceOption；后者加入 storeWorker 异步任务，对每个 key 调 setOption/setDBOption，调用处未汇总这些返回值。
+证明：已有内部按 spaceId 的 RocksDB 更新入口可复用部分执行工作；不是已支持的对外图空间级配置，也不是原子、可确认的批次更新。新控制面需要收集失败和部分成功状态。
+
+9. src/meta/processors/parts/CreateSpaceProcessor.cpp:103-111,156-157,278
+创建空间获取 autoIncrementId，保存空间 name 索引、ID 属性和全局更新时间。
+src/meta/processors/parts/DropSpaceProcessor.cpp:36-60 将删除分片映射、name 索引与空间属性加入 batch。
+证明：空间 ID 应是策略绑定对象；新表若引入，需加入同生命周期操作，不能仅按名字持久保存。
+
+10. src/common/utils/MetaKeyUtils.cpp:155-164；src/meta/processors/parts/AlterSpaceProcessor.cpp:46-75；src/meta/processors/parts/CreateSpaceAsProcessor.cpp:106-121
+SpaceDesc 使用 CompactSerializer 读写；ALTER SPACE ADD ZONE 会反序列化、改字段、序列化回写；CREATE SPACE AS 复制旧 SpaceDesc 再改名字保存。
+证明：把新策略塞入 SpaceDesc 后必须规定复制语义，并验证旧版本回写是否保留未知字段；不能笼统宣称“加 optional 字段就兼容”。未知字段具体保留行为本次未做 Thrift 运行实验。
+
+11. src/common/utils/MetaKeyUtils.cpp:24-59
+备份相关表集合中 configs、spaces 等各有表前缀和空间解析规则。
+证明：新增单独策略表还需要纳入备份/恢复识别与范围选择；不能只新增读写函数就认为生命周期完整。
+
+建议验证（尚未执行）
+
+A. 关闭开关与空覆盖表：与原实现同负载逐项对比有效容量和行为；若任何空间变为不同值，否定“兼容默认行为”。
+B. 冷热空间混部：热空间 8 MiB、冷空间 2 MiB，逐副本记录构造实际容量、稳定节点分配和回退文件读次数；若热空间容量改变，说明作用范围错误。性能必须使用混合负载，单空间基准不能证明不会相互影响。
+C. 生命周期：启动恢复、新建、balance、删后同名重建、CREATE SPACE AS、备份恢复；每处检查 cluster_id/space_id/版本与实际对象值，确保旧策略不串空间。
+D. 配置错误与版本混合：未知字段、负数/0/溢出、旧二进制、新旧配置、部分节点未更新；检查是否明确拒绝/保持旧值，以及状态是否反映实际应用范围。
+E. 若扩展 Meta：两次并发修改、节点断网/恢复、Meta 返回成功但 Storage 拒绝、进程重启且 Meta 拉取失败；确认版本不倒退、desired 与 effective 不混淆。
+
+最终判断
+
+空间级 WAL 容量是一项边界清楚、与当前内存痛点直接相关的可行改造。建议先以启动 gflag 导入“空间 ID → WAL 容量”覆盖，保留原算法和全局默认，再按需求发展 Meta 管理与在线变更；任何一步都不能把“参数已接入”当作“生产性能已证明安全”。

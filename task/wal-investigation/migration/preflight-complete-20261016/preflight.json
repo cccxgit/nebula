@@ -1,0 +1,307 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-16T02:02:08.937573+00:00",
+  "repo": "/home/sch/nebula/nebula-3.6-memory",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "git_head": {
+    "exit_code": 0,
+    "stdout": "194958131042df77301072eb99dccbc64fb34246",
+    "stderr": ""
+  },
+  "recorded_baseline": "de9b3ed800a6627d9845e9289b6bbc5b6faf460a",
+  "maximum_make_jobs": 5,
+  "nofile_soft_hard": [
+    65536,
+    65536
+  ],
+  "generated_headers_present": true,
+  "dependencies": {
+    "git": "/usr/bin/git",
+    "bash": "/usr/bin/bash",
+    "c++": "/usr/bin/c++",
+    "cmake": "/usr/local/cmake/bin/cmake",
+    "make": "/usr/bin/make",
+    "tar": "/usr/bin/tar",
+    "sha256sum": "/usr/bin/sha256sum"
+  },
+  "syntax_checks": [
+    {
+      "path": "task/wal-investigation/analyze_results.py",
+      "sha256": "83c8a53b84982d8e966b1c9d39582e918f768485c2101dc75c15e9cf89dbdf08",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/analyze_runtime_rocks.py",
+      "sha256": "2017a7d23ece1458e67f9e6f31f49191dfe35f2de30dfd9e30ec6153fb1688e1",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/cluster.py",
+      "sha256": "78679b1cd732e5613503b261e191581fb36c65d18b354cae518ef8240e4e3192",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/design-evidence/build_design_docx.py",
+      "sha256": "47e62e589425c3c02ff94c5efb81d2fc32f19617eb0215ee470fb2043f98803b",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/design-evidence/render_with_host_libreoffice.py",
+      "sha256": "2143ff13aa3ae20fc3e14969dd9c71d7011cbdac96849bf77c646577e6c9c96e",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/migration/preflight.py",
+      "sha256": "3bb40c4bbebd06dda88feb27e194005a9930d264e1ed0a942d8999d763dbc5c9",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/migration/run_components.py",
+      "sha256": "5cc0743237730ed41a61d97b420e81747f7c89ad3d20ded07d07978f23934a17",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/parse_wal.py",
+      "sha256": "96d61297fe2fdaabfa6c91871aa6d127bed7c3da752d0024320abc0cedd04e26",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/run-capacity-probe.sh",
+      "sha256": "ce35f690d94f28747eb6fffb37ddd888d43d0ac56c5e33b235484aebe58e023d",
+      "syntax_ok": true,
+      "check": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "path": "task/wal-investigation/run-atomic-buffer-probe.sh",
+      "sha256": "05f7c42b3a2be837c3f15d04739199dc4938cb7004780a6936f1a049648526d6",
+      "syntax_ok": true,
+      "check": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "path": "task/wal-investigation/sample_runtime.py",
+      "sha256": "1ef818a82c25fc59ae63cca208760c728d10f19be47655aad63b6ded06535d19",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/test_parse_wal.py",
+      "sha256": "711c16ac6ae74a6c17dd2cc2a0be41ba2e92f4bb55845e796154a6e6d870e943",
+      "syntax_ok": true
+    },
+    {
+      "path": "task/wal-investigation/write-idle-comparison-20261011/run.sh",
+      "sha256": "54b490893d58a20bb7889ffd0ec00b815fda6abc8493ddd06f557a47b9083ead",
+      "syntax_ok": true,
+      "check": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    }
+  ],
+  "hardcoded_path_locations": [
+    {
+      "path": "task/wal-investigation/cluster.py",
+      "line": 17
+    },
+    {
+      "path": "task/wal-investigation/cluster.py",
+      "line": 18
+    },
+    {
+      "path": "task/wal-investigation/design-evidence/render_with_host_libreoffice.py",
+      "line": 11
+    },
+    {
+      "path": "task/wal-investigation/migration/preflight.py",
+      "line": 95
+    },
+    {
+      "path": "task/wal-investigation/production-tuning-evidence/run-capacity-probe.sh",
+      "line": 5
+    },
+    {
+      "path": "task/wal-investigation/run-atomic-buffer-probe.sh",
+      "line": 5
+    },
+    {
+      "path": "task/wal-investigation/run-atomic-buffer-probe.sh",
+      "line": 25
+    },
+    {
+      "path": "task/wal-investigation/run-atomic-buffer-probe.sh",
+      "line": 27
+    },
+    {
+      "path": "task/wal-investigation/write-idle-comparison-20261011/run.sh",
+      "line": 3
+    },
+    {
+      "path": "task/wal-investigation/write-idle-comparison-20261011/run.sh",
+      "line": 26
+    },
+    {
+      "path": "task/wal-investigation/write-idle-comparison-20261011/run.sh",
+      "line": 28
+    }
+  ],
+  "historical_elf_binaries": [
+    {
+      "path": "task/wal-investigation/atomic-buffer-probe",
+      "bytes": 1701000
+    },
+    {
+      "path": "task/wal-investigation/atomic-buffer-probe-jemalloc",
+      "bytes": 2399128
+    },
+    {
+      "path": "task/wal-investigation/migration/component-full-20261016/atomic-probe",
+      "bytes": 2399368
+    },
+    {
+      "path": "task/wal-investigation/migration/component-full-20261016/payload-probe",
+      "bytes": 2289720
+    },
+    {
+      "path": "task/wal-investigation/migration/component-smoke-20261016/atomic-probe",
+      "bytes": 2399368
+    },
+    {
+      "path": "task/wal-investigation/migration/component-smoke-20261016/payload-probe",
+      "bytes": 2289720
+    },
+    {
+      "path": "task/wal-investigation/rocks-commit-probe",
+      "bytes": 10739360
+    },
+    {
+      "path": "task/wal-investigation/write-idle-comparison-20261011/payload-probe",
+      "bytes": 2289472
+    }
+  ],
+  "evidence_symlinks": [
+    {
+      "path": "task/wal-investigation/service-logs/graphd/nebula-graphd.INFO",
+      "target": "nebula-graphd.sch-PC.sch.log.INFO.20261010-065853.77494",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/metad/nebula-metad.ERROR",
+      "target": "nebula-metad.sch-PC.sch.log.ERROR.20261010-065850.77094",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/metad/nebula-metad.INFO",
+      "target": "nebula-metad.sch-PC.sch.log.INFO.20261010-065850.77094",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/metad/nebula-metad.WARNING",
+      "target": "nebula-metad.sch-PC.sch.log.WARNING.20261010-065850.77094",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s1/nebula-storaged.ERROR",
+      "target": "nebula-storaged.sch-PC.sch.log.ERROR.20261010-065856.77312",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s1/nebula-storaged.INFO",
+      "target": "nebula-storaged.sch-PC.sch.log.INFO.20261010-065853.77312",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s1/nebula-storaged.WARNING",
+      "target": "nebula-storaged.sch-PC.sch.log.WARNING.20261010-065853.77312",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s2/nebula-storaged.ERROR",
+      "target": "nebula-storaged.sch-PC.sch.log.ERROR.20261010-065856.77368",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s2/nebula-storaged.INFO",
+      "target": "nebula-storaged.sch-PC.sch.log.INFO.20261010-065853.77368",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s2/nebula-storaged.WARNING",
+      "target": "nebula-storaged.sch-PC.sch.log.WARNING.20261010-065853.77368",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s3/nebula-storaged.ERROR",
+      "target": "nebula-storaged.sch-PC.sch.log.ERROR.20261010-065856.77431",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s3/nebula-storaged.INFO",
+      "target": "nebula-storaged.sch-PC.sch.log.INFO.20261010-065853.77431",
+      "target_exists": true
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s3/nebula-storaged.WARNING",
+      "target": "nebula-storaged.sch-PC.sch.log.WARNING.20261010-065853.77431",
+      "target_exists": true
+    }
+  ],
+  "baseline_checks": [
+    {
+      "file": "AtomicLogBuffer.cpp",
+      "matches_recorded_commit": true,
+      "expected_blob": {
+        "exit_code": 0,
+        "stdout": "d4934bf5c97029c625f84bdbf9241045c5256592",
+        "stderr": ""
+      },
+      "actual_blob": {
+        "exit_code": 0,
+        "stdout": "d4934bf5c97029c625f84bdbf9241045c5256592",
+        "stderr": ""
+      }
+    },
+    {
+      "file": "AtomicLogBuffer.h",
+      "matches_recorded_commit": true,
+      "expected_blob": {
+        "exit_code": 0,
+        "stdout": "db66d87b955a540c22f9eceea95c847f8b99e834",
+        "stderr": ""
+      },
+      "actual_blob": {
+        "exit_code": 0,
+        "stdout": "db66d87b955a540c22f9eceea95c847f8b99e834",
+        "stderr": ""
+      }
+    }
+  ],
+  "optional_paths": {
+    "third_party": {
+      "path": "/opt/vesoft/third-party/3.3",
+      "exists": true,
+      "required_paths": {
+        "include": true,
+        "lib": true,
+        "include/folly": true,
+        "include/rocksdb": true,
+        "include/gflags": true
+      }
+    }
+  },
+  "processes": [],
+  "failures": [],
+  "warnings": [
+    "Historical scripts contain host-specific paths; see hardcoded_path_locations",
+    "Historical ELF binaries are machine-specific; rebuild probes on the target host"
+  ],
+  "boundary": "No service/network/build/config mutation; output directory only. Passing is not build/runtime/functional validation."
+}

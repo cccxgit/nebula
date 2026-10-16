@@ -1,0 +1,174 @@
+独立只读代码分析：空闲多空间/多分片 storaged 内存增长的候选、量纲与实验控制
+分析基线：3.6-memory；本文只依据当前本地源码与实际链接的第三方头文件。
+任务边界：不修改业务语义、不尝试修复、不启动或停止服务。运行复现由主任务负责。
+
+一、可以直接由代码证明的因果链
+
+1. 空闲分片仍然产生新的空 Raft 日志，不只发送不落盘的 Heartbeat RPC。
+   src/kvstore/raftex/RaftPart.cpp:1401-1434 statusPolling 调度。
+   1411: 下一次 delay = FLAGS_raft_heartbeat_interval_secs * 1000 / 3 + rand32(500)。
+   1138-1140: needToSendHeartbeat 只检查 RUNNING + LEADER，没有再检查一个完整心跳周期。
+   2041-2048: sendHeartbeat 在 !replicatingLogs_ 时投递 appendLogAsync(NORMAL, "")。
+   注释说“leader 本 term 尚未提交时”，但实际条件并未检查 commitInThisTerm_；分析必须按执行条件。
+   2051-2122: 同时还有独立 Heartbeat RPC；不要把 RPC 次数直接等同 WAL 写入次数。
+   1757-1777: follower 的 AppendLogRequest 同样经过 wal_->appendLogs，副本会缓存空日志。
+
+2. 每个分片副本有自己的 FileBasedWal / AtomicLogBuffer，配置预算不跨分片共享。
+   src/kvstore/wal/FileBasedWal.cpp:59 构造新的 AtomicLogBuffer。
+   src/kvstore/raftex/RaftPart.cpp:358-359 每个 RaftPart 的 fileSize/bufferSize 配置。
+   FileBasedWal.cpp:457-499 每次记录写磁盘后 push 到内存缓冲。
+   AtomicLogBuffer.h:32-33 空消息仍计 sizeof(ClusterID)+sizeof(TermID)=16 字节逻辑size。
+   AtomicLogBuffer.h:18,96-110 每个 Node 固定64个 Record，Record 还含std::string及布局开销。
+   AtomicLogBuffer.cpp:74-89 每64条新建 Node；91-115 达容量才把旧tail标记dirty。
+   AtomicLogBuffer.cpp:167-213 最后读者退出并满足dirtyNodes>5或size>max阈值才真正delete。
+   因而低速空日志会长时间处在“未到容量、持续保留历史”的阶段；这不等同已证明无限泄漏。
+   生命周期管理/并发读者导致的延迟GC需要独立读者与dirty计数证据，不能与正常填充混为一谈。
+
+3. 每条空日志也更新 RocksDB 的分片提交位置，因此“空图空间”不等于 RocksDB 无写入。
+   src/kvstore/Part.cpp:225-233 先设置lastId/lastTerm，再对空msg continue。
+   349-358 循环结束仍 putCommitMsg 并 commitBatchWrite。
+   403-410 commitMsg为16字节，key=systemCommitKey(partId)。
+   src/common/utils/NebulaKeyUtils.cpp:101-108 key为PartitionID(4)+system type(4)，共8字节。
+   这是一组反复覆盖的系统键，不是新增用户顶点或边。
+   /opt/vesoft/third-party/3.3/include/rocksdb/advanced_options.h:328-340
+   inplace_update_support默认false；正常memtable写入会留存多版本直至flush/回收。
+   每次8B key+16B value只给出用户字段大小，不能将24B直接当作memtable实际条目成本。
+
+二、与“每天几百MB”匹配的数量级
+
+前提：50空间×20分片×3副本，均匀落在3个storaged，无learner，则每个storaged有1000个本地副本。
+不能再把1000除以3当作WAL缓存数量；leader只约333个，但follower的约667个副本也append WAL。
+
+源码gflag默认raft_heartbeat_interval_secs=5（RaftPart.cpp:30）。
+实际仓库默认/生产配置conf/nebula-storaged.conf.default:46与production:46均设置30。
+所有估算必须使用运行配置而不是混用上述两个默认值。
+30秒配置下，健康空闲调度平均周期约10秒+249.5毫秒，另加调度和执行延迟。
+单副本每天约86400/10.2495=8430条空日志；每进程约843万条。
+每条空日志磁盘32B（LogID8+TermID8+头长4+ClusterID8+尾长4），约257MiB/天/进程。
+内存Record至少包含两个i64及一个std::string；典型libstdc++下Record为48B，
+还需Node固定布局/对齐、尚未填满的64项数组、分配器大小类别/页的开销。
+若sizeof(Node)=3200，Node存活对象字节速率约402MiB/天/进程；需以本次构建sizeof实测确认。
+RSS不可直接视作上述存活对象字节，需把RocksDB、allocator retained、网络等贡献分开测。
+
+默认wal_buffer_size=8MiB的逻辑预算需要约524288条空日志/分片才能达到。
+按30秒配置上述速率，约62.2天才能填满；因此“观察数周一直涨”可由容量内填充解释。
+相应Node对象占用可到每分片约25MiB量级，1000副本合计约24.4GiB，
+这是指定sizeof假设和正常GC下的量纲推断，不是已测绝对上限，更不是整进程RSS硬上限。
+默认max_log_buffer_size=16MiB是releaseRef中的GC触发比较且size是逻辑计费，
+不是进程16MiB限制，也不能限制多分片总和。
+
+三、候选对照与可量化边界
+
+A. Raft内存日志缓存：与分片副本数和空日志数近似线性；高优先级直接候选。
+   建议记录每分片logical_size、live_nodes、dirty_nodes、reader_refs、push/GC次数，
+   以及sum(logical_size)、sum(live_nodes*sizeof(Node))的时间序列。
+   低容量对照应表现为logical_size平台与dirty回收，验证“缓冲填充”机制。
+   正常尺寸短实验无法证明几个月后的平台，更不能证明没有其他泄漏。
+
+B. RocksDB memtable：同样由心跳系统键写入驱动，需要与A分离。
+   NebulaStore.cpp:395-421每space×dataPath创建一个engine；不是每分片一个独立DB。
+   RocksEngineConfig.cpp:258-268 从CF配置读取write_buffer_size等。
+   当前仓库默认配置conf/nebula-storaged.conf.default:102：64MiB，max_write_buffer_number=4。
+   实际链接头options.h:172-188也说明write_buffer_size按CF生效；advanced_options.h:249-261
+   描述可并存的write buffers数。50空间×1 dataPath×1默认CF的活跃memtable预算量级3.125GiB；
+   按4个write buffer/DB的配置量级可达12.5GiB，另含实际开销、暂态与其他内存。
+   不能称这些粗算为严格RSS上限。应读实际生成OPTIONS与HTTP属性确认。
+   NebulaStore.cpp:1293-1308每600秒cleanWAL，仅rocksdb_disable_wal=true时先engine->flush。
+   因此切换rocksdb_disable_wal会同时引入周期flush，不是单纯控制磁盘WAL；解释对照要注明。
+   可观测：cur-size-active-mem-table、cur-size-all-mem-tables、size-all-mem-tables、
+   num-entries-active-mem-table、num-entries-imm-mem-tables、num-immutable-mem-table。
+   注意多个space×engine求和；与block cache聚合方式不同。
+
+C. RocksDB block cache / row cache：配置预算全进程共享，不能乘空间数。
+   RocksEngineConfig.cpp:307-318两个函数局部static shared_ptr在所有engine间复用。
+   block cache源代码默认1024MiB（49-51），默认配置为4MiB、生产配置4096MiB；须查运行值。
+   row cache flag默认16,000,000（57），文案说keys，但NewLRUCache实参语义为字节capacity；
+   不应把它解释成“1600万条、每space一份”来计算。
+   第三方rocksdb/cache.h:112-122 strict_capacity_limit默认false，pinned项目等可造成超预算。
+   可观测block-cache-usage/block-cache-pinned-usage/block-cache-capacity；跨空间取一次或max，
+   不能简单sum（会把同一共享缓存重复累计几十次）。
+   空业务负载仍可能有启动/系统键读取和flush后SST读取，不能仅凭没有用户查询完全排除；
+   若增长实验中该usage稳定，才可排除它解释观察到的斜率。
+
+D. SST table reader/index/filter：默认设置未必全部计入block cache。
+   RocksEngineConfig.cpp:321-325仅enable_partitioned_index_filter分支设置cache_index_and_filter_blocks。
+   可观测estimate-table-readers-mem，按space×engine求和，结合SST文件数量和flush时点。
+   没有读取/文件数无变化时缺少无限增长理由；不得把所有RocksDB内存都塞进block-cache预算。
+
+E. 磁盘Raft WAL保留 / page cache：磁盘大小增长不是进程匿名RSS增长的证明。
+   FileBasedWal.cpp:640-706 cleanWAL只unlink文件和erase walFiles_，没有清理logBuffer_。
+   至少保留两个WAL文件，旧文件还需满足TTL，单个未滚动文件可远超TTL仍保留。
+   默认wal_file_size=16MiB、空记录32B，单分片约524288条才滚动一个文件；
+   30秒配置时约62天/文件。每天增加的磁盘文件元数据对象数量在此阶段近似为0。
+   所以调小wal_ttl不一定删掉任何文件，更不会自动把内存AtomicLogBuffer按TTL清掉。
+   Linux文件页缓存是系统/容器内存口径重要混杂项；普通write的page cache不直接等于匿名RSS。
+   必须同时记录/proc/PID/status RssAnon/RssFile、smaps_rollup以及系统/cgroup口径。
+
+F. 定时任务、Raft RPC临时分配、统计直方图：正常路径缺少无限积累的代码证据。
+   statusPolling在回调末尾才安排下一次；每分片正常只保留O(1)个待触发timer。
+   GenericWorker.cpp:124-131一次timer回调后purge；176-181 erase activeTimers_；
+   Timer析构162-165 event_free。addRepeatTask复用持久timer（GenericWorker.h:238-255）。
+   NebulaStore backup为每300秒一次，RocksEngine.cpp:551-569未启用PlainTable备份时直接返回成功。
+   StatsManager.cpp:76-108相同counter name复用；固定60 buckets×4时间窗，
+   130-151直方图也固定窗口。分片数量静态、统计名不新增时，事件次数增加不等于样本逐条永久保留。
+   Host.cpp:408-489 heartbeat用future响应结束释放临时持有；raft_rpc_timeout_ms默认1000（23）。
+   若网络故障/队列拥堵可暂时积压，应记录错误率、term变更、线程/队列、pending数量，
+   不能从健康空闲慢涨直接推定RPC泄漏。RaftPart.cpp:811对logs_按max_batch_size限制，默认256。
+
+G. 分配器保留与碎片：解释“释放后RSS不降”但不能单独说明仍存活对象数持续增长。
+   build/CMakeCache.txt显示ENABLE_JEMALLOC=ON。MemoryUtils.cpp:200-207有可选purge路径。
+   应优先记录jemalloc stats.allocated/active/resident/retained（采样前刷新epoch），
+   同时记录WAL节点和RocksDB字节。allocated持续涨与allocated平台/RSS高位是不同现象。
+   purge仅归还未用页面，不会释放仍被AtomicLogBuffer或memtable持有的对象；
+   不可用“purge后没有降低”单独证明分配器泄漏或代码泄漏。
+
+四、建议实验控制（不属于修复）
+
+1. 干净隔离数据目录，记录commit、二进制校验、配置、内核、allocator、PID启动时间。
+   固定空间/分片/副本和数据目录数；三副本确认每台有1000本地副本并健康选举。
+   不插入业务数据；明确只运行创建space与必要的元数据命令，后续完全空闲。
+2. 同步采样RSS/PSS/RssAnon、WAL节点/逻辑字节/空日志数、所有space的memtable/reader属性、
+   共享cache属性、磁盘WAL记录/字节/文件数；保留原始样本而不仅是一张图。
+3. 默认wal_buffer_size、生产等效心跳周期为基准；单因素缩短心跳周期可加速，
+   用真实空日志数比较斜率；计时缩放不代表机器每秒写速率无限线性。
+4. 低wal_buffer_size对照用于验证容量和GC平台；保持心跳、space、RocksDB参数相同。
+   若另做RocksDB缩小write_buffer_size或显式flush，必须是单独一组并保留修改后的配置。
+5. 0空间/少分片对照区分进程固定开销和每分片线性开销；停止/重启属于另一个生命周期实验。
+   重启清空RAM WAL缓存但会重放/恢复RocksDB，不能以重启RSS降低独证某一种泄漏。
+6. 三副本与单副本都复现有助于排除peer RPC为必要条件；单副本是机制对照，
+   不能冒充完全复现“生产三副本50空间20分片”的拓扑。
+7. 记录GC发生前后live bytes/dirty nodes以及采样误差。短期单调上涨足以复现观察现象，
+   仍需注明是“长时间填充/持有”，不能未经跨阈值实验就宣称数学意义上的无限增长。
+
+五、只读采样脚本与校验记录
+
+脚本 task/wal-investigation/sample_runtime.py，Python标准库，不启动服务、不修改数据库。
+示例：
+python3 task/wal-investigation/sample_runtime.py --pid-file s1=/absolute/s1.pid \
+  --pid-file s2=/absolute/s2.pid --ports 19779,19789 \
+  --data-dir s1=/absolute/s1/data --data-dir s2=/absolute/s2/data \
+  --spaces-file /absolute/spaces.txt --duration 900 --interval 10 \
+  --output task/wal-investigation/run-baseline
+spaces.txt只放已知space名称，逗号或空白分隔。可--spaces name1,name2。
+--endpoint s1=http://127.0.0.1:19779 可覆盖--ports；--pid s1=12345可替代pid-file。
+不指定HTTP端口或space时只记录proc和WAL；--duration 0只采一次。
+每进程单独CSV，manifest记录参数，raw-samples.jsonl默认每6次保存全HTTP响应和WAL元数据，
+错误始终保留。输出目录内有同名CSV则拒绝覆盖。
+
+HTTP格式已核实：StorageServer.cpp:140注册/rocksdb_property；
+StorageHttpPropertyHandler.cpp:49-70按请求property顺序返回JSON数组；
+NebulaStore.cpp:1420-1429每项是{"Engine 0":"数值",...}，未提供属性名。
+11个默认property名称均由本地第三方rocksdb/db.h:894-1057声明/注释确认支持。
+默认包括3种memtable字节、2种条目计数、immutable数、table-reader字节、
+3种shared block-cache字节、estimate-num-keys。单个属性不可用会使本次该space响应失败，
+脚本明确记http_spaces_failed，不会把失败虚报为0；可用--properties选择较小属性集。
+
+WAL估算读每个*.wal首尾记录头尾，假设文件内LogID连续，以last-first+1估算记录数；
+固定头尾开销32B，因此还记录bytes/32的空记录当量和bytes-32*records的payload估算。
+它是轻量快照，不是逐条文件完整性校验；并发删文件或末尾不完整会记wal_parse_errors。
+磁盘旧记录不等于进程启动后的内存push数，特别是重启/GC/WAL删除之后。
+
+2026-10-09T22:32:02Z 验证：py_compile成功；合成WAL含3条记录、99字节、3字节payload，
+首尾推算匹配；按真实handler结构模拟2space×2engine，memtable加总92、共享cache仍为99，
+没有错误；对采样进程自身/proc作one-shot采样生成CSV，RSS非零、errors为空。
+本验证不代表已经运行Nebula复现；实际集群证据由主任务实验文件提供。

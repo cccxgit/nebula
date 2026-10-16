@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-16T02:00:18.608715+00:00",
+  "mode": "smoke",
+  "repo": "/home/sch/nebula/nebula-3.6-memory",
+  "third_party": "/opt/vesoft/third-party/3.3",
+  "build_dir": "/home/sch/nebula/nebula-3.6-memory/build",
+  "compiler": "/usr/bin/c++",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "baseline_commit": "de9b3ed800a6627d9845e9289b6bbc5b6faf460a",
+  "baseline_sha256": {
+    "AtomicLogBuffer.cpp": "3af5641a37c66d5a80ed27670857c9beb8538a6406ff7fa1bd74ccc4b7a2e47a",
+    "AtomicLogBuffer.h": "da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/c++",
+        "--version"
+      ],
+      "stdout": "compiler-version.log",
+      "stderr": "compiler-version.log",
+      "started_utc": "2026-10-16T02:00:18.609488+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-O2",
+        "-g",
+        "-DENABLE_JEMALLOC",
+        "-DENABLE_MEMORY_TRACKER",
+        "-DS2_USE_GFLAGS",
+        "-DS2_USE_GLOG",
+        "-D__STDC_FORMAT_MACROS",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/src",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/build/src",
+        "-isystem",
+        "/opt/vesoft/third-party/3.3/include",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/atomic-buffer-probe.cpp",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib64",
+        "-lfolly",
+        "-lglog",
+        "-lgflags",
+        "-ljemalloc",
+        "-ldl",
+        "-pthread",
+        "-o",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-smoke-20261016/atomic-probe"
+      ],
+      "stdout": "atomic-build.log",
+      "stderr": "atomic-build.log",
+      "started_utc": "2026-10-16T02:00:18.611386+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-O2",
+        "-g",
+        "-DENABLE_JEMALLOC",
+        "-DENABLE_MEMORY_TRACKER",
+        "-DS2_USE_GFLAGS",
+        "-DS2_USE_GLOG",
+        "-D__STDC_FORMAT_MACROS",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/src",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/build/src",
+        "-isystem",
+        "/opt/vesoft/third-party/3.3/include",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/write-idle-comparison-20261011/payload-probe.cpp",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib64",
+        "-lfolly",
+        "-lglog",
+        "-lgflags",
+        "-ljemalloc",
+        "-ldl",
+        "-pthread",
+        "-o",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-smoke-20261016/payload-probe"
+      ],
+      "stdout": "payload-build.log",
+      "stderr": "payload-build.log",
+      "started_utc": "2026-10-16T02:00:21.840048+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-smoke-20261016/atomic-probe",
+        "1",
+        "1048576",
+        "each",
+        "0,1,64,65,129"
+      ],
+      "stdout": "capacity-smoke.csv",
+      "stderr": "capacity-smoke.meta",
+      "started_utc": "2026-10-16T02:00:24.963414+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-smoke-20261016/payload-probe",
+        "1024",
+        "0",
+        "0,1,64,65,129"
+      ],
+      "stdout": "payload-smoke.csv",
+      "stderr": "payload-smoke.meta",
+      "started_utc": "2026-10-16T02:00:24.967869+00:00",
+      "exit_code": 0
+    }
+  ],
+  "checks": [],
+  "boundary": "Pinned single-writer component comparison; no services, no product mutation, no space-level feature/performance validation.",
+  "atomic_source_sha256": "86519c36fb3b0f1805c88e4e78633fe59fe85c7e77cf4755bd01aac3d3cfc2c9",
+  "payload_source_sha256": "bd3ed6d076f6f37bf004b58c3e5eee98425b729426f6f9639a88f68ae8c5d94f",
+  "binary_sha256": {
+    "atomic": "2d7b2f9ee12abb83a8502f6aa600b876e25faa3e574135f8ed9ad5eb1f5b14ca",
+    "payload": "34fd5e1685020451fb1c16ff0a51fd40fbae9b554a1d134800ebb24291c17ccf"
+  },
+  "status": "passed"
+}

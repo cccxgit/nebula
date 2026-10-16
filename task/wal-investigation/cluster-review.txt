@@ -1,0 +1,64 @@
+cluster.py 静态审查（仅报告，未修改、未运行服务）
+审查时间：2026-10-10
+审查版本 SHA-256：d11e94d638ac8d32668215a42a47bfdc8fee6a1db5230d57cb84f1a637ac99b4
+
+结论：端口/多实例配置、服务脚本 -c 位置、flags HTTP 格式、采样器调用参数未发现
+阻断性格式错误。但脚本返回不代表数据库已就绪或异步任务完成，以下边界必须由
+主实验日志/采样佐证；仅脚本返回零不足以证明实验状态。
+
+1. [较高] CREATE 前和采样前缺少集群就绪判定。
+   cluster.py:157-164 仅在启动 metad 后固定睡 3 秒；storaged 和 graphd 启动后不等待。
+   cluster.py:88-92 的一个控制台文件紧接 ADD HOSTS 就 CREATE 50 个空间，未等待
+   storage 心跳登记完成。CreateSpaceProcessor.cpp:222 附近检查活跃 zone 数，
+   不足 3 个活跃副本位置会创建失败。即使 CREATE 成功，storage 后续下载元信息、
+   创建 1000 个分片、选举也有延时，会污染启动阶段内存与 WAL 斜率。
+   实验建议：显式确认 3 HOSTS ONLINE，50 空间存在，各空间 20 分片且 leader 已选出，
+   各实例 1000 个 WAL 分片目录；避开首次建引擎/选举热身后再定量比较。
+   console() 只检查控制台进程退出码，未逐条验证输出；当前二进制控制台是否在
+   nGQL 错误时返回非零未通过源代码验证，应以 create-spaces.log 内容与实际空间数核实。
+
+2. [较高] FLUSH 是异步提交，不是完成屏障。
+   cluster.py:169-173 的 SUBMIT JOB FLUSH 返回时只提交了作业。
+   src/graph/executor/admin/SubmitJobExecutor.cpp:42-49 明确返回 New Job Id。
+   脚本未保存逐空间 job id 映射、未 SHOW JOB 轮询至 FINISHED，因此紧跟 flush
+   返回的 RSS/rocksdb.cur-size-all-mem-tables 不能标注为“全部 flush 完成后”。
+   实验建议：日志保留任务状态或至少持续采样至活动/不可变 memtable 指标稳定，
+   给出实际等待区间。FLUSH 期间也仍有 Raft 空日志及 commit-key 更新。
+
+3. [中] 运行时切换 Raft 心跳间隔含过渡期，不能视为瞬时原子切换。
+   cluster.py:111-120 逐实例 PUT，失败可能留下只部分实例更新的状态；成功后保存
+   flags，但未验证所有实例读回值或等待新调度生效。
+   RaftPart.cpp:1411 的 statusPolling 下一轮才重算调度间隔；已经排队任务不会重排。
+   RaftPart.cpp:629 checkAlive 的超时是 static const，首次使用时锁存 2*间隔，
+   运行时 PUT 不更新该值。其他动态读取点如选举阈值(:1146)、lease(:2267)会变化。
+   这是原代码现状，非脚本能够完全同步更新的状态。加速阶段应保留切换时间、
+   多个采样的热身期以及 term 稳定性，不能盲目按恰好 30 倍外推。
+   --heartbeat 允许 0/负值；0 会造成高频轮询/异常 lease，负值对 uint32 flag
+   应失败。仅采用已确认的正整数（例如 30、1）。
+
+4. [中] stop 不等待真正退出，也不把停止失败作为错误。
+   cluster.py:101 对 stop 的 check=False；scripts/nebula.service 的 stop_daemon
+   仅发 SIGTERM，wait_daemon_to_exit 只用于 restart 分支。stop 返回后进程可能
+   仍在清理/flush 数据。因此停止后取静态 WAL 快照/重启前应核实 PID 已消失，
+   否则不能把快照称为停机一致视图。
+
+5. [低] prepare 防覆盖范围仅检查 INSTALL/data 非空。
+   cluster.py:60-61 可以保护本次默认数据目录，但不检查既有 etc 配置、现存服务
+   或自定义外部 data_path；随后会覆盖 INSTALL/etc/nebula-metad.conf 和 graphd.conf。
+   本次实验由主任务已确认空环境时可接受；不宜把此脚本当作任意现有环境的通用工具。
+
+6. [低] inspect 只展示 wal_idle_01 的分片/模式。
+   cluster.py:175 的 SHOW SPACES 是全量，但 SHOW PARTS/TAGS/EDGES 只验证第 1 空间。
+   若报告需要声称 50 空间均无用户数据，需配合只执行 CREATE 的命令历史、无 tag/edge
+   schema 的全量检查或 WAL 全量 payload=0 证据，不能从单个空间直接推出其余 49 个。
+
+已确认的正确项：
+- 每个子进程启动前 limit_files 把 RLIMIT_NOFILE soft 设 65536，继承到 daemon，符合 AGENTS。
+  前提为当前 hard >= 65536；不足时会报错而不是静默绕过。
+- 3 份 storage 配置具有独立 pid、data_path、业务端口、HTTP 端口和日志目录。
+- storage 数据路径与 sample_runtime.py 的输入相符；此脚本没有 INSERT/UPDATE 等业务写。
+- SetFlagsHandler.cpp 要求 PUT 和 string 值，成功返回 errCode=0；脚本符合这三项。
+- GetFlagsHandler.cpp 支持 format=json&verbose=true；用于完整记录实际 flags 合理。
+- rocksdb_disable_wal=false 与源码默认相同，不是人为关闭 RocksDB WAL 的加速改动。
+- heartbeat_interval_secs=1 是元信息心跳参数；raft_heartbeat_interval_secs=30 才是
+  本实验的初始 Raft 节奏。报告须区分两者；同机 3 实例也不等于 3 台独立生产服务器。

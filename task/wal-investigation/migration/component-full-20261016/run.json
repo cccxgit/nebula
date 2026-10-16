@@ -1,0 +1,313 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-16T02:00:42.713142+00:00",
+  "mode": "full",
+  "repo": "/home/sch/nebula/nebula-3.6-memory",
+  "third_party": "/opt/vesoft/third-party/3.3",
+  "build_dir": "/home/sch/nebula/nebula-3.6-memory/build",
+  "compiler": "/usr/bin/c++",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "baseline_commit": "de9b3ed800a6627d9845e9289b6bbc5b6faf460a",
+  "baseline_sha256": {
+    "AtomicLogBuffer.cpp": "3af5641a37c66d5a80ed27670857c9beb8538a6406ff7fa1bd74ccc4b7a2e47a",
+    "AtomicLogBuffer.h": "da9731116d69c04cb5800c72ec375fe2ba4164b502b773636639a4feeeac28fd"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/c++",
+        "--version"
+      ],
+      "stdout": "compiler-version.log",
+      "stderr": "compiler-version.log",
+      "started_utc": "2026-10-16T02:00:42.713896+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-O2",
+        "-g",
+        "-DENABLE_JEMALLOC",
+        "-DENABLE_MEMORY_TRACKER",
+        "-DS2_USE_GFLAGS",
+        "-DS2_USE_GLOG",
+        "-D__STDC_FORMAT_MACROS",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/src",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/build/src",
+        "-isystem",
+        "/opt/vesoft/third-party/3.3/include",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/atomic-buffer-probe.cpp",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib64",
+        "-lfolly",
+        "-lglog",
+        "-lgflags",
+        "-ljemalloc",
+        "-ldl",
+        "-pthread",
+        "-o",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/atomic-probe"
+      ],
+      "stdout": "atomic-build.log",
+      "stderr": "atomic-build.log",
+      "started_utc": "2026-10-16T02:00:42.715739+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-O2",
+        "-g",
+        "-DENABLE_JEMALLOC",
+        "-DENABLE_MEMORY_TRACKER",
+        "-DS2_USE_GFLAGS",
+        "-DS2_USE_GLOG",
+        "-D__STDC_FORMAT_MACROS",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/src",
+        "-I",
+        "/home/sch/nebula/nebula-3.6-memory/build/src",
+        "-isystem",
+        "/opt/vesoft/third-party/3.3/include",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/write-idle-comparison-20261011/payload-probe.cpp",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib",
+        "-L",
+        "/opt/vesoft/third-party/3.3/lib64",
+        "-lfolly",
+        "-lglog",
+        "-lgflags",
+        "-ljemalloc",
+        "-ldl",
+        "-pthread",
+        "-o",
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/payload-probe"
+      ],
+      "stdout": "payload-build.log",
+      "stderr": "payload-build.log",
+      "started_utc": "2026-10-16T02:00:45.900151+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/atomic-probe",
+        "1",
+        "8388608",
+        "each",
+        "0,1,64,65,524288,524289,524290,524608,1048576,2097152"
+      ],
+      "stdout": "capacity-8388608.csv",
+      "stderr": "capacity-8388608.meta",
+      "started_utc": "2026-10-16T02:00:49.023226+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/atomic-probe",
+        "1",
+        "4194304",
+        "each",
+        "0,1,64,65,262144,262145,262146,262464,524288,1048576"
+      ],
+      "stdout": "capacity-4194304.csv",
+      "stderr": "capacity-4194304.meta",
+      "started_utc": "2026-10-16T02:00:49.138975+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/atomic-probe",
+        "1",
+        "2097152",
+        "each",
+        "0,1,64,65,131072,131073,131074,131392,262144,524288"
+      ],
+      "stdout": "capacity-2097152.csv",
+      "stderr": "capacity-2097152.meta",
+      "started_utc": "2026-10-16T02:00:49.209261+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/atomic-probe",
+        "1",
+        "1048576",
+        "each",
+        "0,1,64,65,65536,65537,65538,65856,131072,262144"
+      ],
+      "stdout": "capacity-1048576.csv",
+      "stderr": "capacity-1048576.meta",
+      "started_utc": "2026-10-16T02:00:49.241400+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/atomic-probe",
+        "1",
+        "262144",
+        "each",
+        "0,1,64,65,16384,16385,16386,16704,32768,65536"
+      ],
+      "stdout": "capacity-262144.csv",
+      "stderr": "capacity-262144.meta",
+      "started_utc": "2026-10-16T02:00:49.273631+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/payload-probe",
+        "0",
+        "0",
+        "1,64,65,8192,32768,524288,600000,1100000"
+      ],
+      "stdout": "empty.csv",
+      "stderr": "empty.meta",
+      "started_utc": "2026-10-16T02:00:49.291056+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/payload-probe",
+        "256",
+        "0",
+        "1,64,65,8192,32768,65536,131072"
+      ],
+      "stdout": "payload256.csv",
+      "stderr": "payload256.meta",
+      "started_utc": "2026-10-16T02:00:49.407277+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/payload-probe",
+        "1024",
+        "0",
+        "1,64,65,8065,8066,8192,32768,65536,131072"
+      ],
+      "stdout": "payload1024.csv",
+      "stderr": "payload1024.meta",
+      "started_utc": "2026-10-16T02:00:49.447548+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/migration/component-full-20261016/payload-probe",
+        "1024",
+        "32768",
+        "0,64,1024,8192,32768,131072,262144,524288,600000"
+      ],
+      "stdout": "after-stop.csv",
+      "stderr": "after-stop.meta",
+      "started_utc": "2026-10-16T02:00:49.480205+00:00",
+      "exit_code": 0
+    }
+  ],
+  "checks": [
+    {
+      "capacity": 8388608,
+      "passed": true,
+      "last_push": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "2097152",
+        "logical_bytes": "8388608",
+        "nodes": "8192",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "26214400",
+        "node_malloc_usable_bytes": "29360128",
+        "rss_kib": "33572",
+        "hwm_kib": "33572"
+      }
+    },
+    {
+      "capacity": 4194304,
+      "passed": true,
+      "last_push": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "1048576",
+        "logical_bytes": "4194304",
+        "nodes": "4096",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "13107200",
+        "node_malloc_usable_bytes": "14680064",
+        "rss_kib": "19068",
+        "hwm_kib": "19068"
+      }
+    },
+    {
+      "capacity": 2097152,
+      "passed": true,
+      "last_push": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "524288",
+        "logical_bytes": "2097152",
+        "nodes": "2048",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "6553600",
+        "node_malloc_usable_bytes": "7340032",
+        "rss_kib": "11864",
+        "hwm_kib": "11864"
+      }
+    },
+    {
+      "capacity": 1048576,
+      "passed": true,
+      "last_push": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "262144",
+        "logical_bytes": "1048576",
+        "nodes": "1024",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "3276800",
+        "node_malloc_usable_bytes": "3670016",
+        "rss_kib": "8240",
+        "hwm_kib": "8240"
+      }
+    },
+    {
+      "capacity": 262144,
+      "passed": true,
+      "last_push": {
+        "phase": "push",
+        "partitions": "1",
+        "records_per_partition": "65536",
+        "logical_bytes": "262144",
+        "nodes": "256",
+        "dirty_nodes": "0",
+        "refs": "0",
+        "node_struct_bytes": "819200",
+        "node_malloc_usable_bytes": "917504",
+        "rss_kib": "5516",
+        "hwm_kib": "5516"
+      }
+    }
+  ],
+  "boundary": "Pinned single-writer component comparison; no services, no product mutation, no space-level feature/performance validation.",
+  "atomic_source_sha256": "86519c36fb3b0f1805c88e4e78633fe59fe85c7e77cf4755bd01aac3d3cfc2c9",
+  "payload_source_sha256": "bd3ed6d076f6f37bf004b58c3e5eee98425b729426f6f9639a88f68ae8c5d94f",
+  "binary_sha256": {
+    "atomic": "2d7b2f9ee12abb83a8502f6aa600b876e25faa3e574135f8ed9ad5eb1f5b14ca",
+    "payload": "34fd5e1685020451fb1c16ff0a51fd40fbae9b554a1d134800ebb24291c17ccf"
+  },
+  "status": "passed"
+}

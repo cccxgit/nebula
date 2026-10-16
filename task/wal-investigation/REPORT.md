@@ -1,413 +1,304 @@
-# Nebula Graph 空闲空间内存持续上涨调查报告
+# 为什么没有业务写入，50 个图空间的内存仍会增加？
 
-对应任务：[task-wal.md](../task-wal.md)。分析基线：`3.6-memory`，提交 `de9b3ed800a6627d9845e9289b6bbc5b6faf460a`。
+分析对象：Nebula Graph `3.6-memory`，源码基线提交 `de9b3ed800a6627d9845e9289b6bbc5b6faf460a`。本文按 [可读性与证据规范](../../nebula_graph_readable_analysis_prompts.md) 重写，使用 2026-10-10 已完成的实验，没有把推算写成新实测。
 
-本次工作只做问题解释、复现和观测。产品源码仅在 `src/kvstore/wal/AtomicLogBuffer.cpp` 增加开关控制的计数与限频日志；没有修改心跳、日志复制、容量计账、缓存淘汰、GC 或 RocksDB 写入行为。完整差异见 [observation.patch](observation.patch)，统计边界见 [instrumentation-notes.txt](instrumentation-notes.txt)。
+## 1. 直接结论
 
-## 1. 核心结论与阅读入口
+在本次版本和配置下，业务不写数据时，分片仍会定期写入内部空日志。这些日志既占用每个副本的日志缓存，又使底层数据库反复记录“已经处理到哪里”，两部分内存都会增长。3 个 storage、50 个空空间的加速实验已验证这条因果链：约 15 分钟内，每台进程内存增加约 157MiB。增长主要发生在缓存尚未填满的阶段，不能直接定性为无限泄漏，也不能把这个加速数值当作生产日增量。
 
-空闲业务空间仍有内部写入。稳定运行的 Leader 在周期轮询中调用 `sendHeartbeat()`；当前没有复制任务时，它会追加一条空字符串日志。Leader 与 Followers 都把这条日志写入各自的 `FileBasedWal` 和 `AtomicLogBuffer`，随后在 RocksDB 中更新该分片的提交位点。
+本报告先解释空闲场景。另一独立任务“同样 50 个空间，持续写入新数据会怎样”，见 [持续写入与空闲场景对比](WRITE-VS-IDLE.md)。完整实验时间、精确数值、失败记录与重跑命令已移到 [实验明细](EXPERIMENT-DETAILS.md)，原始证据没有删除。
 
-这里有三个需要分开的内存现象：
+另一个任务的缓存组件对照还显示：停止业务写入后，空日志继续替换缓存内容，缓存实际分配量仍可能上升；这项结论有明确条件，不能直接推成整个 storage 的 RSS 变化，详见上述对比文档。
 
-1. **WAL 有效缓存长期填充。** 每个本地分片副本各有一个缓存，默认 8MiB 上限只按自定义逻辑大小计算。空记录只计 16B，但本机构建的满节点平均分配为 56B/条。达到容量之前，没有按空闲时长或 WAL TTL 驱逐这些有效节点的路径。
-2. **RocksDB 提交位点覆盖写。** 空业务 payload 会跳过业务操作，却仍执行 `putCommitMsg()` 和 batch commit。同一批系统键反复覆盖，MemTable 仍会积累版本、申请 arena 内存并触碰物理页。
-3. **释放对象与 RSS 下降不同步。** 已归还给分配器的内存可能保留复用；`purge` 也不能释放仍由有效 WAL 节点或 MemTable 持有的内存。单看 RSS 无法判断是哪一层在增长、是否发生对象泄漏。
+## 2. 先补齐两个必要背景
 
-按配置模板 `raft_heartbeat_interval_secs=30`，基础轮询平均约 `30/3+0.2495=10.2495` 秒。50 空间×20 分片×3 副本部署在 3 个 storage 时，每个实例有 1000 个本地副本，不能只计算本机 Leader 的数量。缓存尚未填满时，仅 WAL 节点分配的条件推算约为 **450.2MiB/实例/天**；默认逻辑容量约需 **62.2 天**填满。这与任务描述的量级相符，但属于基于本分支配置、布局和节奏的推算，不能冒充生产实测。
+**一个业务分片有多个副本，每个副本都会保存日志。** 本次配置是 50 个空间，每个空间 20 个分片，每个分片有 3 个副本，运行在 3 个 storage 进程上。总计 1000 个业务分片、3000 个副本；每台 storage 各有这 1000 个分片的一份副本。因此讨论单台内存时，应计算 1000 份缓存。Leader 是负责发起复制的主副本，Follower 是接收复制的其他副本；Follower 也消耗这部分内存。
 
-正常读者生命周期下，原始缓存代码在达到容量后会进入平台，单分片约 28MiB 的 Node 分配；因此“长期增长”不自动等于“数学上无限的泄漏”。持有长期不释放的迭代器会阻止脏节点 GC，组件实验也验证了这种额外条件，但本次服务实验是否存在该条件必须另看计数，不能从现象倒推。
+**一条内部日志会经过两处不同的内存。** 第一处是 Raft WAL 缓存：Raft 是分片副本之间保持日志一致的机制，WAL 是保存在磁盘上的日志，缓存则是在内存中保留最近一段日志，便于后续读取。第二处是 RocksDB 的 MemTable：RocksDB 是这里保存业务数据和系统状态的底层数据库，MemTable 是尚未刷入数据文件的内存写入区。前者保存“发生过哪些日志”，后者保存“这批日志已经应用到哪里”；它们有不同的内容和回收条件。
 
-深入阅读请按以下顺序：
+下文说“空日志”，指日志的业务内容为空，并非整条记录不存在。它仍有日志序号、任期等信息；任期是 Raft 用来区分不同领导阶段的编号。本文不把 Raft WAL 与 RocksDB 自己的 WAL 混为一谈。
 
-- [源码因果、定量模型与原始组件实验](COMPONENT-ANALYSIS.md)：原始代码直接运行的复现命令、完整数据表、默认 5 秒与模板 30 秒的区别。
-- [Raft 逐函数解读](CODE-WALKTHROUGH-RAFT.md)：对象生命周期、选举、两条心跳路径、队列、复制与提交。
-- [WAL 逐函数解读](CODE-WALKTHROUGH-WAL.md)：写盘/恢复、64 槽节点、链方向、计账、标删、迭代器、GC、reset、析构、TTL。
-- [RocksDB 与内存统计逐函数解读](CODE-WALKTHROUGH-ROCKSDB.md)：系统键、batch、MemTable、flush、缓存共享、监控、purge、RSS。
+## 3. 为什么会这样：沿着一条空日志看内存如何变化
 
-## 2. 实验环境、构建与观测边界
+### 3.1 没有业务请求，主副本仍会主动产生记录
 
-| 项目 | 实际设置 |
-|---|---|
-| 系统 | Ubuntu 22.04，Linux 6.8，x86_64，24 个逻辑 CPU，约 31GiB RAM |
-| 编译器/依赖 | GCC 11.4、GLIBC 2.35、CMake 3.26.5、工程 `/opt/vesoft/third-party/3.3`，RocksDB 7.5.3 |
-| 构建 | Debug，`ENABLE_TESTING=OFF`，jemalloc 与 MemoryTracker 均启用 |
-| 编译并行度 | 用户新增要求后停止本任务原 `-j8` 构建，使用 `make -j5` 增量完成；安装也用 `-j5` |
-| 安装/工作目录 | `/home/sch/nebula-run/nebula-memory` |
-| 拓扑 | 同机 1 metad、1 graphd、3 个独立 storaged 进程；每个 storage 独立数据目录/日志/PID/端口 |
-| graph / meta 端口 | `29669` / `29559` |
-| storage / HTTP 端口 | `29779/29789/29799` / `39779/39789/39799` |
-| 空间与分片 | `wal_idle_01` 至 `wal_idle_50`；每空间 20 分片、3 副本、`FIXED_STRING(32)` VID |
-| 业务负载 | 只创建空间；没有 INSERT/UPDATE/DELETE，没有创建 tag 或 edge schema |
-| WAL 参数 | `wal_buffer_size=8388608`、`max_log_buffer_size=16777216`、`wal_ttl=14400`、`clean_wal_interval_secs=600` |
-| RocksDB 参数 | `rocksdb_disable_wal=false`、`write_buffer_size=67108864`、`max_write_buffer_number=4`、共享 block cache 4MiB |
-| 内存监控 | `memory_purge_enabled=true`、interval 10 秒、`system_memory_high_watermark_ratio=0.8` |
-| 观测 | `wal_memory_observe=true`，进程级计数约每 10 秒一行；外部采样通常每 15 秒一次 |
-| 文件句柄 | 启动子进程前设置 `RLIMIT_NOFILE` soft=65536，等价于要求的 `ulimit -n 65536` |
+每个分片的主副本会周期检查自己的状态。当它处于正常运行状态，并且当时没有日志复制任务正在进行，就安排追加一条业务内容为空的日志。
 
-完整配置见 [configs](configs)、[flags-initial.json](flags-initial.json)；真实 PID、可执行文件和工作目录、文件句柄限制见 [process-manifest.json](process-manifest.json)。二进制 SHA-256、资源情况见 [runtime-environment.txt](runtime-environment.txt)，构建记录见 [configure.log](configure.log)、[build-j5.log](build-j5.log)、[install.log](install.log)。
+这个条件不是“刚选为 Leader 时只做一次”。虽然源码注释提到了新任期的提交需求，但实际判断只有“当前是否正在复制”。所以稳定任期内，只要持续满足条件，也会反复追加空日志。
 
-元信息心跳 `heartbeat_interval_secs=1` 用于本地建空间后快速传播，它与 Raft 心跳参数不同。初始 Raft 参数使用配置模板的 30 秒；加速阶段改为 1 秒，之后恢复为 30 秒。这个实验改动只用于缩短复现等待时间。基础轮询期分别约为 10.2495 秒和 0.5825 秒，理想速率比约 17.6，**不是 30 倍**；最终比较使用实际日志计数。
+还需要区分两个动作：这个函数既安排空日志追加，也发送普通的心跳消息。前者会进入 WAL；不能把所有心跳网络消息都当成一条 WAL。复制正在进行时，空日志追加可能被跳过，因此实际速率必须用记录数验证。
 
-## 3. 实验有效性与原始证据
+### 3.2 空日志成功写盘后，也被留在每个副本的内存里
 
-三实例上线及空间数见 [hosts-before-spaces.log](hosts-before-spaces.log)、[create-spaces.log](create-spaces.log)。全量 `SHOW PARTS/TAGS/EDGES` 见 [cluster-inspect.log](cluster-inspect.log)：50 个空间各返回 20 个分片，各分片具有三个副本；不存在 tag/edge schema。最初的 Leader 分布为 370/514/116，但三台都具有 1000 个本地副本，三台空 WAL 的增长速率仍接近。
+主副本将记录写到自己的 WAL，再复制给其他副本。其他副本接收到需要追加的记录后，也写入自己的 WAL。共同的写盘路径在成功追加之后，会把记录放入内存缓存；没有“业务内容为空就不缓存”的判断。
 
-每条用于定量分析的采样行要求：`http_spaces_ok=50`、`http_spaces_failed=0`、`http_engines=50`、`wal_part_dirs=1000`、`wal_parse_errors=0`。同时核对进程 PID 与 `/proc/<pid>/stat` 的启动时钟字段保持不变，防止把重启前后内存混成一条曲线。采样器保留实际时间、耗时与 HTTP 原始响应；汇总采用首末有效样本之间的实际秒数，不把配置 duration 当作实际窗口长度。
+缓存按每组 64 条记录分配一个对象，代码里叫 `Node`。这里的 Node 是一组日志记录的内存对象，不是图中的点，也不是一台服务器。第 1 条记录就需要申请一组；第 2～64 条继续使用这组；第 65 条再申请下一组。
 
-WAL 有两种观测来源：
+因此内存并非每次心跳都增加同样大小，而是随着一组组对象分配，形成台阶。1000 个副本各自跨过这些台阶后，单个分片很小的增长就会累计成明显的进程增长。
 
-- 外部采样按文件首末 LogID 估算记录数，用于低开销连续记录；它是磁盘统计，不能单独等同当前内存缓存大小。
-- [parse_wal.py](parse_wal.py) 逐条验证 `<LogID,TermID,length,ClusterID,payload,length>`，检查首尾长度、ID 连续性、任期回退、空/非空 payload。每个文件以打开时大小为边界，运行时扫描不是跨文件原子快照。
+### 3.3 “已经处理完”不会立即清空日志缓存
 
-首次全量扫描得到 56,994 条记录，全部为空，任期均为 1，ID 缺口和不完整记录均为 0；见 [wal-before-acceleration.json](wal-before-acceleration.json)。这与无业务写的命令历史和源代码链共同支持心跳内部写入的判断。单独看到空 payload 并不足以证明唯一来源，因为源码中的 `Part::sync()` 也可以生成空命令。
+这份缓存的策略是保留最近一段记录。记录应用完成，只意味着业务状态或提交进度已经更新，并不意味着这条记录立刻从缓存删除。
 
-观测搭建中的两类失败也保留了原始记录：本机 HTTP 代理使第一次 localhost 请求返回 502；逗号被编码为 `%2C` 后，当前 HTTP handler 按原始字符串拆分导致属性请求 400。采样脚本现直接连接 localhost 并保留参数中的逗号。`phase-01-warmup` 与 `phase-02-default30` 的失败行不参与结论。数据库未重启，缓存算法未改变。
+默认容量是每个副本 8MiB，但这里使用的是代码自定义的“逻辑大小”。空记录只算两个 8 字节字段，合计 16 字节；实际 C++ 对象还包括字符串对象、指针和结构开销。因此“逻辑容量 8MiB”不等于“实际只占 8MiB 内存”。
 
-## 4. 真实服务实测
+在尚未达到这个逻辑容量时，正常追加路径不会因为记录已经提交、空间闲置很久，就删除这些仍然有效的缓存对象。磁盘 WAL 的保留时间参数 `wal_ttl` 也没有控制这些内存对象的寿命；它处理的是磁盘文件。
 
-### 4.1 时间轴与数据口径
+### 3.4 空日志没有业务修改，仍要保存“处理到哪条日志”
 
-以下时间均为 **2026-10-10，Asia/Shanghai（UTC+8）**。RSS统一采用各实例CSV的 `status_VmRSS_kib`，1KiB=1024B，1MiB=1024KiB；MemTable和Node字节则直接保留原始B单位。CSV与服务内的限频观测日志有各自的时间戳，下文分别计算，避免把不同首末时刻的计数强行相减。
+副本应用日志时，遇到空内容会跳过业务操作。可是它在跳过之前，已经记下该日志的序号和任期。整批日志处理完后，仍然会把最后的序号、任期写到 RocksDB 的系统键中。这个记录就是“提交位点”，表示该分片已经应用到了哪里。
 
-| 阶段 | 条件 | 外部CSV实际首末窗口 | 每实例样本数 | 本阶段用途 |
-|---|---|---|---:|---|
-| `phase-00-no-spaces` | 尚未创建50个目标空间 | 07:00:31.688–07:01:21.700，约50秒 | 6 | 无目标空间的进程基线 |
-| `phase-03-default30` | 50空间，Raft heartbeat=30 | 07:03:35.810–07:06:20.946，约165秒 | 12 | 模板节奏下验证内部写入及初始内存行为 |
-| `phase-04-transition1` | 切换至heartbeat=1的过渡期 | 07:07:08.862–07:07:59.187，约50秒 | 6 | 保留参数切换、任期变化和RSS回落，单独观察 |
-| `phase-05-accelerated1` | heartbeat=1，空闲加速阶段 | **07:08:08.994–07:22:54.118，约885秒** | **60** | 验证持续RSS增长与Node/MemTable增长 |
+同一个分片反复更新的是同一个系统键，逻辑上只有一份最新进度。但本次使用的 RocksDB 写入路径会把更新加入 MemTable，并不会每次都在一个固定的 16 字节内存位置上覆盖。旧版本、记录结构和内存分配空间会随写入积累，直到刷盘等生命周期变化发生。
 
-heartbeat=1的配置实际从 **07:07:08** 保持到 **07:28:01**，共约20分52秒；这不是约21分钟连续CSV。主分析窗口是07:08:09–07:22:54；采样任务07:23:09结束后，到07:28:01恢复参数前没有新的外部CSV采样，服务中的 `WAL_MEMORY_OBSERVE` 日志仍持续记录。不能把这段仅有服务计数日志的区间补作RSS曲线，也不能将配置持续时间替代885秒实际样本跨度。操作时间见 [events.jsonl](events.jsonl)，主要汇总见 [summary.json](summary.json)。
+所以“业务点边数量没有增加”“系统键数量也没有增加”，都不能推出“MemTable 没有新增写入”。另外，进度是在一批日志结束时写入，并非源码保证每条日志都独立提交一次；实验中两类记录增量接近，是本次负载下的观察。
 
-`phase-05`虽然配置duration为900秒，但每15秒采一次，60个采样点的首末间隔是59×15≈885秒。s1/s2/s3精确跨度分别为885.014、884.977、884.893秒。所有180行都具有50个成功空间、50个engine、1000个本地WAL分片目录，HTTP失败和WAL解析错误均为0；PID及进程启动时钟不变。本文没有将 `phase-01/02` 的失败HTTP样本填0或混入这些结果。
+### 3.5 为什么会长时间上涨，又为什么未必无限上涨
 
-### 4.2 无空间基线：RSS并非完全静止，但没有目标分片WAL
+对于空日志，单个 8MiB 逻辑缓存能容纳约 52 万条。以本次配置模板的心跳参数 30 秒计算，基础轮询等待平均约 10.25 秒，实际间隔还会包含执行和排队时间。在复制顺利、没有重置等条件下，按这个节奏从空缓存填到容量大约需要 62 天。容量填得很慢，足以让“正常填充阶段”表现为连续很多天上涨。
 
-`phase-00`尚未创建目标空间，每实例只有约55MiB进程RSS：
+达到容量附近后，代码会把较老的一组记录标为待删除。随后，读取缓存的迭代器释放引用，在回收条件满足时批量删除这些旧对象。迭代器就是用来逐条读日志的对象；它尚在使用的内存不能直接删掉。正常读者生命周期下，原始代码组件实验确实出现了内存对象数的平台。
 
-| 实例 | RSS起点（KiB） | RSS终点（KiB） | 增量（KiB） | 目标WAL分片目录 | 目标WAL记录/文件字节 |
-|---|---:|---:|---:|---:|---|
-| s1 | 56,636 | 56,848 | +212 | 0→0 | 0→0 / 0→0 |
-| s2 | 56,764 | 56,980 | +216 | 0→0 | 0→0 / 0→0 |
-| s3 | 56,904 | 57,124 | +220 | 0→0 | 0→0 / 0→0 |
+这个平台不是所有情况都能保证的硬上限：新分组会先分配再返回，淘汰按整组进行，物理删除还依赖读者释放。如果读者长期持有引用，已标删对象可以堆积。那是另一种需要单独取证的现象；本次服务增长期间没有看到这种堆积，看到的是有效缓存仍在填充。
 
-这约50秒基线仍包含进程初始化、内部管理等行为，不能要求RSS绝对不动。由于查询的目标空间列表为空，MemTable属性在CSV里是缺测空字段，**不能解释为整个storage的RocksDB内存为0**；这个阶段也未触发目标分片的WAL诊断行，不能将缺失的Node观测伪装为一个已采到的计数值。
+## 4. 一个最小例子：只看一个分片的前 65 条空日志
 
-原始数据：[s1基线CSV](phase-00-no-spaces/s1.csv)、[s2基线CSV](phase-00-no-spaces/s2.csv)、[s3基线CSV](phase-00-no-spaces/s3.csv)。
+以下是为理解代码设置的假设例子：一个空空间只有 1 个分片，3 个副本分别位于 s1、s2、s3；s1 是稳定主副本，复制正常，没有业务请求，并且每条空日志都单独成功提交。对象大小沿用本机构建的测量结果，不能直接推广到其他编译环境。
 
-### 4.3 模板30秒参数：空闲仍有写入，但这165秒没有新Node分配
+操作前，三个副本的日志缓存都是空的。s1 追加第 1 条空日志后，三台最终各保存一条记录，各申请一个可放 64 条记录的 Node；三台也各更新一次提交位点。
 
-50空间就绪后，在默认配置模板节奏下，每台约165秒都新增约1.6万条WAL记录，RocksDB active entries以接近相同速率增加：
+接着，第 2～64 条空日志进入已经申请好的 Node。业务点边仍为 0，但缓存中的记录数和 RocksDB 收到的进度更新次数都增加了。第 65 条到来时，原来的 Node 已满，三台各申请第 2 个 Node。
 
-| 实例 | RSS起点→终点（KiB） | RSS增量 | WAL记录估计起点→终点（增量） | active MemTable entries起点→终点（增量） |
+| 每个副本已经收到的空日志数 | 业务点边变化 | 有效 Node 数 | 缓存逻辑计账 | Node 对象大小合计 |
+|---:|---|---:|---:|---:|
+| 0 | 无 | 0 | 0B | 0B |
+| 1 | 无 | 1 | 16B | 3200B |
+| 64 | 无 | 1 | 1024B | 3200B |
+| 65 | 无 | 2 | 1040B | 6400B |
+
+为什么第 65 条之后没有删除第 1 组？因为此时逻辑计账只有 1040B，离 8MiB 容量还很远。即使这 65 条都已经应用完成，第 1 组仍属于有效缓存。
+
+本机内存分配器为每个 3200B 对象提供的实际分配档位是 3584B，满组折合约 56B/条。这个数描述 Node 分配，不是每条空日志固定增加的进程驻留内存。RocksDB 的新增分配又是另一部分，不能用上表代替它。
+
+回到真实场景：每台有 1000 个这样的副本，同时发生同类增长；这就是没有业务数据也能累积数百 MiB 的数量基础。
+
+## 5. 关键源码怎样支持上述解释
+
+本节源码均核对自上面的固定提交。工作区 `AtomicLogBuffer.cpp` 另有 124 行观测新增，因此下列链接使用固定提交的原始行号，避免把观测代码插入后的行号误当成原始位置。完整调用关系和边界分支见 [Raft 解读](CODE-WALKTHROUGH-RAFT.md)、[WAL 解读](CODE-WALKTHROUGH-WAL.md)、[RocksDB 解读](CODE-WALKTHROUGH-ROCKSDB.md)。
+
+### 5.1 空闲主副本会重复安排空日志
+
+位置：`src/kvstore/raftex/RaftPart.cpp` 的 [needToSendHeartbeat](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1138)、[statusPolling](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1401)、[sendHeartbeat](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L2041)。
+
+关键原始条件与动作如下；片段之间省略了锁、选举处理和普通心跳消息发送：
+
+```cpp
+// needToSendHeartbeat()
+return status_ == Status::RUNNING && role_ == Role::LEADER;
+
+// statusPolling()：下一轮等待时间，另有选举等分支
+size_t delay = FLAGS_raft_heartbeat_interval_secs * 1000 / 3
+             + folly::Random::rand32(500);
+
+// sendHeartbeat()：追加空日志的完整判断
+if (!replicatingLogs_.load(std::memory_order_acquire)) {
+  folly::via(executor_.get(), [this] {
+    std::string log = "";
+    appendLogAsync(clusterId_, LogType::NORMAL, std::move(log));
+  });
+}
+```
+
+它证明：正常主副本具备周期执行入口，且空日志判断没有“仅本任期首次”的限制。它不能证明每次轮询必定成功追加，或所有生产实例都采用 30 秒参数；选举、复制占用、排队和错误都可能改变实际节奏。
+
+### 5.2 主副本和其他副本都把记录放入 WAL 缓存
+
+位置：`src/kvstore/raftex/RaftPart.cpp` 的 [appendLogsInternal](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L874) 与 [processAppendLogRequest](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1757)，两者在各自成功路径调用 `wal_->appendLogs(...)`。随后进入 `src/kvstore/wal/FileBasedWal.cpp` 的 [appendLogInternal](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L442)。
+
+后者在校验通过、成功写盘并更新文件信息后，结尾是：
+
+```cpp
+logBuffer_->push(id, term, cluster, msg);
+return true;
+```
+
+它证明：这条成功追加路径没有根据 `msg` 是否为空而跳过缓存，Follower 也有这条路径。它不能证明任意时刻三个副本记录数完全相同；网络复制、提交进度和逐进程采样都有先后。
+
+### 5.3 8MiB 是逻辑计账，释放又分为“标删”和“真正删除”
+
+位置：`src/kvstore/wal/AtomicLogBuffer.h` 的 [Record::size 与 Node](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L18)，以及 `src/kvstore/wal/AtomicLogBuffer.cpp` 的 [push](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L71) 和 [releaseRef](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L167)。
+
+实际计账代码：
+
+```cpp
+constexpr int32_t kMaxLength = 64;
+
+int32_t size() const {
+  return sizeof(ClusterID) + sizeof(TermID) + msg_.size();
+}
+```
+
+下面是按已核实实现整理的**伪代码**，保留影响回收结论的分支：
+
+```text
+追加记录：
+  如果当前组不存在、已满或已经标删：
+    申请新组，放入记录，增加逻辑大小，然后返回
+  否则：
+    如果追加后超过容量，而且最老组不是当前写入组：
+      标记最老组待删除，并从有效逻辑大小中扣除它
+    将新记录放入当前组
+
+迭代器释放引用：
+  如果这次释放前还有多个读者：返回
+  如果待删除组数 > 5，或有效逻辑大小 > 16MiB：
+    在没有其他回收任务执行时，真正删除已经标删的旧组
+```
+
+它证明：未到容量的有效对象不会因读者释放而被删除；回收有计账、标删、读者释放等明确条件。它也说明容量不是严格的实际堆字节上限。它不能证明现场一定有读者长期不释放；本次需要用对象计数和释放计数区分这两种情况。
+
+### 5.4 “跳过空内容”之后，仍有一次进度写入
+
+位置：`src/kvstore/Part.cpp` 的 [commitLogs](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L215)、[putCommitMsg](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L403)，以及 `src/kvstore/RocksEngine.cpp` 的 [commitBatchWrite](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L124)。
+
+实际循环的关键部分：
+
+```cpp
+while (iter->valid()) {
+  lastId = iter->logId();
+  lastTerm = iter->logTerm();
+  auto log = iter->logMsg();
+  if (log.empty()) {
+    VLOG(4) << idStr_ << "Skip the heartbeat!";
+    ++(*iter);
+    continue;
+  }
+  // ... 省略非空日志的业务操作处理与循环推进
+}
+```
+
+循环之后，如果 `lastId >= 0`，代码调用 `putCommitMsg(batch.get(), lastId, lastTerm)`；失败时返回错误，成功后继续提交整个 batch。该函数向 `systemCommitKey(partId_)` 写入序号和任期，而 `commitBatchWrite` 最终调用 `db_->Write(...)`。
+
+它证明：空内容只跳过业务修改，没有跳过最后的系统进度写入。它不能仅凭这段 Nebula 代码给出一次写入会占多少 RocksDB 内存；这部分由独立组件实验、实际 OPTIONS 配置和服务 MemTable 指标补充验证。
+
+### 5.5 磁盘 TTL 和内存清理做的是不同事情
+
+位置：`src/kvstore/wal/FileBasedWal.cpp` 的 [cleanWAL](https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L640)。关键分支如下，省略日志输出及循环推进：
+
+```cpp
+if (index++ < size - 2 && (now - it->second->mtime() > walTTL)) {
+  unlink(it->second->path());
+  it = walFiles_.erase(it);
+  count++;
+}
+```
+
+它证明：这条 TTL 清理按文件年龄删除磁盘文件，并且保留最近两个文件；这里没有删除有效缓存对象或调用缓存重置。它不能证明任何文件满 4 小时就一定消失，也不能把磁盘占用下降当成内存缓存已经释放的证据。
+
+后台内存清理也不代替对象释放。`MemoryUtils::handleMemoryTracker` 会在满足配置等条件时请求内存分配器归还可回收页面，但没有在这里删除 WAL 有效对象或刷盘 MemTable。完整条件和统计口径见 [RocksDB 与内存监控解读](CODE-WALKTHROUGH-ROCKSDB.md)。
+
+## 6. 已有实验怎样支持代码，又有哪些不能推出的结论
+
+### 6.1 实验先保证“真的没有业务写入”
+
+这轮实验运行了 1 个 metad、1 个 graphd 和 3 个独立 storaged，50 个空间各有 20 分片、3 副本。只创建了空间，没有创建点类型、边类型，也没有发出业务增删改命令。检查确认每台有 1000 个本地副本，采样期间没有进程重启。
+
+程序由当前工程构建；用户限制提出后，编译和安装均使用 `make -j5`。启动前设置了 65536 的文件句柄限制。产品源码只增加了开关控制的计数和限频日志，没有改变心跳、缓存、回收或 RocksDB 写入算法；[原始代码组件实验](COMPONENT-ANALYSIS.md) 另外使用未加观测的源码验证缓存行为。
+
+最终停止服务后，逐条检查了 3000 个 WAL 文件，得到 **6,730,574 条日志，业务内容全部为空**，没有发现记录缺口或不完整尾记录。这证明“没有业务数据，仍产生大量实际日志”；结合本次命令记录和源码路径，支持内部心跳的解释。单独看到空内容还不足以判定唯一来源，因为源码也有其他能产生空日志的内部操作。
+
+### 6.2 先慢速观察，再加速，最后恢复慢速
+
+为了缩短等待时间，实验先使用配置模板的 Raft 心跳参数 30 秒，再改为 1 秒，加速观察后恢复 30 秒。参数是调度公式的输入，并不等于空日志的实际间隔；实测追加速率约提高 17.7 倍，不是 30 倍。
+
+以下为三个 storage 各自的结果范围，MiB 使用 1024×1024 字节。进程内存采用系统报告的 RSS，即当时驻留在物理内存中的进程页面；MemTable 来自 RocksDB 属性，Node 来自服务内对象计数，三者不是同一个统计口径。
+
+| 对照阶段 | 实际观察时间 | 每台进程的观察 | 对代码解释的意义 |
+|---|---:|---|---|
+| 还没有创建目标空间 | 约 50 秒 | RSS 约 55MiB；没有目标分片 WAL | 提供进程基线，不能把此时目标空间缺测当作整个 RocksDB 用量为零 |
+| 50 个空空间，心跳参数 30 秒 | 约 165 秒 | 每台新增约 1.6 万条空日志；RSS 增加约 0.7～1.0MiB | 空闲仍有写入；此时 Node 没增加，不能把这一小段 RSS 全归给新 Node |
+| 改为 1 秒，过渡后观察 | **885 秒，约 15 分钟** | **每台 RSS 增加约 157～158MiB，59 个相邻采样间隔全部上涨** | 加速内部写入时，可以稳定复现持续增长 |
+| 恢复 30 秒，过渡后观察 | 约 165 秒 | 空日志速率降回每台约 100 条/秒；RSS 净增约 1.8～2.0MiB | 写入减慢了，但此前有效缓存不会因此立即消失 |
+
+第一段 30 秒参数实验中，每个副本还在填第一个 64 槽对象，所以每台 Node 总数一直是 1000。这个结果恰好对应最小例子的第 1～64 条：有新日志，不代表每个采样点都有新对象分配。
+
+切换到 1 秒的过渡期出现了约 25MiB 的 RSS 回落，当时 Node 反而增加、也没有释放。这个与主增长窗口不同的现象保留在明细中，没有强行给它指定唯一原因。因此本文说的“持续上涨”严格指过渡后的 885 秒窗口。
+
+### 6.3 加速阶段，两条内存增长路径都有直接证据
+
+只看进程 RSS，无法知道哪种对象变多了。服务内部计数和 RocksDB 属性补上了这一步：
+
+| 指标 | 加速阶段每台的变化 | 可以支持的判断 |
+|---|---|---|
+| 存活 WAL Node | 从 3000 个增至 26,005 个，没有任何 Node 删除 | WAL 确实在保留更多内存对象，不只是磁盘文件变大 |
+| Node 对象大小合计 | 增加约 70.2MiB | 能量化对象本身的增长；还没有计入分配器档位等开销 |
+| 50 个目标空间的 MemTable | 三台分别增加 86、94、100MiB | 系统进度写入也在积累，RSS 增长不能全算给 WAL |
+| 日志读取对象的引用释放 | 每台发生数百万次 | 这次增长不符合“从来没有读者释放”的解释 |
+| 数据块缓存、文件读取对象 | 主窗口内保持不变 | 不支持它们是本轮主要增量来源 |
+
+Node 表使用外部采样窗口内部约 870 秒的日志观察，RSS 与 MemTable 使用 885 秒的外部采样。即使数值量级相近，也不能写成“70.2 + 86 恰好等于 RSS 增量”的会计等式。本机构建每个 Node 的实际分配档位比对象大小大；另一方面，MemTable 申请空间与立即驻留的物理页也不一一对应。
+
+观测到的缓存逻辑大小还远低于容量，采到的单缓存没有待删除对象，整个进程也没有发生 Node 删除；与源码一起看，这轮增长处在有效缓存填充阶段。单缓存字段只是一次观测中的一个对象，不能冒充同一时刻对全部 1000 个缓存的完整快照。
+
+![服务内存、MemTable 与 WAL 对象变化](runtime-memory.png)
+
+图应结合上面的阶段表阅读。图中 RSS 使用同一原始采样里的 `smaps` 读数，正文数值使用 `VmRSS`；两次读取时刻略有差异。外部采样缺口处已经断线，不能把空白时段当成连续观测。
+
+### 6.4 刷盘对照把 RocksDB 的贡献单独显露出来
+
+恢复慢速后，实验对 50 个空间发出 FLUSH，并核实 50 个作业全部完成。FLUSH 是把 MemTable 中的数据写入磁盘数据文件，让旧 MemTable 能退出使用的操作；本次把它作为诊断对照，没有把它当成产品修复。
+
+| 每台 storage | 刷盘前 RSS | 约 170 秒后的 RSS | RSS 减少 | MemTable 减少 |
 |---|---:|---:|---:|---:|
-| s1 | 151,252→152,080 | +828KiB（0.809MiB） | 11,929→27,988（+16,059） | 12,358→28,409（+16,051） |
-| s2 | 151,160→151,892 | +732KiB（0.715MiB） | 11,949→27,990（+16,041） | 12,519→28,555（+16,036） |
-| s3 | 150,872→151,880 | +1,008KiB（0.984MiB） | 11,962→27,991（+16,029） | 12,132→28,157（+16,025） |
+| s1 | 344.6MiB | 240.7MiB | 103.9MiB | 123MiB |
+| s2 | 344.6MiB | 241.2MiB | 103.4MiB | 100MiB |
+| s3 | 345.5MiB | 240.8MiB | 104.7MiB | 124MiB |
 
-三台的 `rocksdb.cur-size-all-mem-tables` 在整个窗口都为 **52,531,200B = 50×1,050,624B ≈50.098MiB**，共享block cache始终96B，table-reader memory始终0。active entries增加而MemTable字节不动，与已申请arena中的持续写入相容；字节台阶不变不代表没有内部写入。独立分析的12点拟合中，每台WAL约96.8–96.9条/秒，与配置模板下1000副本总计约97.6条/秒的量级一致；详情见 [runtime-rocks-analysis.txt](runtime-rocks-analysis.txt)。
+同一观察过程里，三台 WAL Node 都从约 3.51 万个继续增到约 3.55 万个，没有 Node 被删除。也就是说，RSS 大幅回落时，RocksDB MemTable 减少了，WAL 有效缓存没有随之消失。
 
-这一阶段有一个必须明确的反证边界：**服务日志中的 `live_nodes` 始终为1000，`node_object_bytes`始终为3,200,000B，没有新增Node。** 每个分片尚在填充自己的第一个64槽Node，所以不能将上表RSS的小幅上涨直接归因为新的WAL Node分配。
+刷盘后心跳仍在继续，因此新的 MemTable 很快又得到写入。50 个空间的 MemTable 聚合属性从观测谷值约 0.1MiB 回到约 50.1MiB；此时 RSS 只小幅上涨，说明新申请空间可能复用已有页面，不能把 MemTable 属性增加量直接等同 RSS 增加量。
 
-| 同窗口内的服务观测（约07:03:42–07:06:15，实际约152.934秒） | s1 | s2 | s3 |
-|---|---:|---:|---:|
-| 观测日志条数 | 16 | 16 | 16 |
-| `pushes`及`empty_pushes` | 12,001→27,001 | 12,001→27,001 | 12,001→27,001 |
-| `live_nodes` | 1,000→1,000 | 1,000→1,000 | 1,000→1,000 |
-| `node_object_bytes` | 3,200,000→3,200,000 | 3,200,000→3,200,000 | 3,200,000→3,200,000 |
-| `live_logical_bytes` | 192,016→432,016 | 192,016→432,016 | 192,016→432,016 |
-| `freed / gc_runs / gc_freed / resets` | 全部0 | 全部0 | 全部0 |
+这项对照支持“WAL 缓存和 RocksDB 写入内存都参与了增长”。它不能把刷盘后剩余 RSS 全归给 WAL；进程还有线程、连接、管理存储等对象，也不能把 FLUSH 命令返回时刻当作全部异步作业完成时刻。
 
-逻辑字节增加240,000B，恰对应15,000条空记录×16B；这是现有槽位填充，不是同量的新堆分配。RSS仍可能受arena内页面触碰、其它系统对象和分配器行为影响，本段证据不能给这不足1MiB的残差做唯一归因。
+### 6.5 原始代码组件实验回答了服务短实验答不了的问题
 
-原始数据：[s1默认参数CSV](phase-03-default30/s1.csv)、[s2默认参数CSV](phase-03-default30/s2.csv)、[s3默认参数CSV](phase-03-default30/s3.csv)，以及 [s1观测日志CSV](wal-observe-s1.csv)、[s2观测日志CSV](wal-observe-s2.csv)、[s3观测日志CSV](wal-observe-s3.csv)。
+真实服务运行时间不够长，无法等每个空日志缓存自然填满。为验证容量和释放逻辑，另一个实验直接调用固定提交里的原始缓存实现，快速写入空记录，并正常创建、释放读取对象。
 
-### 4.4 加速空闲阶段：885秒内每台RSS增加约157MiB
+单个缓存写到约 52 万条时，逻辑大小达到约 8MiB，Node 的实际分配量约 28MiB。继续写到 110 万条，Node 数仍在约 8192 个附近小幅变化，说明这个条件下出现了平台。另一个 1000 缓存实验中，每缓存只写 4096 条空记录，就产生约 219MiB 的 Node 分配量，而且尚无待删除对象。
 
-切换后的 `phase-04` 并非单调增长：三台RSS分别下降25,344、25,356、25,388KiB，而同期观测Node由1000增加到2000、并没有Node释放。这里存在与WAL Node增长不同的进程内存变化，本报告不将它强行归给某一类对象，也不把过渡期隐藏起来。以下持续上涨结论限定为过渡后的60点主窗口。
+RocksDB 组件实验则只反复覆盖少量系统键：5 个数据库、每库 20 个键，累计一百万次写入后，MemTable 从约 10KiB 增至约 50MiB；主动刷盘后又降回约 10KiB。它直接验证了“键数量固定，内存仍能随版本写入增长”。
 
-在 `phase-05` 的每一台进程中，**59个相邻RSS采样间隔全部上涨**；同时匿名RSS增加量与总RSS增加量相等，主要增量不是文件映射页：
+这些实验支持两个机制，但不代表生产环境已经达到过相同的平台或吞吐量。组件构造的“长期持有读者”和“不释放读者”实验还能产生待删除对象积累；本次服务并没有证实存在这种异常条件。完整参数与原始记录见 [组件分析](COMPONENT-ANALYSIS.md)。
 
-| 实例 | RSS起点（KiB / MiB） | RSS终点（KiB / MiB） | RSS增量（KiB / MiB） | `RssAnon`起点→终点（KiB） |
-|---|---:|---:|---:|---:|
-| s1 | 131,964 / 128.871 | 293,512 / 286.633 | **161,548 / 157.762** | 94,040→255,588 |
-| s2 | 132,756 / 129.645 | 293,616 / 286.734 | **160,860 / 157.090** | 94,724→255,584 |
-| s3 | 132,248 / 129.148 | 293,680 / 286.797 | **161,432 / 157.648** | 94,148→255,580 |
+### 6.6 为什么“每天几百 MiB”在数量上解释得通
 
-s3首个样本中 `smaps_Rss_kib=132252`，比先读取的 `status_VmRSS_kib=132248` 高4KiB，两次 `/proc` 读取不是原子快照。这里统一使用VmRSS列，避免在首尾或实例间悄悄切换统计口径。
+下面是条件推算，不是生产实测。假设本地有 1000 个副本、全部处于空闲正常复制状态、缓存还没填满，且平均每 10.25 秒收到一条空日志：
 
-![真实服务内存、WAL节点与MemTable采样](runtime-memory.png)
+- 每个副本一天约新增 8430 条空日志。
+- 按本机构建满组平均约 56B/条的 Node 分配计算，每台一天约新增 **450MiB** 的 WAL Node 分配。
+- 从空缓存填到约 52 万条，大约需要 **62 天**；1000 份缓存对应的平台量级约 **27.3GiB**，还没有计入 RocksDB 等内存。
 
-原始60点CSV：[s1](phase-05-accelerated1/s1.csv)、[s2](phase-05-accelerated1/s2.csv)、[s3](phase-05-accelerated1/s3.csv)。图中的跨阶段留白与采样窗口应按上文时间轴阅读，不应将没有CSV的07:23–07:28区间理解为已经观测到连续RSS。
+这解释了为什么空闲空间也可能出现“每天增加几百 MiB、持续很久”的现象。不过 27.3GiB 不是安全预算，也不是本次真实服务已经达到的数值；它只是上述条件下的缓存量级，机器可能在达到它之前就受到内存压力影响。
 
-#### 4.4.1 同一CSV窗口内，WAL与RocksDB计数同时增加
+生产实际心跳配置、每台副本数、缓存已经填充多久、是否有业务复制，以及读者和刷盘行为，都会改变曲线。因此本报告能解释问题的机制和量级，尚不能替代生产进程的独立取证。
 
-| 实例 | WAL记录估计起点→终点（增量） | active MemTable entries起点→终点（增量） | MemTable字节起点→终点 | MemTable增量 |
-|---|---:|---:|---:|---:|
-| s1 | 134,128→1,651,964（+1,517,836） | 134,190→1,652,021（+1,517,831） | 52,531,200→142,708,736 | **90,177,536B / 86MiB** |
-| s2 | 134,333→1,652,071（+1,517,738） | 134,549→1,652,232（+1,517,683） | 52,531,200→151,097,344 | **98,566,144B / 94MiB** |
-| s3 | 134,590→1,652,178（+1,517,588） | 134,529→1,652,024（+1,517,495） | 52,531,200→157,388,800 | **104,857,600B / 100MiB** |
+## 7. 如何在实际环境确认是不是同一问题
 
-每实例WAL记录首末差约1715条/秒，即每本地副本约1.715条/秒、平均约0.583秒一条，与heartbeat=1时基础轮询均值0.5825秒一致。与默认30秒阶段相比，实际速率约快17.7倍，不能按参数比值直接说成30倍。
+优先做以下三项只读检查。这里是建议验证；不把尚未检查的生产条件写成已确认事实。
 
-三个实例的记录增量接近，而最初Leader分布明显不同，支持“followers也缓存并提交日志，内存倍率应按1000个本地副本计算”。WAL与MemTable entries绝对值和增量的细小差异不能当作丢日志：两类统计采样时刻不同，follower commit可略滞后，初始engine/part创建也会写系统记录。
+| 检查什么 | 符合本次解释的观察 | 什么结果需要改变判断 |
+|---|---|---|
+| 同时记录每台本地副本数、实际心跳参数、空日志追加速率 | 无业务时仍有持续空日志，速率随实际调度条件变化 | 没有空日志增量，却仍有大幅增长，说明要优先寻找其他对象 |
+| 同一时间窗口观察 WAL 存活对象、删除次数和读者引用 | 有效对象增加、未到容量，符合缓存填充 | 已经达到容量且待删除对象持续堆积，应改查读者生命周期或回收条件；对象数不变则不能把新增 RSS 都归给 Node |
+| 同时采集目标空间 MemTable 和进程 RSS | MemTable 随内部进度写入增长；自然刷盘时能够回落 | MemTable 不变但 RSS 大涨，要检查其他对象、页面触碰或分配器；不能仅凭 RSS 反推 MemTable 泄漏 |
 
-整个主窗口中，三个实例的immutable memtable数量与entries均为0；table-reader memory保持0，共享block cache保持96B。这排除了“此窗口主要是这50个空间的SST reader或block cache在填充”的解释；同时明确观测到active MemTable增长，不能将约157MiB RSS全部归给WAL。
+若要重复 FLUSH 对照或加速实验，应在独立测试环境执行 [实验明细中的命令](EXPERIMENT-DETAILS.md)。加速会改变内部写入压力，FLUSH 会引入磁盘 I/O；现有证据复查则可以完全不启动服务，直接解析已归档的 WAL 与采样数据。
 
-#### 4.4.2 服务内的Node计数直接证明WAL堆对象持续保留
+本次实验的进程持续存活到主动停止，没有用请求被 MemoryTracker 拒绝或容器 OOM 事件来解释曲线；现有证据也不足以建立这些事件在生产环境中的先后关系。MemoryTracker 是内存跟踪与保护机制，OOM 是操作系统因内存不足终止进程，两者不能仅凭“内存上涨”混为一谈。
 
-取主CSV窗口内部的首末限频日志，三个实例的时间均约为 **07:08:15.607–07:22:45.607，870.001秒以内**，各有88条观测。它比CSV首末窗口约短15秒，因此以下Node计数与上一表RSS/MemTable不能构成逐字节一致的会计等式。
+原有两次失败采样、心跳切换过渡、07:23～07:28 的外部采样缺口、任期变化范围和非原子采样边界，全部保留在 [实验明细](EXPERIMENT-DETAILS.md)。主文只对有效窗口给出定量结论。
 
-| 进程内观测字段 | s1 | s2 | s3 |
-|---|---:|---:|---:|
-| `pushes`起点→终点 | 145,419→1,637,577 | 145,419→1,637,577 | 145,419→1,637,577 |
-| `empty_pushes`增量 | **1,492,158** | **1,492,158** | **1,492,158** |
-| `created`及`live_nodes` | **3,000→26,005** | **3,000→26,005** | **3,000→26,005** |
-| `node_object_bytes` | 9,600,000→83,216,000 | 9,600,000→83,216,000 | 9,600,000→83,216,000 |
-| Node对象字节增量 | **73,616,000B（70.206MiB）** | **73,616,000B（70.206MiB）** | **73,616,000B（70.206MiB）** |
-| `live_logical_bytes` | 2,326,704→26,201,232 | 2,326,704→26,201,232 | 2,326,704→26,201,232 |
-| iterator `releases`增量 | 2,465,183 | 2,607,998 | 2,387,606 |
-| `freed / gc_runs / gc_freed / resets` | 全程0 | 全程0 | 全程0 |
+## 8. 最终结论
 
-所有观测行的 `pushes==empty_pushes`；采样到的那个buffer的 `buffer_dirty_nodes=0`、`buffer_refs=0`，其逻辑size最大26,624B，远小于8MiB容量。这里的buffer字段是一行中单个buffer的瞬时状态，不能冒充对1000个buffer同时取快照；不过进程级新增23,005个Node、没有任何Node释放，以及大量iterator release共同说明，本次明显增长处于**有效缓存继续填充、未触发淘汰**的阶段，不能把它描述成“从来没有reader释放所以GC卡住”。
+在当前版本里，空闲业务空间仍会产生内部空日志；这些记录既逐渐填充每个副本的 WAL 缓存，又通过提交位点更新增加 RocksDB 写入内存。源码、原始代码组件实验、三实例持续增长和 FLUSH 对照相互支持，确认了本次复现的两条主要增长路径。
 
-组件实验实测本机jemalloc的Node分配档位为3584B。按同一布局把23,005个新增Node换算为usable量级约 **82,449,920B（78.630MiB）**。这不是服务端直接采得的allocator allocated字段，表中直接观测的是Node数和 `sizeof(Node)=3200`；换算只用于评估分配量级，不能与不同窗口、不同含义的MemTable/RSS数字机械相加。
-
-#### 4.4.3 全量WAL复核与任期边界
-
-恢复heartbeat=30后，于07:28:02–07:28:08做了另一次逐条WAL扫描，见 [wal-accelerated-end.json](wal-accelerated-end.json)。三实例各有1000个分片文件、2,179,564条记录，合计 **6,538,692条，全部payload为空**；ID缺口、非递增ID、任期回退、不完整尾记录均为0。该扫描晚于主CSV终点约5分钟，不应将其记录总数填入07:22:54的CSV终点。
-
-文件中同时存在term=1和term=2：每实例387个分片的最后term仍为1，613个分片的最后term为2。因此不能声称整个参数切换过程没有任期变化。所有文件最高term为2，也不能仅凭一次全量扫描推断变化的精确秒数；主分析使用过渡期之后的实际追加速率、Node计数和MemTable/RSS，不把理想定时公式当成未经验证的事实。与切换前全部term=1的扫描相比，这一差异已经保留在原始证据中。
-
-源码、原始组件实验和这次服务运行形成了相互独立的证据：空闲空间持续追加空记录；记录跨过64槽边界后，真实进程的Node数量不断增加且尚无delete；同一阶段RocksDB提交位点覆盖写也增加MemTable；约885秒内三个进程都出现了持续的RSS上涨。该结论无需把诊断补丁当成修复：产品源码差异仍仅为124行观测新增，原始未修改实现的组件实验验证了相同的缓存机制。
-
-### 4.5 恢复30秒与FLUSH对照
-
-07:28:01恢复heartbeat=30，先保留 `phase-06-transition30`，再从07:28:31开始 `phase-07-restored30`。后者每实例12个有效点，首末约165秒；没有重启进程，也没有重置WAL缓存。
-
-| 实例 | RSS起点→终点（KiB） | RSS增量 | WAL记录增量 | WAL实际速率（12点OLS，条/秒） | MemTable字节起点→终点 |
-|---|---:|---:|---:|---:|---:|
-| s1 | 348,912→350,924 | +2,012KiB | +16,639 | 99.674 | 157,388,800→162,631,680 |
-| s2 | 349,312→351,128 | +1,816KiB | +16,679 | 99.801 | 157,388,800→157,388,800 |
-| s3 | 350,124→351,936 | +1,812KiB | +16,685 | 99.864 | 182,554,624→182,554,624 |
-
-WAL追加速率由加速阶段约1715条/秒降回约100条/秒，表明动态恢复参数确实改变了内部写入节奏。RSS没有回到加速前基线，且仍小幅净增加；恢复慢速不是停止心跳，也不会使已经填充的有效缓存失效。此阶段RSS有小幅上下波动，不再宣称每个相邻点都上涨。
-
-在约07:28:41–07:31:14的内层WAL观测窗口，三个实例均有：
-
-- `empty_pushes`增加15,000，`live_nodes`由34,694增加到34,967。
-- `node_object_bytes`从111,020,800B增加到111,894,400B，即再增加873,600B。
-- `freed / gc_runs / gc_freed / resets`均保持0；恢复参数没有释放先前节点。
-
-这些进程的MemTable还处于不同arena填充位置：s1跨过了额外5MiB的聚合分配台阶，s2/s3尚未跨新的台阶。不能据此把不同实例的RSS差异解释成不同的WAL记录保留策略。逐行数据见 [恢复后s1](phase-07-restored30/s1.csv)、[恢复后s2](phase-07-restored30/s2.csv)、[恢复后s3](phase-07-restored30/s3.csv)；独立计算及OLS见 [runtime-metrics.json](runtime-metrics.json)。
-
-### 4.6 FLUSH对照：MemTable可以回落，但WAL节点没有随之释放
-
-本对照保持heartbeat=30，并继续接收空心跳提交。07:35:45先完成 `phase-08-beforeflush` 的显式刷盘前采样，再向50个空间提交FLUSH作业，随后采集 `phase-09-afterflush` 的18个点，首末约170秒。
-
-**phase09的名字不代表它的第一个点已经处在“全部FLUSH完成后”。** 第一组点位于07:35:45.905–07:35:46.026，此时s1/s2/s3分别仍有11/11/10个immutable memtable，MemTable聚合值为89,387,304 / 66,422,912 / 58,926,768B，处于异步刷盘进行中；RSS此时也短暂高于显式刷盘前值。因此不能拿这些首点当作完成后的稳态，也不能只比较phase09首尾代替真正的刷盘前后对照。
-
-50个作业ID为51–100。后续 [flush-job-verification.json](flush-job-verification.json) 于07:36:41核实：50个互不重复的作业全部 `FINISHED`。命令、返回与作业状态原文见 [flush.log](flush.log)、[job-status.log](job-status.log)。完成状态的核验时间与MemTable采样时间分别保留，不将作业提交成功当作作业完成。
-
-下表对比刷盘前、phase09观测谷值、约30秒点及末点；RSS仍使用VmRSS。三个实例的MemTable谷值与RSS谷值恰好落在各自的约10秒采样点，但这不是对更高时间分辨率下绝对最低值的保证。
-
-| 实例/阶段 | 本地采样时间（约） | MemTable聚合字节 | active entries | RSS（KiB） |
-|---|---|---:|---:|---:|
-| s1，显式刷盘前 | 07:35:45.404 | **181,506,048** | 2,224,560 | **352,912** |
-| s1，观测谷值（约10秒） | 07:35:55.913 | **102,400** | 1,000 | **243,652** |
-| s1，约30秒 | 07:36:15.914 | 52,531,200 | 2,996 | 244,352 |
-| s1，末点（约170秒） | 07:38:35.913 | **52,531,200** | 16,216 | **246,512** |
-| s2，显式刷盘前 | 07:35:45.464 | **157,388,800** | 2,224,676 | **352,920** |
-| s2，观测谷值（约10秒） | 07:35:55.984 | **102,400** | 1,000 | **243,904** |
-| s2，约30秒 | 07:36:15.984 | 52,531,200 | 2,996 | 244,888 |
-| s2，末点（约170秒） | 07:38:35.992 | **52,531,200** | 16,231 | **247,004** |
-| s3，显式刷盘前 | 07:35:45.529 | **182,554,624** | 2,224,367 | **353,784** |
-| s3，观测谷值（约10秒） | 07:35:56.047 | **102,400** | 1,000 | **243,716** |
-| s3，约30秒 | 07:36:16.038 | 52,531,200 | 2,996 | 244,580 |
-| s3，末点（约170秒） | 07:38:36.063 | **52,531,200** | 16,249 | **246,580** |
-
-显式刷盘前到末点的变化为：
-
-| 实例 | MemTable减少 | RSS减少 | 最近刷盘前/末点WAL观测 |
-|---|---:|---:|---|
-| s1 | 128,974,848B，**123MiB** | 106,400KiB，**103.906MiB** | Node 35,076→35,501，未释放 |
-| s2 | 104,857,600B，**100MiB** | 105,916KiB，**103.434MiB** | Node 35,076→35,501，未释放 |
-| s3 | 130,023,424B，**124MiB** | 107,204KiB，**104.691MiB** | Node 35,076→35,501，未释放 |
-
-用于这张表的WAL观测时间约为07:35:39.74和07:38:33.39，分别比对应外部采样早约5.7秒和2.5秒；它们用于确认物理释放方向，不冒充精确同时快照。三台在该观测跨度均又追加17,000条空记录，Node对象字节从112,243,200增加到113,603,200B，`freed/gc_runs/gc_freed/resets`仍为0。仅取phase09内部日志时，起点已经是35,085个Node，故增量为416；两种增量差异来自起点选择，不能混用。
-
-这一结果明确区分了两类对象：**FLUSH使RocksDB MemTable退出并伴随进程RSS明显回落，但没有让Raft WAL的有效缓存节点退出。** 它是诊断对照，不是修改缓存算法的修复。刷盘后RSS仍远高于无空间基线，但也不能把剩余RSS全部算成WAL，因为进程还有新MemTable、管理存储、连接、线程和分配器等。
-
-谷值102,400B恰为50×2048B；实际上约20秒点就已回到50×1,050,624B，当时active entries分别为1,999/2,000/2,000，约40条/空间；约30秒点则已增至2,996条。空心跳始终继续写提交位点，已足以让新MemTable进入1MiB arena分配档位。它与独立组件20次写仍在初始档位、60次写已经跨档的观察一致，但不能宣称“精确第60条才会扩容”，也不能把单线程组件的单条平均字节成本硬套服务。**MemTable属性重新增加约50MiB，并没有使RSS同期再增加50MiB**：谷值到30秒，三台RSS只增加700/984/864KiB。这直接说明arena分配统计与即时驻留页不是同一个计量，不能机械相加闭账；64MiB write buffer配置没有被改成1MiB或3MiB。
-
-完成刷盘后的table-reader memory为每实例110,150B，共享block cache仍为96B。相比刷盘前，进程线程数153→163、文件驻留页增加约1.1MiB，管理作业也会使用HTTP50空间以外的对象。因此RSS下降与目标MemTable减少量不完全相等有明确的统计范围差异，不能据此反推遗漏或泄漏。
-
-原始数据：[刷盘前s1](phase-08-beforeflush/s1.csv)、[s2](phase-08-beforeflush/s2.csv)、[s3](phase-08-beforeflush/s3.csv)；[刷盘阶段s1](phase-09-afterflush/s1.csv)、[s2](phase-09-afterflush/s2.csv)、[s3](phase-09-afterflush/s3.csv)。独立复算结果见 [runtime-metrics.json](runtime-metrics.json) 的 `flush_comparison`，机制与OPTIONS说明见 [runtime-rocks-analysis.txt](runtime-rocks-analysis.txt)。
-
-### 4.7 任期稳定性、停止核验与原始WAL归档
-
-进一步将07:08:38开始与07:28:02开始的两次全量WAL快照，按实例、空间、分片匹配：**3000个共同文件，最后term变化数为0**，见 [term-stability.json](term-stability.json)。独立分析还按term计数核对，两快照之间新增5,985,274条记录，全部属于各文件在起始快照时已经存在的最后term，没有其它term新增，见 [runtime-metrics.json](runtime-metrics.json) 的 `full_wal_snapshot_comparison`。
-
-这与前面“参数切换过渡期间部分分片从term1进入term2”不矛盾：07:08:38以后，观察到的是在既有稳定任期中持续追加空日志，而不是靠不断产生新任期解释增长。两次扫描分别历时约0.7秒和6秒，并非跨3000文件的原子快照；其开始时间也不等同于phase05 CSV的07:08:09起点，因此这项任期证据覆盖的是明确给出的快照区间，不能扩大成“整个启动及切换过程完全没有选举”。
-
-实验结束后恢复了30秒参数并停止本次独立环境的1个graphd、1个metad和3个storaged。**07:39:05核验这5个预期PID全部退出**，见 [shutdown-verification.json](shutdown-verification.json)。这里没有把进程退出后所有内存归还作为运行期间GC生效的证据。
-
-随后07:39:28–07:39:34对静止数据做最终扫描，结果如下：
-
-| 实例 | 分片文件数 | 最终记录数 | WAL字节数 |
-|---|---:|---:|---:|
-| s1 | 1,000 | 2,243,520 | 71,792,640 |
-| s2 | 1,000 | 2,243,522 | 71,792,704 |
-| s3 | 1,000 | 2,243,532 | 71,793,024 |
-| 合计 | **3,000** | **6,730,574** | **215,378,368** |
-
-最终 **6,730,574条全部为空payload**；非空记录、ID缺口、缺失ID、非递增ID、term回退、不完整记录、扫描时文件变化均为0。term只包含1和2。各实例最后记录数有极小差异，停止命令按进程依次发出，因此不能要求停机末刻完全相同；表中使用各自真实文件结果，没有对齐或补齐记录。
-
-最终证据已经固化：
-
-- [wal-full.json](wal-full.json)：逐文件、分片、实例及总体的最终静态校验；[wal-full.csv](wal-full.csv)便于重新筛选统计。
-- [wal-evidence.tar.gz](wal-evidence.tar.gz)：3000个原始WAL文件，解压后总计215,378,368B；[wal-evidence-files.txt](wal-evidence-files.txt)记录归档文件清单。
-- [wal-archive-verification.json](wal-archive-verification.json)：归档验证3000文件、0个不匹配，SHA-256为 `acb2e767bf72b9b715879c6a911e53ef115e30469f2185e8e4b3205ad988fd55`。
-
-这些文件使“没有业务payload、空日志实际数量、任期范围、内存计数来源及完整运行时间”能够独立复查。源码仍只保留观测新增，没有将本次FLUSH对照或参数加速替换成产品行为修复。
-
-## 5. 为什么这些结果不能只用“泄漏”两个字解释
-
-`AtomicLogBuffer` 的链表包含有效节点与已经标删、尚未物理回收的节点。增长的正常填充阶段，`dirtyNodes=0`，节点仍被缓存有意持有；释放 reader 不会删除有效节点。原始组件实验中，1000 个缓存各写入 4096 条空记录，产生 64,000 个 Node，jemalloc usable 总量为 229,376,000B，仍无脏节点。一个默认缓存写到 524,288 条附近达到逻辑 8MiB；继续写至 1,100,000 条，在正常 iterator 释放条件下节点数进入平台。
-
-如果没有任何 iterator 析构，或者总有一个 iterator 被持有，`releaseRef()` 的回收入口就无法满足条件，脏节点可以继续累积。这是另一个已经由组件构造实验验证的机制，但要用服务中的 `dirtyNodes/refs/gc` 等证据证明，不能与本次有效缓存填充混写。
-
-RocksDB 的内存属性也是分配台阶，不等于“有效 key/value 字节”。本实验每个 DB 的 `arena_block_size=1048576`。独立组件 20 次覆盖写仍报告 2048B，60 次覆盖写已报告 `2048+1MiB=1050624B`。因此服务初始每空间约 1MiB 并非凭空出现的特殊缓存；平台期间，后续写入仍可消耗这块 arena 的剩余容量并触碰更多页面。详见 [runtime-rocks-analysis.txt](runtime-rocks-analysis.txt) 和 [实际 RocksDB OPTIONS 汇总](runtime-rocks-options-comparison.json)。
-
-同一实例还包括隐藏的 space 0 adminStore、Raft/Thrift 连接、线程栈、统计对象、分配器 arena 元数据与已释放页等。HTTP 采样聚合的是 50 个目标空间，不能把“这 50 个空间的 MemTable + Node 对象大小”当成整个 RSS 的精确会计等式。共享 block cache 属性采用全进程最大值，不按 50 空间重复求和。
-
-磁盘 `wal_ttl` 只参与磁盘文件回收；磁盘清理不调用 `AtomicLogBuffer::reset()`，也没有按 TTL 删除有效内存节点。当前每个分片的日志文件远小于默认 16MiB，并且清理实现至少保留两个文件，因而不能把“设了 4 小时 TTL”理解为“4 小时后所有空日志内存必然释放”。
-
-## 6. 可复现步骤
-
-以下命令针对本次建立的独立环境。原始数据、配置及采样证据已经保留；重新采样使用新的输出目录名。`prepare` 会拒绝覆盖已经非空的默认数据目录，本次首次运行时该安装目录不存在。
-
-### 6.1 编译与安装
-
-观测补丁已经保留在工作区。若另建相同提交的干净 checkout，可检查并应用 [observation.patch](observation.patch)。
-
-```bash
-cd /home/sch/nebula/nebula-3.6-memory
-mkdir -p build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/home/sch/nebula-run/nebula-memory \
-  -DENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug ..
-make -j5
-make -j5 install
-```
-
-三个服务二进制均由本 checkout 构建。组件实验另行从固定提交提取未加观测的原始 WAL `.cpp/.h`，用直接调用证明行为并非由服务观测补丁引入。
-
-### 6.2 首次建立与核实空集群
-
-```bash
-cd /home/sch/nebula/nebula-3.6-memory
-python3 task/wal-investigation/cluster.py prepare
-python3 task/wal-investigation/cluster.py start
-python3 task/wal-investigation/cluster.py register
-/home/sch/nebula-run/nebula-console -addr 127.0.0.1 -port 29669 \
-  -u root -p nebula -e 'SHOW HOSTS;'
-```
-
-`start` 调用 `AGENTS.md` 指定安装目录的 `scripts/nebula.service`，storage 使用 `-c` 指定三个配置文件；每次启动都设置 65536 文件句柄限制。先确认三个 HOST ONLINE，再采无空间基线并建空间：
-
-```bash
-python3 task/wal-investigation/cluster.py sample --empty \
-  --name repeat-no-spaces --duration 60 --interval 10
-python3 task/wal-investigation/cluster.py create
-python3 task/wal-investigation/cluster.py inspect
-```
-
-建空间后等待分片/Leader 就绪；全量 `SHOW PARTS`、50 空间和每实例 1000 个 WAL 分片目录都应成立。控制台在同一行执行多条语句时只展示最后结果，所以 `inspect.ngql` 已把各个 SHOW 分开成行。
-
-### 6.3 按实际心跳节奏采样与加速
-
-```bash
-python3 task/wal-investigation/cluster.py sample \
-  --name repeat-default30 --duration 180 --interval 15
-python3 task/wal-investigation/cluster.py flags --heartbeat 1
-python3 task/wal-investigation/cluster.py sample \
-  --name repeat-transition1 --duration 60 --interval 10
-python3 task/wal-investigation/cluster.py sample \
-  --name repeat-accelerated1 --duration 900 --interval 15
-python3 task/wal-investigation/cluster.py flags --heartbeat 30
-```
-
-动态切换逐实例生效，已经排队的轮询不会立刻重排；`checkAlive()` 还有首次调用锁存超时的实现细节。因此过渡期单独保留，并用采样中的任期变化与日志真实速率校验稳态；不把配置切换当成瞬时、严格等比例的实验操作。
-
-### 6.4 恢复慢速、刷盘对照、保存 WAL 与停止
-
-```bash
-python3 task/wal-investigation/cluster.py sample \
-  --name repeat-transition30 --duration 30 --interval 10
-python3 task/wal-investigation/cluster.py sample \
-  --name repeat-restored30 --duration 180 --interval 15
-python3 task/wal-investigation/cluster.py sample \
-  --name repeat-before-flush --duration 1 --interval 10
-python3 task/wal-investigation/cluster.py flush
-python3 task/wal-investigation/cluster.py jobs
-python3 task/wal-investigation/cluster.py sample \
-  --name repeat-after-flush --duration 180 --interval 10
-python3 task/wal-investigation/cluster.py jobs
-```
-
-FLUSH 命令只提交作业，必须结合 `SHOW JOBS/SHOW JOB` 确认 50 个作业完成，并观察 MemTable 属性；不能仅凭控制台返回就称为刷盘完成。它用于分离 RocksDB 与 WAL 两类对象，没有改变 WAL 缓存的回收逻辑。
-
-```bash
-python3 task/wal-investigation/cluster.py stop
-# 核实 process-manifest.json 中的本次 PID 已经退出，再做静止文件扫描。
-python3 task/wal-investigation/parse_wal.py \
-  --data-dir s1=/home/sch/nebula-run/nebula-memory/data/storage1 \
-  --data-dir s2=/home/sch/nebula-run/nebula-memory/data/storage2 \
-  --data-dir s3=/home/sch/nebula-run/nebula-memory/data/storage3 \
-  --output task/wal-investigation/repeat-wal-full
-```
-
-本次完整操作顺序和时间以 [events.jsonl](events.jsonl) 为准，采样与日志留在任务目录；运行数据留在上述独立安装目录。
-
-### 6.5 不启动服务，独立复查原始 WAL
-
-下面只解包本次已经停止写入的证据并运行解析器。选择新的解压和输出目录，保留交付时的原始结果：
-
-```bash
-cd /home/sch/nebula/nebula-3.6-memory
-sha256sum task/wal-investigation/wal-evidence.tar.gz
-# 应为 acb2e767bf72b9b715879c6a911e53ef115e30469f2185e8e4b3205ad988fd55
-WAL_REPLAY_DIR=$(mktemp -d /tmp/nebula-wal-evidence.XXXXXX)
-tar -xzf task/wal-investigation/wal-evidence.tar.gz -C "$WAL_REPLAY_DIR"
-python3 task/wal-investigation/parse_wal.py \
-  --data-dir s1="$WAL_REPLAY_DIR/data/storage1" \
-  --data-dir s2="$WAL_REPLAY_DIR/data/storage2" \
-  --data-dir s3="$WAL_REPLAY_DIR/data/storage3" \
-  --output "$WAL_REPLAY_DIR/rechecked"
-```
-
-应得到3000个文件、6,730,574条空记录、215,378,368B，总体无异常。解析结果的路径和扫描时间会随解压目录、复查时间改变，不应逐字比较整个JSON。解析器格式与并发边界说明见 [wal-parser-notes.txt](wal-parser-notes.txt)，10项合成测试结果见 [wal-parser-selftest.log](wal-parser-selftest.log)。
-
-### 6.6 从已有采样复算指标和图表
-
-两个分析程序都只读取任务目录中的证据，不请求数据库。它们会更新衍生JSON/图表及生成时间；如需验证交付文件完整性，应在重算前执行校验：
-
-```bash
-cd /home/sch/nebula/nebula-3.6-memory/task/wal-investigation
-sha256sum -c SHA256SUMS
-python3 analyze_runtime_rocks.py
-python3 -m venv /tmp/nebula-wal-plots-venv
-/tmp/nebula-wal-plots-venv/bin/pip install -r plot-requirements.txt
-/tmp/nebula-wal-plots-venv/bin/python analyze_results.py
-```
-
-`runtime-metrics.json` 保留逐阶段、逐实例的首末点、实际窗口、OLS斜率、RSS列选择、Node观测窗口、FLUSH选定时点和任期比较。`runtime-memory.png/.svg` 中RSS曲线读取 `smaps_Rss_kib`；正文表统一读取 `status_VmRSS_kib`，两种读数均来自原始CSV。图表在超过30秒的外部采样缺口处断线，不插值虚构观测。
-
-## 7. 结论适用范围
-
-本报告解释的是当前提交中能够由源码、原始组件实验和本地三实例实验串联验证的机制。没有生产进程的配置快照、heap profile、缓存填充年龄及长读者证据，所以不能宣称已经排除了生产环境的一切其它原因，也不能把短时加速实验说成连续运行了 62 天。
-
-每天约 450MiB 是模板参数下 WAL Node usable 的条件推算，不包括 RocksDB、RPC、线程、分配器额外开销，也不是进程 RSS 必然每天增加的精确数值。真实斜率受业务复制、轮询执行耗时、已有缓存填充程度、分片数和 GC/flush 等影响。
-
-本次没有实现修复，也没有以实验中的心跳/容量配置作为生产优化建议。调查保留完整命令、配置、源码观测补丁、原始日志、采样 CSV 和校验程序，供后续按生产实际参数验证。
+本次证据支持“填充阶段可以很长、实际开销大于逻辑容量”，不支持直接宣称无限泄漏、所有增长都来自 WAL，或生产 RSS 必然每天增加固定数值。生产验证最有价值的是同一时窗里的空日志速率、WAL 对象及回收计数、MemTable 和 RSS，而不是单独观察业务数据量。

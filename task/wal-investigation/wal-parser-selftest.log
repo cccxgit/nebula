@@ -1,0 +1,11 @@
+{"test": "all-records-and-rollover", "result": "PASS", "records": 4, "payload_bytes": 1048596}
+{"test": "incomplete-tail-header", "result": "PASS", "status": "incomplete_tail"}
+{"test": "incomplete-tail-footer", "result": "PASS", "issue": "incomplete_tail_record"}
+{"test": "footer-validation", "result": "PASS", "issue": "header_footer_length_mismatch"}
+{"test": "negative-length", "result": "PASS", "issue": "negative_payload_length"}
+{"test": "within-and-across-file-id-and-term-checks", "result": "PASS", "gaps": 2, "missing": 5}
+{"test": "fstat-size-bounds-ignore-concurrent-append", "result": "PASS", "snapshot_bytes": 32, "final_bytes": 64}
+{"test": "concurrent-truncation-reported", "result": "PASS"}
+{"test": "multiple-labelled-directories", "result": "PASS"}
+{"test": "json-csv-output", "result": "PASS"}
+All 10 synthetic WAL checks passed.

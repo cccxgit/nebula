@@ -1,0 +1,17 @@
+(root@nebula) [(none)]> SHOW HOSTS;
++-------------+-------+----------+--------------+----------------------+------------------------+---------+
+| Host        | Port  | Status   | Leader count | Leader distribution  | Partition distribution | Version |
++-------------+-------+----------+--------------+----------------------+------------------------+---------+
+| "127.0.0.1" | 29779 | "ONLINE" | 0            | "No valid partition" | "No valid partition"   | ""      |
+| "127.0.0.1" | 29789 | "ONLINE" | 0            | "No valid partition" | "No valid partition"   | ""      |
+| "127.0.0.1" | 29799 | "ONLINE" | 0            | "No valid partition" | "No valid partition"   | ""      |
++-------------+-------+----------+--------------+----------------------+------------------------+---------+
+Got 3 rows (time spent 1.032ms/1.328482ms)
+
+Sat, 10 Oct 2026 07:00:31 CST
+
+
+
+Bye root!
+Sat, 10 Oct 2026 07:00:31 CST
+

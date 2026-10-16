@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-10-11T09:05:09.106568+00:00",
+  "source": "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.md",
+  "output": "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/SPACE-LEVEL-WAL-REQUIREMENTS-DESIGN.docx",
+  "source_sha256": "d042323dbf0709215e7db4aa2011cc9f74dd73da47b2f204e917559a983c2e4e",
+  "docx_sha256": "e7d00fb0092d8a1e04ac9afb37f24868a1d050b2a48a50e9889a81f56905e490",
+  "paragraphs": 383,
+  "tables": 14,
+  "font": "Noto Sans CJK SC",
+  "status": "render_and_visual_review_required"
+}

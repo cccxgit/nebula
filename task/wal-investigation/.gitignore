@@ -1,0 +1,24 @@
+# Rebuild these probes for the target ABI and allocator; keep their source.
+/atomic-buffer-probe
+/atomic-buffer-probe-jemalloc
+/rocks-commit-probe
+/write-idle-comparison-20261011/payload-probe
+
+# Disposable RocksDB databases; synthetic parser fixtures remain in evidence.
+/rocks-probe*-data/
+
+# Word QA images/PDFs and editor lock files are local inspection intermediates.
+/design-evidence/word-qa*/
+/design-evidence/word-text.txt
+.~lock.*#
+
+# New verification output and distributable overlays, not historical evidence.
+/migration/runs/
+/migration/local-bundles/
+/migration/component-*/atomic-probe
+/migration/component-*/payload-probe
+/migration/preflight-local-*/
+/migration/preflight-final-*/
+/migration/build-delivery*.log
+/replay-check.*/
+/capacity-check.*/

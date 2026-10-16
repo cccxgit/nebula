@@ -1,0 +1,985 @@
+{
+  "purpose": "GitHub navigation only; analysis claims and original experiment files unchanged",
+  "analysis_baseline": "de9b3ed800a6627d9845e9289b6bbc5b6faf460a",
+  "documents_updated": 6,
+  "links_updated": 218,
+  "changes": [
+    {
+      "document": "CODEX-CLI-RESUME.md",
+      "before_sha256": "28083aa1acc27aec696138113440b17d8950f1182a1dedb7ed14960e8cf3e2cf",
+      "after_sha256": "22dfb6e96eaf02eb3b6ffc3af1fce755b7835692b8cd211efc24e6fe46604fa0",
+      "links": [
+        {
+          "old": "/home/sch/nebula/nebula-3.6-memory/task/task-wal.md",
+          "new": "task/task-wal.md"
+        },
+        {
+          "old": "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/REPORT.md",
+          "new": "task/wal-investigation/REPORT.md"
+        },
+        {
+          "old": "/home/sch/nebula/nebula-3.6-memory/task/wal-investigation/README.md",
+          "new": "task/wal-investigation/README.md"
+        }
+      ]
+    },
+    {
+      "document": "task/wal-investigation/COMPONENT-ANALYSIS.md",
+      "before_sha256": "4ff3bbd6820411164e1d79c0a26af0ca657b3dc11c053a6e1f0c71ba66ae1f0f",
+      "after_sha256": "52b09b026dccc9ec736e48c3df41505896369e1ba21295ac450faadc02218903",
+      "links": [
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1401",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1401"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1138",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1138"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:30",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L30"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:2041",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L2041"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1912",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1912"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:786",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L786"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:874",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L874"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1757",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1757"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:442",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L442"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:23",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L23"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:44",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L44"
+        },
+        {
+          "old": "../../src/common/thrift/ThriftTypes.h:14",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/thrift/ThriftTypes.h#L14"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:59",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L59"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:71",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L71"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:167",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L167"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:640",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L640"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:40",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L40"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:225",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L225"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:349",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L349"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:403",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L403"
+        },
+        {
+          "old": "../../src/common/utils/NebulaKeyUtils.cpp:101",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/utils/NebulaKeyUtils.cpp#L101"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:124",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L124"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:395",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L395"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngineConfig.cpp:307",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L307"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:1293",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L1293"
+        },
+        {
+          "old": "../../conf/nebula-storaged.conf.default:46",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/conf/nebula-storaged.conf.default#L46"
+        },
+        {
+          "old": "../../conf/nebula-storaged.conf.production:46",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/conf/nebula-storaged.conf.production#L46"
+        }
+      ]
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-RAFT.md",
+      "before_sha256": "efa25ba9faf00fce7722a1d7f395b463bd820b2c9f2c3f8e693cf75b7b69b6a3",
+      "after_sha256": "61094ffc96e7ee1831d1563ea138f5aea015e8d807418287b3ea12ced422b1a1",
+      "links": [
+        {
+          "old": "../../src/kvstore/NebulaStore.h:30",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.h#L30"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:47",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L47"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:291",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L291"
+        },
+        {
+          "old": "../../src/clients/meta/MetaClient.cpp:182",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/clients/meta/MetaClient.cpp#L182"
+        },
+        {
+          "old": "../../src/clients/meta/MetaClient.cpp:1020",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/clients/meta/MetaClient.cpp#L1020"
+        },
+        {
+          "old": "../../src/kvstore/PartManager.cpp:87",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/PartManager.cpp#L87"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:395",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L395"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:354",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L354"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:33",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L33"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:437",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L437"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:484",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L484"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:330",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L330"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:39",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L39"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:400",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L400"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:54",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L54"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1401",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1401"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1143",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1143"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1157",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1157"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1293",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1293"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1218",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1218"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1370",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1370"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1138",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1138"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:2041",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L2041"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:116",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L116"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:408",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L408"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1895",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1895"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:786",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L786"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.h:574",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.h#L574"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:76",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L76"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:2154",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L2154"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:874",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L874"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:918",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L918"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:515",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L515"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:442",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L442"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:413",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L413"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:92",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L92"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:288",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L288"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:381",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L381"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:176",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L176"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftexService.cpp:139",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftexService.cpp#L139"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1610",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1610"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1002",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1002"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:215",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L215"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:403",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L403"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:530",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L530"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:323",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L323"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1069",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1069"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1733",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1733"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1794",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1794"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:723",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L723"
+        },
+        {
+          "old": "../../src/kvstore/listener/elasticsearch/ESListener.cpp:232",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/listener/elasticsearch/ESListener.cpp#L232"
+        },
+        {
+          "old": "../../src/kvstore/listener/Listener.cpp:130",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/listener/Listener.cpp#L130"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:315",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L315"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:191",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L191"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:136",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L136"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.cpp:155",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L71"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.cpp:277",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L167"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:18",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L18"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:24",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L24"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:1293",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L1293"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:640",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L640"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:569",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L569"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:622",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L622"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.cpp:226",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L121"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:576",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L576"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftexService.cpp:88",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftexService.cpp#L88"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:456",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L456"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.cpp:138",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L56"
+        },
+        {
+          "old": "../../src/clients/meta/MetaClient.cpp:182",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/clients/meta/MetaClient.cpp#L182"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:628",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L628"
+        }
+      ]
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "before_sha256": "def98fce0e0096df6dac298a958152b7fc7a3db447be9fde19987154d21731ac",
+      "after_sha256": "167807ab0f5e3cd131bd76111949ce508759d3070c5f69c97ca5f32b9e2de126",
+      "links": [
+        {
+          "old": "../../src/kvstore/Part.cpp:215",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L215"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:120",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L120"
+        },
+        {
+          "old": "../../src/common/memory/MemoryUtils.cpp:83",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/memory/MemoryUtils.cpp#L83"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1002",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1002"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1757",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1757"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:530",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L530"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:191",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L191"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:136",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L136"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:215",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L215"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:349",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L349"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:52",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L52"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:419",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L419"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:403",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L403"
+        },
+        {
+          "old": "../../src/common/utils/NebulaKeyUtils.cpp:101",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/utils/NebulaKeyUtils.cpp#L101"
+        },
+        {
+          "old": "../../src/common/utils/Types.h:14",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/utils/Types.h#L14"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:120",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L120"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.h:181",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.h#L181"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngineConfig.cpp:41",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L41"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:124",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L124"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1806",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1806"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:395",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L395"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:33",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L33"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngineConfig.cpp:222",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L222"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:83",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L83"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:363",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L363"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:72",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L72"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:1293",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L1293"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:540",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L540"
+        },
+        {
+          "old": "../../src/storage/admin/FlushTask.cpp:17",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/storage/admin/FlushTask.cpp#L17"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngineConfig.cpp:307",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L307"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngineConfig.cpp:321",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L321"
+        },
+        {
+          "old": "../../src/storage/StorageServer.cpp:309",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/storage/StorageServer.cpp#L309"
+        },
+        {
+          "old": "../../src/storage/StorageServer.cpp:73",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/storage/StorageServer.cpp#L73"
+        },
+        {
+          "old": "../../src/common/memory/MemoryUtils.cpp:83",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/memory/MemoryUtils.cpp#L83"
+        },
+        {
+          "old": "../../src/common/memory/MemoryUtils.cpp:149",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/memory/MemoryUtils.cpp#L149"
+        },
+        {
+          "old": "../../src/common/memory/MemoryUtils.cpp:200",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/memory/MemoryUtils.cpp#L200"
+        },
+        {
+          "old": "../../src/common/memory/NewDelete.cpp:17",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/memory/NewDelete.cpp#L17"
+        },
+        {
+          "old": "../../src/common/memory/Memory.h:80",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/memory/Memory.h#L80"
+        },
+        {
+          "old": "../../src/common/memory/MemoryTracker.h:47",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/memory/MemoryTracker.h#L47"
+        },
+        {
+          "old": "../../src/storage/http/StorageHttpPropertyHandler.cpp:32",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/storage/http/StorageHttpPropertyHandler.cpp#L32"
+        },
+        {
+          "old": "../../src/common/meta/ServerBasedSchemaManager.cpp:94",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/common/meta/ServerBasedSchemaManager.cpp#L94"
+        },
+        {
+          "old": "../../conf/nebula-storaged.conf.default:102",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/conf/nebula-storaged.conf.default#L102"
+        },
+        {
+          "old": "../../CMakeLists.txt:68",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/CMakeLists.txt#L68"
+        }
+      ]
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-WAL.md",
+      "before_sha256": "d59faaa1fc23fed9a2b7c2b0b040c4822a5f760a867cfd5eb4d1d520c9c8f188",
+      "after_sha256": "80d0c46fb5f88937de2dd917ef400a58b17f871be8e0d943aeddaa7d69cb0aee",
+      "links": [
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:357",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L357"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:59",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L59"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:252",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L252"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:23",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L23"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:44",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L44"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:50",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L50"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:60",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L60"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:77",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L77"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:92",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L92"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:353",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L353"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:327",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L327"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:270",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L270"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:71",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L71"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:91",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L91"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:315",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L315"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:191",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L191"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:138",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L56"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:42",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L42"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:15",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L15"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:136",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L136"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:167",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L167"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:121",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L121"
+        },
+        {
+          "old": "../../task/wal-investigation/baseline/kvstore/wal/AtomicLogBuffer.cpp:56",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L56"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:31",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L31"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:85",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L85"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:371",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L371"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:442",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L442"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:503",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L503"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:515",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L515"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:292",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L292"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:263",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L263"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:530",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L530"
+        },
+        {
+          "old": "../../src/kvstore/wal/WalFileIterator.cpp:15",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/WalFileIterator.cpp#L15"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:569",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L569"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:622",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L622"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:640",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L640"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:676",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L676"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:709",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L709"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:723",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L723"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:538",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L538"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:77",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L77"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1401",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1401"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1138",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1138"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:2041",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L2041"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:786",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L786"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:162",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L162"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:874",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L874"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:323",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L323"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1757",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1757"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1069",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1069"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:1794",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L1794"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:215",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L215"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:349",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L349"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:124",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L124"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngineConfig.cpp:310",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L310"
+        }
+      ]
+    },
+    {
+      "document": "task/wal-investigation/WRITE-VS-IDLE.md",
+      "before_sha256": "316860bb31b8426cfd8b63af517b2eb0d94f4865ec677790274f3458c62738ad",
+      "after_sha256": "bbe0c8500a19c76fe551dc1a9f32ca17dafecd39df6e6aa1859f1f2eea16b427",
+      "links": [
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:29",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L29"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:18",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L18"
+        },
+        {
+          "old": "../../src/kvstore/wal/AtomicLogBuffer.h:104",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.h#L104"
+        },
+        {
+          "old": "../../src/kvstore/wal/FileBasedWal.cpp:499",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/FileBasedWal.cpp#L499"
+        },
+        {
+          "old": "baseline/kvstore/wal/AtomicLogBuffer.cpp:71",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L71"
+        },
+        {
+          "old": "baseline/kvstore/wal/AtomicLogBuffer.cpp:167",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/wal/AtomicLogBuffer.cpp#L167"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:2041",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L2041"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:83",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L83"
+        },
+        {
+          "old": "../../src/kvstore/LogEncoder.cpp:92",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/LogEncoder.cpp#L92"
+        },
+        {
+          "old": "../../src/storage/mutate/AddVerticesProcessor.cpp:77",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/storage/mutate/AddVerticesProcessor.cpp#L77"
+        },
+        {
+          "old": "../../src/storage/BaseProcessor-inl.h:111",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/storage/BaseProcessor-inl.h#L111"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:225",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L225"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:247",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L247"
+        },
+        {
+          "old": "../../src/kvstore/Part.cpp:349",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/Part.cpp#L349"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:124",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L124"
+        },
+        {
+          "old": "../../src/kvstore/NebulaStore.cpp:395",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/NebulaStore.cpp#L395"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngineConfig.cpp:310",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngineConfig.cpp#L310"
+        },
+        {
+          "old": "../../src/kvstore/raftex/RaftPart.cpp:800",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/RaftPart.cpp#L800"
+        },
+        {
+          "old": "../../src/kvstore/raftex/Host.cpp:323",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/raftex/Host.cpp#L323"
+        },
+        {
+          "old": "../../src/kvstore/RocksEngine.cpp:124",
+          "new": "https://github.com/cccxgit/nebula/blob/de9b3ed800a6627d9845e9289b6bbc5b6faf460a/src/kvstore/RocksEngine.cpp#L124"
+        }
+      ]
+    }
+  ],
+  "external_header_locations_as_text": [
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/options.h:1689",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/options.h:172",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/advanced_options.h:249",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/advanced_options.h:328",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/db.h:920",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/advanced_options.h:477",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/options.h:1779",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/cache.h:112",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/cache.h:120",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/CODE-WALKTHROUGH-ROCKSDB.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/db.h:952",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/WRITE-VS-IDLE.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/options.h:172",
+      "reason": "third-party host header; not part of repository"
+    },
+    {
+      "document": "task/wal-investigation/WRITE-VS-IDLE.md",
+      "target": "/opt/vesoft/third-party/3.3/include/rocksdb/advanced_options.h:250",
+      "reason": "third-party host header; not part of repository"
+    }
+  ],
+  "line_number_review": "Raft walkthrough Atomic functions were matched by name against unmodified baseline; push71/destructor56/releaseRef167/reset121."
+}

@@ -1,0 +1,5 @@
+Log file created at: 2026/10/10 06:58:50
+Running on machine: sch-PC
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20261010 06:58:50.405202 77094 FileUtils.cpp:377] Failed to read the directory "/home/sch/nebula-run/nebula-memory/data/meta/nebula" (2): No such file or directory

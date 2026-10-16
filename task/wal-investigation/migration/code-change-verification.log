@@ -1,0 +1,36 @@
+generated_at=2026-10-16T01:57:27.321517+00:00
+head=194958131042df77301072eb99dccbc64fb34246
+diff_sha256=c9004dbb122f887c37b9bfd3ee9f35618f95dbcafc384aa433ff02756478acc7
+patch_equals_worktree_diff=True
+product_changed_paths=['src/kvstore/wal/AtomicLogBuffer.cpp']
+check[0] command=git diff --check -- src/kvstore/wal/AtomicLogBuffer.cpp
+check[0] exit=0
+
+
+check[1] command=git apply --reverse --check /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch
+check[1] exit=0
+
+
+check[2] command=git apply --check /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch
+check[2] exit=1
+
+error: patch failed: src/kvstore/wal/AtomicLogBuffer.cpp:5
+error: src/kvstore/wal/AtomicLogBuffer.cpp: patch does not apply
+check[3] command=git apply --check /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch
+check[3] exit=0
+
+
+check[4] command=git apply /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch
+check[4] exit=0
+
+
+check[5] command=git apply --reverse --check /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch
+check[5] exit=0
+
+
+check[6] command=git apply --reverse /home/sch/nebula/nebula-3.6-memory/task/wal-investigation/observation.patch
+check[6] exit=0
+
+
+passed=True
+audit_document_check={"path": "task/wal-investigation/migration/CODE-CHANGE-AUDIT.md", "sha256": "72a0b59c2aea082f7dbccc94a46316cc64b0ecb041674bcc46f2d16ffc94d204", "lines": 155, "missing_relative_link_targets": [], "code_fences_balanced": true}

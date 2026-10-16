@@ -1,0 +1,326 @@
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_01(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 1.4ms/1.582882ms)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_02(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 841µs/939.777µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_03(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 842µs/935.839µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_04(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 591µs/662.539µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_05(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 1.047ms/1.164168ms)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_06(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 901µs/989.024µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_07(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 679µs/755.103µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_08(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 840µs/921.197µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_09(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 714µs/801.568µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_10(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 730µs/824.077µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_11(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 693µs/776.607µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_12(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 732µs/810.173µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_13(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 752µs/841.225µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_14(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 721µs/804.049µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_15(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 709µs/792.704µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_16(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 661µs/752.594µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_17(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 631µs/728.08µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_18(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 624µs/706.526µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_19(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 682µs/773.994µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_20(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 630µs/711.024µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_21(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 596µs/673.771µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_22(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 648µs/721.325µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_23(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 611µs/683.284µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_24(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 636µs/707.493µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_25(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 554µs/633.714µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_26(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 650µs/721.595µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_27(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 629µs/702.365µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_28(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 607µs/676.964µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_29(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 580µs/652.06µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_30(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 578µs/638.899µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_31(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 824µs/906.182µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_32(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 855µs/938.615µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_33(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 838µs/918.999µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_34(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 887µs/984.027µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_35(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 903µs/995.754µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_36(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 795µs/870.217µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_37(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 669µs/742.17µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_38(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 787µs/866.551µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_39(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 786µs/865.561µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_40(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 822µs/899.651µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_41(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 829µs/907.694µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_42(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 872µs/951.893µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_43(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 818µs/895.919µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_44(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 889µs/967.441µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_45(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 753µs/826.822µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_46(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 764µs/834.912µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_47(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 751µs/826.616µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_48(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 742µs/814.686µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_49(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 707µs/789.755µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> CREATE SPACE IF NOT EXISTS wal_idle_50(partition_num=20, replica_factor=3, vid_type=FIXED_STRING(32));
+Execution succeeded (time spent 923µs/1.000984ms)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> SHOW HOSTS;
++-------------+-------+----------+--------------+----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
+| Host        | Port  | Status   | Leader count | Leader distribution  | Partition distribution                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Version |
++-------------+-------+----------+--------------+----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
+| "127.0.0.1" | 29779 | "ONLINE" | 0            | "No valid partition" | "wal_idle_01:20, wal_idle_02:20, wal_idle_03:20, wal_idle_04:20, wal_idle_05:20, wal_idle_06:20, wal_idle_07:20, wal_idle_08:20, wal_idle_09:20, wal_idle_10:20, wal_idle_11:20, wal_idle_12:20, wal_idle_13:20, wal_idle_14:20, wal_idle_15:20, wal_idle_16:20, wal_idle_17:20, wal_idle_18:20, wal_idle_19:20, wal_idle_20:20, wal_idle_21:20, wal_idle_22:20, wal_idle_23:20, wal_idle_24:20, wal_idle_25:20, wal_idle_26:20, wal_idle_27:20, wal_idle_28:20, wal_idle_29:20, wal_idle_30:20, wal_idle_31:20, wal_idle_32:20, wal_idle_33:20, wal_idle_34:20, wal_idle_35:20, wal_idle_36:20, wal_idle_37:20, wal_idle_38:20, wal_idle_39:20, wal_idle_40:20, wal_idle_41:20, wal_idle_42:20, wal_idle_43:20, wal_idle_44:20, wal_idle_45:20, wal_idle_46:20, wal_idle_47:20, wal_idle_48:20, wal_idle_49:20, wal_idle_50:20" | ""      |
+| "127.0.0.1" | 29789 | "ONLINE" | 0            | "No valid partition" | "wal_idle_01:20, wal_idle_02:20, wal_idle_03:20, wal_idle_04:20, wal_idle_05:20, wal_idle_06:20, wal_idle_07:20, wal_idle_08:20, wal_idle_09:20, wal_idle_10:20, wal_idle_11:20, wal_idle_12:20, wal_idle_13:20, wal_idle_14:20, wal_idle_15:20, wal_idle_16:20, wal_idle_17:20, wal_idle_18:20, wal_idle_19:20, wal_idle_20:20, wal_idle_21:20, wal_idle_22:20, wal_idle_23:20, wal_idle_24:20, wal_idle_25:20, wal_idle_26:20, wal_idle_27:20, wal_idle_28:20, wal_idle_29:20, wal_idle_30:20, wal_idle_31:20, wal_idle_32:20, wal_idle_33:20, wal_idle_34:20, wal_idle_35:20, wal_idle_36:20, wal_idle_37:20, wal_idle_38:20, wal_idle_39:20, wal_idle_40:20, wal_idle_41:20, wal_idle_42:20, wal_idle_43:20, wal_idle_44:20, wal_idle_45:20, wal_idle_46:20, wal_idle_47:20, wal_idle_48:20, wal_idle_49:20, wal_idle_50:20" | ""      |
+| "127.0.0.1" | 29799 | "ONLINE" | 0            | "No valid partition" | "wal_idle_01:20, wal_idle_02:20, wal_idle_03:20, wal_idle_04:20, wal_idle_05:20, wal_idle_06:20, wal_idle_07:20, wal_idle_08:20, wal_idle_09:20, wal_idle_10:20, wal_idle_11:20, wal_idle_12:20, wal_idle_13:20, wal_idle_14:20, wal_idle_15:20, wal_idle_16:20, wal_idle_17:20, wal_idle_18:20, wal_idle_19:20, wal_idle_20:20, wal_idle_21:20, wal_idle_22:20, wal_idle_23:20, wal_idle_24:20, wal_idle_25:20, wal_idle_26:20, wal_idle_27:20, wal_idle_28:20, wal_idle_29:20, wal_idle_30:20, wal_idle_31:20, wal_idle_32:20, wal_idle_33:20, wal_idle_34:20, wal_idle_35:20, wal_idle_36:20, wal_idle_37:20, wal_idle_38:20, wal_idle_39:20, wal_idle_40:20, wal_idle_41:20, wal_idle_42:20, wal_idle_43:20, wal_idle_44:20, wal_idle_45:20, wal_idle_46:20, wal_idle_47:20, wal_idle_48:20, wal_idle_49:20, wal_idle_50:20" | ""      |
++-------------+-------+----------+--------------+----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
+Got 3 rows (time spent 4.088ms/4.382436ms)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+(root@nebula) [(none)]> SHOW SPACES;
++---------------+
+| Name          |
++---------------+
+| "wal_idle_01" |
+| "wal_idle_02" |
+| "wal_idle_03" |
+| "wal_idle_04" |
+| "wal_idle_05" |
+| "wal_idle_06" |
+| "wal_idle_07" |
+| "wal_idle_08" |
+| "wal_idle_09" |
+| "wal_idle_10" |
+| "wal_idle_11" |
+| "wal_idle_12" |
+| "wal_idle_13" |
+| "wal_idle_14" |
+| "wal_idle_15" |
+| "wal_idle_16" |
+| "wal_idle_17" |
+| "wal_idle_18" |
+| "wal_idle_19" |
+| "wal_idle_20" |
+| "wal_idle_21" |
+| "wal_idle_22" |
+| "wal_idle_23" |
+| "wal_idle_24" |
+| "wal_idle_25" |
+| "wal_idle_26" |
+| "wal_idle_27" |
+| "wal_idle_28" |
+| "wal_idle_29" |
+| "wal_idle_30" |
+| "wal_idle_31" |
+| "wal_idle_32" |
+| "wal_idle_33" |
+| "wal_idle_34" |
+| "wal_idle_35" |
+| "wal_idle_36" |
+| "wal_idle_37" |
+| "wal_idle_38" |
+| "wal_idle_39" |
+| "wal_idle_40" |
+| "wal_idle_41" |
+| "wal_idle_42" |
+| "wal_idle_43" |
+| "wal_idle_44" |
+| "wal_idle_45" |
+| "wal_idle_46" |
+| "wal_idle_47" |
+| "wal_idle_48" |
+| "wal_idle_49" |
+| "wal_idle_50" |
++---------------+
+Got 50 rows (time spent 706µs/947.851µs)
+
+Sat, 10 Oct 2026 07:01:39 CST
+
+
+
+Bye root!
+Sat, 10 Oct 2026 07:01:39 CST
+

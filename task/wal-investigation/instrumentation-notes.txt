@@ -1,0 +1,49 @@
+AtomicLogBuffer 观测补丁说明
+日期：2026-10-10
+源码范围：仅 src/kvstore/wal/AtomicLogBuffer.cpp。
+目的：验证物理 Node 留存、逻辑消息量与 GC 行为；不修复任何行为。
+
+启动参数：
+  --wal_memory_observe=true
+  --wal_memory_observe_interval_secs=10
+默认 false；enabled 在该源第一次触及 memoryObservations() 时锁存整个进程的
+启动值，后续运行时切换不生效，避免已存在节点未统计而删除时减计数。
+采样间隔小于 1 视为 1 秒。进程级采样限速依赖 steady_clock；由既有 push、
+reset、releaseRef 触发，不创建线程，静默进程不保证固定周期输出。
+
+WAL_MEMORY_OBSERVE 字段：
+  live_nodes：本进程 AtomicLogBuffer 成功 new Node 次数减原有 delete Node 次数。
+  created / freed：对应累计节点分配/删除。删除统计覆盖析构链和 releaseRef GC 链。
+  pushes / empty_pushes：push 入口调用次数；空消息用移动前 record.msg_.empty() 判定。
+  live_logical_bytes：push 加 Record::size()；真正删除 Node 前减其 node->size_。
+    reset 和标脏不减这个计数，所以包含已标记删除但尚未物理释放的记录。
+    依赖该类原有单写者保证和现有 push_back 成功不变量；不额外改变其返回值处理。
+  releases：releaseRef 调用累计次数（Iterator 析构），不代表全部磁盘读取次数。
+  gc_runs：原 GC 条件成立且成功取得 gcOnGoing_ 后累计次数，可能一次释放零节点。
+  gc_freed：由 GC 删除的节点数，freed 还包含 buffer 析构释放。
+  resets：reset 累计调用次数。
+  sizeof_record / sizeof_node：当前编译 ABI 下 Record / Node 的 sizeof。
+  node_object_bytes：live_nodes * sizeof(Node)，仅存活 Node 对象体积。
+    包含 Node 内嵌 std::array<Record,64> 和对齐填充；不包含 std::string 堆数据、
+    malloc 元数据/粒度/碎片、其他模块内存；不是堆总分配字节，也不是 RSS。
+  buffer / event：本次触发采样的 buffer 地址（可被后续对象复用）和事件。
+  buffer_size / buffer_capacity / buffer_dirty_nodes / buffer_refs：仅该 buffer 快照，
+    不代表整个进程；capacity 不可直接拿来约束进程级 live_logical_bytes。
+
+并发和精度限制：
+各累计计数使用 int64 relaxed 原子，单个增减不会丢失更新，但日志逐字段加载，
+并非一个同时刻一致快照。并发分配/释放期间可能短暂不满足 created-freed=live_nodes，
+或 nodes 与 bytes 对不上。稳定阶段/趋势和跨多个采样验证比单行差值更可靠。
+计数更新点是在原分配、push、删除相邻位置，并非 allocator 钩子；短暂操作窗口、
+原本的 int32 Node::size_ 溢出风险或原类线程安全不变量被破坏均不在额外保证范围内。
+不对 RSS 做推断，不把该计数描述为完整堆分析。进程重启计数归零。
+不遍历任何并发链表，delete 前只在原所有权安全删除点读取 node->size_。
+统计开启会增加原子访问、取时和日志开销；它不改变业务判断，但会影响线程时序。
+关闭时仍有极小的开关检测/函数调用开销；原 push/reset/GC 条件和执行顺序保留。
+
+审查结论：
+原 new Node() 点只有 1 个；原 delete prev 点 2 个（末尾分支正常情况下不可达），
+原 delete del 点 1 个；全部原位置都覆盖，未新增释放、标脏、GC 触发或容量判断。
+观测只读 size_ / dirtyNodes_ / refs_ 的原子值；capacity_ 构造后不变。
+本次已运行 clang-format 和 git diff --check，均通过。
+编译和数据库运行验证由主任务记录在同目录的构建/运行日志中。

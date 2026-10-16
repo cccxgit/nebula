@@ -1,0 +1,3 @@
+{"sample": 0, "label": "s1", "time_utc": "2026-10-09T23:00:31.688+00:00", "http": [], "wal_files": [], "errors": []}
+{"sample": 0, "label": "s2", "time_utc": "2026-10-09T23:00:31.689+00:00", "http": [], "wal_files": [], "errors": []}
+{"sample": 0, "label": "s3", "time_utc": "2026-10-09T23:00:31.690+00:00", "http": [], "wal_files": [], "errors": []}

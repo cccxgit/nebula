@@ -1,0 +1,55 @@
+{
+  "checked_utc": "2026-10-11T06:33:22.271576+00:00",
+  "documents": {
+    "REPORT.md": {
+      "links_checked": 12,
+      "sha256": "96d811078fa48447ae56033a8730b1ba7e7e133d119bf838feacbc9d8f6b40d9"
+    },
+    "EXPERIMENT-DETAILS.md": {
+      "links_checked": 66,
+      "sha256": "e273e831988d43b033197ddfda0f3d981276172726e162950f45e3059e2dfcf1"
+    },
+    "WRITE-VS-IDLE.md": {
+      "links_checked": 37,
+      "sha256": "316860bb31b8426cfd8b63af517b2eb0d94f4865ec677790274f3458c62738ad"
+    },
+    "README.md": {
+      "links_checked": 10,
+      "sha256": "779b6805adb0aef8ca31d96b76e46a61d35a85eb8212d8c02d0e19413cac0d38"
+    },
+    "write-idle-comparison-20261011/README.md": {
+      "links_checked": 13,
+      "sha256": "9366a3a337b840f8182d5548d242db340e414a71a07a33724a4a1886889cccd0"
+    }
+  },
+  "errors": [],
+  "original_non_markdown_artifacts": {
+    "checked": 288,
+    "mismatches": []
+  },
+  "product_observation_patch_unchanged": true,
+  "new_component_comparisons": {
+    "empty.csv": {
+      "rows": 9,
+      "final_node_and_payload_usable_bytes": 29367296
+    },
+    "payload256.csv": {
+      "rows": 8,
+      "final_node_and_payload_usable_bytes": 11598848
+    },
+    "payload1024.csv": {
+      "rows": 10,
+      "final_node_and_payload_usable_bytes": 10944512
+    },
+    "after-stop.csv": {
+      "rows": 11,
+      "final_node_and_payload_usable_bytes": 29370880
+    }
+  },
+  "component_content_validation": "4 runs verified payload roundtrip and logical/node/dirty/reference invariants",
+  "original_rss_deltas_verified_KiB": [
+    161548,
+    160860,
+    161432
+  ]
+}

@@ -1,0 +1,4 @@
+phase,round,writes,elapsed_seconds,rss_kib,jemalloc_allocated_bytes,active_memtable_bytes,all_memtable_bytes,all_memtable_with_pinned_bytes,active_memtable_entries,immutable_memtable_entries,table_reader_bytes,shared_block_cache_bytes
+opened,0,0,4.775e-06,10464,1775064,2048,2048,2048,0,0,0,96
+writing,1,1,0.000470232,11280,1775064,2048,2048,2048,1,0,0,96
+flushed,1,1,0.00626753,11888,2169592,2048,2048,2048,0,0,2190,96

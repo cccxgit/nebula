@@ -1,0 +1,129 @@
+{
+  "generated_utc": "2026-10-16T02:01:51.887343+00:00",
+  "scope": "follow-up of the initial inventory, no historical files or candidate lists changed",
+  "symlinks": [
+    {
+      "path": "task/wal-investigation/service-logs/graphd/nebula-graphd.INFO",
+      "target": "nebula-graphd.sch-PC.sch.log.INFO.20261010-065853.77494",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 55
+    },
+    {
+      "path": "task/wal-investigation/service-logs/metad/nebula-metad.ERROR",
+      "target": "nebula-metad.sch-PC.sch.log.ERROR.20261010-065850.77094",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 55
+    },
+    {
+      "path": "task/wal-investigation/service-logs/metad/nebula-metad.INFO",
+      "target": "nebula-metad.sch-PC.sch.log.INFO.20261010-065850.77094",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 54
+    },
+    {
+      "path": "task/wal-investigation/service-logs/metad/nebula-metad.WARNING",
+      "target": "nebula-metad.sch-PC.sch.log.WARNING.20261010-065850.77094",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 57
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s1/nebula-storaged.ERROR",
+      "target": "nebula-storaged.sch-PC.sch.log.ERROR.20261010-065856.77312",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 58
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s1/nebula-storaged.INFO",
+      "target": "nebula-storaged.sch-PC.sch.log.INFO.20261010-065853.77312",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 57
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s1/nebula-storaged.WARNING",
+      "target": "nebula-storaged.sch-PC.sch.log.WARNING.20261010-065853.77312",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 60
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s2/nebula-storaged.ERROR",
+      "target": "nebula-storaged.sch-PC.sch.log.ERROR.20261010-065856.77368",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 58
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s2/nebula-storaged.INFO",
+      "target": "nebula-storaged.sch-PC.sch.log.INFO.20261010-065853.77368",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 57
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s2/nebula-storaged.WARNING",
+      "target": "nebula-storaged.sch-PC.sch.log.WARNING.20261010-065853.77368",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 60
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s3/nebula-storaged.ERROR",
+      "target": "nebula-storaged.sch-PC.sch.log.ERROR.20261010-065856.77431",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 58
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s3/nebula-storaged.INFO",
+      "target": "nebula-storaged.sch-PC.sch.log.INFO.20261010-065853.77431",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 57
+    },
+    {
+      "path": "task/wal-investigation/service-logs/s3/nebula-storaged.WARNING",
+      "target": "nebula-storaged.sch-PC.sch.log.WARNING.20261010-065853.77431",
+      "relative": true,
+      "target_exists": true,
+      "target_in_initial_candidates": true,
+      "stays_within_service_logs": true,
+      "link_text_bytes": 60
+    }
+  ],
+  "all_safe_for_linux_git_checkout": true,
+  "source_dependency": "analyze_runtime_rocks.py:40 reads service-logs/{label}/nebula-storaged.INFO",
+  "recommendation": "Add all 13 safe relative log symlinks to final release selection. Keep original 299-entry audit candidate list as historical snapshot. Final release selection is authoritative.",
+  "additional_paths_count": 13,
+  "additional_git_link_text_bytes": 746,
+  "initial_candidates_plus_symlinks_count": 312
+}
