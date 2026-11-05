@@ -19,7 +19,7 @@ class RebuildFTJobExecutor : public RebuildJobExecutor {
                        AdminClient* adminClient,
                        const std::vector<std::string>& paras)
       : RebuildJobExecutor(space, jobId, kvstore, adminClient, std::move(paras)) {
-    toHost_ = TargetHosts::LISTENER;
+    toHost_ = TargetHosts::DEFAULT;
   }
 
   nebula::cpp2::ErrorCode stop() override {

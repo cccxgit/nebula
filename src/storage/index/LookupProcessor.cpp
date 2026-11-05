@@ -4,6 +4,8 @@
  */
 #include "storage/index/LookupProcessor.h"
 
+#include <limits>
+
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
@@ -20,6 +22,7 @@
 #include "storage/exec/IndexProjectionNode.h"
 #include "storage/exec/IndexSelectionNode.h"
 #include "storage/exec/IndexTopNNode.h"
+#include "storage/exec/IndexTantivyScanNode.h"
 #include "storage/exec/IndexVertexScanNode.h"
 
 namespace nebula {
@@ -118,8 +121,22 @@ void LookupProcessor::doProcess(const cpp2::LookupIndexRequest& req) {
 ErrorOr<nebula::cpp2::ErrorCode, std::unique_ptr<IndexNode>> LookupProcessor::buildPlan(
     const cpp2::LookupIndexRequest& req) {
   std::vector<std::unique_ptr<IndexNode>> nodes;
+  // Only a single relevance query with no post-search filtering, ordering or
+  // aggregation can safely use the score/decoded-VID top K from each partition.
+  const auto& contexts = req.get_indices().get_contexts();
+  const bool boundedFulltext =
+      !context_->isEdge() && !context_->isIntId() && contexts.size() == 1 &&
+      req.limit_ref().has_value() && *req.get_limit() > 0 &&
+      *req.get_limit() < std::numeric_limits<int64_t>::max() &&
+      (!req.order_by_ref().has_value() || req.get_order_by()->empty()) &&
+      (!req.stat_columns_ref().has_value() || req.get_stat_columns()->empty());
   for (auto& ctx : req.get_indices().get_contexts()) {
-    auto scan = buildOneContext(ctx);
+    const auto fulltextLimit = boundedFulltext && ctx.fulltext_index_name_ref().has_value() &&
+                                       ctx.fulltext_mode_ref().value_or(-1) == 0 &&
+                                       ctx.get_filter().empty()
+                                   ? static_cast<size_t>(*req.get_limit())
+                                   : 0;
+    auto scan = buildOneContext(ctx, fulltextLimit);
     if (!ok(scan)) {
       return error(scan);
     }
@@ -143,7 +160,7 @@ ErrorOr<nebula::cpp2::ErrorCode, std::unique_ptr<IndexNode>> LookupProcessor::bu
       dedup->addChild(std::move(node));
     }
     nodes.clear();
-    nodes[0] = std::move(dedup);
+    nodes.emplace_back(std::move(dedup));
   }
   if (req.limit_ref().has_value()) {
     auto limit = *req.get_limit();
@@ -171,12 +188,14 @@ ErrorOr<nebula::cpp2::ErrorCode, std::unique_ptr<IndexNode>> LookupProcessor::bu
 }
 
 ErrorOr<nebula::cpp2::ErrorCode, std::unique_ptr<IndexNode>> LookupProcessor::buildOneContext(
-    const cpp2::IndexQueryContext& ctx) {
+    const cpp2::IndexQueryContext& ctx, size_t fulltextLimit) {
   std::unique_ptr<IndexNode> node;
   DLOG(INFO) << ctx.get_column_hints().size();
   DLOG(INFO) << &ctx.get_column_hints();
   DLOG(INFO) << ::apache::thrift::SimpleJSONSerializer::serialize<std::string>(ctx);
-  if (context_->isEdge()) {
+  if (ctx.fulltext_index_name_ref().has_value()) {
+    node = std::make_unique<IndexTantivyScanNode>(context_.get(), ctx, fulltextLimit);
+  } else if (context_->isEdge()) {
     auto idx = env_->indexMan_->getEdgeIndex(context_->spaceId(), ctx.get_index_id());
     if (!idx.ok()) {
       return nebula::cpp2::ErrorCode::E_INDEX_NOT_FOUND;
@@ -224,10 +243,9 @@ void LookupProcessor::runInSingleThread(const std::vector<PartitionID>& parts,
   std::vector<::nebula::cpp2::ErrorCode> codeList;
   for (auto part : parts) {
     DLOG(INFO) << "execute part:" << part;
-    plan->execute(part);
-    ::nebula::cpp2::ErrorCode code = ::nebula::cpp2::ErrorCode::SUCCEEDED;
+    auto code = plan->execute(part);
     decltype(datasetList)::value_type dataset;
-    do {
+    while (code == ::nebula::cpp2::ErrorCode::SUCCEEDED) {
       auto result = plan->next();
       if (!result.success()) {
         code = result.code();
@@ -238,7 +256,7 @@ void LookupProcessor::runInSingleThread(const std::vector<PartitionID>& parts,
       } else {
         break;
       }
-    } while (true);
+    }
     datasetList.emplace_back(std::move(dataset));
     codeList.emplace_back(code);
   }
@@ -277,8 +295,8 @@ void LookupProcessor::runInMultipleThread(const std::vector<PartitionID>& parts,
                      memory::MemoryCheckGuard guard;
                      ::nebula::cpp2::ErrorCode code = ::nebula::cpp2::ErrorCode::SUCCEEDED;
                      std::deque<Row> dataset;
-                     plan->execute(part);
-                     do {
+                     code = plan->execute(part);
+                     while (code == ::nebula::cpp2::ErrorCode::SUCCEEDED) {
                        auto result = plan->next();
                        if (!result.success()) {
                          code = result.code();
@@ -289,7 +307,7 @@ void LookupProcessor::runInMultipleThread(const std::vector<PartitionID>& parts,
                        } else {
                          break;
                        }
-                     } while (true);
+                     }
                      if (UNLIKELY(profileDetailFlag_)) {
                        profilePlan(plan.get());
                      }

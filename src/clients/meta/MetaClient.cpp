@@ -3630,9 +3630,9 @@ StatusOr<std::pair<std::string, cpp2::FTIndex>> MetaClient::getFTIndexFromCache(
     auto id = it.second.get_depend_schema().getType() == nebula::cpp2::SchemaID::Type::edge_type
                   ? it.second.get_depend_schema().get_edge_type()
                   : it.second.get_depend_schema().get_tag_id();
-    // There will only be one field. However, in order to minimize changes, the IDL was not modified
-    auto f = it.second.fields()->front();
-    if (it.second.get_space_id() == spaceId && id == schemaId && f == field) {
+    const auto& fields = it.second.get_fields();
+    if (it.second.get_space_id() == spaceId && id == schemaId &&
+        std::find(fields.begin(), fields.end(), field) != fields.end()) {
       return std::make_pair(it.first, it.second);
     }
   }
@@ -3667,11 +3667,11 @@ StatusOr<cpp2::FTIndex> MetaClient::getFTIndexByNameFromCache(GraphSpaceID space
   }
   folly::rcu_reader guard;
   const auto& metadata = *metadata_.load();
-  if (metadata.fulltextIndexMap_.find(name) != fulltextIndexMap_.end() &&
-      metadata.fulltextIndexMap_.at(name).get_space_id() != spaceId) {
+  const auto it = metadata.fulltextIndexMap_.find(name);
+  if (it == metadata.fulltextIndexMap_.end() || it->second.get_space_id() != spaceId) {
     return Status::IndexNotFound();
   }
-  return metadata.fulltextIndexMap_.at(name);
+  return it->second;
 }
 
 folly::Future<StatusOr<cpp2::CreateSessionResp>> MetaClient::createSession(

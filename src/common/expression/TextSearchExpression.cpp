@@ -35,7 +35,7 @@ std::string TextSearchExpression::toString() const {
   buf.reserve(64);
   switch (kind_) {
     case Kind::kESQUERY: {
-      buf = "ES_QUERY(";
+      buf = "TEXT_SEARCH(";
       break;
     }
     default: {

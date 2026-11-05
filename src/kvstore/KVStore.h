@@ -24,6 +24,7 @@ namespace nebula {
 namespace kvstore {
 
 struct KVOptions {
+  CommitObserver commitObserver_;
   // HBase thrift server address.
   HostAddr hbaseServer_;
 

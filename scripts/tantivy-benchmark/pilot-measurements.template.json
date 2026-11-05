@@ -1,0 +1,13 @@
+{
+  "measured_rows": 1000000,
+  "graph_delta_bytes": null,
+  "index_delta_bytes": null,
+  "normalized_file_bytes": 54984169,
+  "index_visible_seconds": null,
+  "peak_service_pss_bytes": null,
+  "max_verified_query_hits": null,
+  "all_query_hit_counts_verified": false,
+  "error_free": null,
+  "no_oom_or_swap_storm": null,
+  "notes": "Fill measured fields only. Graph/index deltas must sum all three storaged replicas; never multiply them by three again. Keep measurements from the same dataset projection, settings, and run."
+}

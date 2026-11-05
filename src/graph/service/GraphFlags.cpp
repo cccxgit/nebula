@@ -56,6 +56,9 @@ DEFINE_int64(max_allowed_connections,
              "Max connections of the whole cluster");
 
 DEFINE_bool(enable_optimizer, false, "Whether to enable optimizer");
+DEFINE_bool(enable_tantivy_pushdown,
+            true,
+            "Automatically accelerate string predicates with embedded Tantivy indexes");
 
 #ifndef BUILD_STANDALONE
 DEFINE_uint32(ft_request_retry_times, 3, "Retry times if fulltext request failed");

@@ -66,8 +66,9 @@ folly::Future<Status> IndexScanExecutor::indexScan() {
   } else {
     ictxs = lookup->queryContext();
   }
-  auto iter = std::find_if(
-      ictxs.begin(), ictxs.end(), [](auto &ictx) { return !ictx.index_id_ref().is_set(); });
+  auto iter = std::find_if(ictxs.begin(), ictxs.end(), [](const auto &ictx) {
+    return !ictx.index_id_ref().is_set() && !ictx.fulltext_index_name_ref().has_value();
+  });
   if (ictxs.empty() || iter != ictxs.end()) {
     return Status::Error("There is no index to use at runtime");
   }
@@ -96,7 +97,12 @@ folly::Future<Status> IndexScanExecutor::indexScan() {
 // TODO(shylock) merge the handler with GetProp
 template <typename Resp>
 Status IndexScanExecutor::handleResp(storage::StorageRpcResponse<Resp> &&rpcResp) {
-  auto completeness = handleCompleteness(rpcResp, FLAGS_accept_partial_success);
+  const auto &contexts = asNode<IndexScan>(node())->queryContext();
+  const bool nativeFulltext = std::any_of(contexts.begin(), contexts.end(), [](const auto &ctx) {
+    return ctx.fulltext_index_name_ref().has_value();
+  });
+  // Missing a partition must never look like a complete full-text search result.
+  auto completeness = handleCompleteness(rpcResp, FLAGS_accept_partial_success && !nativeFulltext);
   if (!completeness.ok()) {
     return std::move(completeness).status();
   }

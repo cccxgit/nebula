@@ -374,6 +374,11 @@ folly::Future<nebula::cpp2::ErrorCode> AdminClient::clearSpace(GraphSpaceID spac
               isAllOk = false;
               break;
             }
+            if (resp.value() != nebula::cpp2::ErrorCode::SUCCEEDED) {
+              pro.setValue(resp.value());
+              isAllOk = false;
+              break;
+            }
           }
           if (isAllOk) {
             pro.setValue(nebula::cpp2::ErrorCode::SUCCEEDED);

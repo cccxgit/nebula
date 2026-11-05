@@ -10,7 +10,9 @@
 #include "graph/planner/Planner.h"
 #include "graph/planner/plan/Logic.h"
 #include "graph/planner/plan/Scan.h"
+#include "graph/service/GraphFlags.h"
 #include "graph/util/Constants.h"
+#include "graph/util/FTIndexUtils.h"
 #include "parser/Clauses.h"
 #include "parser/TraverseSentences.h"
 
@@ -31,6 +33,14 @@ StatusOr<SubPlan> LookupPlanner::transform(AstContext* astCtx) {
   auto from = static_cast<const LookupSentence*>(lookupCtx->sentence)->from();
   const char* kIdColName = "id";
   SubPlan plan;
+  storage::cpp2::IndexQueryContext nativeContext;
+  const bool nativeFulltext =
+      FLAGS_enable_tantivy_pushdown && FTIndexUtils::buildNativeIndexContext(qctx->getMetaClient(),
+                                                                             lookupCtx->space.id,
+                                                                             lookupCtx->schemaId,
+                                                                             lookupCtx->isEdge,
+                                                                             lookupCtx->filter,
+                                                                             &nativeContext);
   if (lookupCtx->isFulltextIndex) {
     auto expr = static_cast<TextSearchExpression*>(lookupCtx->fulltextExpr);
     auto fulltextIndexScan =
@@ -96,7 +106,18 @@ StatusOr<SubPlan> LookupPlanner::transform(AstContext* astCtx) {
           qctx, fulltextIndexScan, plan.root, std::move(hashKeys), std::move(probeKeys));
     }
   } else {
-    if (lookupCtx->isEdge) {
+    if (nativeFulltext) {
+      auto* scan = IndexScan::make(qctx,
+                                   nullptr,
+                                   lookupCtx->space.id,
+                                   {std::move(nativeContext)},
+                                   lookupCtx->idxReturnCols,
+                                   lookupCtx->isEdge,
+                                   lookupCtx->schemaId);
+      scan->setYieldColumns(lookupCtx->yieldExpr);
+      plan.tail = scan;
+      plan.root = scan;
+    } else if (lookupCtx->isEdge) {
       auto* edgeIndexFullScan = EdgeIndexFullScan::make(qctx,
                                                         nullptr,
                                                         from,

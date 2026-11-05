@@ -284,7 +284,21 @@ folly::dynamic toJson(const storage::cpp2::Expr &expr) {
 
 folly::dynamic toJson(const storage::cpp2::IndexQueryContext &iqc) {
   folly::dynamic obj = folly::dynamic::object();
-  obj.insert("index_id", iqc.get_index_id());
+  if (iqc.fulltext_index_name_ref().has_value()) {
+    obj.insert("engine", "tantivy");
+    obj.insert("fulltext_index", *iqc.fulltext_index_name_ref());
+    if (iqc.fulltext_field_ref().has_value()) {
+      obj.insert("fulltext_field", *iqc.fulltext_field_ref());
+    }
+    if (iqc.fulltext_value_ref().has_value()) {
+      obj.insert("fulltext_value", *iqc.fulltext_value_ref());
+    }
+    if (iqc.fulltext_mode_ref().has_value()) {
+      obj.insert("fulltext_mode", *iqc.fulltext_mode_ref());
+    }
+  } else {
+    obj.insert("index_id", iqc.get_index_id());
+  }
   ObjectPool tempPool;
   auto filter =
       iqc.get_filter().empty() ? "" : Expression::decode(&tempPool, iqc.get_filter())->toString();

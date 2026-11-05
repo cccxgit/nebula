@@ -6,7 +6,6 @@
 #include "meta/processors/index/FTIndexProcessor.h"
 
 #include "common/base/CommonMacro.h"
-#include "common/plugin/fulltext/elasticsearch/ESAdapter.h"
 #include "kvstore/LogEncoder.h"
 
 namespace nebula {
@@ -16,6 +15,16 @@ void CreateFTIndexProcessor::process(const cpp2::CreateFTIndexReq& req) {
   folly::SharedMutex::WriteHolder holder(LockUtils::lock());
   const auto& index = req.get_index();
   const std::string& name = req.get_fulltext_index_name();
+  // The name becomes a component of a local index directory on Storage.
+  // Validate at the metadata boundary as well as in the Graph parser.
+  if (name.empty() || name.size() > 256 ||
+      std::any_of(name.begin(), name.end(), [](unsigned char c) {
+        return !((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_');
+      })) {
+    handleErrorCode(nebula::cpp2::ErrorCode::E_INVALID_PARM);
+    onFinished();
+    return;
+  }
   CHECK_SPACE_ID_AND_RETURN(index.get_space_id());
   auto isEdge = index.get_depend_schema().getType() == nebula::cpp2::SchemaID::Type::edge_type;
   auto schemaPrefix = isEdge ? MetaKeyUtils::schemaEdgePrefix(
@@ -38,6 +47,21 @@ void CreateFTIndexProcessor::process(const cpp2::CreateFTIndexReq& req) {
     auto eCode = isEdge ? nebula::cpp2::ErrorCode::E_EDGE_NOT_FOUND
                         : nebula::cpp2::ErrorCode::E_TAG_NOT_FOUND;
     handleErrorCode(eCode);
+    onFinished();
+    return;
+  }
+
+  const auto& analyzer = index.get_analyzer();
+  if (!analyzer.empty() && analyzer != "standard" && analyzer != "keyword" && analyzer != "jieba") {
+    handleErrorCode(nebula::cpp2::ErrorCode::E_INVALID_PARM);
+    onFinished();
+    return;
+  }
+
+  const std::unordered_set<std::string> uniqueFields(index.get_fields().begin(),
+                                                     index.get_fields().end());
+  if (index.get_fields().empty() || uniqueFields.size() != index.get_fields().size()) {
+    handleErrorCode(nebula::cpp2::ErrorCode::E_INVALID_PARM);
     onFinished();
     return;
   }
@@ -104,39 +128,6 @@ void CreateFTIndexProcessor::process(const cpp2::CreateFTIndexReq& req) {
     // }
     it->next();
   }
-  const auto& serviceKey = MetaKeyUtils::serviceKey(cpp2::ExternalServiceType::ELASTICSEARCH);
-  auto getRet = doGet(serviceKey);
-  if (!nebula::ok(getRet)) {
-    auto retCode = nebula::error(getRet);
-    LOG(INFO) << "Create fulltext index failed, error: "
-              << apache::thrift::util::enumNameSafe(retCode);
-    handleErrorCode(retCode);
-    onFinished();
-    return;
-  }
-
-  auto clients = MetaKeyUtils::parseServiceClients(nebula::value(getRet));
-  if (clients.size() <= 0) {
-    handleErrorCode(nebula::cpp2::ErrorCode::E_KEY_NOT_FOUND);
-    onFinished();
-    return;
-  }
-  std::vector<plugin::ESClient> esClients;
-  for (auto& client : clients) {
-    std::string protocol = client.conn_type_ref().has_value() ? *client.get_conn_type() : "http";
-    std::string user = client.user_ref().has_value() ? *client.get_user() : "";
-    std::string password = client.pwd_ref().has_value() ? *client.get_pwd() : "";
-    esClients.emplace_back(
-        HttpClient::instance(), protocol, client.get_host().toRawString(), user, password);
-  }
-  plugin::ESAdapter esAdapter(std::move(esClients));
-  auto createIndexresult = esAdapter.createIndex(name, index.get_fields(), index.get_analyzer());
-  if (!createIndexresult.ok()) {
-    LOG(ERROR) << createIndexresult.message();
-    handleErrorCode(nebula::cpp2::ErrorCode::E_ACCESS_ES_FAILURE);
-    onFinished();
-    return;
-  }
   std::vector<kvstore::KV> data;
   data.emplace_back(MetaKeyUtils::fulltextIndexKey(name), MetaKeyUtils::fulltextIndexVal(index));
   auto timeInMilliSec = time::WallClock::fastNowInMilliSec();
@@ -166,40 +157,11 @@ void DropFTIndexProcessor::process(const cpp2::DropFTIndexReq& req) {
     return;
   }
 
-  const auto& serviceKey = MetaKeyUtils::serviceKey(cpp2::ExternalServiceType::ELASTICSEARCH);
-  auto getRet = doGet(serviceKey);
-  if (!nebula::ok(getRet)) {
-    auto retCode = nebula::error(getRet);
-    LOG(INFO) << "Drop fulltext index failed, error: "
-              << apache::thrift::util::enumNameSafe(retCode);
-    handleErrorCode(retCode);
+  if (MetaKeyUtils::parsefulltextIndex(nebula::value(ret)).get_space_id() != req.get_space_id()) {
+    handleErrorCode(nebula::cpp2::ErrorCode::E_INDEX_NOT_FOUND);
     onFinished();
     return;
   }
-
-  auto clients = MetaKeyUtils::parseServiceClients(nebula::value(getRet));
-  if (clients.size() <= 0) {
-    handleErrorCode(nebula::cpp2::ErrorCode::E_KEY_NOT_FOUND);
-    onFinished();
-    return;
-  }
-  std::vector<plugin::ESClient> esClients;
-  for (auto& client : clients) {
-    std::string protocol = client.conn_type_ref().has_value() ? *client.get_conn_type() : "http";
-    std::string user = client.user_ref().has_value() ? *client.get_user() : "";
-    std::string password = client.pwd_ref().has_value() ? *client.get_pwd() : "";
-    esClients.emplace_back(
-        HttpClient::instance(), protocol, client.get_host().toRawString(), user, password);
-  }
-  plugin::ESAdapter esAdapter(std::move(esClients));
-  auto dropIndexresult = esAdapter.dropIndex(req.get_fulltext_index_name());
-  if (!dropIndexresult.ok()) {
-    LOG(ERROR) << dropIndexresult.message();
-    handleErrorCode(nebula::cpp2::ErrorCode::E_ACCESS_ES_FAILURE);
-    onFinished();
-    return;
-  }
-
   auto batchHolder = std::make_unique<kvstore::BatchHolder>();
   batchHolder->remove(std::move(indexKey));
   auto timeInMilliSec = time::WallClock::fastNowInMilliSec();

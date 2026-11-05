@@ -10,13 +10,11 @@
 #include "common/base/Status.h"
 #include "common/charset/Charset.h"
 #include "common/expression/ConstantExpression.h"
-#include "common/plugin/fulltext/elasticsearch/ESAdapter.h"
 #include "graph/planner/plan/Admin.h"
 #include "graph/planner/plan/Maintain.h"
 #include "graph/planner/plan/Query.h"
 #include "graph/service/GraphFlags.h"
 #include "graph/util/ExpressionUtils.h"
-#include "graph/util/FTIndexUtils.h"
 #include "graph/util/IndexUtil.h"
 #include "graph/util/SchemaUtil.h"
 #include "interface/gen-cpp2/meta_types.h"
@@ -615,14 +613,7 @@ Status CreateFTIndexValidator::validateImpl() {
   if (!ok) {
     return Status::SyntaxError("Fulltext index name can only contain [_0-9a-z].");
   }
-  auto esAdapterRet = FTIndexUtils::getESAdapter(qctx_->getMetaClient());
-  NG_RETURN_IF_ERROR(esAdapterRet);
-  auto esAdapter = std::move(esAdapterRet).value();
-  auto existResult = esAdapter.isIndexExist(name.toString());
-  NG_RETURN_IF_ERROR(existResult);
-  if (existResult.value()) {
-    return Status::Error(fmt::format("text search index exist : {}", name));
-  }
+  // Metadata owns index-name uniqueness; embedded indexes need no external service.
   auto space = vctx_->whichSpace();
   auto status = sentence->isEdge()
                     ? qctx_->schemaMng()->toEdgeType(space.id, *sentence->schemaName())

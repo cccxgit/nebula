@@ -9,6 +9,7 @@
 #include "common/base/StatusOr.h"
 #include "common/plugin/fulltext/elasticsearch/ESAdapter.h"
 #include "graph/util/SchemaUtil.h"
+#include "interface/gen-cpp2/storage_types.h"
 #include "parser/MaintainSentences.h"
 
 namespace nebula {
@@ -19,6 +20,23 @@ class FTIndexUtils final {
   FTIndexUtils() = delete;
   // Checks if the filter expression is full-text search related
   static bool needTextSearch(const Expression* expr);
+
+  // Select an indexed positive string predicate, including one conjunct of an AND.
+  // Never extract a single branch of OR/NOT: that would produce incomplete results.
+  static bool buildNativeIndexContext(meta::MetaClient* client,
+                                      GraphSpaceID spaceId,
+                                      int32_t schemaId,
+                                      bool isEdge,
+                                      const Expression* filter,
+                                      storage::cpp2::IndexQueryContext* context);
+
+  static bool buildNativeIndexContext(
+      const std::unordered_map<std::string, meta::cpp2::FTIndex>& indexes,
+      GraphSpaceID spaceId,
+      int32_t schemaId,
+      bool isEdge,
+      const Expression* filter,
+      storage::cpp2::IndexQueryContext* context);
 
   static StatusOr<::nebula::plugin::ESAdapter> getESAdapter(meta::MetaClient* client);
 

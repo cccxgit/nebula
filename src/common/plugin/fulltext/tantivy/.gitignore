@@ -1,0 +1,4 @@
+/rust/target/
+# The repository ignores *.lock globally; this dependency lock is required by
+# the reproducible Cargo --locked build.
+!/rust/Cargo.lock

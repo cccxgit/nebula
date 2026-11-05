@@ -26,6 +26,7 @@ nebula_add_test(
     NAME utils_test
     SOURCES
         ExpressionUtilsTest.cpp
+        FTIndexUtilsTest.cpp
         IdGeneratorTest.cpp
     OBJECTS
         $<TARGET_OBJECTS:base_obj>

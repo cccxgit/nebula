@@ -11,6 +11,11 @@ macro(nebula_add_executable)
         ${nebula_exec_SOURCES}
         ${nebula_exec_OBJECTS}
     )
+    # TARGET_OBJECTS does not propagate library dependencies. Storage handlers
+    # are reused by daemons, offline tools and tests; all need the same backend.
+    if("${nebula_exec_OBJECTS}" MATCHES "TARGET_OBJECTS:(storage_server|graph_storage_service_handler|storage_admin_service_handler)")
+        list(INSERT nebula_exec_LIBRARIES 0 tantivy_manager)
+    endif()
     nebula_link_libraries(
         ${nebula_exec_NAME}
         ${nebula_exec_LIBRARIES}

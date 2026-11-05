@@ -42,7 +42,7 @@ bool IndexScanRule::match(OptContext* ctx, const MatchedResult& matched) const {
   }
   // Has been optimized, skip this rule
   for (auto& ictx : scan->queryContext()) {
-    if (ictx.index_id_ref().is_set()) {
+    if (ictx.index_id_ref().is_set() || ictx.fulltext_index_name_ref().has_value()) {
       return false;
     }
   }

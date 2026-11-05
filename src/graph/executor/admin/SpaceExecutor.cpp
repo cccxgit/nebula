@@ -8,7 +8,6 @@
 #include "graph/planner/plan/Admin.h"
 #include "graph/service/PermissionManager.h"
 #include "graph/stats/GraphStats.h"
-#include "graph/util/FTIndexUtils.h"
 #include "graph/util/SchemaUtil.h"
 
 namespace nebula {
@@ -103,24 +102,12 @@ folly::Future<Status> DropSpaceExecutor::execute() {
 
   auto *dsNode = asNode<DropSpace>(node());
 
-  // prepare text search index before drop meta data.
-  std::vector<std::string> ftIndexes;
-  auto spaceIdRet = qctx()->getMetaClient()->getSpaceIdByNameFromCache(dsNode->getSpaceName());
-  if (spaceIdRet.ok()) {
-    auto ftIndexesRet = qctx()->getMetaClient()->getFTIndexBySpaceFromCache(spaceIdRet.value());
-    NG_RETURN_IF_ERROR(ftIndexesRet);
-    auto map = std::move(ftIndexesRet).value();
-    auto get = [](const auto &ptr) { return ptr.first; };
-    std::transform(map.begin(), map.end(), std::back_inserter(ftIndexes), get);
-  } else {
-    LOG(WARNING) << "Get space ID failed when prepare text index: " << dsNode->getSpaceName();
-  }
-
+  // Partition lifecycle cleanup removes each storage process's embedded indexes.
   return qctx()
       ->getMetaClient()
       ->dropSpace(dsNode->getSpaceName(), dsNode->getIfExists())
       .via(runner())
-      .thenValue([this, dsNode, spaceIdRet, ftIndexes](StatusOr<bool> resp) {
+      .thenValue([this, dsNode](StatusOr<bool> resp) {
         if (!resp.ok()) {
           LOG(WARNING) << "Drop space `" << dsNode->getSpaceName() << "' failed: " << resp.status();
           return resp.status();
@@ -131,20 +118,6 @@ folly::Future<Status> DropSpaceExecutor::execute() {
           spaceInfo.name = "";
           spaceInfo.id = -1;
           qctx()->rctx()->session()->setSpace(std::move(spaceInfo));
-        }
-        if (!ftIndexes.empty()) {
-          auto esAdapterRet = FTIndexUtils::getESAdapter(qctx()->getMetaClient());
-          if (!esAdapterRet.ok()) {
-            LOG(WARNING) << "Get text search clients failed: " << esAdapterRet.status();
-            return Status::OK();
-          }
-          auto esAdapter = std::move(esAdapterRet).value();
-          for (const auto &ftindex : ftIndexes) {
-            auto ftRet = esAdapter.dropIndex(ftindex);
-            if (!ftRet.ok()) {
-              LOG(ERROR) << "Drop fulltext index `" << ftindex << "' failed: " << ftRet;
-            }
-          }
         }
         return Status::OK();
       });
@@ -165,42 +138,16 @@ folly::Future<Status> ClearSpaceExecutor::execute() {
 
   auto *csNode = asNode<ClearSpace>(node());
 
-  // prepare text search index.
-  std::vector<std::string> ftIndexes;
-  auto spaceIdRet = qctx()->getMetaClient()->getSpaceIdByNameFromCache(csNode->getSpaceName());
-  if (spaceIdRet.ok()) {
-    auto ftIndexesRet = qctx()->getMetaClient()->getFTIndexBySpaceFromCache(spaceIdRet.value());
-    NG_RETURN_IF_ERROR(ftIndexesRet);
-    auto map = std::move(ftIndexesRet).value();
-    auto get = [](const auto &ptr) { return ptr.first; };
-    std::transform(map.begin(), map.end(), std::back_inserter(ftIndexes), get);
-  } else {
-    LOG(WARNING) << "Get space ID failed when prepare text index: " << csNode->getSpaceName();
-  }
-
+  // Storage clears graph data and its embedded full-text index together.
   return qctx()
       ->getMetaClient()
       ->clearSpace(csNode->getSpaceName(), csNode->getIfExists())
       .via(runner())
-      .thenValue([this, csNode, spaceIdRet, ftIndexes = std::move(ftIndexes)](StatusOr<bool> resp) {
+      .thenValue([csNode](StatusOr<bool> resp) {
         if (!resp.ok()) {
           LOG(WARNING) << "Clear space `" << csNode->getSpaceName()
                        << "' failed: " << resp.status();
           return resp.status();
-        }
-        if (!ftIndexes.empty()) {
-          auto esAdapterRet = FTIndexUtils::getESAdapter(qctx()->getMetaClient());
-          if (!esAdapterRet.ok()) {
-            LOG(WARNING) << "Get text search clients failed";
-            return Status::OK();
-          }
-          auto esAdapter = std::move(esAdapterRet).value();
-          for (const auto &ftindex : ftIndexes) {
-            auto ftRet = esAdapter.clearIndex(ftindex);
-            if (!ftRet.ok()) {
-              LOG(WARNING) << "Clear fulltext index `" << ftindex << "' failed: " << ftRet;
-            }
-          }
         }
         return Status::OK();
       });

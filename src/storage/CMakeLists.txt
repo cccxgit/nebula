@@ -48,6 +48,7 @@ nebula_add_library(
     query/ScanVertexProcessor.cpp
     query/ScanEdgeProcessor.cpp
     index/LookupProcessor.cpp
+    exec/IndexTantivyScanNode.cpp
     exec/IndexNode.cpp
     exec/IndexDedupNode.cpp
     exec/IndexEdgeScanNode.cpp
@@ -100,6 +101,9 @@ nebula_add_library(
     storage_server OBJECT
     StorageServer.cpp
 )
+
+add_library(tantivy_manager STATIC fulltext/TantivyManager.cpp)
+target_link_libraries(tantivy_manager PUBLIC tantivy_adapter)
 
 
 nebula_add_library(

@@ -1,0 +1,4 @@
+{"name":"contains_water","query":"LOOKUP ON passage WHERE passage.text CONTAINS \"water\" YIELD id(vertex) AS vid, passage.text AS text | LIMIT 10;"}
+{"name":"contains_new_york","query":"LOOKUP ON passage WHERE passage.text CONTAINS \"New York\" YIELD id(vertex) AS vid, passage.text AS text | LIMIT 10;"}
+{"name":"starts_with_the","query":"LOOKUP ON passage WHERE passage.text STARTS WITH \"The\" YIELD id(vertex) AS vid, passage.text AS text | LIMIT 10;"}
+{"name":"ends_with_period","query":"LOOKUP ON passage WHERE passage.text ENDS WITH \".\" YIELD id(vertex) AS vid, passage.text AS text | LIMIT 10;"}

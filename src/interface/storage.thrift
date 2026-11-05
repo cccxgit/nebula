@@ -547,6 +547,13 @@ struct IndexQueryContext {
     //    to be empty, At least one index column must be hit.
     // When the field size of index_id IndexItem is zero, the columns_hints must be empty.
     3: list<IndexColumnHint>    column_hints,
+    // Embedded full-text scan. No secondary index_id is needed for this context.
+    // filter retains the original predicate for exact evaluation against graph data.
+    4: optional string         fulltext_index_name,
+    5: optional string         fulltext_field,
+    6: optional string         fulltext_value,
+    // 0: query string, 1: contains, 2: starts with, 3: ends with.
+    7: optional i32            fulltext_mode,
 }
 
 

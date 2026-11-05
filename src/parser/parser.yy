@@ -2076,7 +2076,11 @@ text_search_argument
     ;
 
 text_search_expression
-    : KW_ES_QUERY L_PAREN text_search_argument R_PAREN {
+    : KW_TEXT_SEARCH L_PAREN text_search_argument R_PAREN {
+        $$ = TextSearchExpression::makeQuery(qctx->objPool(), $3);
+    }
+    | KW_ES_QUERY L_PAREN text_search_argument R_PAREN {
+        // Compatibility spelling; execution uses the embedded Tantivy backend.
         $$ = TextSearchExpression::makeQuery(qctx->objPool(), $3);
     }
     ;

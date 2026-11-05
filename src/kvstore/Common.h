@@ -23,6 +23,18 @@ DECLARE_int64(balance_expired_sesc);
 namespace nebula {
 namespace kvstore {
 
+// A committed mutation observed by an embedded secondary index. Observers must
+// not alter the RocksDB/Raft result; on restart secondary indexes are rebuilt.
+struct CommittedMutation {
+  enum class Type { PUT, REMOVE, REMOVE_RANGE };
+  Type type;
+  std::string key;
+  std::string value;
+};
+using CommitObserver = std::function<void(GraphSpaceID,
+                                         PartitionID,
+                                         std::vector<CommittedMutation>&&)>;
+
 /**
  * @brief Wrapper of rocksdb compaction filter function
  */

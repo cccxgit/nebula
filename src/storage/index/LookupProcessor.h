@@ -41,7 +41,7 @@ class LookupProcessor : public BaseProcessor<cpp2::LookupIndexResp> {
   ErrorOr<nebula::cpp2::ErrorCode, std::unique_ptr<IndexNode>> buildPlan(
       const cpp2::LookupIndexRequest& req);
   ErrorOr<nebula::cpp2::ErrorCode, std::unique_ptr<IndexNode>> buildOneContext(
-      const cpp2::IndexQueryContext& ctx);
+      const cpp2::IndexQueryContext& ctx, size_t fulltextLimit = 0);
   std::vector<std::unique_ptr<IndexNode>> reproducePlan(IndexNode* root, size_t count);
   ErrorOr<nebula::cpp2::ErrorCode, std::vector<std::pair<std::string, cpp2::StatType>>>
   handleStatProps(const std::vector<cpp2::StatProp>& statProps);

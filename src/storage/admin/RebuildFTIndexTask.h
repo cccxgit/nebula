@@ -29,9 +29,6 @@ class RebuildFTIndexTask : public AdminTask {
    * @return ErrorOr<nebula::cpp2::ErrorCode, std::vector<AdminSubTask>>
    */
   ErrorOr<nebula::cpp2::ErrorCode, std::vector<AdminSubTask>> genSubTasks() override;
-
- protected:
-  nebula::cpp2::ErrorCode taskByPart(nebula::kvstore::Listener* listener);
 };
 
 }  // namespace storage

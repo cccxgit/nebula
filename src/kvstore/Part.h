@@ -66,6 +66,11 @@ class Part : public raftex::RaftPart {
     return engine_;
   }
 
+  // Installed before Raft starts; invoked after the primary batch commits.
+  void setCommitObserver(CommitObserver observer) {
+    commitObserver_ = std::move(observer);
+  }
+
   /**
    * @brief Write single key/values to kvstore asynchronously
    *
@@ -207,6 +212,7 @@ class Part : public raftex::RaftPart {
   }
 
  private:
+  CommitObserver commitObserver_;
   /**
    * Methods inherited from RaftPart
    */

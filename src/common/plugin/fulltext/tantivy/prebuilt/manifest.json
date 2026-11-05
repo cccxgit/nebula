@@ -1,0 +1,17 @@
+{
+  "bundle": "libnebula_tantivy-linux-x86_64-glibc2.35.a.gz",
+  "bundle_sha256": "a003c4957cc2107ad2d8649d1daf3c6004fdccdfe38dc8539341e7c7f6c22894",
+  "archive_sha256": "e58256ae876dfbfc6c613832c4a65ba152906536b3a24898e8c0143f930eb13f",
+  "archive_bytes": 160481408,
+  "source_sha256": {
+    "Cargo.toml": "15cab6d94966b53cb139025cf86a4fe26467c867fd2c4282b350e63223f314b8",
+    "Cargo.lock": "b65c77300008ba5c36827b5bc70c3e2afecc2261c949fb21d946855243c6a871",
+    "src/lib.rs": "840036248a6be50fc007f5877aca9d0daa043e200fbd103003b89de271382ab4",
+    "src/query_compat.rs": "7ecbcacd333c69527d8b7473a970740cb6aa3541e6abdb4f852428198862dc3b",
+    "vendor/include-flate/Cargo.toml": "b0c3a6569650dce6054ef62189b20464b39845c5e431eb975ca7d5c121c1a781",
+    "vendor/include-flate/src/lib.rs": "007b3ea2f5607c18350955e9ebc27554f9751589cc78a6e4656179521019f668"
+  },
+  "platform": "Linux x86_64",
+  "minimum_glibc": "2.35",
+  "build": "Ubuntu 22.04, GNU C++ 11.4, Rust release, RUSTFLAGS=-C relocation-model=pic, Tantivy 0.25.0"
+}

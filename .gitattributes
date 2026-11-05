@@ -1,0 +1,6 @@
+# Measurements and service output are immutable evidence; preserve CRLF and spaces.
+task-logs/** -text -whitespace
+
+# Binary deliverables.
+src/common/plugin/fulltext/tantivy/prebuilt/*.gz binary
+docs/tantivy/*.pptx binary

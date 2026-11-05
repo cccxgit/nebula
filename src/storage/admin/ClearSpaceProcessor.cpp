@@ -7,6 +7,7 @@
 
 #include "kvstore/NebulaStore.h"
 #include "storage/StorageFlags.h"
+#include "storage/fulltext/TantivyManager.h"
 
 namespace nebula {
 namespace storage {
@@ -19,7 +20,11 @@ void ClearSpaceProcessor::process(const cpp2::ClearSpaceReq& req) {
     return;
   }
   auto* store = static_cast<kvstore::NebulaStore*>(env_->kvstore_);
-  this->resp_.code_ref() = store->clearSpace(spaceId);
+  auto code = store->clearSpace(spaceId);
+  if (code == nebula::cpp2::ErrorCode::SUCCEEDED && env_->tantivy_) {
+    code = env_->tantivy_->rebuild(spaceId);
+  }
+  this->resp_.code_ref() = code;
   onFinished();
 }
 

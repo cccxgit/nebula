@@ -56,6 +56,8 @@ DEFINE_bool(storage_kv_mode, false, "True for kv mode");
 DEFINE_int32(num_io_threads, 16, "Number of IO threads");
 DEFINE_int32(storage_http_thread_num, 3, "Number of storage daemon's http thread");
 
+DECLARE_bool(enable_tantivy);
+
 namespace nebula {
 namespace storage {
 
@@ -104,6 +106,12 @@ std::unique_ptr<kvstore::KVStore> StorageServer::getStoreInstance() {
         std::make_unique<StorageCompactionFilterFactoryBuilder>(schemaMan_.get(), indexMan_.get());
   }
   options.schemaMan_ = schemaMan_.get();
+  if (tantivy_) {
+    options.commitObserver_ = [this](GraphSpaceID space, PartitionID part,
+                                    std::vector<kvstore::CommittedMutation>&& mutations) {
+      tantivy_->enqueue(space, part, std::move(mutations));
+    };
+  }
   if (FLAGS_store_type == "nebula") {
     auto nbStore = std::make_unique<kvstore::NebulaStore>(
         std::move(options), ioThreadPool_, localHost_, workers_);
@@ -253,6 +261,10 @@ bool StorageServer::start() {
   LOG(INFO) << "Init index manager";
   indexMan_ = meta::ServerBasedIndexManager::create(metaClient_.get());
 
+  if (FLAGS_enable_tantivy && listenerPath_.empty()) {
+    tantivy_ = std::make_unique<TantivyManager>(metaClient_.get(), schemaMan_.get(),
+                                             dataPaths_.front() + "/tantivy");
+  }
   LOG(INFO) << "Init kvstore";
   kvstore_ = getStoreInstance();
 
@@ -275,6 +287,8 @@ bool StorageServer::start() {
   env_->schemaMan_ = schemaMan_.get();
   env_->rebuildIndexGuard_ = std::make_unique<IndexGuard>();
   env_->metaClient_ = metaClient_.get();
+  env_->tantivy_ = tantivy_.get();
+  if (tantivy_) tantivy_->start(kvstore_.get());
 
   env_->verticesML_ = std::make_unique<VerticesMemLock>();
   env_->edgesML_ = std::make_unique<EdgesMemLock>();
@@ -334,6 +348,9 @@ void StorageServer::notifyStop() {
 void StorageServer::stop() {
   // Stop http service
   webSvc_.reset();
+
+  // Wake blocked index producers before stopping the Raft apply threads.
+  if (tantivy_) tantivy_->stop();
 
   // Stop all thrift server: raft/storage/admin
   if (kvstore_) {

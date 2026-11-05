@@ -67,9 +67,12 @@ class InternalStorageClient;
 using SchemaID = TagID;
 static_assert(sizeof(SchemaID) == sizeof(EdgeType), "sizeof(TagID) != sizeof(EdgeType)");
 
+class TantivyManager;
+
 class StorageEnv {
  public:
   kvstore::KVStore* kvstore_{nullptr};
+  TantivyManager* tantivy_{nullptr};
   meta::SchemaManager* schemaMan_{nullptr};
   meta::IndexManager* indexMan_{nullptr};
   std::atomic<int32_t> onFlyingRequest_{0};

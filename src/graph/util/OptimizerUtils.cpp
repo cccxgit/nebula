@@ -8,7 +8,9 @@
 #include "common/base/Status.h"
 #include "common/datatypes/Value.h"
 #include "graph/planner/plan/Query.h"
+#include "graph/service/GraphFlags.h"
 #include "graph/util/ExpressionUtils.h"
+#include "graph/util/FTIndexUtils.h"
 #include "graph/util/IndexUtil.h"
 
 using nebula::graph::ExpressionUtils;
@@ -925,6 +927,16 @@ Status OptimizerUtils::createIndexQueryCtx(Expression* filter,
   // rewrite ParameterExpression to ConstantExpression
   // TODO: refactor index selector logic to avoid this rewriting
   auto* newFilter = ExpressionUtils::rewriteParameter(filter, qctx);
+  IndexQueryContext fulltextContext;
+  if (FLAGS_enable_tantivy_pushdown && FTIndexUtils::buildNativeIndexContext(qctx->getMetaClient(),
+                                                                             node->space(),
+                                                                             node->schemaId(),
+                                                                             node->isEdge(),
+                                                                             newFilter,
+                                                                             &fulltextContext)) {
+    iqctx.emplace_back(std::move(fulltextContext));
+    return Status::OK();
+  }
   NG_RETURN_IF_ERROR(analyzeExpression(newFilter, &items, &kind, node->isEdge(), qctx));
   auto status = createIndexQueryCtx(iqctx, kind, items, qctx, node);
   if (!status.ok()) {

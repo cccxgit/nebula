@@ -1,0 +1,4 @@
+{"name": "contains_water", "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"water\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;"}
+{"name": "contains_new_york", "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"New York\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;"}
+{"name": "starts_with_the_united", "query": "MATCH (v:passage) WHERE v.passage.text STARTS WITH \"The United\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;"}
+{"name": "ends_with_water", "query": "MATCH (v:passage) WHERE v.passage.text ENDS WITH \"water.\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;"}

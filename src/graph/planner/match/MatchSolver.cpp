@@ -11,7 +11,9 @@
 #include "graph/context/ast/CypherAstContext.h"
 #include "graph/planner/Planner.h"
 #include "graph/planner/plan/Query.h"
+#include "graph/service/GraphFlags.h"
 #include "graph/util/ExpressionUtils.h"
+#include "graph/util/FTIndexUtils.h"
 #include "graph/util/SchemaUtil.h"
 #include "graph/visitor/RewriteVisitor.h"
 
@@ -134,6 +136,9 @@ Expression* MatchSolver::makeIndexFilter(const std::string& label,
       Expression::Kind::kRelLE,
       Expression::Kind::kRelGT,
       Expression::Kind::kRelGE,
+      Expression::Kind::kContains,
+      Expression::Kind::kStartsWith,
+      Expression::Kind::kEndsWith,
   };
 
   std::vector<const Expression*> ands;
@@ -202,11 +207,33 @@ Expression* MatchSolver::makeIndexFilter(const std::string& label,
         isEdgeProperties
             ? static_cast<Expression*>(EdgePropertyExpression::make(pool, label, propName))
             : static_cast<Expression*>(TagPropertyExpression::make(pool, label, propName));
+    const bool stringPredicate = item->kind() == Expression::Kind::kContains ||
+                                 item->kind() == Expression::Kind::kStartsWith ||
+                                 item->kind() == Expression::Kind::kEndsWith;
     auto* newConstant = constant->clone();
     if (right->kind() == Expression::Kind::kConstant) {
       auto* rel = RelationalExpression::makeKind(pool, item->kind(), tpExpr, newConstant);
+      if (stringPredicate) {
+        if (!FLAGS_enable_tantivy_pushdown) {
+          continue;
+        }
+        const auto spaceId = qctx->vctx()->whichSpace().id;
+        auto schema = isEdgeProperties ? qctx->schemaMng()->toEdgeType(spaceId, label)
+                                       : qctx->schemaMng()->toTagID(spaceId, label);
+        storage::cpp2::IndexQueryContext nativeContext;
+        if (!schema.ok() || !FTIndexUtils::buildNativeIndexContext(qctx->getMetaClient(),
+                                                                   spaceId,
+                                                                   schema.value(),
+                                                                   isEdgeProperties,
+                                                                   rel,
+                                                                   &nativeContext)) {
+          // Keep the existing MATCH fallback when this property has no native index.
+          continue;
+        }
+      }
       relationals.emplace_back(rel);
-    } else {
+    } else if (!stringPredicate) {
+      // String predicates are directional; swapping their operands changes semantics.
       auto* rel = RelationalExpression::makeKind(pool, item->kind(), newConstant, tpExpr);
       relationals.emplace_back(rel);
     }

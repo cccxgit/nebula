@@ -2945,6 +2945,17 @@ TEST_F(ParserTest, FullText) {
   }
 }
 
+TEST_F(ParserTest, NativeTextSearch) {
+  for (const auto& search : {"TEXT_SEARCH", "text_search", "ES_QUERY"}) {
+    std::string query = std::string("LOOKUP ON article WHERE ") + search +
+                        "(article_text, \"body:graph AND body:database\") "
+                        "YIELD id(vertex) AS id, score() AS relevance";
+    auto result = parse(query);
+    ASSERT_TRUE(result.ok()) << result.status();
+    EXPECT_NE(std::string::npos, result.value()->toString().find("TEXT_SEARCH("));
+  }
+}
+
 TEST_F(ParserTest, FullTextServiceTest) {
   {
     std::string query = "ADD LISTENER ELASTICSEARCH 127.0.0.1:12000";

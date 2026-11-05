@@ -220,6 +220,13 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
     stats::StatsManager::addValue(kCommitLogLatencyUs, elapsedTime);
   });
   auto batch = engine_->startBatchWrite();
+  std::vector<CommittedMutation> mutations;
+  auto observe =
+      [&](CommittedMutation::Type type, folly::StringPiece key, folly::StringPiece value = {}) {
+        if (commitObserver_) {
+          mutations.push_back({type, key.str(), value.str()});
+        }
+      };
   LogID lastId = kNoCommitLogId;
   TermID lastTerm = kNoCommitLogTerm;
   while (iter->valid()) {
@@ -238,6 +245,7 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
         auto pieces = decodeMultiValues(log);
         DCHECK_EQ(2, pieces.size());
         auto code = batch->put(pieces[0], pieces[1]);
+        observe(CommittedMutation::Type::PUT, pieces[0], pieces[1]);
         if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
           VLOG(3) << idStr_ << "Failed to call WriteBatch::put()";
           return {code, kNoCommitLogId, kNoCommitLogTerm};
@@ -252,6 +260,7 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
           VLOG(4) << "OP_MULTI_PUT " << folly::hexlify(kvs[i])
                   << ", val = " << folly::hexlify(kvs[i + 1]);
           auto code = batch->put(kvs[i], kvs[i + 1]);
+          observe(CommittedMutation::Type::PUT, kvs[i], kvs[i + 1]);
           if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
             VLOG(3) << idStr_ << "Failed to call WriteBatch::put()";
             return {code, kNoCommitLogId, kNoCommitLogTerm};
@@ -262,6 +271,7 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
       case OP_REMOVE: {
         auto key = decodeSingleValue(log);
         auto code = batch->remove(key);
+        observe(CommittedMutation::Type::REMOVE, key);
         if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
           VLOG(3) << idStr_ << "Failed to call WriteBatch::remove()";
           return {code, kNoCommitLogId, kNoCommitLogTerm};
@@ -272,6 +282,7 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
         auto keys = decodeMultiValues(log);
         for (auto k : keys) {
           auto code = batch->remove(k);
+          observe(CommittedMutation::Type::REMOVE, k);
           if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
             VLOG(3) << idStr_ << "Failed to call WriteBatch::remove()";
             return {code, kNoCommitLogId, kNoCommitLogTerm};
@@ -283,6 +294,7 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
         auto range = decodeMultiValues(log);
         DCHECK_EQ(2, range.size());
         auto code = batch->removeRange(range[0], range[1]);
+        observe(CommittedMutation::Type::REMOVE_RANGE, range[0], range[1]);
         if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
           VLOG(3) << idStr_ << "Failed to call WriteBatch::removeRange()";
           return {code, kNoCommitLogId, kNoCommitLogTerm};
@@ -297,10 +309,13 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
           auto code = nebula::cpp2::ErrorCode::SUCCEEDED;
           if (op.first == BatchLogType::OP_BATCH_PUT) {
             code = batch->put(op.second.first, op.second.second);
+            observe(CommittedMutation::Type::PUT, op.second.first, op.second.second);
           } else if (op.first == BatchLogType::OP_BATCH_REMOVE) {
             code = batch->remove(op.second.first);
+            observe(CommittedMutation::Type::REMOVE, op.second.first);
           } else if (op.first == BatchLogType::OP_BATCH_REMOVE_RANGE) {
             code = batch->removeRange(op.second.first, op.second.second);
+            observe(CommittedMutation::Type::REMOVE_RANGE, op.second.first, op.second.second);
           }
           if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
             VLOG(3) << idStr_ << "Failed to call WriteBatch";
@@ -357,6 +372,9 @@ std::tuple<nebula::cpp2::ErrorCode, LogID, TermID> Part::commitLogs(
   auto code = engine_->commitBatchWrite(
       std::move(batch), FLAGS_rocksdb_disable_wal, FLAGS_rocksdb_wal_sync, wait);
   if (code == nebula::cpp2::ErrorCode::SUCCEEDED) {
+    if (commitObserver_ && !mutations.empty()) {
+      commitObserver_(spaceId_, partId_, std::move(mutations));
+    }
     return {code, lastId, lastTerm};
   } else {
     return {code, kNoCommitLogId, kNoCommitLogTerm};
@@ -396,6 +414,15 @@ std::tuple<nebula::cpp2::ErrorCode, int64_t, int64_t> Part::commitSnapshot(
       std::move(batch), FLAGS_rocksdb_disable_wal, FLAGS_rocksdb_wal_sync, true);
   if (code != nebula::cpp2::ErrorCode::SUCCEEDED) {
     return {code, kNoSnapshotCount, kNoSnapshotSize};
+  }
+  if (commitObserver_) {
+    std::vector<CommittedMutation> mutations;
+    mutations.reserve(rows.size());
+    for (const auto& row : rows) {
+      auto kv = decodeKV(row);
+      mutations.push_back({CommittedMutation::Type::PUT, kv.first.str(), kv.second.str()});
+    }
+    commitObserver_(spaceId_, partId_, std::move(mutations));
   }
   return {code, count, size};
 }
@@ -557,8 +584,17 @@ nebula::cpp2::ErrorCode Part::cleanup() {
             << apache::thrift::util::enumNameSafe(ret);
     return ret;
   }
-  return engine_->commitBatchWrite(
+  auto code = engine_->commitBatchWrite(
       std::move(batch), FLAGS_rocksdb_disable_wal, FLAGS_rocksdb_wal_sync, true);
+  if (code == nebula::cpp2::ErrorCode::SUCCEEDED && commitObserver_) {
+    // Snapshot reset and CLEAR SPACE bypass ordinary Raft mutation logs.
+    std::vector<CommittedMutation> mutations;
+    mutations.push_back({CommittedMutation::Type::REMOVE_RANGE,
+                         NebulaKeyUtils::firstKey(tagPre, vIdLen_),
+                         NebulaKeyUtils::lastKey(tagPre, vIdLen_)});
+    commitObserver_(spaceId_, partId_, std::move(mutations));
+  }
+  return code;
 }
 
 nebula::cpp2::ErrorCode Part::metaCleanup() {

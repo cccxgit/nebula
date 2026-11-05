@@ -163,15 +163,15 @@ Status LookupValidator::validateWhere() {
     auto arg = tsExpr->arg();
     std::string& index = arg->index();
     auto metaClient = qctx_->getMetaClient();
-    meta::cpp2::FTIndex ftIndex;
-    auto result = metaClient->getFTIndexFromCache(spaceId(), schemaId());
+    auto result = metaClient->getFTIndexByNameFromCache(spaceId(), index);
     NG_RETURN_IF_ERROR(result);
-    auto indexes = std::move(result).value();
-    auto iter = indexes.find(index);
-    if (iter == indexes.end()) {
-      return Status::Error("Index %s is not found", index.c_str());
+    const auto& schema = result.value().get_depend_schema();
+    const bool indexIsEdge = schema.getType() == nebula::cpp2::SchemaID::Type::edge_type;
+    if (indexIsEdge != lookupCtx_->isEdge ||
+        (indexIsEdge ? schema.get_edge_type() : schema.get_tag_id()) != schemaId()) {
+      return Status::SemanticError("TEXT_SEARCH index %s belongs to a different schema",
+                                   index.c_str());
     }
-    ftIndex = iter->second;
   } else {
     if (filter != nullptr) {
       auto vars = graph::ExpressionUtils::ExtractInnerVars(filter, qctx_);
@@ -190,6 +190,20 @@ Status LookupValidator::validateWhere() {
     auto ret = checkFilter(filter);
     NG_RETURN_IF_ERROR(ret);
     lookupCtx_->filter = std::move(ret).value();
+    if (!ExpressionUtils::collectAll(lookupCtx_->filter, {ExprKind::kContains, ExprKind::kEndsWith})
+             .empty()) {
+      storage::cpp2::IndexQueryContext nativeContext;
+      if (!FTIndexUtils::buildNativeIndexContext(qctx_->getMetaClient(),
+                                                 spaceId(),
+                                                 schemaId(),
+                                                 lookupCtx_->isEdge,
+                                                 lookupCtx_->filter,
+                                                 &nativeContext)) {
+        return Status::SemanticError(
+            "LOOKUP substring predicates require a matching full-text index and a positive "
+            "predicate, optionally joined with AND");
+      }
+    }
     // Make sure the type of the rewritten filter expr is right
     NG_RETURN_IF_ERROR(deduceExprType(lookupCtx_->filter));
     if (lookupCtx_->isEdge) {
@@ -223,9 +237,8 @@ StatusOr<Expression*> LookupValidator::checkFilter(Expression* expr) {
     NG_RETURN_IF_ERROR(checkGeoPredicate(expr));
     return rewriteGeoPredicate(expr);
   } else if (expr->isRelExpr()) {
-    // Only starts with can be pushed down as a range scan, so forbid other string-related relExpr
-    if (expr->kind() == ExprKind::kRelREG || expr->kind() == ExprKind::kContains ||
-        expr->kind() == ExprKind::kNotContains || expr->kind() == ExprKind::kEndsWith ||
+    // Positive substring/suffix predicates can use an embedded full-text index.
+    if (expr->kind() == ExprKind::kRelREG || expr->kind() == ExprKind::kNotContains ||
         expr->kind() == ExprKind::kNotStartsWith || expr->kind() == ExprKind::kNotEndsWith) {
       return Status::SemanticError(
           "Expression %s is not supported, please use full-text index as an optimal solution",
@@ -233,6 +246,12 @@ StatusOr<Expression*> LookupValidator::checkFilter(Expression* expr) {
     }
 
     auto relExpr = static_cast<RelationalExpression*>(expr);
+    if ((expr->kind() == ExprKind::kContains || expr->kind() == ExprKind::kEndsWith ||
+         expr->kind() == ExprKind::kStartsWith) &&
+        relExpr->left()->kind() != ExprKind::kLabelAttribute) {
+      return Status::SemanticError("String index predicates require a property on the left: %s",
+                                   expr->toString().c_str());
+    }
     NG_RETURN_IF_ERROR(checkRelExpr(relExpr));
     return rewriteRelExpr(relExpr);
   }
@@ -586,6 +605,9 @@ Status LookupValidator::validateYieldColumn(YieldColumn* col, bool isEdge) {
     case Expression::Kind::kFunctionCall: {
       auto funcExpr = static_cast<FunctionCallExpression*>(col->expr());
       if (funcExpr->name() == kScore) {
+        if (!lookupCtx_->isFulltextIndex || funcExpr->args()->numArgs() != 0) {
+          return Status::SemanticError("score() requires TEXT_SEARCH and takes no arguments");
+        }
         if (col->alias().empty()) {
           return Status::SemanticError("Yield column should have an alias for score()");
         }

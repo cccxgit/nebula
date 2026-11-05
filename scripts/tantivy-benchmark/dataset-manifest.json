@@ -1,0 +1,55 @@
+{
+  "checked_at": "2026-11-04",
+  "selected_dataset": "msmarco-passage-v2",
+  "status": "download_in_progress_not_imported",
+  "official_record_count": 138364198,
+  "record_count_source": "https://microsoft.github.io/msmarco/TREC-Deep-Learning#passage-ranking-dataset",
+  "download_url": "https://msmarco.z22.web.core.windows.net/msmarcoranking/msmarco_v2_passage.tar",
+  "verified_content_length_bytes": 21768192000,
+  "verified_etag": "\"0x8DBE16684099D62\"",
+  "archive_format": "tar of 70 gzip-compressed JSONL files",
+  "record_id_field": "pid",
+  "record_text_field": "passage",
+  "language": "English, with incidental other-language content possible",
+  "license": "MS MARCO dataset Terms and Conditions: non-commercial research only; not a general commercial-use open-data license",
+  "license_source": "https://microsoft.github.io/msmarco/TREC-Deep-Learning#terms-and-conditions",
+  "local_archive": "/home/sch/nebula-data/tantivy/msmarco_v2_passage.tar",
+  "local_download_metadata": "/home/sch/nebula-data/tantivy/msmarco_v2_passage.tar.download.json",
+  "projection": {
+    "id": "Original pid retained as FIXED_STRING(64)",
+    "text": "Full passage by default; optional first 128 or 256 Unicode characters, explicitly marked as truncated",
+    "synthetic_or_repeated_records_added": 0
+  },
+  "validation_requirements": [
+    "Download completion is determined by state=complete and SHA256 in local download metadata, not sparse file apparent size",
+    "Corpus size is an official source fact, not proof of imported or queried row count",
+    "Each imported subset must carry its own preparation manifest and acknowledged-write report",
+    "1 million projected records must be measured for disk growth before deciding whether 100 million records fit",
+    "No ES comparison result may be reported before an ES baseline actually runs"
+  ],
+  "alternatives": [
+    {
+      "name": "Amazon Reviews 2023",
+      "official_approx_record_count": 571540000,
+      "source": "https://amazon-reviews-2023.github.io/",
+      "subset": "Clothing_Shoes_and_Jewelry (~66.0m) + Home_and_Kitchen (~67.4m)",
+      "subset_approx_record_count": 133400000,
+      "download_urls": [
+        "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Clothing_Shoes_and_Jewelry.jsonl.gz",
+        "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Home_and_Kitchen.jsonl.gz"
+      ],
+      "clothing_verified_compressed_bytes": 7109695439,
+      "license": "Publisher code repository is MIT; raw review corpus license scope is not confirmed. Do not equate code license with raw content license.",
+      "downloaded": false
+    },
+    {
+      "name": "AllenAI C4 English",
+      "source": "https://huggingface.co/datasets/allenai/c4",
+      "train_record_count": 364868892,
+      "english_download_bytes": 326778635540,
+      "license": "ODC-BY and Common Crawl content terms",
+      "suitability": "Full compressed English corpus exceeds the initial 267 GiB free space; not selected for next-day demo",
+      "downloaded": false
+    }
+  ]
+}

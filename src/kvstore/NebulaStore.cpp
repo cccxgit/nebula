@@ -500,6 +500,7 @@ std::shared_ptr<Part> NebulaStore::newPart(GraphSpaceID spaceId,
                                      diskMan_,
                                      getSpaceVidLen(spaceId));
   std::vector<HostAddr> peersWithoutMe;
+  part->setCommitObserver(options_.commitObserver_);
   for (auto& p : raftPeers) {
     if (p != raftAddr_) {
       peersWithoutMe.push_back(p);
