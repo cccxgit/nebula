@@ -1,0 +1,41 @@
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_ngql", "query": "USE `ft_bench_1m`", "success": true, "elapsed_s": 0.0007564659990748623, "error": ""}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_ngql", "query": "SHOW PARTS", "success": true, "elapsed_s": 0.0013595590007753344, "error": ""}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_topology_healthy", "partition_num": 20, "replica_factor": 3}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_ngql", "query": "SIGN IN TEXT SERVICE (127.0.0.1:19200, HTTP)", "success": true, "elapsed_s": 0.0007589389988424955, "error": ""}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_es_template", "response": {"acknowledged": true}, "settings": {"number_of_shards": 1, "number_of_replicas": 0, "max_result_window": 100001}}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_ngql", "query": "ADD LISTENER ELASTICSEARCH 127.0.0.1:29879", "success": true, "elapsed_s": 0.0014075480012252228, "error": ""}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_ngql", "query": "SHOW LISTENER", "success": true, "elapsed_s": 0.0010963500008074334, "error": ""}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 0.0003731540000444511, "error": "Service not found!"}
+{"utc": "2026-11-04T16:36:11Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "Service not found!"}
+{"utc": "2026-11-04T16:36:14Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.188928985999155, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:14Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:17Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.16754939600105, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:17Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:20Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1713539829997899, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:20Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:24Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1622403069995926, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:24Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:27Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1745395439993445, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:27Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:30Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1573498460002156, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:30Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:33Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1661377339987666, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:33Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:38Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 3.003981947000284, "error": "curl error(28):Timeout was reached"}
+{"utc": "2026-11-04T16:36:38Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "curl error(28):Timeout was reached"}
+{"utc": "2026-11-04T16:36:42Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.5911443770000915, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:42Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:47Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 3.0095818440004223, "error": "curl error(28):Timeout was reached"}
+{"utc": "2026-11-04T16:36:47Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "curl error(28):Timeout was reached"}
+{"utc": "2026-11-04T16:36:50Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.6123165450007946, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:50Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:54Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1616299640008947, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:54Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:57Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1578697540007852, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:36:57Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:37:00Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.474156459000369, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:37:00Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:37:04Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.328222084999652, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:37:04Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:37:07Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": false, "elapsed_s": 1.1763044050003373, "error": "json parse error on line 0: expected json value"}
+{"utc": "2026-11-04T16:37:07Z", "event": "phased_wait", "label": "fulltext DDL/schema cache", "error": "json parse error on line 0: expected json value"}

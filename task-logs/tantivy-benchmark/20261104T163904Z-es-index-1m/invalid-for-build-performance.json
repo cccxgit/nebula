@@ -1,0 +1,9 @@
+{
+  "utc": "2026-11-04T16:42:00.706508+00:00",
+  "reason": "Listener default listener_commit_batch_size=1000 is compared to BatchHolder bytes, with 1s sleep; stage will contain a live tune to 1MiB and is excluded from build speed claims. Complete first, then DROP FT index and re-create/rebuild under fixed configuration.",
+  "source_evidence": [
+    "src/kvstore/listener/elasticsearch/ESListener.cpp:317",
+    "src/kvstore/LogEncoder.h:210",
+    "src/kvstore/listener/Listener.cpp:152"
+  ]
+}

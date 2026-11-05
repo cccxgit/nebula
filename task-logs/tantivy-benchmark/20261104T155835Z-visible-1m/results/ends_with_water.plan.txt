@@ -1,0 +1,156 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=6,
+        output_var=b'{"colNames":["vid"],"name":"__Project_6","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_5'),
+        Pair(
+            key=b'columns',
+            value=b'["id($v) AS vid"]')],
+        profiles=[ProfilingStats(
+            rows=28,
+            exec_duration_in_us=66,
+            total_duration_in_us=71)],
+        dependencies=[5]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=5,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Filter_5"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Project_4'),
+        Pair(
+            key=b'condition',
+            value=b'(v.passage.text ENDS WITH "water.")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=28,
+            exec_duration_in_us=24,
+            total_duration_in_us=31)],
+        dependencies=[9]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=9,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Project_4"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'passage._tag IS NOT EMPTY'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'props',
+            value=b'[{"props":["text","_tag"],"tagId":11}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=28,
+            exec_duration_in_us=497,
+            total_duration_in_us=4186,
+            other_stats={b'resp[0]': b'{\n  "exec": "3413(us)",\n  "host": "127.0.0.1:9789",\n  "total'
+                        b'": "3831(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "333(us)",\n  "host": "127.0.0.1:9779",\n  "total"'
+                        b': "801(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "271(us)",\n  "host": "127.0.0.1:9799",\n  "total"'
+                        b': "552(us)"\n}',
+            b'total_rpc': b'3964(us)'})],
+        dependencies=[7]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=7,
+        output_var=b'{"colNames":["_vid"],"name":"__IndexScan_1","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'11'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"fulltext_value":"water.","fulltext_mode":3,"filter":"(pa'
+             b'ssage.text ENDS WITH \\"water.\\")","fulltext_field":"text","fulltext_inde'
+             b'x":"ft_passage_text_1m","engine":"tantivy"}]'))],
+        profiles=[ProfilingStats(
+            rows=28,
+            exec_duration_in_us=0,
+            total_duration_in_us=18182,
+            other_stats={b'resp[0]': b'{\n  "exec": "8458(us)",\n  "host": "127.0.0.1:9789",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'28929(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "28'
+                        b'817(us)",\n    "IndexSelectionNode(expr=[(passage.text ENDS WITH '
+                        b'\\"water.\\")])": "28690(us)",\n    "TantivyIndexScanNode(index'
+                        b'=ft_passage_text_1m,field=text,mode=3)": "28553(us)"\n  },\n  '
+                        b'"total": "9085(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "11055(us)",\n  "host": "127.0.0.1:9779",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"81586(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "8'
+                        b'1149(us)",\n    "IndexSelectionNode(expr=[(passage.text ENDS WITH'
+                        b' \\"water.\\")])": "80587(us)",\n    "TantivyIndexScanNode(inde'
+                        b'x=ft_passage_text_1m,field=text,mode=3)": "79957(us)"\n  },\n '
+                        b' "total": "16265(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "1927(us)",\n  "host": "127.0.0.1:9799",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'1337(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "133'
+                        b'7(us)",\n    "IndexSelectionNode(expr=[(passage.text ENDS WIT'
+                        b'H \\"water.\\")])": "1339(us)",\n    "TantivyIndexScanNode(inde'
+                        b'x=ft_passage_text_1m,field=text,mode=3)": "1335(us)"\n  },\n  '
+                        b'"total": "2425(us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=2,
+        output_var=b'{"colNames":[],"name":"__Start_2","type":"DATASET"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=1,
+            total_duration_in_us=33)])],
+    node_index_map={2: 4, 5: 1, 6: 0, 7: 3, 9: 2},
+    format=b'row',
+    optimize_time_in_us=2263)

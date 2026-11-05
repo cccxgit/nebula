@@ -1,0 +1,42 @@
+Inspect result written to file: /home/sch/nebula/nebula-3.6-tantivy/task-logs/tantivy-presentation/candidate.pptx.inspect.ndjson
+file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/artifact_tool_utils.mjs:483
+  const error = new Error(`${message}${details ? `\n${details.slice(0, 8000)}` : ""}`, {
+                ^
+
+Error: Exact staged presentation failed first-party Artifact Tool import
+file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:12
+    throw new Error("RUNTIME_NODE_MODULES or CODEX_PRIMARY_RUNTIME_NODE_MODULES is required.");
+          ^
+
+Error: RUNTIME_NODE_MODULES or CODEX_PRIMARY_RUNTIME_NODE_MODULES is required.
+    at runtimeNodeModules (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:12:11)
+    at runtimeRequire (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:25:29)
+    at importRuntimeModule (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:44:53)
+    at file:///home/sch/nebula/nebula-3.6-tantivy/[eval1]:7:50
+
+Node.js v24.19.0
+    at processFailure (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/artifact_tool_utils.mjs:483:17)
+    at verifyFirstPartyImport (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/artifact_tool_utils.mjs:718:11)
+    at finalizePresentation (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/artifact_tool_utils.mjs:964:7)
+    at async file:///home/sch/nebula/nebula-3.6-tantivy/task-logs/tantivy-presentation/build-deck.mjs:91:14 {
+  code: 'PRESENTATION_VALIDATION_FAILED',
+  validator: 'first-party-import',
+  exitCode: 1,
+  signal: null,
+  stdout: '',
+  stderr: 'file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:12\n' +
+    '    throw new Error("RUNTIME_NODE_MODULES or CODEX_PRIMARY_RUNTIME_NODE_MODULES is required.");\n' +
+    '          ^\n' +
+    '\n' +
+    'Error: RUNTIME_NODE_MODULES or CODEX_PRIMARY_RUNTIME_NODE_MODULES is required.\n' +
+    '    at runtimeNodeModules (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:12:11)\n' +
+    '    at runtimeRequire (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:25:29)\n' +
+    '    at importRuntimeModule (file:///home/sch/.codex/plugins/cache/openai-primary-runtime/presentations/26.1013.11914/skills/presentations/container_tools/runtime_helpers.mjs:44:53)\n' +
+    '    at file:///home/sch/nebula/nebula-3.6-tantivy/[eval1]:7:50\n' +
+    '\n' +
+    'Node.js v24.19.0\n',
+  report: undefined,
+  [cause]: undefined
+}
+
+Node.js v24.19.0

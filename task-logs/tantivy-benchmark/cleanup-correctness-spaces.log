@@ -1,0 +1,5 @@
+DROP SPACE `tantivy_demo_verified` True 
+DROP SPACE `tantivy_demo_v2` True 
+DROP SPACE `tantivy_demo_v3` True 
+DROP SPACE `ft_regression_v1` True 
+DROP SPACE `tantivy_lifecycle_1104_234030_207620` True 

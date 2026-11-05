@@ -1,0 +1,7 @@
+2026-11-04T16:18:55.834234+00:00 Root review before final TopK build
+Reviewed rebuild authoritative-Meta snapshot, queue barrier, stop handling, lifecycle locks, and complete three-task million job evidence.
+Reviewed committed-mutation/backfill ordering and primary rereads; CLEAR cleanup bypasses queue capacity to avoid cleanup/backfill lock wait.
+Reviewed bounded Tag FIXED_STRING relevance path: finite global offset+count, no residual/order/stat, cached primary reads, missing/noncanonical fallback, global score/decoded-ID order.
+Requested signed-zero fallback: Rust total_cmp distinguishes signed zero but Graph numeric comparison does not. Agent added helper regression; compile/run pending end of baseline measurement.
+Read legacy baseline cache: both Debug, /usr/bin/c++, debug flags -g. Existing baseline binary embedded de9b3ed80 differs from current source worktree b3457870; preserve provenance caveat.
+No full-scale/ES equality claims yet. Standard tokenizer lexical dialect differences require explicit complete-set comparison.

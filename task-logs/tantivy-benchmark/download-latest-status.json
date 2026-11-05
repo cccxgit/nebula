@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-04T15:34:04Z",
+  "verified_bytes": 2164260864,
+  "total_bytes": 21768192000,
+  "percent": 9.94230877787186,
+  "elapsed_average_bytes_per_second": 956715.1966318119,
+  "estimated_remaining_seconds": 20490.874614532226,
+  "completed_chunks": 258,
+  "state": "partial",
+  "sparse_file_apparent_size_is_not_downloaded_bytes": true
+}

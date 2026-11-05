@@ -1,0 +1,1 @@
+PASS: canonical byte order, missing-primary fallback, NUL aliases, 20-partition tied-score pagination, error propagation

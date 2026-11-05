@@ -1,0 +1,74 @@
+{
+  "time": "2026-11-04T16:02:34Z",
+  "kind": "measured_query_roundtrip",
+  "label": "tantivy-1m-pushdown-on-c4",
+  "space": "ft_bench_1m",
+  "concurrency": 4,
+  "warmup_cycles_excluded": 3,
+  "repeats": 200,
+  "elapsed_s": 49.17508285400072,
+  "attempted_qps": 16.268401669503536,
+  "successful_qps": 16.268401669503536,
+  "percentile_method": "nearest_rank_successful_requests_only",
+  "overall": {
+    "requests": 800,
+    "successes": 800,
+    "failures": 0,
+    "latency_success_ms": {
+      "p50": 60.01032,
+      "p95": 257.00009,
+      "p99": 284.403406,
+      "max": 323.769335
+    }
+  },
+  "queries": {
+    "contains_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"water\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 242.669598,
+        "p95": 278.169792,
+        "p99": 316.005789,
+        "max": 323.769335
+      }
+    },
+    "contains_new_york": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"New York\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 67.15316,
+        "p95": 110.894601,
+        "p99": 125.122283,
+        "max": 127.973242
+      }
+    },
+    "starts_with_the_united": {
+      "query": "MATCH (v:passage) WHERE v.passage.text STARTS WITH \"The United\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 32.019332,
+        "p95": 69.071672,
+        "p99": 86.474448,
+        "max": 105.785159
+      }
+    },
+    "ends_with_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text ENDS WITH \"water.\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 29.092488,
+        "p95": 81.263822,
+        "p99": 91.520482,
+        "max": 111.102348
+      }
+    }
+  }
+}

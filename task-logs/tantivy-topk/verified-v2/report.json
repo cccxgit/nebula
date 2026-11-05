@@ -1,0 +1,252 @@
+{
+  "started_at": "2026-11-04T16:34:11.801919+00:00",
+  "space": "tantivy_topk_1105_003411",
+  "partitions": 20,
+  "replicas": 3,
+  "dataset": "synthetic equal-score TopK semantic regression, not performance data",
+  "checks": [
+    {
+      "name": "complete_equal_score_reference",
+      "passed": true,
+      "rows": 650
+    },
+    {
+      "name": "page_0_1",
+      "passed": true,
+      "rows": 1,
+      "partition_topk": 1,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=1,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=1,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=1,fallback=false)"
+      ]
+    },
+    {
+      "name": "page_7_11",
+      "passed": true,
+      "rows": 11,
+      "partition_topk": 18,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=18,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=18,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=18,fallback=false)"
+      ]
+    },
+    {
+      "name": "page_39_37",
+      "passed": true,
+      "rows": 37,
+      "partition_topk": 76,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=76,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=76,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=76,fallback=false)"
+      ]
+    },
+    {
+      "name": "page_201_53",
+      "passed": true,
+      "rows": 53,
+      "partition_topk": 254,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=254,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=254,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=254,fallback=false)"
+      ]
+    },
+    {
+      "name": "page_643_30",
+      "passed": true,
+      "rows": 7,
+      "partition_topk": 673,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=673,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=673,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=673,fallback=false)"
+      ]
+    },
+    {
+      "name": "page_652_3",
+      "passed": true,
+      "rows": 0,
+      "partition_topk": 655,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=655,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=655,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=655,fallback=false)"
+      ]
+    },
+    {
+      "name": "explicit_order_remains_complete",
+      "passed": true
+    },
+    {
+      "name": "bm25_page_matches_complete_ranking",
+      "passed": true,
+      "rows": 31,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=38,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=38,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=,mode=0,topk=38,fallback=false)"
+      ],
+      "distinct_scores": 1
+    },
+    {
+      "name": "contains_remains_complete",
+      "passed": true,
+      "storage_nodes": [
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=body,mode=1,topk=0,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=body,mode=1,topk=0,fallback=false)",
+        "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article,field=body,mode=1,topk=0,fallback=false)"
+      ]
+    }
+  ],
+  "topology": [
+    [
+      1,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      2,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      3,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      4,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      5,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      6,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      7,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      8,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      9,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      10,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      11,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      12,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      13,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      14,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      15,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      16,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      17,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      18,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      19,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      20,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ]
+  ],
+  "fixture_rows": 650,
+  "known_fixture_rows_by_partition": {
+    "1": 32,
+    "2": 32,
+    "3": 32,
+    "4": 32,
+    "5": 32,
+    "6": 32,
+    "7": 32,
+    "8": 32,
+    "9": 32,
+    "10": 32,
+    "11": 32,
+    "12": 32,
+    "13": 32,
+    "14": 32,
+    "15": 32,
+    "16": 32,
+    "17": 32,
+    "18": 32,
+    "19": 32,
+    "20": 32
+  },
+  "extra_utf8_and_prefix_rows": 10,
+  "passed": true,
+  "finished_at": "2026-11-04T16:34:33.125770+00:00"
+}

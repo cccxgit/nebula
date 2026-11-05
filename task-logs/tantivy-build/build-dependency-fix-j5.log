@@ -1,0 +1,199 @@
+>>>> Options of Nebula Graph <<<<
+-- ENABLE_ASAN                     : OFF (Build with AddressSanitizer)
+-- ENABLE_BREAKPAD                 : OFF (Whether to enable breakpad)
+-- ENABLE_CCACHE                   : ON (Use ccache to speed up compiling)
+-- ENABLE_CLANG_TIDY               : OFF (Enable clang-tidy if present)
+-- ENABLE_COMPILER_LAUNCHER        : ON (Using compiler launcher if available)
+-- ENABLE_COMPRESSED_DEBUG_INFO    : ON (Compress debug info to reduce binary size)
+-- ENABLE_CONSOLE_COMPILATION      : OFF (Enable nebula-console compilation)
+-- ENABLE_COVERAGE                 : OFF (Build with coverage report)
+-- ENABLE_CREATE_GIT_HOOKS         : ON (Enable create git hooks.)
+-- ENABLE_FRAME_POINTER            : OFF (Build with frame pointer)
+-- ENABLE_FUZZY_TESTING            : OFF (Enable Fuzzy tests)
+-- ENABLE_GDB_SCRIPT_SECTION       : OFF (Add .debug_gdb_scripts section)
+-- ENABLE_INCLUDE_WHAT_YOU_USE     : OFF (Enable include-what-you-use find  nouse include files)
+-- ENABLE_JEMALLOC                 : ON (Use jemalloc as memory allocator)
+-- ENABLE_MEMORY_TRACKER           : ON (Enable memory tracker)
+-- ENABLE_PACKAGE_TAR              : OFF (Enable package artifacts to tar.)
+-- ENABLE_PACK_ONE                 : ON (Whether to package into one)
+-- ENABLE_PIC                      : OFF (Build with -fPIC)
+-- ENABLE_STANDALONE_VERSION       : OFF (Enable standalone version build)
+-- ENABLE_STATIC_ASAN              : OFF (Statically link against libasan)
+-- ENABLE_STATIC_UBSAN             : OFF (Statically link against libubsan)
+-- ENABLE_STRICT_ALIASING          : OFF (Build with -fstrict-aliasing)
+-- ENABLE_TESTING                  : OFF (Build unit tests)
+-- ENABLE_TSAN                     : OFF (Build with ThreadSanitizer)
+-- ENABLE_UBSAN                    : OFF (Build with UndefinedBehaviourSanitizer)
+-- ENABLE_VERBOSE_BISON            : OFF (Enable Bison to report state)
+-- ENABLE_WERROR                   : ON (Regard warnings as errors)
+-- CMAKE_BUILD_TYPE                : Debug (Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel ...)
+-- CMAKE_INSTALL_PREFIX            : /home/sch/nebula-run/3.6-tantivy (Install path prefix, prepended onto install directories.)
+-- CMAKE_CXX_STANDARD              : 17
+-- CMAKE_CXX_COMPILER              : /usr/bin/c++ (CXX compiler)
+-- CMAKE_CXX_COMPILER_ID           : GNU
+-- NEBULA_USE_LINKER               : bfd (Linker to be used)
+CMake Warning at cmake/nebula/CompilerLauncher.cmake:28 (message):
+  ccache is enabled but was not found.  Not using it
+Call Stack (most recent call first):
+  CMakeLists.txt:48 (include)
+
+
+>>>> Configuring third party for 'Nebula Graph' <<<<
+-- NEBULA_THIRDPARTY_ROOT          : /opt/vesoft/third-party/3.3
+-- Build info of nebula third party:
+Package         : Nebula Third Party
+Version         : 3.3
+Date            : Thu Feb  2 10:42:13 UTC 2023
+glibc           : 2.34
+Arch            : x86_64
+Compiler        : GCC 11.2.0
+C++ ABI         : 11
+Vendor          : VEsoft Inc.
+
+-- CMAKE_INCLUDE_PATH              : /opt/vesoft/third-party/3.3/include
+-- CMAKE_LIBRARY_PATH              : /opt/vesoft/third-party/3.3/lib64;/opt/vesoft/third-party/3.3/lib
+-- CMAKE_PROGRAM_PATH              : /opt/vesoft/third-party/3.3/bin
+-- GLIBC_VERSION                   : 2.35
+
+>>>> Configuring third party for 'Nebula Graph' done <<<<
+-- Create the pre-commit hook
+-- Creating pre-commit hook done
+-- MemoryTracker is ENABLED
+-- NEBULA_BUILD_VERSION            : 
+-- HOST_SYSTEM_NAME                : Ubuntu
+-- HOST_SYSTEM_VER                 : ubuntu2204
+-- CPACK_GENERATOR                 : DEB
+-- CMAKE_HOST_SYSTEM_PROCESSOR     : amd64
+-- Configuring done (0.1s)
+-- Generating done (0.4s)
+-- Build files have been written to: /home/sch/nebula/nebula-3.6-tantivy/build
+[  0%] Built target common_thrift_generator
+[  0%] Built target wkt_parser_target
+[  1%] Built target graph_thrift_generator
+[  1%] Built target datetime_parser_target
+[  3%] Built target parser_target
+[  3%] Built target storage_thrift_generator
+[  3%] Built target raftex_thrift_generator
+[  3%] Built target meta_thrift_generator
+[  3%] Building embedded Tantivy search engine (one Rust job maximum)
+warning: failed to connect to jobserver from environment variable `MAKEFLAGS="s -j5 --jobserver-auth=3,4"`: cannot open file descriptor 3 from the jobserver environment variable value: Bad file descriptor (os error 9)
+[  3%] Built target common_thrift_obj
+[  3%] Built target meta_client_obj
+[  5%] Built target raftex_thrift_obj
+[  5%] Built target file_based_cluster_id_man_obj
+[  5%] Built target meta_client_stats_obj
+[  5%] Built target graph_thrift_obj
+[  5%] Built target storage_client_obj
+[  5%] Built target internal_storage_client_obj
+[  5%] Built target storage_client_base_obj
+   Compiling include-flate-compress v0.3.5
+[  5%] Built target storage_client_stats_obj
+[  6%] Built target time_obj
+[  8%] Built target base_obj
+[  8%] Built target codec_obj
+[  8%] Built target time_utils_obj
+[  8%] Built target network_obj
+[  8%] Built target datetime_parser_obj
+[  8%] Built target fs_obj
+[  8%] Built target thrift_obj
+[  8%] Built target thread_obj
+[  8%] Built target process_obj
+   Compiling tantivy-sstable v0.6.0
+[  8%] Built target hdfs_helper_obj
+[  8%] Built target http_client_obj
+[  8%] Built target stats_obj
+[  8%] Built target charset_obj
+[  8%] Built target nebula_algo_obj
+[ 10%] Built target conf_obj
+[ 12%] Built target datatypes_obj
+[ 12%] Built target agg_function_manager_obj
+[ 12%] Built target meta_obj
+[ 13%] Built target function_manager_obj
+[ 13%] Built target graph_obj
+[ 13%] Built target es_adapter_obj
+[ 13%] Built target log_str_list_iterator_obj
+[ 13%] Built target meta_keyutils_obj
+[ 15%] Built target keyutils_obj
+[ 15%] Built target ssl_obj
+[ 15%] Built target geo_index_obj
+[ 15%] Built target memory_obj
+[ 17%] Built target wkt_wkb_io_obj
+[ 17%] Built target uuid_obj
+[ 17%] Built target snowflake_obj
+[ 17%] Built target segment_id_obj
+[ 17%] Built target ws_common_obj
+[ 17%] Built target log_monitor_obj
+[ 22%] Built target expression_obj
+[ 22%] Built target disk_man_obj
+[ 24%] Built target meta_thrift_obj
+[ 25%] Built target kvstore_obj
+[ 29%] Built target storage_thrift_obj
+[ 29%] Built target wal_obj
+[ 29%] Built target listener_obj
+[ 29%] Built target raftex_obj
+[ 29%] Built target kv_stats_obj
+[ 29%] Built target meta_stats_obj
+[ 31%] Built target ast_match_path_obj
+[ 32%] Built target storage_common_obj
+[ 32%] Built target internal_storage_service_handler
+[ 32%] Built target storage_http_handler
+[ 32%] Built target storage_server
+[ 32%] Built target storage_stats_obj
+[ 32%] Built target version_obj
+[ 32%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o
+[ 34%] Built target storage_transaction_executor
+[ 34%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o
+[ 34%] Built target meta_v2_thrift_obj
+[ 36%] Built target ws_obj
+[ 36%] Built target meta_http_handler
+[ 36%] Built target meta_data_upgrade_obj
+[ 36%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o
+[ 36%] Built target graph_context_obj
+[ 48%] Built target executor_obj
+[ 56%] Built target optimizer_obj
+[ 62%] Built target planner_obj
+   Compiling include-flate-codegen v0.3.5
+[ 63%] Built target plan_obj
+[ 63%] Built target scheduler_obj
+[ 65%] Built target graph_flags_obj
+[ 65%] Built target service_obj
+[ 65%] Built target query_engine_obj
+[ 67%] Built target graph_auth_obj
+[ 67%] Built target graph_session_obj
+[ 67%] Built target graph_stats_obj
+   Compiling tantivy-columnar v0.6.0
+[ 68%] Built target util_obj
+[ 68%] Built target idgenerator_obj
+[ 72%] Built target validator_obj
+[ 74%] Built target expr_visitor_obj
+[ 74%] Built target plan_node_visitor_obj
+[ 74%] Built target gc_obj
+[ 75%] Built target parser_obj
+[ 75%] Built target mock_obj
+[ 75%] Built target fake_http_server_obj
+[ 75%] Built target storage_local_server_obj
+[ 75%] Built target meta_version_man_obj
+[ 75%] Linking CXX executable ../../bin/nebula-graphd
+   Compiling include-flate v0.3.5 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust/vendor/include-flate)
+   Compiling tantivy v0.25.0
+[ 79%] Built target graph_storage_service_handler
+[ 94%] Built target meta_service_handler
+[ 96%] Built target nebula-metad
+[100%] Built target storage_admin_service_handler
+   Compiling jieba-rs v0.8.1
+   Compiling nebula-tantivy v0.1.0 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust)
+[100%] Built target nebula-graphd
+    Finished `release` profile [optimized + debuginfo] target(s) in 55.56s
+[100%] Built target nebula_tantivy_build
+[100%] Built target tantivy_adapter
+[100%] Building CXX object src/storage/CMakeFiles/tantivy_manager.dir/fulltext/TantivyManager.cpp.o
+[100%] Linking CXX static library ../../lib/libtantivy_manager.a
+[100%] Built target tantivy_manager
+[100%] Linking CXX executable ../../../bin/meta_dump
+[100%] Linking CXX executable ../../bin/nebula-storaged
+[100%] Linking CXX executable ../../../bin/db_dump
+[100%] Linking CXX executable ../../../bin/db_upgrader
+[100%] Built target nebula-storaged
+[100%] Built target db_dump
+[100%] Built target db_upgrader
+[100%] Built target meta_dump

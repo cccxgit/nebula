@@ -1,0 +1,78 @@
+{
+  "time": "2026-11-04T16:20:59Z",
+  "kind": "measured_query_roundtrip",
+  "label": "tantivy-1m-pushdown-off-c1",
+  "space": "ft_bench_1m",
+  "concurrency": 1,
+  "scheduling": "shared_fifo_queue_dynamic_workers",
+  "requests_by_worker": {
+    "0": 80
+  },
+  "warmup_cycles_excluded": 1,
+  "repeats": 20,
+  "elapsed_s": 784.9499283730001,
+  "attempted_qps": 0.10191732887449201,
+  "successful_qps": 0.10191732887449201,
+  "percentile_method": "nearest_rank_successful_requests_only",
+  "overall": {
+    "requests": 80,
+    "successes": 80,
+    "failures": 0,
+    "latency_success_ms": {
+      "p50": 9807.995105,
+      "p95": 9951.780946,
+      "p99": 10059.806372,
+      "max": 10059.806372
+    }
+  },
+  "queries": {
+    "contains_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"water\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 20,
+      "successes": 20,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 9772.073792,
+        "p95": 9991.797482,
+        "p99": 10059.806372,
+        "max": 10059.806372
+      }
+    },
+    "contains_new_york": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"New York\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 20,
+      "successes": 20,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 9784.557685,
+        "p95": 9951.780946,
+        "p99": 9968.454008,
+        "max": 9968.454008
+      }
+    },
+    "starts_with_the_united": {
+      "query": "MATCH (v:passage) WHERE v.passage.text STARTS WITH \"The United\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 20,
+      "successes": 20,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 9807.995105,
+        "p95": 9925.711344,
+        "p99": 9937.869721,
+        "max": 9937.869721
+      }
+    },
+    "ends_with_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text ENDS WITH \"water.\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 20,
+      "successes": 20,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 9836.73434,
+        "p95": 9933.97569,
+        "p99": 10016.373981,
+        "max": 10016.373981
+      }
+    }
+  }
+}

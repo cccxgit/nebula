@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-04T17:13:36Z",
+  "command_arguments": [
+    "import",
+    "--space",
+    "ft_bench_5m",
+    "--input",
+    "/home/sch/nebula-data/tantivy/msmarco-5m-128.jsonl.gz",
+    "--concurrency",
+    "1",
+    "--batch-size",
+    "200",
+    "--batch-bytes",
+    "131072"
+  ],
+  "flag_state": "Record verified graph flag state and PROFILE separately"
+}

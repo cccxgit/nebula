@@ -1,0 +1,9 @@
+{
+  "utc": "2026-11-04T16:34:44.715752+00:00",
+  "note": "Fixed 1m native benchmark workload reused on ES; original text projection/IDs unchanged; cross-engine complete hit equivalence required before speedup claim",
+  "prototype_queries": "queries-text-search-1m.jsonl",
+  "es_queries": "queries-es-search-1m.jsonl",
+  "target_requests": 600,
+  "concurrency": 1,
+  "warmup": 3
+}

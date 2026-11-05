@@ -1,0 +1,156 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=6,
+        output_var=b'{"colNames":["vid"],"type":"DATASET","name":"__Project_6"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_5'),
+        Pair(
+            key=b'columns',
+            value=b'["id($v) AS vid"]')],
+        profiles=[ProfilingStats(
+            rows=3166,
+            exec_duration_in_us=14131,
+            total_duration_in_us=14156)],
+        dependencies=[5]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=5,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Filter_5"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Project_4'),
+        Pair(
+            key=b'condition',
+            value=b'(v.passage.text CONTAINS "New York")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=3166,
+            exec_duration_in_us=1222,
+            total_duration_in_us=1242)],
+        dependencies=[9]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=9,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Project_4"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'passage._tag IS NOT EMPTY'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'props',
+            value=b'[{"props":["text","_tag"],"tagId":11}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=3166,
+            exec_duration_in_us=18459,
+            total_duration_in_us=29791,
+            other_stats={b'resp[0]': b'{\n  "exec": "5088(us)",\n  "host": "127.0.0.1:9789",\n  "total'
+                        b'": "12541(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "3704(us)",\n  "host": "127.0.0.1:9779",\n  "total'
+                        b'": "18996(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "989(us)",\n  "host": "127.0.0.1:9799",\n  "total"'
+                        b': "3431(us)"\n}',
+            b'total_rpc': b'22722(us)'})],
+        dependencies=[7]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=7,
+        output_var=b'{"colNames":["_vid"],"type":"DATASET","name":"__IndexScan_1"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'11'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"fulltext_mode":1,"fulltext_field":"text","filter":"(pass'
+             b'age.text CONTAINS \\"New York\\")","fulltext_value":"New York","fulltext_i'
+             b'ndex":"ft_passage_text_1m","engine":"tantivy"}]'))],
+        profiles=[ProfilingStats(
+            rows=3166,
+            exec_duration_in_us=0,
+            total_duration_in_us=21360,
+            other_stats={b'resp[0]': b'{\n  "exec": "10897(us)",\n  "host": "127.0.0.1:9789",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"39948(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "3'
+                        b'9896(us)",\n    "IndexSelectionNode(expr=[(passage.text CONTAINS '
+                        b'\\"New York\\")])": "39851(us)",\n    "TantivyIndexScanNode(ind'
+                        b'ex=ft_passage_text_1m,field=text,mode=1)": "39776(us)"\n  },\n'
+                        b'  "total": "12422(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "16273(us)",\n  "host": "127.0.0.1:9779",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"126700(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "'
+                        b'126485(us)",\n    "IndexSelectionNode(expr=[(passage.text CONTAIN'
+                        b'S \\"New York\\")])": "126233(us)",\n    "TantivyIndexScanNode('
+                        b'index=ft_passage_text_1m,field=text,mode=1)": "125834(us)"\n '
+                        b' },\n  "total": "20214(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "2802(us)",\n  "host": "127.0.0.1:9799",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'2431(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "243'
+                        b'3(us)",\n    "IndexSelectionNode(expr=[(passage.text CONTAINS'
+                        b' \\"New York\\")])": "2439(us)",\n    "TantivyIndexScanNode(ind'
+                        b'ex=ft_passage_text_1m,field=text,mode=1)": "2437(us)"\n  },\n '
+                        b' "total": "3658(us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=2,
+        output_var=b'{"colNames":[],"type":"DATASET","name":"__Start_2"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=25)])],
+    node_index_map={2: 4, 5: 1, 6: 0, 7: 3, 9: 2},
+    format=b'row',
+    optimize_time_in_us=1626)

@@ -1,0 +1,18 @@
+{"name": "term", "passed": true, "actual_ids": ["r1", "r2", "r8"], "error": ""}
+{"name": "case_normalization", "passed": true, "actual_ids": ["r1", "r2", "r8"], "error": ""}
+{"name": "phrase", "passed": true, "actual_ids": ["r1", "r4"], "error": ""}
+{"name": "boolean_and", "passed": true, "actual_ids": ["r1"], "error": ""}
+{"name": "boolean_or", "passed": true, "actual_ids": ["r1", "r2", "r3", "r8"], "error": ""}
+{"name": "boolean_not", "passed": true, "actual_ids": ["r1", "r8"], "error": ""}
+{"name": "field_group", "passed": true, "actual_ids": ["r1", "r2", "r4", "r8"], "error": ""}
+{"name": "multiple_fields", "passed": true, "actual_ids": ["r4"], "error": ""}
+{"name": "prefix", "passed": true, "actual_ids": ["r1", "r3", "r4"], "error": ""}
+{"name": "wildcard_contains", "passed": true, "actual_ids": ["r1", "r3"], "error": ""}
+{"name": "wildcard_one_char", "passed": true, "actual_ids": ["r1", "r2", "r4", "r8"], "error": ""}
+{"name": "regexp_alternation", "passed": true, "actual_ids": ["r1", "r2", "r4", "r8"], "error": ""}
+{"name": "regexp_contains", "passed": true, "actual_ids": ["r1", "r3"], "error": ""}
+{"name": "fuzzy_one_edit", "passed": true, "actual_ids": ["r1", "r2", "r8"], "error": ""}
+{"name": "phrase_slop", "passed": true, "actual_ids": ["r1", "r4", "r8"], "error": ""}
+{"name": "boost", "passed": true, "actual_ids": ["r1", "r2", "r3", "r8"], "error": ""}
+{"name": "range_inclusive", "passed": true, "actual_ids": ["r1", "r2", "r3", "r4"], "error": ""}
+{"name": "syntax_error", "passed": true, "actual_ids": null, "error": "{\"failed_shards\":[{\"reason\":{\"caused_by\":{\"caused_by\":{\"reason\":\"Lexical error at line 1, column 20.  Encountered: <EOF> after : \\\"\\\\\\\"unterminated\\\"\",\"type\":\"token_mgr_error\"},\"reason\":\"Cannot parse 'title:\\\"unterminated': Lexical error at line 1, column 20.  Encountered: <EOF> after : \\\"\\\\\\\"unterminated\\\"\",\"type\":\"parse_exception\"},\"index\":\"nebula_index_ft_regression_es_v1\",\"index_uuid\":\"1NA1A1H8S-WJDbRau0Z-Ww\",\"reason\":\"Failed to parse query [title:\\\"unterminated]\",\"type\":\"query_shard_exception\"},\"node\":\"JnDQvIX_SO2QktmKmQZkFw\",\"index\":\"nebula_index_ft_regression_es_v1\",\"shard\":0}],\"grouped\":true,\"phase\":\"query\",\"reason\":\"all shards failed\",\"type\":\"search_phase_execution_exception\",\"root_cause\":[{\"index\":\"nebula_index_ft_regression_es_v1\",\"index_uuid\":\"1NA1A1H8S-WJDbRau0Z-Ww\",\"reason\":\"Failed to parse query [title:\\\"unterminated]\",\"type\":\"query_shard_exception\"}]}"}

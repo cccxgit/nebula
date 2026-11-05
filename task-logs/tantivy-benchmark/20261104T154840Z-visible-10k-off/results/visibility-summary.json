@@ -1,0 +1,39 @@
+{
+  "utc": "2026-11-04T15:48:40Z",
+  "space": "ft_bench_10k",
+  "source_rows": 10000,
+  "source_jsonl_sha256": "3af6f2ea60a26d832f9759236a9d8a0da044dff790640cf60fe32e912f31b6e4",
+  "all_checks_passed": true,
+  "query_set_visible_seconds_since_verification_start": 0.44962716800000635,
+  "checks": [
+    {
+      "name": "contains_water",
+      "expected_hits": 264,
+      "actual_hits": 264,
+      "passed": true,
+      "tantivy_plan": false
+    },
+    {
+      "name": "contains_new_york",
+      "expected_hits": 36,
+      "actual_hits": 36,
+      "passed": true,
+      "tantivy_plan": false
+    },
+    {
+      "name": "starts_with_the_united",
+      "expected_hits": 15,
+      "actual_hits": 15,
+      "passed": true,
+      "tantivy_plan": false
+    },
+    {
+      "name": "ends_with_water",
+      "expected_hits": 0,
+      "actual_hits": 0,
+      "passed": true,
+      "tantivy_plan": false
+    }
+  ],
+  "note": "Not import-to-visible time; combine import/index timestamps."
+}

@@ -1,0 +1,6 @@
+{"utc": "2026-11-04T17:25:18Z", "query": "USE ft_bench_5m", "rows": []}
+{"utc": "2026-11-04T17:25:18Z", "query": "SUBMIT JOB STATS", "rows": [[28]]}
+{"utc": "2026-11-04T17:25:18Z", "query": "SHOW JOB 28", "rows": [[28, "STATS", "QUEUE", null, null, "E_JOB_SUBMITTED"], ["Total:0", "Succeeded:0", "Failed:0", "In Progress:0", "", ""]]}
+{"utc": "2026-11-04T17:25:19Z", "query": "SHOW JOB 28", "rows": [[28, "STATS", "FINISHED", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "SUCCEEDED"], [0, "127.0.0.1", "FINISHED", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "SUCCEEDED"], [1, "127.0.0.1", "FINISHED", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "SUCCEEDED"], [2, "127.0.0.1", "FINISHED", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "utc datetime: 2026-11-04T17:25:18.000000, timezone_offset: 0", "SUCCEEDED"], ["Total:3", "Succeeded:3", "Failed:0", "In Progress:0", "", ""]]}
+{"utc": "2026-11-04T17:25:19Z", "query": "SHOW STATS", "rows": [["Tag", "passage", 5000000], ["Space", "vertices", 5000000], ["Space", "edges", 0]]}
+{"verification": "exact 5000000 vertices confirmed", "passed": true}

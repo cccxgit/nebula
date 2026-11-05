@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-04T16:16:13Z",
+  "kind": "inactive_baseline_config_alignment",
+  "changes": {
+    "system_memory_high_watermark_ratio": "0.95 -> 0.8 (both source trees default 0.8)",
+    "accept_partial_success": "explicit false (same default)",
+    "enable_udf": "explicit false (matches prototype)"
+  },
+  "services_started": false,
+  "prototype_settings_modified": false
+}

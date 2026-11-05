@@ -1,0 +1,50 @@
+{
+  "utc": "2026-11-04T17:17:06.873425+00:00",
+  "kind": "lightweight_final_static_check",
+  "git_diff_check": {
+    "exit_code": 0,
+    "output": ""
+  },
+  "python_ast": {
+    "checked": 18,
+    "passed": true,
+    "files": [
+      "scripts/tantivy-benchmark/audit_results.py",
+      "scripts/tantivy-benchmark/benchmark.py",
+      "scripts/tantivy-benchmark/capacity_gate.py",
+      "scripts/tantivy-benchmark/es_baseline.py",
+      "scripts/tantivy-benchmark/es_regression_setup.py",
+      "scripts/tantivy-benchmark/monitor.py",
+      "scripts/tantivy-benchmark/native_compare.py",
+      "scripts/tantivy-benchmark/preflight.py",
+      "scripts/tantivy-benchmark/readiness.py",
+      "scripts/tantivy-benchmark/regression.py",
+      "scripts/tantivy-benchmark/system_snapshot.py",
+      "scripts/tantivy-benchmark/tantivy_regression_setup.py",
+      "scripts/tantivy-benchmark/toggle_pushdown.py",
+      "scripts/tantivy-demo/cluster.py",
+      "scripts/tantivy-demo/demo.py",
+      "scripts/tantivy-demo/lifecycle.py",
+      "scripts/tantivy-demo/rebuild_immediate.py",
+      "scripts/tantivy-demo/topk.py"
+    ]
+  },
+  "shell_syntax": {
+    "exit_code": 0,
+    "output": ""
+  },
+  "new_script_doc_trailing_whitespace": [],
+  "cargo_lock": {
+    "exists": true,
+    "ignored": false,
+    "visible_untracked": true,
+    "note": "Exception permits adding this dependency lock; no staging or commit was performed."
+  },
+  "parallelism": "Actual documented build uses cmake --build build --parallel 5; CMake Rust CARGO_BUILD_JOBS=1; standalone Rust command -j1. Original user AGENTS.md retains -j10, overridden explicitly in build-and-run.md by latest user instruction.",
+  "edits": [
+    "docs/tantivy/build-and-run.md",
+    "docs/tantivy/README.md navigation row",
+    "src/common/plugin/fulltext/tantivy/README.md standalone cargo -j1"
+  ],
+  "no_database_etl_compiler_or_production_source_changes": true
+}

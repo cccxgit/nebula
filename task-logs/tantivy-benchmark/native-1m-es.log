@@ -1,0 +1,3 @@
+{"name": "term_water", "complete": false, "count": null, "error": "ES FulltextIndexScan limit not pushed; complete collection would be unsafe"}
+{"name": "phrase_new_york", "complete": false, "count": null, "error": "ES FulltextIndexScan limit not pushed; complete collection would be unsafe"}
+{"name": "boolean_water_river", "complete": false, "count": null, "error": "ES FulltextIndexScan limit not pushed; complete collection would be unsafe"}

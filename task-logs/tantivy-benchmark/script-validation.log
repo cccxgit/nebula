@@ -1,0 +1,5 @@
+full 10000 unique IDs, sha256 matches, character limit checked
+128 10000 unique IDs, sha256 matches, character limit checked
+256 10000 unique IDs, sha256 matches, character limit checked
+Original IDs retained across all projections; no duplicated rows introduced
+Percentiles verified with known data; CPU/RSS monitor smoke-tested separately

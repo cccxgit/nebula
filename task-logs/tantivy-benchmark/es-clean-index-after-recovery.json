@@ -1,0 +1,31 @@
+{
+  "utc": "2026-11-04T16:46:05.362795+00:00",
+  "job4_rows": [
+    [
+      4,
+      "REBUILD_FULLTEXT_INDEX",
+      "FINISHED",
+      "utc datetime: 2026-11-04T16:44:43.000000, timezone_offset: 0",
+      "utc datetime: 2026-11-04T16:45:23.000000, timezone_offset: 0",
+      "SUCCEEDED"
+    ],
+    [
+      0,
+      "127.0.0.1",
+      "FINISHED",
+      "utc datetime: 2026-11-04T16:44:43.000000, timezone_offset: 0",
+      "utc datetime: 2026-11-04T16:45:23.000000, timezone_offset: 0",
+      "SUCCEEDED"
+    ],
+    [
+      "Total:1",
+      "Succeeded:1",
+      "Failed:0",
+      "In Progress:0",
+      "",
+      ""
+    ]
+  ],
+  "drop_fulltext_success": true,
+  "input_graph_data_preserved": true
+}

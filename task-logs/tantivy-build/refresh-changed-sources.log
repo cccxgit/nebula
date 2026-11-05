@@ -1,0 +1,25 @@
+2026-11-04T23:27:08.226879
+src/clients/meta/MetaClient.cpp
+src/common/expression/TextSearchExpression.cpp
+src/graph/executor/admin/SpaceExecutor.cpp
+src/graph/executor/query/FulltextIndexScanExecutor.cpp
+src/graph/executor/query/IndexScanExecutor.cpp
+src/graph/optimizer/rule/IndexScanRule.cpp
+src/graph/planner/match/MatchSolver.cpp
+src/graph/planner/ngql/LookupPlanner.cpp
+src/graph/planner/plan/Query.cpp
+src/graph/service/GraphFlags.cpp
+src/graph/util/FTIndexUtils.cpp
+src/graph/util/OptimizerUtils.cpp
+src/graph/util/ToJson.cpp
+src/graph/validator/LookupValidator.cpp
+src/graph/validator/MaintainValidator.cpp
+src/kvstore/NebulaStore.cpp
+src/kvstore/Part.cpp
+src/meta/processors/index/FTIndexProcessor.cpp
+src/parser/test/ParserTest.cpp
+src/storage/StorageServer.cpp
+src/storage/admin/ClearSpaceProcessor.cpp
+src/storage/admin/RebuildFTIndexTask.cpp
+src/storage/index/LookupProcessor.cpp
+Reason: rebuild sources changed while the initial long build was already running.

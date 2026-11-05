@@ -1,0 +1,22 @@
+-- Install configuration: "Debug"
+-- Installing: /home/sch/nebula-run/3.6-tantivy/bin/nebula-graphd
+-- Installing: /home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged
+-- Installing: /home/sch/nebula-run/3.6-tantivy/bin/nebula-metad
+-- Installing: /home/sch/nebula-run/3.6-tantivy/bin/meta_dump
+-- Installing: /home/sch/nebula-run/3.6-tantivy/bin/db_upgrader
+-- Installing: /home/sch/nebula-run/3.6-tantivy/etc/nebula-graphd.conf.default
+-- Installing: /home/sch/nebula-run/3.6-tantivy/etc/nebula-graphd.conf.production
+-- Installing: /home/sch/nebula-run/3.6-tantivy/etc/nebula-metad.conf.default
+-- Installing: /home/sch/nebula-run/3.6-tantivy/etc/nebula-metad.conf.production
+-- Installing: /home/sch/nebula-run/3.6-tantivy/etc/nebula-storaged.conf.default
+-- Installing: /home/sch/nebula-run/3.6-tantivy/etc/nebula-storaged.conf.production
+-- Installing: /home/sch/nebula-run/3.6-tantivy/etc/nebula-storaged-listener.conf.production
+-- Installing: /home/sch/nebula-run/3.6-tantivy/share/resources/gflags.json
+-- Installing: /home/sch/nebula-run/3.6-tantivy/share/resources/date_time_zonespec.csv
+-- Installing: /home/sch/nebula-run/3.6-tantivy/scripts/nebula-storaged.service
+-- Installing: /home/sch/nebula-run/3.6-tantivy/scripts/nebula-metad.service
+-- Installing: /home/sch/nebula-run/3.6-tantivy/scripts/nebula-graphd.service
+-- Installing: /home/sch/nebula-run/3.6-tantivy/scripts/nebula.service
+-- Installing: /home/sch/nebula-run/3.6-tantivy/scripts/utils.sh
+-- Installing: /home/sch/nebula-run/3.6-tantivy/scripts/meta-transfer-tools.sh
+-- Installing: /home/sch/nebula-run/3.6-tantivy/scripts/nebula-storaged-listener.service

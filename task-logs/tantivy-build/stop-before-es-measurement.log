@@ -1,0 +1,5 @@
+{"time": "2026-11-04T16:35:18.287808+00:00", "event": "stopped", "service": "graphd", "pid": 130580}
+{"time": "2026-11-04T16:35:18.538617+00:00", "event": "stopped", "service": "storage3", "pid": 130891}
+{"time": "2026-11-04T16:35:19.039669+00:00", "event": "stopped", "service": "storage2", "pid": 130746}
+{"time": "2026-11-04T16:35:19.291601+00:00", "event": "stopped", "service": "storage1", "pid": 130617}
+{"time": "2026-11-04T16:35:19.542244+00:00", "event": "stopped", "service": "metad", "pid": 130373}

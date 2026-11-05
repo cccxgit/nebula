@@ -1,0 +1,41 @@
+{
+  "utc": "2026-11-04T15:52:55Z",
+  "source": "live /proc/PID/exe for the same five PIDs recorded during 10k runs; captured after measurements",
+  "binaries": [
+    {
+      "pid": 92995,
+      "exe": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-metad",
+      "bytes": 334800376,
+      "sha256": "844842b17ff3db6ee64607ce58cc7672ec21b2b5f498813e86df3c8ecb6c912a",
+      "cmdline": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-metad --flagfile=/home/sch/nebula-run/3.6-tantivy/tantivy-demo/metad/service.conf"
+    },
+    {
+      "pid": 93161,
+      "exe": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-graphd",
+      "bytes": 484158384,
+      "sha256": "44e16a40c2234bec093d3c4d132f8bb31a6a8ed6fa01025fe4693e09d8b5c868",
+      "cmdline": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-graphd --flagfile=/home/sch/nebula-run/3.6-tantivy/tantivy-demo/graphd/service.conf"
+    },
+    {
+      "pid": 93220,
+      "exe": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged",
+      "bytes": 361637192,
+      "sha256": "35eb81eaccf319b100d83599a609d2bdc09761f1f9eb9dcfa466eb0e3af45255",
+      "cmdline": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged --flagfile=/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage1/service.conf"
+    },
+    {
+      "pid": 93418,
+      "exe": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged",
+      "bytes": 361637192,
+      "sha256": "35eb81eaccf319b100d83599a609d2bdc09761f1f9eb9dcfa466eb0e3af45255",
+      "cmdline": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged --flagfile=/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage2/service.conf"
+    },
+    {
+      "pid": 93655,
+      "exe": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged",
+      "bytes": 361637192,
+      "sha256": "35eb81eaccf319b100d83599a609d2bdc09761f1f9eb9dcfa466eb0e3af45255",
+      "cmdline": "/home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged --flagfile=/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage3/service.conf"
+    }
+  ]
+}

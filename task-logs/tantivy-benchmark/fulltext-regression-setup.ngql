@@ -1,0 +1,15 @@
+CREATE SPACE IF NOT EXISTS `ft_regression` (partition_num=20,replica_factor=3,vid_type=FIXED_STRING(64));
+-- Wait for schema propagation before the next group.
+USE `ft_regression`;
+CREATE TAG IF NOT EXISTS ftcase(title string,body string);
+-- Wait for schema propagation. ES baseline additionally needs ADD LISTENER for this space.
+CREATE FULLTEXT TAG INDEX `ftcase_text` ON ftcase(title,body) ANALYZER="standard";
+-- Wait for metadata propagation before INSERT, then wait for fulltext visibility.
+INSERT VERTEX ftcase(title,body) VALUES "r1":("quick brown fox","new york river water");
+INSERT VERTEX ftcase(title,body) VALUES "r2":("quick blue hare","new jersey lake");
+INSERT VERTEX ftcase(title,body) VALUES "r3":("slow brown fox","old york river");
+INSERT VERTEX ftcase(title,body) VALUES "r4":("quack bronze bird","new york harbor");
+INSERT VERTEX ftcase(title,body) VALUES "r5":("aquatic watercraft","water river water");
+INSERT VERTEX ftcase(title,body) VALUES "r6":("beach","sand dry");
+INSERT VERTEX ftcase(title,body) VALUES "r7":("New York","quoted \"fox\" and C++");
+INSERT VERTEX ftcase(title,body) VALUES "r8":("the Quick hare","new old york");

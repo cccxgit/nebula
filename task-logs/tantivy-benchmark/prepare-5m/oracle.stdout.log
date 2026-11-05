@@ -1,0 +1,2 @@
+{"utc": "2026-11-04T16:28:27Z", "kind": "offline_source_oracle", "input": "/home/sch/nebula-data/tantivy/msmarco-5m-128.jsonl.gz", "rows": 5000000, "unique_ids": 5000000, "jsonl_sha256": "95864ebf78c175cf6090518d9e2222ad318a7b547b63d6d0681299cf2807775a", "max_query_hits": 100000, "note": "Complete ID sets for these predicates only; this does not prove every index term."}
+{"contains_water": 82845, "contains_new_york": 16252, "starts_with_the_united": 1062, "ends_with_water": 138}

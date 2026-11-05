@@ -1,0 +1,42 @@
+[
+  [
+    14,
+    "REBUILD_FULLTEXT_INDEX",
+    "FINISHED",
+    "utc datetime: 2026-11-04T16:31:33.000000, timezone_offset: 0",
+    "utc datetime: 2026-11-04T16:31:34.000000, timezone_offset: 0",
+    "SUCCEEDED"
+  ],
+  [
+    0,
+    "127.0.0.1",
+    "FINISHED",
+    "utc datetime: 2026-11-04T16:31:33.000000, timezone_offset: 0",
+    "utc datetime: 2026-11-04T16:31:35.000000, timezone_offset: 0",
+    "SUCCEEDED"
+  ],
+  [
+    1,
+    "127.0.0.1",
+    "FINISHED",
+    "utc datetime: 2026-11-04T16:31:33.000000, timezone_offset: 0",
+    "utc datetime: 2026-11-04T16:31:35.000000, timezone_offset: 0",
+    "SUCCEEDED"
+  ],
+  [
+    2,
+    "127.0.0.1",
+    "FINISHED",
+    "utc datetime: 2026-11-04T16:31:33.000000, timezone_offset: 0",
+    "utc datetime: 2026-11-04T16:31:35.000000, timezone_offset: 0",
+    "SUCCEEDED"
+  ],
+  [
+    "Total:3",
+    "Succeeded:3",
+    "Failed:0",
+    "In Progress:0",
+    "",
+    ""
+  ]
+]

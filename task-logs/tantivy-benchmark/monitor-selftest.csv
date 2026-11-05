@@ -1,0 +1,3 @@
+utc,elapsed_s,pid,alive,cpu_percent_one_core,rss_bytes,pss_bytes,threads,read_bytes,write_bytes
+2026-11-04T14:59:21Z,0.0,50988,True,,3489792,793600,1,0,32768
+2026-11-04T14:59:22Z,1.001,50988,True,0.0,3489792,793600,1,0,32768

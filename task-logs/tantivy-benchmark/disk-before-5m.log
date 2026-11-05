@@ -1,0 +1,10 @@
+{
+  "utc": "2026-11-04T17:13:36Z",
+  "finished_utc": "2026-11-04T17:13:36Z",
+  "complete": true,
+  "graph_allocated_bytes": 471699456,
+  "index_allocated_bytes": 1003520,
+  "sum_service_pss_bytes": 477180928,
+  "delta": null,
+  "error": null
+}

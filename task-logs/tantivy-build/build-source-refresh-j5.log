@@ -1,0 +1,137 @@
+[  0%] Built target datetime_parser_target
+[  0%] Built target wkt_parser_target
+[  1%] Built target parser_target
+[  1%] Built target common_thrift_generator
+[  3%] Built target graph_thrift_generator
+[  3%] Built target raftex_thrift_generator
+[  3%] Built target nebula_tantivy_build
+[  3%] Built target storage_thrift_generator
+[  3%] Built target meta_thrift_generator
+[  3%] Built target tantivy_adapter
+[  3%] Built target common_thrift_obj
+[  3%] Built target graph_thrift_obj
+[  5%] Built target raftex_thrift_obj
+[  6%] Built target meta_thrift_obj
+[  6%] Built target disk_man_obj
+[  6%] Built target listener_obj
+[ 10%] Built target storage_thrift_obj
+[ 10%] Building CXX object src/kvstore/CMakeFiles/kvstore_obj.dir/Part.cpp.o
+[ 10%] Built target wal_obj
+[ 10%] Built target kv_stats_obj
+[ 10%] Built target raftex_obj
+[ 10%] Built target meta_stats_obj
+[ 12%] Built target ast_match_path_obj
+[ 13%] Built target storage_common_obj
+[ 15%] Building CXX object src/kvstore/CMakeFiles/kvstore_obj.dir/NebulaStore.cpp.o
+[ 15%] Built target internal_storage_service_handler
+[ 15%] Built target storage_http_handler
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o
+[ 17%] Built target storage_transaction_executor
+[ 17%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o
+[ 17%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/index/LookupProcessor.cpp.o
+[ 17%] Building CXX object src/storage/CMakeFiles/storage_server.dir/StorageServer.cpp.o
+[ 20%] Built target graph_storage_service_handler
+[ 20%] Built target tantivy_manager
+[ 20%] Built target storage_stats_obj
+[ 20%] Built target version_obj
+[ 22%] Built target ws_obj
+[ 22%] Built target meta_v2_thrift_obj
+[ 22%] Built target meta_http_handler
+[ 22%] Built target meta_data_upgrade_obj
+[ 22%] Built target graph_context_obj
+[ 22%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/IndexScanRule.cpp.o
+[ 24%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/FulltextIndexScanExecutor.cpp.o
+[ 27%] Built target storage_admin_service_handler
+[ 27%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/match/MatchSolver.cpp.o
+[ 27%] Built target kvstore_obj
+[ 27%] Building CXX object src/graph/planner/CMakeFiles/plan_obj.dir/plan/Query.cpp.o
+[ 36%] Built target optimizer_obj
+[ 36%] Built target scheduler_obj
+[ 37%] Building CXX object src/graph/service/CMakeFiles/graph_flags_obj.dir/GraphFlags.cpp.o
+[ 39%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/IndexScanExecutor.cpp.o
+[ 39%] Built target storage_server
+[ 39%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/admin/SpaceExecutor.cpp.o
+[ 39%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/LookupPlanner.cpp.o
+[ 39%] Built target graph_flags_obj
+[ 39%] Built target service_obj
+[ 39%] Built target query_engine_obj
+[ 41%] Built target graph_auth_obj
+[ 41%] Built target graph_session_obj
+[ 41%] Built target graph_stats_obj
+[ 41%] Building CXX object src/graph/util/CMakeFiles/util_obj.dir/FTIndexUtils.cpp.o
+[ 43%] Built target plan_obj
+[ 43%] Built target idgenerator_obj
+[ 43%] Building CXX object src/graph/validator/CMakeFiles/validator_obj.dir/MaintainValidator.cpp.o
+[ 43%] Building CXX object src/graph/validator/CMakeFiles/validator_obj.dir/LookupValidator.cpp.o
+[ 43%] Building CXX object src/graph/util/CMakeFiles/util_obj.dir/ToJson.cpp.o
+[ 48%] Built target planner_obj
+[ 50%] Built target expr_visitor_obj
+[ 58%] Built target executor_obj
+[ 58%] Built target plan_node_visitor_obj
+[ 58%] Building CXX object src/graph/util/CMakeFiles/util_obj.dir/OptimizerUtils.cpp.o
+[ 58%] Built target gc_obj
+[ 60%] Built target parser_obj
+[ 60%] Built target mock_obj
+[ 60%] Built target fake_http_server_obj
+[ 60%] Built target storage_local_server_obj
+[ 60%] Building CXX object src/clients/meta/CMakeFiles/meta_client_obj.dir/MetaClient.cpp.o
+[ 60%] Built target file_based_cluster_id_man_obj
+[ 60%] Built target meta_client_stats_obj
+[ 60%] Built target storage_client_obj
+[ 60%] Built target storage_client_base_obj
+[ 60%] Built target internal_storage_client_obj
+[ 60%] Built target storage_client_stats_obj
+[ 60%] Built target codec_obj
+[ 62%] Built target base_obj
+[ 63%] Built target time_obj
+[ 63%] Built target time_utils_obj
+[ 63%] Built target datetime_parser_obj
+[ 63%] Built target network_obj
+[ 63%] Built target thrift_obj
+[ 63%] Built target fs_obj
+[ 63%] Built target thread_obj
+[ 63%] Built target process_obj
+[ 63%] Built target hdfs_helper_obj
+[ 63%] Built target http_client_obj
+[ 63%] Built target stats_obj
+[ 63%] Built target charset_obj
+[ 63%] Built target nebula_algo_obj
+[ 65%] Built target datatypes_obj
+[ 67%] Built target conf_obj
+[ 67%] Built target meta_obj
+[ 67%] Building CXX object src/common/expression/CMakeFiles/expression_obj.dir/TextSearchExpression.cpp.o
+[ 68%] Built target function_manager_obj
+[ 68%] Built target agg_function_manager_obj
+[ 68%] Built target graph_obj
+[ 68%] Built target es_adapter_obj
+[ 70%] Built target keyutils_obj
+[ 70%] Built target meta_keyutils_obj
+[ 70%] Built target log_str_list_iterator_obj
+[ 70%] Built target ssl_obj
+[ 70%] Built target geo_index_obj
+[ 72%] Built target wkt_wkb_io_obj
+[ 72%] Built target memory_obj
+[ 72%] Built target snowflake_obj
+[ 72%] Built target uuid_obj
+[ 72%] Built target segment_id_obj
+[ 72%] Built target log_monitor_obj
+[ 72%] Built target ws_common_obj
+[ 72%] Built target meta_version_man_obj
+[ 72%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/FTIndexProcessor.cpp.o
+[ 77%] Built target expression_obj
+[ 81%] Built target validator_obj
+[ 82%] Built target util_obj
+[ 98%] Built target meta_service_handler
+[ 98%] Built target meta_client_obj
+[ 98%] Linking CXX executable ../../../bin/db_dump
+[ 98%] Linking CXX executable ../../../bin/meta_dump
+[ 98%] Linking CXX executable ../../bin/nebula-metad
+[ 98%] Linking CXX executable ../../bin/nebula-storaged
+[ 98%] Linking CXX executable ../../bin/nebula-graphd
+[100%] Built target nebula-metad
+[100%] Linking CXX executable ../../../bin/db_upgrader
+[100%] Built target nebula-storaged
+[100%] Built target meta_dump
+[100%] Built target db_dump
+[100%] Built target nebula-graphd
+[100%] Built target db_upgrader

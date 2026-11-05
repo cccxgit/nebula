@@ -1,0 +1,4 @@
+Mock import: failure records all four submitted batches, 5 acknowledged rows and 2 failed rows; no DB used
+Existing output directory is protected against overwrite
+Python syntax checks passed; live DB paths remain unexecuted during this preparation audit
+2026-11-04T15:35Z Offline 1m oracle safety gate correctly rejected STARTS WITH "The" after >100000 real hits; formal low-load cases narrowed to "The United" and ENDS WITH "water.". Old 10k oracle retained as earlier evidence; use *-safe.json. Fixed over-escaped phrase/slop/error fixtures and native query samples. No database connections.

@@ -1,0 +1,20 @@
+{
+  "succeeded": true,
+  "query": "LOOKUP ON passage WHERE ES_QUERY(`nebula_index_ft_passage_1m`, \"water\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+  "error": "",
+  "fulltext": [
+    {
+      "name": "FulltextIndexScan",
+      "inputVar": "",
+      "space": "0",
+      "dedup": "0",
+      "limit": "-1",
+      "filter": "",
+      "orderBy": "[]",
+      "isEdge": "0",
+      "offset": "-1",
+      "schemaId": "2",
+      "searchExpr": "ES_QUERY(nebula_index_ft_passage_1m, \"water\")"
+    }
+  ]
+}

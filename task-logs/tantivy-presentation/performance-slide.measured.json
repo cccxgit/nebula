@@ -1,0 +1,36 @@
+{
+  "status": "final_measurements_independently_audited",
+  "title": "百万对照与五百万规模验证",
+  "headline": "112.883 ×",
+  "headlineLabel": "百万同 MATCH，单并发\n下推开关 QPS 比值",
+  "detail": "500 万真实唯一 VID，128 字符投影，20 分区 / 3 副本",
+  "table": [
+    [
+      "500 万普通 MATCH",
+      "单并发",
+      "动态四并发"
+    ],
+    [
+      "QPS",
+      "3.9051",
+      "11.6882"
+    ],
+    [
+      "混合 P95 / P99 ms",
+      "776.08 / 809.45",
+      "938.98 / 986.02"
+    ],
+    [
+      "请求 / 失败",
+      "400 / 0",
+      "400 / 0"
+    ],
+    [
+      "完整集合与计划",
+      "四项集合均一致",
+      "均确认 Tantivy"
+    ]
+  ],
+  "footer": "百万旧构建：开启/关闭 800/80 次，预热 3/1 轮，单轮且未清缓存。\n五百万仅绝对值，无关闭下推或 ES 对照。",
+  "notes": "约60秒。百万同一MATCH开关并发1为11.5048/0.101917QPS，比值112.8833，开启800次、每项预热3轮，关闭80次、每项预热1轮，未重启或清缓存且只有单轮，旧构建早于TopK/clear/rebuild修正，不能称ES加速比或TopK收益。百万MATCH动态C4=36.6311QPS。五百万使用5000000个真实唯一原始PID的前128个Unicode字符，4970516条被裁剪（99.41032%），SHOW STATS为5000000顶点0边，3storage/20分区3副本。导入25000批每批200、C1、0失败，198.6901273秒=25164.8135确认rows/s，无全文索引时图写入确认，不是全文可见吞吐。CREATE至显式REBUILD观察完成182.445103秒，三个storage各500万ready，CREATE自动回填可能与显式重建重叠，不是纯引擎建索引速度。四个无LIMIT完整VID集合与本地oracle相同：82845/16252/1062/138，PROFILE均Tantivy。五百万C1/C4每种谓词100次，共400次，预热3轮，均0失败，QPS3.905112743/11.688168508，P95/P99分别776.080599/809.446237及938.975744/986.023291ms。查询前leader均衡为7/6/7，动态worker100/101/102/97，平均在途约3.965。没有五百万off/ES组，不计算百万到五百万扩展比。全机快照swapout增量约143.965MiB、OOMkill增量0，不能归因到某一进程或声称全机零内存压力。数据为连续前缀短文本投影，公开源138364198条不等于实测；一亿容量门槛未通过。来源：docs/tantivy/benchmark-report.md；task-logs/tantivy-benchmark/5m-import-independent-audit.json、5m-index-and-visible-independent-audit.json、5m-query-c1-independent-audit.json、5m-query-c4-independent-audit.json、final-5m-stats.jsonl；百万来源1m-off-and-restored-independent-audit.json。"
+}

@@ -1,0 +1,117 @@
+[  0%] Built target common_thrift_generator
+[  0%] Built target wkt_parser_target
+[  1%] Built target parser_target
+[  3%] Built target graph_thrift_generator
+[  3%] Built target datetime_parser_target
+[  3%] Built target raftex_thrift_generator
+[  3%] Built target storage_thrift_generator
+[  3%] Built target meta_thrift_generator
+[  3%] Built target nebula_tantivy_build
+[  3%] Built target common_thrift_obj
+[  3%] Built target file_based_cluster_id_man_obj
+[  5%] Built target raftex_thrift_obj
+[  5%] Built target meta_client_stats_obj
+[  5%] Built target meta_client_obj
+[  5%] Built target graph_thrift_obj
+[  5%] Built target storage_client_obj
+[  5%] Built target storage_client_stats_obj
+[  5%] Built target storage_client_base_obj
+[  5%] Built target internal_storage_client_obj
+[  5%] Built target codec_obj
+[  8%] Built target base_obj
+[  8%] Built target time_obj
+[  8%] Built target network_obj
+[  8%] Built target time_utils_obj
+[  8%] Built target datetime_parser_obj
+[  8%] Built target fs_obj
+[  8%] Built target thrift_obj
+[  8%] Built target thread_obj
+[  8%] Built target http_client_obj
+[  8%] Built target process_obj
+[  8%] Built target hdfs_helper_obj
+[  8%] Built target stats_obj
+[  8%] Built target nebula_algo_obj
+[  8%] Built target charset_obj
+[ 10%] Built target conf_obj
+[ 12%] Built target datatypes_obj
+[ 12%] Built target agg_function_manager_obj
+[ 13%] Built target function_manager_obj
+[ 13%] Built target graph_obj
+[ 13%] Built target es_adapter_obj
+[ 13%] Built target meta_obj
+[ 13%] Built target tantivy_adapter
+[ 15%] Built target keyutils_obj
+[ 15%] Built target meta_keyutils_obj
+[ 15%] Built target ssl_obj
+[ 15%] Built target log_str_list_iterator_obj
+[ 15%] Built target geo_index_obj
+[ 17%] Built target wkt_wkb_io_obj
+[ 22%] Built target expression_obj
+[ 22%] Built target snowflake_obj
+[ 22%] Built target uuid_obj
+[ 22%] Built target memory_obj
+[ 22%] Built target segment_id_obj
+[ 22%] Built target ws_common_obj
+[ 22%] Built target log_monitor_obj
+[ 24%] Built target meta_thrift_obj
+[ 24%] Built target disk_man_obj
+[ 24%] Built target raftex_obj
+[ 25%] Built target kvstore_obj
+[ 25%] Built target wal_obj
+[ 29%] Built target storage_thrift_obj
+[ 29%] Built target listener_obj
+[ 29%] Built target kv_stats_obj
+[ 29%] Built target meta_stats_obj
+[ 31%] Built target ast_match_path_obj
+[ 32%] Built target storage_common_obj
+[ 32%] Built target internal_storage_service_handler
+[ 32%] Built target storage_http_handler
+[ 32%] Built target storage_server
+[ 32%] Built target tantivy_manager
+[ 32%] Built target version_obj
+[ 32%] Built target storage_stats_obj
+[ 34%] Built target storage_transaction_executor
+[ 34%] Built target meta_v2_thrift_obj
+[ 34%] Built target meta_http_handler
+[ 37%] Built target storage_admin_service_handler
+[ 39%] Built target ws_obj
+[ 39%] Built target graph_context_obj
+[ 39%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/index/LookupProcessor.cpp.o
+[ 41%] Built target plan_obj
+[ 46%] Built target planner_obj
+[ 46%] Built target scheduler_obj
+[ 48%] Built target graph_flags_obj
+[ 48%] Built target service_obj
+[ 48%] Built target query_engine_obj
+[ 48%] Built target graph_session_obj
+[ 50%] Built target graph_auth_obj
+[ 58%] Built target optimizer_obj
+[ 58%] Built target graph_stats_obj
+[ 58%] Built target idgenerator_obj
+[ 60%] Built target util_obj
+[ 62%] Built target expr_visitor_obj
+[ 62%] Built target plan_node_visitor_obj
+[ 62%] Built target gc_obj
+[ 62%] Built target mock_obj
+[ 65%] Built target validator_obj
+[ 67%] Built target parser_obj
+[ 67%] Built target storage_local_server_obj
+[ 67%] Built target meta_version_man_obj
+[ 67%] Built target fake_http_server_obj
+[ 67%] Built target meta_data_upgrade_obj
+[ 79%] Built target executor_obj
+[ 79%] Linking CXX executable ../../bin/nebula-graphd
+[ 94%] Built target meta_service_handler
+[ 94%] Linking CXX executable ../../bin/nebula-metad
+[ 98%] Built target graph_storage_service_handler
+[ 98%] Building CXX object src/daemons/CMakeFiles/nebula-storaged.dir/StorageDaemon.cpp.o
+[ 98%] Linking CXX executable ../../../bin/meta_dump
+[ 98%] Linking CXX executable ../../../bin/db_dump
+[ 98%] Linking CXX executable ../../bin/nebula-storaged
+[100%] Built target nebula-metad
+[100%] Linking CXX executable ../../../bin/db_upgrader
+[100%] Built target nebula-graphd
+[100%] Built target db_dump
+[100%] Built target meta_dump
+[100%] Built target nebula-storaged
+[100%] Built target db_upgrader

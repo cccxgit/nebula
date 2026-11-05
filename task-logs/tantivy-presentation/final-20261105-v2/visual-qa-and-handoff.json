@@ -1,0 +1,101 @@
+{
+  "utc": "2026-11-04T17:33:00.315221+00:00",
+  "kind": "final_presentation_and_document_handoff",
+  "passed": true,
+  "final_file": "/home/sch/nebula/nebula-3.6-tantivy/docs/tantivy/nebula-tantivy-competition-final-20261105-v2.pptx",
+  "final_sha256": "a472464c43412f6c6192c9daaa1168d2bea57229ce91614a397bcfff369c919e",
+  "byte_count": 51243,
+  "slides": [
+    {
+      "slide": 1,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-01.png",
+      "visual_review": "v2 PNG byte-identical to directly inspected v1",
+      "status": "pass"
+    },
+    {
+      "slide": 2,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-02.png",
+      "visual_review": "directly inspected final v2",
+      "status": "pass"
+    },
+    {
+      "slide": 3,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-03.png",
+      "visual_review": "directly inspected final v2",
+      "status": "pass"
+    },
+    {
+      "slide": 4,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-04.png",
+      "visual_review": "v2 PNG byte-identical to directly inspected v1",
+      "status": "pass"
+    },
+    {
+      "slide": 5,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-05.png",
+      "visual_review": "v2 PNG byte-identical to directly inspected v1",
+      "status": "pass"
+    },
+    {
+      "slide": 6,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-06.png",
+      "visual_review": "directly inspected final v2",
+      "status": "pass"
+    },
+    {
+      "slide": 7,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-07.png",
+      "visual_review": "directly inspected final v2",
+      "status": "pass"
+    },
+    {
+      "slide": 8,
+      "preview": "task-logs/tantivy-presentation/final-20261105-v2/previews/slide-08.png",
+      "visual_review": "v2 PNG byte-identical to directly inspected v1",
+      "status": "pass"
+    }
+  ],
+  "native_table_slides": [
+    2,
+    6,
+    7
+  ],
+  "prototype_distinct_cluster_checks": 93,
+  "suites": [
+    {
+      "report": "task-logs/tantivy-demo/verified-final/report.json",
+      "passed_checks": 39
+    },
+    {
+      "report": "task-logs/tantivy-lifecycle/post-topk/report.json",
+      "passed_checks": 23
+    },
+    {
+      "report": "task-logs/tantivy-benchmark/regression-tantivy-final/regression.json",
+      "passed_checks": 18
+    },
+    {
+      "report": "task-logs/tantivy-topk/verified-v2/report.json",
+      "passed_checks": 10
+    },
+    {
+      "report": "task-logs/tantivy-rebuild-immediate/verified-v2/report.json",
+      "passed_checks": 3
+    }
+  ],
+  "rust_tests": 9,
+  "relative_document_links_valid": true,
+  "readme_and_speaker_notes_link_final_v2": true,
+  "guide_smoke_evidence": "task-logs/tantivy-demo/final-guide-smoke.jsonl",
+  "five_million_stats_evidence": "task-logs/tantivy-benchmark/final-5m-stats.jsonl",
+  "newest_demo_and_grammar_verified": true,
+  "powerpoint_native_application_opened": false,
+  "service_or_compiler_operations_by_presentation_task": false,
+  "review_history": [
+    "All v1 slides visually inspected",
+    "Independent query agent inspected v1 slides 2 and 7",
+    "Parent reviewed v1 slides 2,3,4,7 and final v2 slides3,7",
+    "Final v2 slides2,3,6,7 visually inspected; other PNGs verified identical to v1"
+  ],
+  "output_directive": ":codex-file-citation{path=\"/home/sch/nebula/nebula-3.6-tantivy/docs/tantivy/nebula-tantivy-competition-final-20261105-v2.pptx\" purpose=\"output\"}"
+}

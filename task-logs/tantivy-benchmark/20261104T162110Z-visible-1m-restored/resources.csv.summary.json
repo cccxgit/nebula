@@ -1,0 +1,16 @@
+{
+  "pids": [
+    100191,
+    100357,
+    100390,
+    100512,
+    100631
+  ],
+  "sample_count": 1,
+  "elapsed_s": 1.0326298300005874,
+  "max_sum_rss_bytes": 1905860608,
+  "max_sum_available_pss_bytes": 1806055424,
+  "max_sum_cpu_percent_one_core": 0,
+  "rss_note": "RSS sums double-count shared pages; PSS unavailable values are omitted",
+  "disk_note": "read_bytes/write_bytes are cumulative process block-I/O counters, not data size"
+}

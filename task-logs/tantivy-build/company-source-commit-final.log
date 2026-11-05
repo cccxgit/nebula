@@ -1,0 +1,80 @@
+Performing checkout keyword...
+Performing C++ linters...
+Performing C++ code format check...
+.git/hooks/pre-commit: line 88: /share/clang/clang-format-diff.py: No such file or directory
+[3.6-tantivy 964f1730b] feat: embed Tantivy with portable prebuilt Rust archive
+ 113 files changed, 11480 insertions(+), 367 deletions(-)
+ create mode 100644 .gitattributes
+ create mode 100644 AGENTS.md
+ create mode 100644 docs/tantivy/README.md
+ create mode 100644 docs/tantivy/architecture.md
+ create mode 100644 docs/tantivy/benchmark-data.md
+ create mode 100644 docs/tantivy/benchmark-report-template.md
+ create mode 100644 docs/tantivy/benchmark-report.md
+ create mode 100644 docs/tantivy/benchmark-runbook.md
+ create mode 100644 docs/tantivy/build-and-run.md
+ create mode 100644 docs/tantivy/company-migration.md
+ create mode 100644 docs/tantivy/demo-guide.md
+ create mode 100644 docs/tantivy/fulltext-compatibility.md
+ create mode 100644 docs/tantivy/native-baseline-runbook.md
+ create mode 100644 docs/tantivy/nebula-tantivy-competition-final-20261105-v2.pptx
+ create mode 100644 docs/tantivy/speaker-notes-and-qa.md
+ create mode 100644 docs/tantivy/topk-implementation.md
+ create mode 100644 scripts/tantivy-benchmark/.gitignore
+ create mode 100644 scripts/tantivy-benchmark/audit_results.py
+ create mode 100644 scripts/tantivy-benchmark/benchmark.py
+ create mode 100644 scripts/tantivy-benchmark/capacity_gate.py
+ create mode 100644 scripts/tantivy-benchmark/dataset-manifest.json
+ create mode 100644 scripts/tantivy-benchmark/es_baseline.py
+ create mode 100644 scripts/tantivy-benchmark/es_regression_setup.py
+ create mode 100644 scripts/tantivy-benchmark/fulltext-regression-cases.jsonl
+ create mode 100644 scripts/tantivy-benchmark/fulltext-regression-fixture.jsonl
+ create mode 100644 scripts/tantivy-benchmark/monitor.py
+ create mode 100644 scripts/tantivy-benchmark/native_compare.py
+ create mode 100644 scripts/tantivy-benchmark/pilot-measurements.template.json
+ create mode 100644 scripts/tantivy-benchmark/preflight.py
+ create mode 100644 scripts/tantivy-benchmark/queries-es-example.jsonl
+ create mode 100644 scripts/tantivy-benchmark/queries-example.jsonl
+ create mode 100644 scripts/tantivy-benchmark/queries-text-search.jsonl
+ create mode 100644 scripts/tantivy-benchmark/queries-transparent-match.jsonl
+ create mode 100644 scripts/tantivy-benchmark/readiness.py
+ create mode 100644 scripts/tantivy-benchmark/regression.py
+ create mode 100644 scripts/tantivy-benchmark/requirements.txt
+ create mode 100644 scripts/tantivy-benchmark/run-measured-stage.sh
+ create mode 100644 scripts/tantivy-benchmark/system_snapshot.py
+ create mode 100644 scripts/tantivy-benchmark/tantivy_regression_setup.py
+ create mode 100644 scripts/tantivy-benchmark/toggle_pushdown.py
+ create mode 100644 scripts/tantivy-demo/cluster.py
+ create mode 100644 scripts/tantivy-demo/demo.py
+ create mode 100644 scripts/tantivy-demo/lifecycle.py
+ create mode 100644 scripts/tantivy-demo/rebuild_immediate.py
+ create mode 100644 scripts/tantivy-demo/topk.py
+ create mode 100644 src/common/plugin/fulltext/tantivy/.gitignore
+ create mode 100644 src/common/plugin/fulltext/tantivy/CMakeLists.txt
+ create mode 100644 src/common/plugin/fulltext/tantivy/README.md
+ create mode 100644 src/common/plugin/fulltext/tantivy/TantivyBridge.h
+ create mode 100644 src/common/plugin/fulltext/tantivy/TantivyIndex.cpp
+ create mode 100644 src/common/plugin/fulltext/tantivy/TantivyIndex.h
+ create mode 100644 src/common/plugin/fulltext/tantivy/prebuilt/extract.py
+ create mode 100644 src/common/plugin/fulltext/tantivy/prebuilt/libnebula_tantivy-linux-x86_64-glibc2.35.a.gz
+ create mode 100644 src/common/plugin/fulltext/tantivy/prebuilt/manifest.json
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/Cargo.lock
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/Cargo.toml
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/src/lib.rs
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/src/query_compat.rs
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/src/tests.rs
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/vendor/include-flate/Cargo.toml
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/vendor/include-flate/LICENSE
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/vendor/include-flate/NEBULA-PATCH.md
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/vendor/include-flate/README.md
+ create mode 100644 src/common/plugin/fulltext/tantivy/rust/vendor/include-flate/src/lib.rs
+ create mode 100644 src/common/plugin/fulltext/tantivy/tests/TantivyBridgeTest.cpp
+ rewrite src/graph/executor/query/FulltextIndexScanExecutor.cpp (84%)
+ create mode 100644 src/graph/util/test/FTIndexUtilsTest.cpp
+ rewrite src/storage/admin/RebuildFTIndexTask.cpp (90%)
+ create mode 100644 src/storage/exec/IndexTantivyScanNode.cpp
+ create mode 100644 src/storage/exec/IndexTantivyScanNode.h
+ create mode 100644 src/storage/fulltext/TantivyManager.cpp
+ create mode 100644 src/storage/fulltext/TantivyManager.h
+ create mode 100644 src/storage/fulltext/TantivyTopK.h
+ create mode 100644 src/storage/fulltext/tests/TantivyTopKTest.cpp

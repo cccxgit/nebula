@@ -1,0 +1,137 @@
+{
+  "utc": "2026-11-04T17:25:44Z",
+  "kind": "offline_snapshot_and_resource_recomputation",
+  "before": "task-logs/tantivy-benchmark/disk-before-5m.json",
+  "after": "task-logs/tantivy-benchmark/snapshot-after-5m.json",
+  "same_five_process_instances": true,
+  "storage_directory_delta": {
+    "graph": {
+      "before_bytes": 471699456,
+      "after_bytes": 8452509696,
+      "delta_bytes": 7980810240,
+      "delta_GiB": 7.432708740234375,
+      "three_replicas_already_included": true
+    },
+    "index": {
+      "before_bytes": 1003520,
+      "after_bytes": 4489945088,
+      "delta_bytes": 4488941568,
+      "delta_GiB": 4.180652618408203,
+      "three_replicas_already_included": true
+    }
+  },
+  "system_counter_deltas": {
+    "pswpin_delta": 1255,
+    "pswpin_delta_bytes": 5140480,
+    "pswpout_delta": 36855,
+    "pswpout_delta_bytes": 150958080,
+    "oom_kill_delta": 0
+  },
+  "snapshot_memory": {
+    "before_MemAvailable_bytes": 28370616320,
+    "after_MemAvailable_bytes": 26837753856,
+    "before_SwapUsed_bytes": 4672716800,
+    "after_SwapUsed_bytes": 4805361664,
+    "after_service_pss_bytes": 2754523136
+  },
+  "storage_ready": {
+    "source": "task-logs/tantivy-benchmark/storage-ready-5m.json",
+    "all_three_reports_5m_documents": true,
+    "read_scope": "Existing extracted lines only; original storage logs not rescanned."
+  },
+  "stages": {
+    "import": {
+      "pids": [
+        155648,
+        155814,
+        155847,
+        155974,
+        156183
+      ],
+      "samples": 195,
+      "complete_pss_samples": 195,
+      "complete_cpu_intervals": 194,
+      "all_observed_processes_alive": true,
+      "sample_interval_min_s": 1.01,
+      "sample_interval_max_s": 1.0330000000000013,
+      "observed_peak_sum_rss_bytes": 1570136064,
+      "observed_peak_sum_pss_bytes": 1471273984,
+      "observed_peak_sum_cpu_cores": 5.29176,
+      "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+    },
+    "index": {
+      "pids": [
+        155648,
+        155814,
+        155847,
+        155974,
+        156183
+      ],
+      "samples": 189,
+      "complete_pss_samples": 189,
+      "complete_cpu_intervals": 188,
+      "all_observed_processes_alive": true,
+      "sample_interval_min_s": 1.0219999999999985,
+      "sample_interval_max_s": 1.0719999999999885,
+      "observed_peak_sum_rss_bytes": 6064050176,
+      "observed_peak_sum_pss_bytes": 5979797504,
+      "observed_peak_sum_cpu_cores": 9.545399999999999,
+      "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+    },
+    "query_c1": {
+      "pids": [
+        155648,
+        155814,
+        155847,
+        155974,
+        156183
+      ],
+      "samples": 102,
+      "complete_pss_samples": 102,
+      "complete_cpu_intervals": 101,
+      "all_observed_processes_alive": true,
+      "sample_interval_min_s": 1.0279999999999987,
+      "sample_interval_max_s": 1.0569999999999986,
+      "observed_peak_sum_rss_bytes": 3301429248,
+      "observed_peak_sum_pss_bytes": 3200551936,
+      "observed_peak_sum_cpu_cores": 3.2943399999999996,
+      "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+    },
+    "query_c4": {
+      "pids": [
+        155648,
+        155814,
+        155847,
+        155974,
+        156183
+      ],
+      "samples": 36,
+      "complete_pss_samples": 36,
+      "complete_cpu_intervals": 35,
+      "all_observed_processes_alive": true,
+      "sample_interval_min_s": 1.031,
+      "sample_interval_max_s": 1.0739999999999998,
+      "observed_peak_sum_rss_bytes": 3616653312,
+      "observed_peak_sum_pss_bytes": 3515549696,
+      "observed_peak_sum_cpu_cores": 10.07638,
+      "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+    }
+  },
+  "limitations": [
+    "Directory snapshots are sequential and not peak; include graph WAL/ordinary tag index and lexical+trigram Tantivy copies.",
+    "CPU/RSS/PSS are sampled five-service sums, not full machine requirements.",
+    "pswpout increased; do not claim no swap-out. Counters are host-wide, not process attribution.",
+    "No OOM kill increase does not establish long-term stability or safe larger-scale capacity."
+  ],
+  "all_checks_passed": true,
+  "post_measurement_graph_stats": {
+    "evidence": "task-logs/tantivy-benchmark/final-5m-stats.jsonl",
+    "utc": "2026-11-04T17:25:19Z",
+    "job": 28,
+    "job_and_three_tasks_finished": true,
+    "vertices": 5000000,
+    "passage_rows": 5000000,
+    "edges": 0,
+    "performed_after_performance_and_snapshot": true
+  }
+}

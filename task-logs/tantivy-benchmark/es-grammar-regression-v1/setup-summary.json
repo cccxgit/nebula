@@ -1,0 +1,161 @@
+{
+  "kind": "synthetic_8_row_es_grammar_setup_plan",
+  "space": "ft_regression_es_v1",
+  "index": "nebula_index_ft_regression_es_v1",
+  "host": "127.0.0.1",
+  "port": 29669,
+  "partition_num": 20,
+  "replica_factor": 3,
+  "fixture_rows": 8,
+  "regression_cases": 18,
+  "fixture_sha256": "1758a8aa7134e054b634cc5f234e16799b2e483a7e2fa207106a26b79cd093e1",
+  "cases_sha256": "7bd7db44614365e0a68b9526a0a46c50f4c12fcefe751b4e119870a39cbb56a6",
+  "before_rebuild_metadata_guard": "Read Listener refresh/heartbeat flags; wait max(5, 2*period+2) seconds, reject above 30. Time allowance only, not a readiness proof.",
+  "statements": [
+    "CREATE SPACE `ft_regression_es_v1` (partition_num=20,replica_factor=3,vid_type=FIXED_STRING(64))",
+    "USE `ft_regression_es_v1`",
+    "CREATE TAG ftcase(title string,body string)",
+    "ADD LISTENER ELASTICSEARCH 127.0.0.1:29879",
+    "CREATE FULLTEXT TAG INDEX `nebula_index_ft_regression_es_v1` ON ftcase(title,body) ANALYZER=\"standard\"",
+    "INSERT VERTEX ftcase(title,body) VALUES \"r1\":(\"quick brown fox\",\"new york river water\"),\"r2\":(\"quick blue hare\",\"new jersey lake\"),\"r3\":(\"slow brown fox\",\"old york river\"),\"r4\":(\"quack bronze bird\",\"new york harbor\"),\"r5\":(\"aquatic watercraft\",\"water river water\"),\"r6\":(\"beach\",\"sand dry\"),\"r7\":(\"New York\",\"quoted \\\"fox\\\" and C++\"),\"r8\":(\"the Quick hare\",\"new old york\")",
+    "REBUILD FULLTEXT INDEX"
+  ],
+  "note": "Synthetic correctness fixture, not throughput data. Rebuild ensures fixture preparation; this does not measure online-write visibility. No server start/stop or benchmark-space writes. Raw regression results are retained even when expectations differ; no cases are skipped or rewritten.",
+  "setup_complete": true,
+  "regression_complete": true,
+  "all_passed": true,
+  "service_state": [
+    {
+      "name": "metad",
+      "pid": 140860,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "storage1",
+      "pid": 141117,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "storage2",
+      "pid": 141250,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "storage3",
+      "pid": 141368,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "listener",
+      "pid": 141494,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "graphd",
+      "pid": 151177,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "elasticsearch",
+      "pid": 140735,
+      "running": true,
+      "owned": true,
+      "process_state": "S",
+      "http_ready": true,
+      "http_cluster_name": "nebula-tantivy-es-baseline",
+      "http_version": "7.17.29",
+      "http_process_ids": [
+        140735
+      ],
+      "pid_matches_http": true,
+      "ready": true
+    }
+  ],
+  "es_settings": {
+    "nebula_index_ft_regression_es_v1": {
+      "settings": {
+        "index": {
+          "routing": {
+            "allocation": {
+              "include": {
+                "_tier_preference": "data_content"
+              }
+            }
+          },
+          "number_of_shards": "1",
+          "provided_name": "nebula_index_ft_regression_es_v1",
+          "max_result_window": "100001",
+          "creation_date": "1793811573331",
+          "number_of_replicas": "0",
+          "uuid": "1NA1A1H8S-WJDbRau0Z-Ww",
+          "version": {
+            "created": "7172999"
+          }
+        }
+      }
+    }
+  },
+  "es_mapping": {
+    "nebula_index_ft_regression_es_v1": {
+      "mappings": {
+        "properties": {
+          "body": {
+            "type": "text",
+            "analyzer": "standard"
+          },
+          "dst": {
+            "type": "keyword"
+          },
+          "rank": {
+            "type": "long"
+          },
+          "src": {
+            "type": "keyword"
+          },
+          "title": {
+            "type": "text",
+            "analyzer": "standard"
+          },
+          "vid": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  },
+  "metadata_time_guard_elapsed_s": 5.004388100998767,
+  "fixture_rebuild_job_id": 7,
+  "regression_command": [
+    "/usr/bin/python3",
+    "/home/sch/nebula/nebula-3.6-tantivy/scripts/tantivy-benchmark/regression.py",
+    "run",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "29669",
+    "--space",
+    "ft_regression_es_v1",
+    "--index",
+    "nebula_index_ft_regression_es_v1",
+    "--function",
+    "ES_QUERY",
+    "--output",
+    "/home/sch/nebula/nebula-3.6-tantivy/task-logs/tantivy-benchmark/es-grammar-regression-v1/regression.json"
+  ],
+  "regression_exit_code": 0,
+  "passed_cases": 18,
+  "failed_case_names": [],
+  "syntax_rejection_has_parse_evidence": true
+}

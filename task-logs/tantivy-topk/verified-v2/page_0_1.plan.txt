@@ -1,0 +1,179 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=9,
+        output_var=b'{"colNames":["id","relevance"],"type":"DATASET","name":"__Limit_7"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Limit_8'),
+        Pair(
+            key=b'columns',
+            value=b'["id(VERTEX) AS id","$score AS relevance"]')],
+        profiles=[ProfilingStats(
+            rows=1,
+            exec_duration_in_us=35,
+            total_duration_in_us=48)],
+        dependencies=[10]),
+    PlanNodeDescription(
+        name=b'HashInnerJoin',
+        id=10,
+        output_var=b'{"colNames":["id","score","VERTEX"],"name":"__Limit_8","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'{"leftVar":"__FulltextIndexScan_11","rightVar":"__Project_12"}'),
+        Pair(
+            key=b'hashKeys',
+            value=b'["COLUMN[0]"]'),
+        Pair(
+            key=b'probeKeys',
+            value=b'["id(VERTEX)"]'),
+        Pair(
+            key=b'kind',
+            value=b'InnerJoin')],
+        profiles=[ProfilingStats(
+            rows=1,
+            exec_duration_in_us=49,
+            total_duration_in_us=68)],
+        dependencies=[11, 12]),
+    PlanNodeDescription(
+        name=b'FulltextIndexScan',
+        id=11,
+        output_var=b'{"colNames":["id","score"],"name":"__FulltextIndexScan_11","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'0'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'1'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'engine',
+            value=b'tantivy'),
+        Pair(
+            key=b'isEdge',
+            value=b'0'),
+        Pair(
+            key=b'offset',
+            value=b'0'),
+        Pair(
+            key=b'schemaId',
+            value=b'19'),
+        Pair(
+            key=b'searchExpr',
+            value=b'TEXT_SEARCH(tantivy_topk_1105_003411_article, "*")')],
+        profiles=[ProfilingStats(
+            rows=1,
+            exec_duration_in_us=0,
+            total_duration_in_us=2026,
+            other_stats={b'resp[0]': b'{\n  "exec": "1376(us)",\n  "host": "127.0.0.1:9789",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=1)": "7167(us)",\n   '
+                        b' "IndexProjectionNode(projectColumn=[_vid,_score])": "6932(us)",'
+                        b'\n    "TantivyIndexScanNode(index=tantivy_topk_1105_003411_articl'
+                        b'e,field=,mode=0,topk=1,fallback=false)": "6719(us)"\n  },\n  "'
+                        b'total": "1822(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "692(us)",\n  "host": "127.0.0.1:9779",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=1)": "1080(us)",\n    '
+                        b'"IndexProjectionNode(projectColumn=[_vid,_score])": "1065(us)",\n'
+                        b'    "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article'
+                        b',field=,mode=0,topk=1,fallback=false)": "1051(us)"\n  },\n  "t'
+                        b'otal": "1135(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "854(us)",\n  "host": "127.0.0.1:9799",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=1)": "2192(us)",\n    '
+                        b'"IndexProjectionNode(projectColumn=[_vid,_score])": "2105(us)",\n'
+                        b'    "TantivyIndexScanNode(index=tantivy_topk_1105_003411_article'
+                        b',field=,mode=0,topk=1,fallback=false)": "1989(us)"\n  },\n  "t'
+                        b'otal": "1269(us)"\n}'})],
+        dependencies=[0]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=0,
+        output_var=b'{"colNames":[],"name":"__Start_0","type":"DATASET"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=21)]),
+    PlanNodeDescription(
+        name=b'Project',
+        id=12,
+        output_var=b'{"colNames":["VERTEX"],"type":"DATASET","name":"__Project_12"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__GetVertices_13'),
+        Pair(
+            key=b'columns',
+            value=b'["VERTEX"]')],
+        profiles=[ProfilingStats(
+            rows=1,
+            exec_duration_in_us=27,
+            total_duration_in_us=31)],
+        dependencies=[13]),
+    PlanNodeDescription(
+        name=b'GetVertices',
+        id=13,
+        output_var=b'{"colNames":[],"name":"__GetVertices_13","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Argument_14'),
+        Pair(
+            key=b'space',
+            value=b'18'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'COLUMN[0]'),
+        Pair(
+            key=b'props',
+            value=b'[{"props":["_vid","_tag","body","category","title"],"tagId":19}]'),
+        Pair(
+            key=b'exprs',
+            value=b'')],
+        profiles=[ProfilingStats(
+            rows=1,
+            exec_duration_in_us=136,
+            total_duration_in_us=588,
+            other_stats={b'resp[0]': b'{\n  "exec": "169(us)",\n  "host": "127.0.0.1:9789",\n  "total"'
+                        b': "458(us)"\n}',
+            b'total_rpc': b'515(us)'})],
+        dependencies=[14]),
+    PlanNodeDescription(
+        name=b'Argument',
+        id=14,
+        output_var=b'{"colNames":[],"name":"__Argument_14","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__FulltextIndexScan_11'),
+        Pair(
+            key=b'alias',
+            value=b'id'),
+        Pair(
+            key=b'isInputVertexRequired',
+            value=b'0')],
+        profiles=[ProfilingStats(
+            rows=1,
+            exec_duration_in_us=0,
+            total_duration_in_us=20)])],
+    node_index_map={0: 3, 9: 0, 10: 1, 11: 2, 12: 4, 13: 5, 14: 6},
+    format=b'row',
+    optimize_time_in_us=1302)

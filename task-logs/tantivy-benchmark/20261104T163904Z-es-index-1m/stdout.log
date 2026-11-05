@@ -1,0 +1,240 @@
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "USE `ft_bench_1m`", "success": true, "elapsed_s": 0.007326523000301677, "error": ""}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "SHOW PARTS", "success": true, "elapsed_s": 0.0019599870011006715, "error": ""}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_topology_healthy", "partition_num": 20, "replica_factor": 3}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "SIGN IN TEXT SERVICE (127.0.0.1:19200, HTTP)", "success": false, "elapsed_s": 0.000811365000117803, "error": "Existed!"}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_es_template", "response": {"acknowledged": true}, "settings": {"number_of_shards": 1, "number_of_replicas": 0, "max_result_window": 100001}}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "ADD LISTENER ELASTICSEARCH 127.0.0.1:29879", "success": false, "elapsed_s": 0.0013968990006105741, "error": "Existed!"}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "SHOW LISTENER", "success": true, "elapsed_s": 0.001676396999755525, "error": ""}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_listener_reused_for_retry", "space": "ft_bench_1m", "host": "127.0.0.1:29879", "partitions": 20, "original_error": "Existed!"}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "SHOW LISTENER", "success": true, "elapsed_s": 0.0015888939997239504, "error": ""}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": true, "elapsed_s": 0.18222375900040788, "error": ""}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_es_index_settings", "index": "nebula_index_ft_passage_1m", "settings": {"nebula_index_ft_passage_1m": {"settings": {"index": {"routing": {"allocation": {"include": {"_tier_preference": "data_content"}}}, "number_of_shards": "1", "provided_name": "nebula_index_ft_passage_1m", "max_result_window": "100001", "creation_date": "1793810344415", "number_of_replicas": "0", "uuid": "bDUhnLeoThGAqIV5SD_38Q", "version": {"created": "7172999"}}}}}}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "REBUILD FULLTEXT INDEX", "success": true, "elapsed_s": 0.001392006000969559, "error": ""}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0008963200016296469, "error": ""}
+{"utc": "2026-11-04T16:39:04Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['QUEUE']"}
+{"utc": "2026-11-04T16:39:06Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001835244000176317, "error": ""}
+{"utc": "2026-11-04T16:39:06Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:08Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0011815559992101043, "error": ""}
+{"utc": "2026-11-04T16:39:08Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:10Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014422759995795786, "error": ""}
+{"utc": "2026-11-04T16:39:10Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:12Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.002005153999562026, "error": ""}
+{"utc": "2026-11-04T16:39:12Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:14Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0027583850005612476, "error": ""}
+{"utc": "2026-11-04T16:39:14Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:16Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004437469999174937, "error": ""}
+{"utc": "2026-11-04T16:39:16Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:18Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0020597729999281, "error": ""}
+{"utc": "2026-11-04T16:39:18Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:20Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0045199510004749754, "error": ""}
+{"utc": "2026-11-04T16:39:20Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:22Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004811367000002065, "error": ""}
+{"utc": "2026-11-04T16:39:22Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:24Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0018025290009973105, "error": ""}
+{"utc": "2026-11-04T16:39:24Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:26Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0046055300008447375, "error": ""}
+{"utc": "2026-11-04T16:39:26Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:28Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001758361999236513, "error": ""}
+{"utc": "2026-11-04T16:39:28Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:30Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0015288079994206782, "error": ""}
+{"utc": "2026-11-04T16:39:30Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:32Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0042339589999755844, "error": ""}
+{"utc": "2026-11-04T16:39:32Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:34Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.006595576000108849, "error": ""}
+{"utc": "2026-11-04T16:39:34Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:36Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004678701001466834, "error": ""}
+{"utc": "2026-11-04T16:39:36Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:38Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014076290008233627, "error": ""}
+{"utc": "2026-11-04T16:39:38Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:40Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.006749424001100124, "error": ""}
+{"utc": "2026-11-04T16:39:40Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:42Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014562849992216798, "error": ""}
+{"utc": "2026-11-04T16:39:42Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:44Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.005363661000956199, "error": ""}
+{"utc": "2026-11-04T16:39:44Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:46Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.007441957999617443, "error": ""}
+{"utc": "2026-11-04T16:39:46Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:48Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0029125839992047986, "error": ""}
+{"utc": "2026-11-04T16:39:48Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:50Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0018146160000469536, "error": ""}
+{"utc": "2026-11-04T16:39:50Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:52Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.007504388000597828, "error": ""}
+{"utc": "2026-11-04T16:39:52Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:54Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.007526646000769688, "error": ""}
+{"utc": "2026-11-04T16:39:54Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:56Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0015495839998038718, "error": ""}
+{"utc": "2026-11-04T16:39:56Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:39:58Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.002191214000049513, "error": ""}
+{"utc": "2026-11-04T16:39:58Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:00Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0030253510012698825, "error": ""}
+{"utc": "2026-11-04T16:40:00Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:02Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.003455318001215346, "error": ""}
+{"utc": "2026-11-04T16:40:02Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:04Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0019804379990091547, "error": ""}
+{"utc": "2026-11-04T16:40:04Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:06Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014056600011826959, "error": ""}
+{"utc": "2026-11-04T16:40:06Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:08Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014280479990702588, "error": ""}
+{"utc": "2026-11-04T16:40:08Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:10Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014886889985064045, "error": ""}
+{"utc": "2026-11-04T16:40:10Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:12Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.005811942999571329, "error": ""}
+{"utc": "2026-11-04T16:40:12Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:14Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.01046755400057009, "error": ""}
+{"utc": "2026-11-04T16:40:14Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:16Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001370915000734385, "error": ""}
+{"utc": "2026-11-04T16:40:16Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:18Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004765358000440756, "error": ""}
+{"utc": "2026-11-04T16:40:18Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:20Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001989373000469641, "error": ""}
+{"utc": "2026-11-04T16:40:20Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:22Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.00166881299992383, "error": ""}
+{"utc": "2026-11-04T16:40:22Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:24Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016431149997515604, "error": ""}
+{"utc": "2026-11-04T16:40:24Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:26Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0019516729989845771, "error": ""}
+{"utc": "2026-11-04T16:40:26Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:28Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0021095869997225236, "error": ""}
+{"utc": "2026-11-04T16:40:28Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:30Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.002091976000883733, "error": ""}
+{"utc": "2026-11-04T16:40:30Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:32Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0030673140008730115, "error": ""}
+{"utc": "2026-11-04T16:40:32Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:34Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0017163289994641673, "error": ""}
+{"utc": "2026-11-04T16:40:34Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:36Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0022484070013888413, "error": ""}
+{"utc": "2026-11-04T16:40:36Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:38Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0021477760001289425, "error": ""}
+{"utc": "2026-11-04T16:40:38Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:40Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.006894453999848338, "error": ""}
+{"utc": "2026-11-04T16:40:40Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:42Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0015813469999557128, "error": ""}
+{"utc": "2026-11-04T16:40:42Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:44Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0008910340002330486, "error": ""}
+{"utc": "2026-11-04T16:40:44Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:46Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.01008318300046085, "error": ""}
+{"utc": "2026-11-04T16:40:46Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:48Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014870409995637601, "error": ""}
+{"utc": "2026-11-04T16:40:48Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:50Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0011555750006664312, "error": ""}
+{"utc": "2026-11-04T16:40:50Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:52Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014020460002939217, "error": ""}
+{"utc": "2026-11-04T16:40:52Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:54Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0011996880002698163, "error": ""}
+{"utc": "2026-11-04T16:40:54Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:56Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.006272009999520378, "error": ""}
+{"utc": "2026-11-04T16:40:56Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:40:58Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0021058410002297023, "error": ""}
+{"utc": "2026-11-04T16:40:58Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:00Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0018883009997807676, "error": ""}
+{"utc": "2026-11-04T16:41:00Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:02Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.002016665001065121, "error": ""}
+{"utc": "2026-11-04T16:41:02Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:04Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016089060009107925, "error": ""}
+{"utc": "2026-11-04T16:41:04Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:06Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004338177001045551, "error": ""}
+{"utc": "2026-11-04T16:41:06Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:08Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001460375999158714, "error": ""}
+{"utc": "2026-11-04T16:41:08Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:10Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0015153519998420961, "error": ""}
+{"utc": "2026-11-04T16:41:10Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:12Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0012753760001942283, "error": ""}
+{"utc": "2026-11-04T16:41:12Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:14Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004231967999658082, "error": ""}
+{"utc": "2026-11-04T16:41:14Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:16Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.005240790998868761, "error": ""}
+{"utc": "2026-11-04T16:41:16Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:18Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014622939997934736, "error": ""}
+{"utc": "2026-11-04T16:41:18Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:20Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016887590008991538, "error": ""}
+{"utc": "2026-11-04T16:41:20Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:22Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016825009988679085, "error": ""}
+{"utc": "2026-11-04T16:41:22Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:24Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0022318870014714776, "error": ""}
+{"utc": "2026-11-04T16:41:24Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:26Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.003713657999469433, "error": ""}
+{"utc": "2026-11-04T16:41:26Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:28Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016887040001165587, "error": ""}
+{"utc": "2026-11-04T16:41:28Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:30Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014790419991186354, "error": ""}
+{"utc": "2026-11-04T16:41:30Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:32Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001575926000441541, "error": ""}
+{"utc": "2026-11-04T16:41:32Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:34Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001350888998786104, "error": ""}
+{"utc": "2026-11-04T16:41:34Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:36Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001971538000361761, "error": ""}
+{"utc": "2026-11-04T16:41:36Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:39Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004671290000260342, "error": ""}
+{"utc": "2026-11-04T16:41:39Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:41Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0017910049991769483, "error": ""}
+{"utc": "2026-11-04T16:41:41Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:43Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.002027776001341408, "error": ""}
+{"utc": "2026-11-04T16:41:43Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:45Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001544795999507187, "error": ""}
+{"utc": "2026-11-04T16:41:45Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:47Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.005892930999834789, "error": ""}
+{"utc": "2026-11-04T16:41:47Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:49Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001997706000111066, "error": ""}
+{"utc": "2026-11-04T16:41:49Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:51Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014963169996917713, "error": ""}
+{"utc": "2026-11-04T16:41:51Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:53Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014409989998966921, "error": ""}
+{"utc": "2026-11-04T16:41:53Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:55Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0014089670003158972, "error": ""}
+{"utc": "2026-11-04T16:41:55Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:57Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0025725289997353684, "error": ""}
+{"utc": "2026-11-04T16:41:57Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:41:59Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.005867226000191295, "error": ""}
+{"utc": "2026-11-04T16:41:59Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:01Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0017317769998044241, "error": ""}
+{"utc": "2026-11-04T16:42:01Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:03Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.004622715001460165, "error": ""}
+{"utc": "2026-11-04T16:42:03Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:05Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.008279530999061535, "error": ""}
+{"utc": "2026-11-04T16:42:05Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:07Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001308806000452023, "error": ""}
+{"utc": "2026-11-04T16:42:07Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:09Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0015998660001059761, "error": ""}
+{"utc": "2026-11-04T16:42:09Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:11Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0015193519993772497, "error": ""}
+{"utc": "2026-11-04T16:42:11Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:13Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001290027999857557, "error": ""}
+{"utc": "2026-11-04T16:42:13Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:15Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0018086899999616435, "error": ""}
+{"utc": "2026-11-04T16:42:15Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:17Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0029333439997571986, "error": ""}
+{"utc": "2026-11-04T16:42:17Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:19Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0020622479987650877, "error": ""}
+{"utc": "2026-11-04T16:42:19Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:21Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.007732878999377135, "error": ""}
+{"utc": "2026-11-04T16:42:21Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:23Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016837050006870413, "error": ""}
+{"utc": "2026-11-04T16:42:23Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:25Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.005796815999929095, "error": ""}
+{"utc": "2026-11-04T16:42:25Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:27Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.00506331299948215, "error": ""}
+{"utc": "2026-11-04T16:42:27Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:29Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0017039769991242792, "error": ""}
+{"utc": "2026-11-04T16:42:29Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:31Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016115199996420415, "error": ""}
+{"utc": "2026-11-04T16:42:31Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:33Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0018078780012729112, "error": ""}
+{"utc": "2026-11-04T16:42:33Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:35Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016771339996921597, "error": ""}
+{"utc": "2026-11-04T16:42:35Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:37Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0020856490009464324, "error": ""}
+{"utc": "2026-11-04T16:42:37Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:39Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.001983194999411353, "error": ""}
+{"utc": "2026-11-04T16:42:39Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:41Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0016030709994083736, "error": ""}
+{"utc": "2026-11-04T16:42:41Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:43Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.002841034000084619, "error": ""}
+{"utc": "2026-11-04T16:42:43Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:45Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0015386909999506315, "error": ""}
+{"utc": "2026-11-04T16:42:45Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:47Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0013037429998803418, "error": ""}
+{"utc": "2026-11-04T16:42:47Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:49Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0019854800011671614, "error": ""}
+{"utc": "2026-11-04T16:42:49Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:42:51Z", "event": "phased_ngql", "query": "SHOW JOB 2", "success": true, "elapsed_s": 0.0023149499993451172, "error": ""}
+{"utc": "2026-11-04T16:42:51Z", "event": "phased_index_visible", "space": "ft_bench_1m", "index": "nebula_index_ft_passage_1m", "count": {"count": 1000000, "_shards": {"total": 1, "successful": 1, "skipped": 0, "failed": 0}}, "elapsed_s": 226.81727298200167, "note": "Includes Listener assignment, DDL, rebuild and normal refresh visibility; run native_compare next."}

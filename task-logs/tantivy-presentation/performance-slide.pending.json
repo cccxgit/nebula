@@ -1,0 +1,36 @@
+{
+  "status": "million_metrics_verified_pending_final_5m",
+  "title": "百万下推开关对照：阶段结果",
+  "headline": "112.883 ×",
+  "headlineLabel": "同集群并发 1 QPS 比值",
+  "detail": "100 万真实唯一 VID · 128 字符投影 · Debug 构建",
+  "table": [
+    [
+      "同 MATCH，并发 1",
+      "下推开启",
+      "下推关闭"
+    ],
+    [
+      "QPS",
+      "11.5048",
+      "0.101917"
+    ],
+    [
+      "混合 P95（ms）",
+      "251.60",
+      "9951.78"
+    ],
+    [
+      "混合 P99（ms）",
+      "263.72",
+      "10059.81"
+    ],
+    [
+      "采样请求 / 失败",
+      "800 / 0",
+      "80 / 0"
+    ]
+  ],
+  "footer": "同 MATCH 开关比，非 ES；单轮、预热不同且未清缓存；五百万待汇总。",
+  "notes": "约45秒。百万真实唯一PID已导入并完成同集群普通MATCH开关对照，20分区3副本、三个storaged，Debug构建。来源：docs/tantivy/benchmark-report.md百万追加章节，task-logs/tantivy-benchmark/1m-off-and-restored-independent-audit.json及1m-first-stage-independent-audit.json。并发1开启有效计时69.5364秒、800次0失败、11.5048QPS；关闭784.9499秒、80次0失败、0.101917QPS，比值112.8833。四类查询完整VID集合一致。开启每项200次、预热3轮，关闭每项20次、预热1轮；未重启或清缓存，没有重复轮次/置信区间，关闭组P99就是80样本最大值。此数字绝非ES加速比，也不量化随后接入的TopK；本轮测量先于最新TopK/清空/重建修正。MS MARCO passage v2来源138,364,198条，官方：https://microsoft.github.io/msmarco/TREC-Deep-Learning#passage-ranking-dataset 。输入前128个Unicode字符、99.308%被裁剪，连续前缀而非随机样本，不能代表完整原文业务；语料限非商业研究。一亿本机容量门槛未通过，五百万数据准备完成不等于数据库实测完成。新版百万原生长测与ES绝对值在第2页列出，两端三项完整差集54/77/2，不计算跨引擎速度比。五百万最终报告到位后再替换本页并渲染。"
+}

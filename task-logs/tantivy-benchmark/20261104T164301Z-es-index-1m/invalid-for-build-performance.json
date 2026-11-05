@@ -1,0 +1,4 @@
+{
+  "utc": "2026-11-04T16:44:43.655434+00:00",
+  "reason": "Job3 FINISHED but document count plateaued at996388; complete data requirement not met. Investigating metadata cache propagation before REBUILD; do not claim successful build."
+}

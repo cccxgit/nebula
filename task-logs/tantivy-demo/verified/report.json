@@ -1,0 +1,11 @@
+{
+  "started_at": "2026-11-04T15:30:28.600568+00:00",
+  "space": "tantivy_demo_verified",
+  "partitions": 20,
+  "replicas": 3,
+  "dataset": "synthetic multilingual semantic regression, not performance data",
+  "checks": [],
+  "passed": false,
+  "error": "TagNotFound: TagName `article`",
+  "finished_at": "2026-11-04T15:30:32.666833+00:00"
+}

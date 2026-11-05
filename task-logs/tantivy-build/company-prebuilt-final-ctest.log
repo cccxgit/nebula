@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /home/sch/nebula/nebula-3.6-tantivy/build-company-prebuilt-check
+Test project /home/sch/nebula/nebula-3.6-tantivy/build-company-prebuilt-check
+    Start 46: tantivy_bridge_test
+1/1 Test #46: tantivy_bridge_test ..............   Passed    0.14 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.15 sec

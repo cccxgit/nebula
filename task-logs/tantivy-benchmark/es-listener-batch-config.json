@@ -1,0 +1,18 @@
+{
+  "utc": "2026-11-04T16:43:03.361151+00:00",
+  "kind": "listener_startup_configuration_only",
+  "runtime_file": "/home/sch/nebula-run/3.6-tantivy-es-baseline/etc/listener.conf",
+  "before": "--daemonize=true\n--pid_file=/home/sch/nebula-run/3.6-tantivy-es-baseline/pids/listener.pid\n--log_dir=/home/sch/nebula-run/3.6-tantivy-es-baseline/logs/listener\n--minloglevel=0\n--v=0\n--redirect_stdout=true\n--local_ip=127.0.0.1\n--meta_server_addrs=127.0.0.1:29559\n--port=29879\n--ws_ip=127.0.0.1\n--ws_http_port=39879\n--heartbeat_interval_secs=1\n--data_path=/home/sch/nebula-run/3.6-tantivy-es-baseline/data/listener\n--local_config=true\n--listener_path=/home/sch/nebula-run/3.6-tantivy-es-baseline/data/listener-wal\n--engine_type=rocksdb\n--rocksdb_block_cache=4\n--num_io_threads=2\n--num_worker_threads=4\n--raft_heartbeat_interval_secs=5\n",
+  "after": "--daemonize=true\n--pid_file=/home/sch/nebula-run/3.6-tantivy-es-baseline/pids/listener.pid\n--log_dir=/home/sch/nebula-run/3.6-tantivy-es-baseline/logs/listener\n--minloglevel=0\n--v=0\n--redirect_stdout=true\n--local_ip=127.0.0.1\n--meta_server_addrs=127.0.0.1:29559\n--port=29879\n--ws_ip=127.0.0.1\n--ws_http_port=39879\n--heartbeat_interval_secs=1\n--data_path=/home/sch/nebula-run/3.6-tantivy-es-baseline/data/listener\n--local_config=true\n--listener_path=/home/sch/nebula-run/3.6-tantivy-es-baseline/data/listener-wal\n--engine_type=rocksdb\n--rocksdb_block_cache=4\n--num_io_threads=2\n--num_worker_threads=4\n--raft_heartbeat_interval_secs=5\n--listener_commit_batch_size=1048576\n--listener_commit_interval_secs=1\n",
+  "before_sha256": "9a4a12b91a54601ec2f3d84a3673ef4706839bb8ea61a1d26f19bf8f68d995d6",
+  "after_sha256": "7d2a39fcd07e211644f3842812941667810045233249bea93785ed61cc512d87",
+  "flags": {
+    "listener_commit_batch_size": "1048576",
+    "listener_commit_interval_secs": "1"
+  },
+  "active_service_changed_by_this_edit": false,
+  "service_restart_performed": false,
+  "live_flag_evidence_separate": "task-logs/tantivy-benchmark/es-listener-batch-tune.json",
+  "unit": "BatchHolder sums key/value string bytes, not row count",
+  "threshold_semantics": "Break after processing an entire WAL record once bytes > threshold; 1MiB is not a strict peak memory or HTTP bulk size limit."
+}

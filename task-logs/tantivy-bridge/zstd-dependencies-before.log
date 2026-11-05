@@ -1,0 +1,107 @@
+zstd-sys v2.1.2+zstd.1.5.7
+└── zstd-safe v7.4.0
+    ├── zstd-safe feature "arrays"
+    │   └── zstd feature "arrays"
+    │       └── zstd feature "default"
+    │           └── tantivy-sstable v0.6.0
+    │               ├── tantivy-sstable feature "default"
+    │               │   └── tantivy-columnar v0.6.0
+    │               │       ├── tantivy-columnar feature "default"
+    │               │       │   └── tantivy v0.25.0
+    │               │       │       ├── tantivy feature "columnar-zstd-compression"
+    │               │       │       │   └── tantivy feature "default"
+    │               │       │       │       └── nebula-tantivy v0.1.0 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust)
+    │               │       │       │           └── nebula-tantivy feature "default" (command-line)
+    │               │       │       ├── tantivy feature "default" (*)
+    │               │       │       ├── tantivy feature "fs4"
+    │               │       │       │   └── tantivy feature "mmap"
+    │               │       │       │       └── tantivy feature "default" (*)
+    │               │       │       ├── tantivy feature "lz4-compression"
+    │               │       │       │   └── tantivy feature "default" (*)
+    │               │       │       ├── tantivy feature "lz4_flex"
+    │               │       │       │   └── tantivy feature "lz4-compression" (*)
+    │               │       │       ├── tantivy feature "memmap2"
+    │               │       │       │   └── tantivy feature "mmap" (*)
+    │               │       │       ├── tantivy feature "mmap" (*)
+    │               │       │       ├── tantivy feature "stopwords"
+    │               │       │       │   └── tantivy feature "default" (*)
+    │               │       │       └── tantivy feature "tempfile"
+    │               │       │           └── tantivy feature "mmap" (*)
+    │               │       └── tantivy-columnar feature "zstd-compression"
+    │               │           └── tantivy feature "columnar-zstd-compression" (*)
+    │               ├── tantivy-sstable feature "zstd"
+    │               │   └── tantivy-sstable feature "zstd-compression"
+    │               │       └── tantivy-columnar feature "zstd-compression" (*)
+    │               └── tantivy-sstable feature "zstd-compression" (*)
+    ├── zstd-safe feature "experimental"
+    │   └── zstd feature "experimental"
+    │       └── tantivy-sstable v0.6.0 (*)
+    ├── zstd-safe feature "legacy"
+    │   └── zstd feature "legacy"
+    │       └── zstd feature "default" (*)
+    ├── zstd-safe feature "std"
+    │   └── zstd v0.13.4
+    │       ├── zstd feature "arrays" (*)
+    │       ├── zstd feature "default" (*)
+    │       ├── zstd feature "experimental" (*)
+    │       ├── zstd feature "legacy" (*)
+    │       └── zstd feature "zdict_builder"
+    │           └── zstd feature "default" (*)
+    └── zstd-safe feature "zdict_builder"
+        └── zstd feature "zdict_builder" (*)
+├── zstd-sys feature "experimental"
+│   └── zstd-safe feature "experimental" (*)
+├── zstd-sys feature "legacy"
+│   └── zstd-safe feature "legacy" (*)
+├── zstd-sys feature "std"
+│   └── zstd-safe feature "std" (*)
+└── zstd-sys feature "zdict_builder"
+    └── zstd-safe feature "zdict_builder" (*)
+
+zstd-sys v2.1.2+zstd.1.5.7
+└── zstd-safe v8.2.0
+    ├── zstd-safe feature "arrays"
+    │   └── zstd feature "arrays"
+    │       └── zstd feature "default"
+    │           └── include-flate-compress v0.3.5
+    │               ├── include-flate v0.3.5
+    │               │   ├── include-flate feature "default"
+    │               │   │   └── jieba-rs v0.8.1
+    │               │   │       ├── jieba-rs feature "default"
+    │               │   │       │   └── nebula-tantivy v0.1.0 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust) (*)
+    │               │   │       └── jieba-rs feature "default-dict"
+    │               │   │           └── jieba-rs feature "default" (*)
+    │               │   ├── include-flate feature "deflate"
+    │               │   │   └── include-flate feature "default" (*)
+    │               │   └── include-flate feature "zstd"
+    │               │       └── include-flate feature "default" (*)
+    │               └── include-flate-codegen v0.3.5 (proc-macro)
+    │                   └── include-flate v0.3.5 (*)
+    │                   ├── include-flate-codegen feature "deflate"
+    │                   │   └── include-flate feature "deflate" (*)
+    │                   └── include-flate-codegen feature "zstd"
+    │                       └── include-flate feature "zstd" (*)
+    │               ├── include-flate-compress feature "deflate"
+    │               │   ├── include-flate feature "deflate" (*)
+    │               │   └── include-flate-codegen feature "deflate" (*)
+    │               └── include-flate-compress feature "zstd"
+    │                   ├── include-flate feature "zstd" (*)
+    │                   └── include-flate-codegen feature "zstd" (*)
+    ├── zstd-safe feature "legacy"
+    │   └── zstd feature "legacy"
+    │       └── zstd feature "default" (*)
+    ├── zstd-safe feature "std"
+    │   └── zstd v0.14.3
+    │       ├── zstd feature "arrays" (*)
+    │       ├── zstd feature "default" (*)
+    │       ├── zstd feature "legacy" (*)
+    │       └── zstd feature "zdict_builder"
+    │           └── zstd feature "default" (*)
+    └── zstd-safe feature "zdict_builder"
+        └── zstd feature "zdict_builder" (*)
+├── zstd-sys feature "legacy"
+│   └── zstd-safe feature "legacy" (*)
+├── zstd-sys feature "std"
+│   └── zstd-safe feature "std" (*)
+└── zstd-sys feature "zdict_builder"
+    └── zstd-safe feature "zdict_builder" (*)

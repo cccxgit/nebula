@@ -1,0 +1,21 @@
+{
+  "time": "2026-11-04T15:00:38Z",
+  "kind": "corpus_preparation",
+  "source": "/home/sch/nebula-data/tantivy/msmarco_v2_passage.tar.partial",
+  "source_format": "msmarco",
+  "output": "/home/sch/nebula-data/tantivy/msmarco-1m-128.jsonl.gz",
+  "source_rows_skipped": 0,
+  "verified_partial_archive_prefix_bytes": 360710144,
+  "rows": 1000000,
+  "text_utf8_bytes": 128396899,
+  "mean_text_utf8_bytes": 128.396899,
+  "max_text_bytes_setting": 0,
+  "truncated_rows": 993080,
+  "max_chars_setting": 128,
+  "empty_text_rows": 0,
+  "normalized_jsonl_sha256": "de46025a28771d1b88e20ab78dd2aeda05ef407bf7aab002a12e7afe876a2acd",
+  "output_file_bytes": 54984169,
+  "sampling": "prefix_after_skip",
+  "repeated_or_synthetic_rows_added": 0,
+  "elapsed_s": 15.601762031999897
+}

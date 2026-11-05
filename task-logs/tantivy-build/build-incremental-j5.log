@@ -1,0 +1,605 @@
+>>>> Options of Nebula Graph <<<<
+-- ENABLE_ASAN                     : OFF (Build with AddressSanitizer)
+-- ENABLE_BREAKPAD                 : OFF (Whether to enable breakpad)
+-- ENABLE_CCACHE                   : ON (Use ccache to speed up compiling)
+-- ENABLE_CLANG_TIDY               : OFF (Enable clang-tidy if present)
+-- ENABLE_COMPILER_LAUNCHER        : ON (Using compiler launcher if available)
+-- ENABLE_COMPRESSED_DEBUG_INFO    : ON (Compress debug info to reduce binary size)
+-- ENABLE_CONSOLE_COMPILATION      : OFF (Enable nebula-console compilation)
+-- ENABLE_COVERAGE                 : OFF (Build with coverage report)
+-- ENABLE_CREATE_GIT_HOOKS         : ON (Enable create git hooks.)
+-- ENABLE_FRAME_POINTER            : OFF (Build with frame pointer)
+-- ENABLE_FUZZY_TESTING            : OFF (Enable Fuzzy tests)
+-- ENABLE_GDB_SCRIPT_SECTION       : OFF (Add .debug_gdb_scripts section)
+-- ENABLE_INCLUDE_WHAT_YOU_USE     : OFF (Enable include-what-you-use find  nouse include files)
+-- ENABLE_JEMALLOC                 : ON (Use jemalloc as memory allocator)
+-- ENABLE_MEMORY_TRACKER           : ON (Enable memory tracker)
+-- ENABLE_PACKAGE_TAR              : OFF (Enable package artifacts to tar.)
+-- ENABLE_PACK_ONE                 : ON (Whether to package into one)
+-- ENABLE_PIC                      : OFF (Build with -fPIC)
+-- ENABLE_STANDALONE_VERSION       : OFF (Enable standalone version build)
+-- ENABLE_STATIC_ASAN              : OFF (Statically link against libasan)
+-- ENABLE_STATIC_UBSAN             : OFF (Statically link against libubsan)
+-- ENABLE_STRICT_ALIASING          : OFF (Build with -fstrict-aliasing)
+-- ENABLE_TESTING                  : OFF (Build unit tests)
+-- ENABLE_TSAN                     : OFF (Build with ThreadSanitizer)
+-- ENABLE_UBSAN                    : OFF (Build with UndefinedBehaviourSanitizer)
+-- ENABLE_VERBOSE_BISON            : OFF (Enable Bison to report state)
+-- ENABLE_WERROR                   : ON (Regard warnings as errors)
+-- CMAKE_BUILD_TYPE                : Debug (Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel ...)
+-- CMAKE_INSTALL_PREFIX            : /home/sch/nebula-run/3.6-tantivy (Install path prefix, prepended onto install directories.)
+-- CMAKE_CXX_STANDARD              : 17
+-- CMAKE_CXX_COMPILER              : /usr/bin/c++ (CXX compiler)
+-- CMAKE_CXX_COMPILER_ID           : GNU
+-- NEBULA_USE_LINKER               : bfd (Linker to be used)
+CMake Warning at cmake/nebula/CompilerLauncher.cmake:28 (message):
+  ccache is enabled but was not found.  Not using it
+Call Stack (most recent call first):
+  CMakeLists.txt:48 (include)
+
+
+>>>> Configuring third party for 'Nebula Graph' <<<<
+-- NEBULA_THIRDPARTY_ROOT          : /opt/vesoft/third-party/3.3
+-- Build info of nebula third party:
+Package         : Nebula Third Party
+Version         : 3.3
+Date            : Thu Feb  2 10:42:13 UTC 2023
+glibc           : 2.34
+Arch            : x86_64
+Compiler        : GCC 11.2.0
+C++ ABI         : 11
+Vendor          : VEsoft Inc.
+
+-- CMAKE_INCLUDE_PATH              : /opt/vesoft/third-party/3.3/include
+-- CMAKE_LIBRARY_PATH              : /opt/vesoft/third-party/3.3/lib64;/opt/vesoft/third-party/3.3/lib
+-- CMAKE_PROGRAM_PATH              : /opt/vesoft/third-party/3.3/bin
+-- GLIBC_VERSION                   : 2.35
+
+>>>> Configuring third party for 'Nebula Graph' done <<<<
+-- Create the pre-commit hook
+-- Creating pre-commit hook done
+-- MemoryTracker is ENABLED
+-- NEBULA_BUILD_VERSION            : 
+-- HOST_SYSTEM_NAME                : Ubuntu
+-- HOST_SYSTEM_VER                 : ubuntu2204
+-- CPACK_GENERATOR                 : DEB
+-- CMAKE_HOST_SYSTEM_PROCESSOR     : amd64
+-- Configuring done (0.1s)
+-- Generating done (0.4s)
+-- Build files have been written to: /home/sch/nebula/nebula-3.6-tantivy/build
+[  1%] Built target parser_target
+[  1%] Built target datetime_parser_target
+[  3%] Built target graph_thrift_generator
+[  3%] Built target common_thrift_generator
+[  3%] Built target wkt_parser_target
+[  3%] Building embedded Tantivy search engine (one Rust job maximum)
+[  5%] Built target storage_thrift_generator
+[  5%] Built target raftex_thrift_generator
+[  5%] Built target meta_thrift_generator
+warning: failed to connect to jobserver from environment variable `MAKEFLAGS="s -j5 --jobserver-auth=3,4"`: cannot open file descriptor 3 from the jobserver environment variable value: Bad file descriptor (os error 9)
+[  5%] Built target meta_client_obj
+[  5%] Built target common_thrift_obj
+[  5%] Built target file_based_cluster_id_man_obj
+[  5%] Built target graph_thrift_obj
+[  6%] Built target raftex_thrift_obj
+[  6%] Built target meta_client_stats_obj
+[  6%] Built target storage_client_base_obj
+[  6%] Built target storage_client_obj
+[  6%] Built target internal_storage_client_obj
+[  6%] Built target storage_client_stats_obj
+[  8%] Built target base_obj
+[  8%] Built target codec_obj
+[  8%] Built target time_utils_obj
+[ 10%] Built target time_obj
+[ 10%] Built target network_obj
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.08s
+[ 10%] Built target datetime_parser_obj
+[ 10%] Built target fs_obj
+[ 10%] Built target nebula_tantivy_build
+[ 10%] Built target thrift_obj
+[ 10%] Built target thread_obj
+[ 10%] Built target process_obj
+[ 10%] Built target hdfs_helper_obj
+[ 10%] Built target http_client_obj
+[ 10%] Built target charset_obj
+[ 10%] Built target stats_obj
+[ 10%] Built target nebula_algo_obj
+[ 11%] Built target conf_obj
+[ 11%] Built target agg_function_manager_obj
+[ 13%] Built target datatypes_obj
+[ 15%] Built target function_manager_obj
+[ 15%] Built target graph_obj
+[ 15%] Built target es_adapter_obj
+[ 15%] Built target tantivy_adapter
+[ 15%] Built target meta_obj
+[ 15%] Built target ssl_obj
+[ 15%] Built target meta_keyutils_obj
+[ 16%] Built target keyutils_obj
+[ 16%] Built target log_str_list_iterator_obj
+[ 16%] Built target geo_index_obj
+[ 18%] Built target wkt_wkb_io_obj
+[ 18%] Built target memory_obj
+[ 18%] Built target uuid_obj
+[ 18%] Built target ws_common_obj
+[ 18%] Built target snowflake_obj
+[ 20%] Built target segment_id_obj
+[ 20%] Built target log_monitor_obj
+[ 20%] Built target disk_man_obj
+[ 22%] Built target meta_thrift_obj
+[ 23%] Built target kvstore_obj
+[ 28%] Built target storage_thrift_obj
+[ 30%] Built target expression_obj
+[ 30%] Built target listener_obj
+[ 30%] Built target wal_obj
+[ 30%] Built target meta_stats_obj
+[ 30%] Built target kv_stats_obj
+[ 30%] Built target raftex_obj
+[ 32%] Built target ast_match_path_obj
+[ 33%] Built target storage_common_obj
+[ 33%] Built target internal_storage_service_handler
+[ 33%] Built target storage_http_handler
+[ 33%] Built target storage_stats_obj
+[ 33%] Built target version_obj
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_server.dir/fulltext/TantivyManager.cpp.o
+[ 35%] Built target ws_obj
+[ 35%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o
+[ 35%] Built target meta_v2_thrift_obj
+[ 38%] Built target storage_transaction_executor
+[ 38%] Built target meta_http_handler
+[ 38%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/index/LookupProcessor.cpp.o
+[ 38%] Built target meta_data_upgrade_obj
+[ 38%] Building CXX object src/graph/context/CMakeFiles/graph_context_obj.dir/ExecutionContext.cpp.o
+[ 38%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/Executor.cpp.o
+[ 40%] Built target graph_context_obj
+[ 49%] Built target optimizer_obj
+[ 49%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/Planner.cpp.o
+[ 49%] Built target storage_server
+[ 49%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o
+[ 49%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/PlannersRegister.cpp.o
+[ 49%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o
+[ 49%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/SequentialPlanner.cpp.o
+[ 52%] Built target graph_storage_service_handler
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/plan_obj.dir/plan/Query.cpp.o
+[ 52%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/StorageAccessExecutor.cpp.o
+[ 54%] Built target storage_admin_service_handler
+[ 54%] Built target scheduler_obj
+[ 54%] Building CXX object src/graph/service/CMakeFiles/graph_flags_obj.dir/GraphFlags.cpp.o
+[ 54%] Built target graph_flags_obj
+[ 54%] Building CXX object src/graph/service/CMakeFiles/service_obj.dir/GraphService.cpp.o
+[ 54%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/match/MatchSolver.cpp.o
+[ 54%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/PathPlanner.cpp.o
+[ 54%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/FilterExecutor.cpp.o
+[ 55%] Built target plan_obj
+[ 55%] Building CXX object src/graph/service/CMakeFiles/service_obj.dir/GraphServer.cpp.o
+[ 57%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/FulltextIndexScanExecutor.cpp.o
+[ 57%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/SubgraphPlanner.cpp.o
+[ 57%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/LookupPlanner.cpp.o
+[ 57%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/GetEdgesExecutor.cpp.o
+[ 57%] Built target service_obj
+[ 57%] Building CXX object src/graph/service/CMakeFiles/query_engine_obj.dir/QueryEngine.cpp.o
+[ 57%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/GetNeighborsExecutor.cpp.o
+[ 57%] Building CXX object src/graph/service/CMakeFiles/query_engine_obj.dir/QueryInstance.cpp.o
+[ 62%] Built target planner_obj
+[ 62%] Building CXX object src/graph/service/CMakeFiles/graph_auth_obj.dir/PermissionManager.cpp.o
+[ 62%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/GetVerticesExecutor.cpp.o
+[ 62%] Building CXX object src/graph/service/CMakeFiles/graph_auth_obj.dir/PermissionCheck.cpp.o
+[ 62%] Building CXX object src/graph/service/CMakeFiles/graph_auth_obj.dir/CloudAuthenticator.cpp.o
+[ 62%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/ProjectExecutor.cpp.o
+[ 62%] Built target query_engine_obj
+[ 62%] Building CXX object src/graph/session/CMakeFiles/graph_session_obj.dir/GraphSessionManager.cpp.o
+[ 62%] Built target graph_stats_obj
+[ 62%] Building CXX object src/graph/util/CMakeFiles/util_obj.dir/OptimizerUtils.cpp.o
+[ 64%] Built target graph_auth_obj
+[ 64%] Built target idgenerator_obj
+[ 64%] Building CXX object src/graph/validator/CMakeFiles/validator_obj.dir/Validator.cpp.o
+[ 64%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/IndexScanExecutor.cpp.o
+[ 64%] Built target graph_session_obj
+[ 66%] Built target expr_visitor_obj
+[ 66%] Built target plan_node_visitor_obj
+[ 66%] Built target gc_obj
+[ 66%] Building CXX object src/graph/validator/CMakeFiles/validator_obj.dir/AssignmentValidator.cpp.o
+[ 67%] Building CXX object src/graph/validator/CMakeFiles/validator_obj.dir/GoValidator.cpp.o
+[ 69%] Built target util_obj
+[ 71%] Built target parser_obj
+[ 71%] Built target mock_obj
+[ 71%] Built target fake_http_server_obj
+[ 71%] Built target storage_local_server_obj
+[ 71%] Building CXX object src/daemons/CMakeFiles/nebula-storaged.dir/StorageDaemon.cpp.o
+[ 81%] Built target executor_obj
+[ 81%] Built target meta_version_man_obj
+[ 96%] Built target meta_service_handler
+[ 96%] Building CXX object src/daemons/CMakeFiles/nebula-metad.dir/MetaDaemon.cpp.o
+[ 96%] Building CXX object src/tools/meta-dump/CMakeFiles/meta_dump.dir/MetaDumpTool.cpp.o
+[ 96%] Building CXX object src/daemons/CMakeFiles/nebula-metad.dir/MetaDaemonInit.cpp.o
+[ 98%] Built target validator_obj
+[ 98%] Building CXX object src/tools/db-dump/CMakeFiles/db_dump.dir/DbDumpTool.cpp.o
+[ 98%] Linking CXX executable ../../bin/nebula-storaged
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBound':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:70: multiple definition of `ZSTD_compressBound'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x1a76): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initStaticCCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:127: multiple definition of `ZSTD_initStaticCCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x1bfd): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_sizeof_CCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:207: multiple definition of `ZSTD_sizeof_CCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x1f72): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_sizeof_CStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:217: multiple definition of `ZSTD_sizeof_CStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x2006): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getSeqStore':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:222: multiple definition of `ZSTD_getSeqStore'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x2020): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCCtxParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:342: multiple definition of `ZSTD_createCCtxParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x23ad): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_freeCCtxParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:347: multiple definition of `ZSTD_freeCCtxParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x23d2): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtxParams_reset':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:354: multiple definition of `ZSTD_CCtxParams_reset'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x241d): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtxParams_init':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:358: multiple definition of `ZSTD_CCtxParams_init'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x243c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_cParam_getBounds':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:420: multiple definition of `ZSTD_cParam_getBounds'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x264f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtxParams_setParameter':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:772: multiple definition of `ZSTD_CCtxParams_setParameter'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x2cba): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_setParameter':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:709: multiple definition of `ZSTD_CCtx_setParameter'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x2b98): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtxParams_getParameter':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1030: multiple definition of `ZSTD_CCtxParams_getParameter'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3537): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_getParameter':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1024: multiple definition of `ZSTD_CCtx_getParameter'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3509): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_setParametersUsingCCtxParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1180: multiple definition of `ZSTD_CCtx_setParametersUsingCCtxParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x38e7): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_setPledgedSrcSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1231: multiple definition of `ZSTD_CCtx_setPledgedSrcSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3a16): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_refThreadPool':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1339: multiple definition of `ZSTD_CCtx_refThreadPool'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3cfd): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_checkCParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1389: multiple definition of `ZSTD_checkCParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3e5f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtxParams_init_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:396: multiple definition of `ZSTD_CCtxParams_init_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x2571): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_cycleLog':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1426: multiple definition of `ZSTD_cycleLog'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4100): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_adjustCParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1615: multiple definition of `ZSTD_adjustCParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4308): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getCParamsFromCCtxParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1639: multiple definition of `ZSTD_getCParamsFromCCtxParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4460): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCCtxSize_usingCCtxParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1755: multiple definition of `ZSTD_estimateCCtxSize_usingCCtxParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4973): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCCtxSize_usingCParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1770: multiple definition of `ZSTD_estimateCCtxSize_usingCParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4a06): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCCtxSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1800: multiple definition of `ZSTD_estimateCCtxSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4b85): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCStreamSize_usingCCtxParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1812: multiple definition of `ZSTD_estimateCStreamSize_usingCCtxParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4bdc): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCStreamSize_usingCParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1832: multiple definition of `ZSTD_estimateCStreamSize_usingCParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4ceb): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCStreamSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1855: multiple definition of `ZSTD_estimateCStreamSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4df6): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getFrameProgression':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1870: multiple definition of `ZSTD_getFrameProgression'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4e4d): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_toFlushNow':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1894: multiple definition of `ZSTD_toFlushNow'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4f17): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_reset_compressedBlockState':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1919: multiple definition of `ZSTD_reset_compressedBlockState'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x4f2d): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_invalidateRepCodes':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:2286: multiple definition of `ZSTD_invalidateRepCodes'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x5dc1): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_copyCCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:2592: multiple definition of `ZSTD_copyCCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x69e8): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_seqToCodes':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:2694: multiple definition of `ZSTD_seqToCodes'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x6d67): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_selectBlockCompressor':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:3070: multiple definition of `ZSTD_selectBlockCompressor'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x7a58): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_resetSeqStore':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:3162: multiple definition of `ZSTD_resetSeqStore'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x7b38): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_mergeBlockDelimiters':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:3555: multiple definition of `ZSTD_mergeBlockDelimiters'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x84da): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_buildBlockEntropyStats':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:3805: multiple definition of `ZSTD_buildBlockEntropyStats'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x8e8f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_writeSkippableFrame':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:4752: multiple definition of `ZSTD_writeSkippableFrame'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xb00a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_writeLastEmptyBlock':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:4771: multiple definition of `ZSTD_writeLastEmptyBlock'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xb0c2): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_referenceExternalSequences':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:4781: multiple definition of `ZSTD_referenceExternalSequences'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xb105): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressContinue':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:4865: multiple definition of `ZSTD_compressContinue'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xb41d): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getBlockSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:4878: multiple definition of `ZSTD_getBlockSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xb46a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBlock':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:4894: multiple definition of `ZSTD_compressBlock'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xb4c1): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_loadCEntropy':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5063: multiple definition of `ZSTD_loadCEntropy'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xb8bd): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBegin_advanced_internal':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5292: multiple definition of `ZSTD_compressBegin_advanced_internal'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc206): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBegin_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5308: multiple definition of `ZSTD_compressBegin_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc2ab): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBegin_usingDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5331: multiple definition of `ZSTD_compressBegin_usingDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc32c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBegin':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5336: multiple definition of `ZSTD_compressBegin'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc3f0): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_trace':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5384: multiple definition of `ZSTD_CCtx_trace'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc570): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressEnd':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5437: multiple definition of `ZSTD_compressEnd'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc6b4): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compress_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5446: multiple definition of `ZSTD_compress_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc7c3): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compress_advanced_internal':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5464: multiple definition of `ZSTD_compress_advanced_internal'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc883): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compress_usingDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5477: multiple definition of `ZSTD_compress_usingDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc913): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressCCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5491: multiple definition of `ZSTD_compressCCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xc9bc): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCDictSize_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5524: multiple definition of `ZSTD_estimateCDictSize_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xcab2): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_estimateCDictSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5537: multiple definition of `ZSTD_estimateCDictSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xcb31): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_sizeof_CDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5543: multiple definition of `ZSTD_sizeof_CDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xcba3): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_freeCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5733: multiple definition of `ZSTD_freeCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xd5d5): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCDict_advanced2':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5666: multiple definition of `ZSTD_createCDict_advanced2'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xd065): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCDict_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5647: multiple definition of `ZSTD_createCDict_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xcf8e): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5711: multiple definition of `ZSTD_createCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xd45f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCDict_byReference':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5722: multiple definition of `ZSTD_createCDict_byReference'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xd51a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_refCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1329: multiple definition of `ZSTD_CCtx_refCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3cb4): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_loadDictionary_byReference':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1316: multiple definition of `ZSTD_CCtx_loadDictionary_byReference'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3c4a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_refPrefix':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1347: multiple definition of `ZSTD_CCtx_refPrefix'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3d36): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_refPrefix_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1353: multiple definition of `ZSTD_CCtx_refPrefix_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3d65): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compress':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5500: multiple definition of `ZSTD_compress'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xca0a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_loadDictionary':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1322: multiple definition of `ZSTD_CCtx_loadDictionary'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3c7f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_loadDictionary_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1288: multiple definition of `ZSTD_CCtx_loadDictionary_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3b1f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_freeCCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:182: multiple definition of `ZSTD_freeCCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x1ed0): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:98: multiple definition of `ZSTD_createCCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x1ab3): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCCtx_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:115: multiple definition of `ZSTD_createCCtx_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x1b84): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CCtx_reset':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:1368: multiple definition of `ZSTD_CCtx_reset'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x3ddf): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initStaticCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5764: multiple definition of `ZSTD_initStaticCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xd67c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getCParamsFromCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5805: multiple definition of `ZSTD_getCParamsFromCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xd8cd): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getDictID_fromCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5815: multiple definition of `ZSTD_getDictID_fromCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xd915): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBegin_usingCDict_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5867: multiple definition of `ZSTD_compressBegin_usingCDict_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdb6c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressBegin_usingCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5880: multiple definition of `ZSTD_compressBegin_usingCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdbb8): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compress_usingCDict_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5903: multiple definition of `ZSTD_compress_usingCDict_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdc7f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compress_usingCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5916: multiple definition of `ZSTD_compress_usingCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdcdb): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5928: multiple definition of `ZSTD_createCStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdd4c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initStaticCStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5934: multiple definition of `ZSTD_initStaticCStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdd71): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_createCStream_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5939: multiple definition of `ZSTD_createCStream_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdd96): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_freeCStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5944: multiple definition of `ZSTD_freeCStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xddb2): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CStreamInSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5952: multiple definition of `ZSTD_CStreamInSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xddcc): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_CStreamOutSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5955: multiple definition of `ZSTD_CStreamOutSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xddd7): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_resetCStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5970: multiple definition of `ZSTD_resetCStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xde37): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initCStream_internal':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:5990: multiple definition of `ZSTD_initCStream_internal'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xdebe): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initCStream_usingCDict_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6012: multiple definition of `ZSTD_initCStream_usingCDict_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xe08e): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initCStream_usingCDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6023: multiple definition of `ZSTD_initCStream_usingCDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xe155): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initCStream_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6038: multiple definition of `ZSTD_initCStream_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xe1c4): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initCStream_usingDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6054: multiple definition of `ZSTD_initCStream_usingDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xe2f1): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initCStream_srcSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6063: multiple definition of `ZSTD_initCStream_srcSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xe399): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_initCStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6078: multiple definition of `ZSTD_initCStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xe47f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6302: multiple definition of `ZSTD_compressStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xee08): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressStream2':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6451: multiple definition of `ZSTD_compressStream2'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xf44a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_generateSequences':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:3522: multiple definition of `ZSTD_generateSequences'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x83d0): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressStream2_simpleArgs':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6551: multiple definition of `ZSTD_compressStream2_simpleArgs'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xf5a7): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compress2':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:6571: multiple definition of `ZSTD_compress2'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0xf634): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_compressSequences':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7067: multiple definition of `ZSTD_compressSequences'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x10a1c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_flushStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7648: multiple definition of `ZSTD_flushStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x10bc2): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_endStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7655: multiple definition of `ZSTD_endStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x10c05): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_maxCLevel':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7673: multiple definition of `ZSTD_maxCLevel'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x10cde): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_minCLevel':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7674: multiple definition of `ZSTD_minCLevel'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x10ce9): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_defaultCLevel':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7675: multiple definition of `ZSTD_defaultCLevel'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x10cf4): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getCParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7788: multiple definition of `ZSTD_getCParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x1100d): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-zstd_compress.o): in function `ZSTD_getParams':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/zstd_compress.c:7814: multiple definition of `ZSTD_getParams'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_compress.o):(.text+0x11114): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_sizeof_DCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:222: multiple definition of `ZSTD_sizeof_DCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x102c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_estimateDCtxSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:229: multiple definition of `ZSTD_estimateDCtxSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1080): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_initStaticDCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:282: multiple definition of `ZSTD_initStaticDCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x121f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_createDCtx_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:306: multiple definition of `ZSTD_createDCtx_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1292): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_createDCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:311: multiple definition of `ZSTD_createDCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x131f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_freeDCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:325: multiple definition of `ZSTD_freeDCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1392): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_copyDCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:347: multiple definition of `ZSTD_copyDCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x14c5): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_isFrame':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:386: multiple definition of `ZSTD_isFrame'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1583): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_frameHeaderSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:436: multiple definition of `ZSTD_frameHeaderSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x16d0): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_getFrameHeader_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:448: multiple definition of `ZSTD_getFrameHeader_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x16fa): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_getFrameHeader':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:560: multiple definition of `ZSTD_getFrameHeader'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1ab9): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_getFrameContentSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:570: multiple definition of `ZSTD_getFrameContentSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1ae8): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_findDecompressedSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:644: multiple definition of `ZSTD_findDecompressedSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1be7): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_getDecompressedSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:691: multiple definition of `ZSTD_getDecompressedSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x1d1b): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_findFrameCompressedSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:810: multiple definition of `ZSTD_findFrameCompressedSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x20e4): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressBound':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:821: multiple definition of `ZSTD_decompressBound'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x2115): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_insertBlock':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:888: multiple definition of `ZSTD_insertBlock'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x219f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_nextSrcSizeToDecompress':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1224: multiple definition of `ZSTD_nextSrcSizeToDecompress'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x2bd5): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_nextInputType':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1244: multiple definition of `ZSTD_nextInputType'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x2c60): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressContinue':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1276: multiple definition of `ZSTD_decompressContinue'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x2ce0): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_loadDEntropy':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1454: multiple definition of `ZSTD_loadDEntropy'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x34c5): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressBegin':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1561: multiple definition of `ZSTD_decompressBegin'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3996): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressBegin_usingDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1589: multiple definition of `ZSTD_decompressBegin_usingDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3b09): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressBegin_usingDDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1602: multiple definition of `ZSTD_decompressBegin_usingDDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3b84): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompress_usingDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1175: multiple definition of `ZSTD_decompress_usingDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x2a77): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressDCtx':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1198: multiple definition of `ZSTD_decompressDCtx'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x2b23): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompress':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1204: multiple definition of `ZSTD_decompress'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x2b6f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_getDictID_fromDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1625: multiple definition of `ZSTD_getDictID_fromDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3c30): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_getDictID_fromFrame':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1645: multiple definition of `ZSTD_getDictID_fromFrame'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3c7a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompress_usingDDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1660: multiple definition of `ZSTD_decompress_usingDDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3ce9): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_createDStream':
+zstd_decompress.c:(.text.ZSTD_createDStream+0x0): multiple definition of `ZSTD_createDStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3d39): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_initStaticDStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1679: multiple definition of `ZSTD_initStaticDStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3d5e): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_createDStream_advanced':
+zstd_decompress.c:(.text.ZSTD_createDStream_advanced+0x0): multiple definition of `ZSTD_createDStream_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3d83): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_freeDStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1689: multiple definition of `ZSTD_freeDStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3d9f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DStreamInSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1696: multiple definition of `ZSTD_DStreamInSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3db9): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DStreamOutSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1697: multiple definition of `ZSTD_DStreamOutSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3dca): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_loadDictionary_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1703: multiple definition of `ZSTD_DCtx_loadDictionary_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3dd5): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_loadDictionary_byReference':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1716: multiple definition of `ZSTD_DCtx_loadDictionary_byReference'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3ea8): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_loadDictionary':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1721: multiple definition of `ZSTD_DCtx_loadDictionary'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3edd): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_refPrefix_advanced':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1726: multiple definition of `ZSTD_DCtx_refPrefix_advanced'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3f12): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_refPrefix':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1733: multiple definition of `ZSTD_DCtx_refPrefix'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3f77): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_initDStream_usingDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1742: multiple definition of `ZSTD_initDStream_usingDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x3fa6): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_initDStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1751: multiple definition of `ZSTD_initDStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x4029): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_resetDStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1773: multiple definition of `ZSTD_resetDStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x40c3): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_refDDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1781: multiple definition of `ZSTD_DCtx_refDDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x410d): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_initDStream_usingDDict':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1762: multiple definition of `ZSTD_initDStream_usingDDict'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x4048): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_setMaxWindowSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1805: multiple definition of `ZSTD_DCtx_setMaxWindowSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x422e): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_setFormat':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1817: multiple definition of `ZSTD_DCtx_setFormat'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x42cb): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_dParam_getBounds':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1822: multiple definition of `ZSTD_dParam_getBounds'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x42f0): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_getParameter':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1878: multiple definition of `ZSTD_DCtx_getParameter'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x444a): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_setParameter':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1907: multiple definition of `ZSTD_DCtx_setParameter'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x4549): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_DCtx_reset':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1948: multiple definition of `ZSTD_DCtx_reset'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x4713): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_sizeof_DStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1966: multiple definition of `ZSTD_sizeof_DStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x478c): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decodingBufferSize_min':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1989: multiple definition of `ZSTD_decodingBufferSize_min'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x47a6): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_estimateDStreamSize':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:1994: multiple definition of `ZSTD_estimateDStreamSize'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x4812): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_estimateDStreamSize_fromFrame':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:2002: multiple definition of `ZSTD_estimateDStreamSize_fromFrame'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x4866): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressStream':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:2087: multiple definition of `ZSTD_decompressStream'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x4be5): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(865a32d3ef5dbaad-zstd_decompress.o): in function `ZSTD_decompressStream_simpleArgs':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/decompress/zstd_decompress.c:2396: multiple definition of `ZSTD_decompressStream_simpleArgs'; /opt/vesoft/third-party/3.3/lib/libzstd.a(zstd_decompress.o):(.text+0x5e2f): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-hist.o): in function `HIST_isError':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/hist.c:24: multiple definition of `HIST_isError'; /opt/vesoft/third-party/3.3/lib/libzstd.a(hist.o):(.text+0x71): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-hist.o): in function `HIST_count_simple':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/hist.c:41: multiple definition of `HIST_count_simple'; /opt/vesoft/third-party/3.3/lib/libzstd.a(hist.o):(.text+0x8b): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-hist.o): in function `HIST_countFast_wksp':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/hist.c:153: multiple definition of `HIST_countFast_wksp'; /opt/vesoft/third-party/3.3/lib/libzstd.a(hist.o):(.text+0x667): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-hist.o): in function `HIST_count_wksp':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/hist.c:167: multiple definition of `HIST_count_wksp'; /opt/vesoft/third-party/3.3/lib/libzstd.a(hist.o):(.text+0x6fc): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-hist.o): in function `HIST_countFast':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/hist.c:180: multiple definition of `HIST_countFast'; /opt/vesoft/third-party/3.3/lib/libzstd.a(hist.o):(.text+0x7aa): first defined here
+/usr/bin/ld.bfd: ../../tantivy-rust-target/release/libnebula_tantivy.a(7c9960efb53c0b35-hist.o): in function `HIST_count':
+/home/sch/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.1.2+zstd.1.5.7/zstd/lib/compress/hist.c:187: multiple definition of `HIST_count'; /opt/vesoft/third-party/3.3/lib/libzstd.a(hist.o):(.text+0x807): first defined here
+[ 98%] Linking CXX executable ../../../bin/meta_dump
+[100%] Building CXX object src/daemons/CMakeFiles/nebula-metad.dir/SetupLogging.cpp.o
+[100%] Building CXX object src/tools/db-dump/CMakeFiles/db_dump.dir/DbDumper.cpp.o
+[100%] Building CXX object src/daemons/CMakeFiles/nebula-metad.dir/SetupBreakpad.cpp.o
+[100%] Building CXX object src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/DbUpgraderTool.cpp.o
+[100%] Linking CXX executable ../../bin/nebula-metad
+[100%] Linking CXX executable ../../../bin/db_dump
+[100%] Building CXX object src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/NebulaKeyUtilsV1.cpp.o
+[100%] Building CXX object src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/NebulaKeyUtilsV2.cpp.o
+[100%] Building CXX object src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/NebulaKeyUtilsV3.cpp.o
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [src/daemons/CMakeFiles/nebula-storaged.dir/build.make:644: bin/nebula-storaged] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:6624: src/daemons/CMakeFiles/nebula-storaged.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[100%] Building CXX object src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/DbUpgrader.cpp.o
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o: in function `nebula::storage::RebuildFTIndexTask::genSubTasks()::{lambda()#1}::operator()() const':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/admin/RebuildFTIndexTask.cpp:13: undefined reference to `nebula::storage::TantivyManager::rebuild(int)'
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o: in function `nebula::storage::ClearSpaceProcessor::process(nebula::storage::cpp2::ClearSpaceReq const&)':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/admin/ClearSpaceProcessor.cpp:25: undefined reference to `nebula::storage::TantivyManager::rebuild(int)'
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o: in function `nebula::storage::IndexTantivyScanNode::doExecute(int)':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/exec/IndexTantivyScanNode.cpp:51: undefined reference to `nebula::storage::TantivyManager::search(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, std::vector<nebula::plugin::TantivyIndex::Hit, std::allocator<nebula::plugin::TantivyIndex::Hit> >&)'
+[100%] Linking CXX executable ../../../bin/db_upgrader
+/usr/bin/ld.bfd: collect2: error: ld returned 1 exit status
+gmake[2]: *** [src/tools/meta-dump/CMakeFiles/meta_dump.dir/build.make:782: bin/meta_dump] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:16047: src/tools/meta-dump/CMakeFiles/meta_dump.dir/all] Error 2
+../../storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o: in function `nebula::storage::RebuildFTIndexTask::genSubTasks()::{lambda()#1}::operator()() const':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/admin/RebuildFTIndexTask.cpp:13: undefined reference to `nebula::storage::TantivyManager::rebuild(int)'
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o: in function `nebula::storage::ClearSpaceProcessor::process(nebula::storage::cpp2::ClearSpaceReq const&)':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/admin/ClearSpaceProcessor.cpp:25: undefined reference to `nebula::storage::TantivyManager::rebuild(int)'
+[100%] Built target nebula-metad
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o: in function `nebula::storage::IndexTantivyScanNode::doExecute(int)':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/exec/IndexTantivyScanNode.cpp:51: undefined reference to `nebula::storage::TantivyManager::search(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, std::vector<nebula::plugin::TantivyIndex::Hit, std::allocator<nebula::plugin::TantivyIndex::Hit> >&)'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [src/tools/db-dump/CMakeFiles/db_dump.dir/build.make:798: bin/db_dump] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:16130: src/tools/db-dump/CMakeFiles/db_dump.dir/all] Error 2
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o: in function `nebula::storage::RebuildFTIndexTask::genSubTasks()::{lambda()#1}::operator()() const':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/admin/RebuildFTIndexTask.cpp:13: undefined reference to `nebula::storage::TantivyManager::rebuild(int)'
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o: in function `nebula::storage::ClearSpaceProcessor::process(nebula::storage::cpp2::ClearSpaceReq const&)':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/admin/ClearSpaceProcessor.cpp:25: undefined reference to `nebula::storage::TantivyManager::rebuild(int)'
+/usr/bin/ld.bfd: ../../storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o: in function `nebula::storage::IndexTantivyScanNode::doExecute(int)':
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/exec/IndexTantivyScanNode.cpp:51: undefined reference to `nebula::storage::TantivyManager::search(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, std::vector<nebula::plugin::TantivyIndex::Hit, std::allocator<nebula::plugin::TantivyIndex::Hit> >&)'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/build.make:846: bin/db_upgrader] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:16213: src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/all] Error 2
+gmake: *** [Makefile:156: all] Error 2

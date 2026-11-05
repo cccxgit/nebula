@@ -1,0 +1,110 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=3,
+        output_var=b'{"colNames":["id"],"name":"__Project_3","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_2'),
+        Pair(
+            key=b'columns',
+            value=b'["id(VERTEX) AS id"]')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=102,
+            total_duration_in_us=116)],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=2,
+        output_var=(b'{"colNames":["_vid","article._tag","article.body","article.category","articl'
+         b'e.title"],"name":"__Filter_2","type":"DATASET"}'),
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'condition',
+            value=b'(article.title CONTAINS "\xe5\x8e\x9f\xe7\x94\x9f")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=44,
+            total_duration_in_us=63)],
+        dependencies=[1]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=1,
+        output_var=(b'{"colNames":["_vid","article._tag","article.body","article.category","articl'
+         b'e.title"],"type":"DATASET","name":"__IndexScan_1"}'),
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'3'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'4'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid","_tag","body","category","title"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"fulltext_mode":1,"fulltext_value":"\xe5\x8e\x9f\xe7\x94'
+             b'\x9f","fulltext_field":"title","filter":"(article.title CONTAINS \\"'
+             b'\xe5\x8e\x9f\xe7\x94\x9f\\")","fulltext_index":"tantivy_demo_v3_article","e'
+             b'ngine":"tantivy"}]'))],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=0,
+            total_duration_in_us=1327,
+            other_stats={b'resp[0]': b'{\n  "exec": "649(us)",\n  "host": "127.0.0.1:9799",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "2'
+                        b'700(us)",\n    "IndexProjectionNode(projectColumn=[_vid,_tag,body'
+                        b',category,title])": "2547(us)",\n    "IndexSelectionNode(expr=[(a'
+                        b'rticle.title CONTAINS \\"\xe5\x8e\x9f\xe7\x94\x9f\\")])": "2407('
+                        b'us)",\n    "TantivyIndexScanNode(index=tantivy_demo_v3_article,fi'
+                        b'eld=title,mode=1)": "2234(us)"\n  },\n  "total": "996(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "656(us)",\n  "host": "127.0.0.1:9789",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "2'
+                        b'300(us)",\n    "IndexProjectionNode(projectColumn=[_vid,_tag,body'
+                        b',category,title])": "2208(us)",\n    "IndexSelectionNode(expr=[(a'
+                        b'rticle.title CONTAINS \\"\xe5\x8e\x9f\xe7\x94\x9f\\")])": "2081('
+                        b'us)",\n    "TantivyIndexScanNode(index=tantivy_demo_v3_article,fi'
+                        b'eld=title,mode=1)": "1953(us)"\n  },\n  "total": "1023(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "473(us)",\n  "host": "127.0.0.1:9779",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "6'
+                        b'43(us)",\n    "IndexProjectionNode(projectColumn=[_vid,_tag,body,'
+                        b'category,title])": "612(us)",\n    "IndexSelectionNode(expr=[(art'
+                        b'icle.title CONTAINS \\"\xe5\x8e\x9f\xe7\x94\x9f\\")])": "576(us)'
+                        b'",\n    "TantivyIndexScanNode(index=tantivy_demo_v3_article,field'
+                        b'=title,mode=1)": "529(us)"\n  },\n  "total": "815(us)"\n}'})],
+        dependencies=[0]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=0,
+        output_var=b'{"colNames":[],"name":"__Start_0","type":"DATASET"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=1,
+            total_duration_in_us=23)])],
+    node_index_map={0: 3, 1: 2, 2: 1, 3: 0},
+    format=b'row',
+    optimize_time_in_us=345)

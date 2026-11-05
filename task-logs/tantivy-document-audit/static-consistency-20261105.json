@@ -1,0 +1,106 @@
+{
+  "utc": "2026-11-04T16:41:02.244484+00:00",
+  "kind": "static_document_consistency_audit",
+  "distinct_cluster_checks": 93,
+  "suites": [
+    {
+      "suite": "main",
+      "report": "task-logs/tantivy-demo/verified-v3/report.json",
+      "passed_checks": 39,
+      "version_scope": "earlier build"
+    },
+    {
+      "suite": "lifecycle",
+      "report": "task-logs/tantivy-lifecycle/post-topk/report.json",
+      "passed_checks": 23,
+      "version_scope": "post-topk build; replaces prior lifecycle suite"
+    },
+    {
+      "suite": "native",
+      "report": "task-logs/tantivy-benchmark/regression-tantivy-v1.json",
+      "passed_checks": 18,
+      "version_scope": "earlier build"
+    },
+    {
+      "suite": "topk",
+      "report": "task-logs/tantivy-topk/verified-v2/report.json",
+      "passed_checks": 10,
+      "version_scope": "post-topk build"
+    },
+    {
+      "suite": "immediate_rebuild",
+      "report": "task-logs/tantivy-rebuild-immediate/verified-v2/report.json",
+      "passed_checks": 3,
+      "version_scope": "post-topk build"
+    }
+  ],
+  "rust_tests": 9,
+  "performance_comparison": "million same-cluster MATCH pushdown on/off; not ES; before latest TopK build",
+  "demo_space_restored": false,
+  "es_final_results_available": false,
+  "five_million_database_results_available": false,
+  "source_sha256": {
+    "src/graph/executor/query/FulltextIndexScanExecutor.cpp": "bd06b2bafa608150844a10cc805c8efe2fb973f7be59c7b10a72ae7b4cf099fc",
+    "src/storage/index/LookupProcessor.cpp": "0744712c628f6d9efc5a9b4852ade8e8dac8af846c7b90597750c145ec9274a1",
+    "src/storage/exec/IndexTantivyScanNode.cpp": "19a57f2e6f0107ed3794bac7b95d55334e1ba6c1f8ea09c8553991ab6cea012d",
+    "src/storage/fulltext/TantivyTopK.h": "9237b5c44b38a22fd6fd57e64047d6873816557520d06a976aff8c54de0b7ca4",
+    "src/storage/fulltext/TantivyManager.cpp": "dd57fd5df8a67388663f5feebfc3f8c9f5393c04d9fbc9b6881231d0f6d76240",
+    "src/storage/admin/ClearSpaceProcessor.cpp": "dcd2b03f2547e32aef3e169dd2d76532c4d77cc92f40ff29dfe407519c63e56a",
+    "src/kvstore/Part.cpp": "0bd6f875eaef78643346b84c1dc3ecb148107e3d356b8483e6a0ba285e5f1b94",
+    "src/kvstore/NebulaStore.cpp": "67fb06fc2d44054f3999f56ebc17f9ae289e911b0ab83504580d45b7969e9965",
+    "docs/tantivy/benchmark-report.md": "b046b14c7e54eafe8f129a0a1980e28c77eca700f1cc407198eeeffafdbfd963"
+  },
+  "updated_sha256": {
+    "docs/tantivy/README.md": "476387aca8bc48d6173b1142b05508e9c78a4fc4b9540d7eadaceed444f2bf2d",
+    "docs/tantivy/architecture.md": "4863ee4e9a9ba67f73c381e649d902141af8edc4bf76e2bb81ef4a4f895a2db8",
+    "docs/tantivy/fulltext-compatibility.md": "55a0c116b72950e89d2feeadc27ecb585865f17d99a761441ede7253783e94aa",
+    "docs/tantivy/demo-guide.md": "80d4ea24a3799c91e5cdb4060a295a34ec56665730f28a14ab76efcd7743da01",
+    "docs/tantivy/speaker-notes-and-qa.md": "94f90e4334df47cabdfb8c30f48778ad88e7103a860c1efe7acfe65733bfafe3",
+    "task-logs/tantivy-presentation/build-deck.mjs": "02b13a49b3762854c2f0fc8ba7402d1718214c18307347a220f95c9339fcfda0",
+    "task-logs/tantivy-presentation/performance-slide.pending.json": "d159403b653a23a4c86747dd1e8bc4ddbf91882603a86e6c85dd7841d36feeef",
+    "task-logs/tantivy-presentation/HANDOFF.md": "3dca6b002ac7a281558d12921c50e03018ad7ddbcbe0053c9866186c1173dd15"
+  },
+  "relative_document_links_checked": true,
+  "presentation_slide_count_in_source": 8,
+  "presentation_rendered": false,
+  "service_or_compile_commands_run": false,
+  "validations": [
+    {
+      "command": [
+        "/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "task-logs/tantivy-presentation/build-deck.mjs"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "task-logs/tantivy-presentation/render-final.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "docs/tantivy/README.md",
+        "docs/tantivy/architecture.md",
+        "docs/tantivy/fulltext-compatibility.md",
+        "docs/tantivy/demo-guide.md",
+        "docs/tantivy/speaker-notes-and-qa.md"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "passed": true
+}

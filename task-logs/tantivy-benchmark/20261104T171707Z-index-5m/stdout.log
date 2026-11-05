@@ -1,0 +1,206 @@
+{"utc": "2026-11-04T17:17:07Z", "event": "query", "query": "USE `ft_bench_5m`", "success": true, "rows": 0, "elapsed_s": 0.0010840089998964686, "error": ""}
+{"utc": "2026-11-04T17:17:07Z", "event": "query", "query": "SHOW PARTS", "success": true, "rows": 20, "elapsed_s": 0.0014833189998171292, "error": ""}
+{"utc": "2026-11-04T17:17:07Z", "event": "topology_healthy", "partitions": 20, "replicas": 3, "details": [[1, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [2, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [3, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [4, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [5, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [6, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [7, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [8, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [9, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [10, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [11, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [12, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [13, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [14, "127.0.0.1:9799", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [15, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [16, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [17, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [18, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [19, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""], [20, "127.0.0.1:9779", "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779", ""]]}
+{"utc": "2026-11-04T17:17:07Z", "event": "query", "query": "REBUILD TAG INDEX passage_tag_lookup", "success": true, "rows": 1, "elapsed_s": 0.0008972319992608391, "error": ""}
+{"utc": "2026-11-04T17:17:07Z", "event": "query", "query": "SHOW JOB 23", "success": true, "rows": 2, "elapsed_s": 0.0008493059976899531, "error": ""}
+{"utc": "2026-11-04T17:17:07Z", "event": "waiting", "label": "job 23 completion", "reason": "['QUEUE']"}
+{"utc": "2026-11-04T17:17:09Z", "event": "query", "query": "SHOW JOB 23", "success": true, "rows": 4, "elapsed_s": 0.0026595409981382545, "error": ""}
+{"utc": "2026-11-04T17:17:09Z", "event": "waiting", "label": "job 23 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:11Z", "event": "query", "query": "SHOW JOB 23", "success": true, "rows": 4, "elapsed_s": 0.001690678000159096, "error": ""}
+{"utc": "2026-11-04T17:17:11Z", "event": "waiting", "label": "job 23 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:13Z", "event": "query", "query": "SHOW JOB 23", "success": true, "rows": 4, "elapsed_s": 0.0015982779987098183, "error": ""}
+{"utc": "2026-11-04T17:17:13Z", "event": "waiting", "label": "job 23 completion", "reason": "['RUNNING', 'FINISHED', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:15Z", "event": "query", "query": "SHOW JOB 23", "success": true, "rows": 4, "elapsed_s": 0.002264415001263842, "error": ""}
+{"utc": "2026-11-04T17:17:15Z", "event": "waiting", "label": "job 23 completion", "reason": "['RUNNING', 'FINISHED', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:17Z", "event": "query", "query": "SHOW JOB 23", "success": true, "rows": 4, "elapsed_s": 0.0017791010031942278, "error": ""}
+{"utc": "2026-11-04T17:17:17Z", "event": "waiting", "label": "job 23 completion", "reason": "['RUNNING', 'FINISHED', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:19Z", "event": "query", "query": "SHOW JOB 23", "success": true, "rows": 4, "elapsed_s": 0.00842492900119396, "error": ""}
+{"utc": "2026-11-04T17:17:19Z", "event": "job_finished", "job_id": 23, "statuses": ["FINISHED", "FINISHED", "FINISHED"], "elapsed_s": 12.033216650997929}
+{"utc": "2026-11-04T17:17:19Z", "event": "query", "query": "CREATE FULLTEXT TAG INDEX `ft_passage_text_5m` ON passage(text) ANALYZER=\"standard\"", "success": true, "rows": 0, "elapsed_s": 0.0018739970000751782, "error": ""}
+{"utc": "2026-11-04T17:17:19Z", "event": "query", "query": "SHOW FULLTEXT INDEXES", "success": true, "rows": 1, "elapsed_s": 0.0009127049997914582, "error": ""}
+{"utc": "2026-11-04T17:17:19Z", "event": "query", "query": "REBUILD FULLTEXT INDEX", "success": true, "rows": 1, "elapsed_s": 0.001026763999107061, "error": ""}
+{"utc": "2026-11-04T17:17:19Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0009225489993696101, "error": ""}
+{"utc": "2026-11-04T17:17:19Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:21Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0019426359976932872, "error": ""}
+{"utc": "2026-11-04T17:17:21Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:23Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001981572000659071, "error": ""}
+{"utc": "2026-11-04T17:17:23Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:25Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0016414550009358209, "error": ""}
+{"utc": "2026-11-04T17:17:25Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:27Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.004955537002388155, "error": ""}
+{"utc": "2026-11-04T17:17:27Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:29Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002191965002566576, "error": ""}
+{"utc": "2026-11-04T17:17:29Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:31Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002131647001078818, "error": ""}
+{"utc": "2026-11-04T17:17:31Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:33Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001975290997506818, "error": ""}
+{"utc": "2026-11-04T17:17:33Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:35Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0020401440015120897, "error": ""}
+{"utc": "2026-11-04T17:17:35Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:37Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.005776371999672847, "error": ""}
+{"utc": "2026-11-04T17:17:37Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:39Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0016880120019777678, "error": ""}
+{"utc": "2026-11-04T17:17:39Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:41Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0016342929993697908, "error": ""}
+{"utc": "2026-11-04T17:17:41Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:43Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0015263589993992355, "error": ""}
+{"utc": "2026-11-04T17:17:43Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:45Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0019958099983341526, "error": ""}
+{"utc": "2026-11-04T17:17:45Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:47Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002351733997784322, "error": ""}
+{"utc": "2026-11-04T17:17:47Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:49Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0021739570001955144, "error": ""}
+{"utc": "2026-11-04T17:17:49Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:51Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.004368221001641359, "error": ""}
+{"utc": "2026-11-04T17:17:51Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:53Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0018945709998661187, "error": ""}
+{"utc": "2026-11-04T17:17:53Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:55Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0027663020009640604, "error": ""}
+{"utc": "2026-11-04T17:17:55Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:57Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0021229009980743285, "error": ""}
+{"utc": "2026-11-04T17:17:57Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:17:59Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0020649739999498706, "error": ""}
+{"utc": "2026-11-04T17:17:59Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:01Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0021422299978439696, "error": ""}
+{"utc": "2026-11-04T17:18:01Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:03Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002231170001323335, "error": ""}
+{"utc": "2026-11-04T17:18:03Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:05Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0020479350023379084, "error": ""}
+{"utc": "2026-11-04T17:18:05Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:07Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002052605999779189, "error": ""}
+{"utc": "2026-11-04T17:18:07Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:09Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.004801540999324061, "error": ""}
+{"utc": "2026-11-04T17:18:09Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:11Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0017176809997181408, "error": ""}
+{"utc": "2026-11-04T17:18:11Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:13Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0018270429973199498, "error": ""}
+{"utc": "2026-11-04T17:18:13Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:15Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.004135036997467978, "error": ""}
+{"utc": "2026-11-04T17:18:15Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:17Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0021790700011479203, "error": ""}
+{"utc": "2026-11-04T17:18:17Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:19Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0020216310003888793, "error": ""}
+{"utc": "2026-11-04T17:18:19Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:21Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0017305059991485905, "error": ""}
+{"utc": "2026-11-04T17:18:21Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:23Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002371375998336589, "error": ""}
+{"utc": "2026-11-04T17:18:23Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:25Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002085858999635093, "error": ""}
+{"utc": "2026-11-04T17:18:25Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:27Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0018532940011937171, "error": ""}
+{"utc": "2026-11-04T17:18:27Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:29Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0037205799999355804, "error": ""}
+{"utc": "2026-11-04T17:18:29Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:31Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0016026970006350894, "error": ""}
+{"utc": "2026-11-04T17:18:31Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:33Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001710013999399962, "error": ""}
+{"utc": "2026-11-04T17:18:33Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:35Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0022009239983162843, "error": ""}
+{"utc": "2026-11-04T17:18:35Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:37Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0018008080005529337, "error": ""}
+{"utc": "2026-11-04T17:18:37Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:39Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0021266769981593825, "error": ""}
+{"utc": "2026-11-04T17:18:39Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:41Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.004293554997275351, "error": ""}
+{"utc": "2026-11-04T17:18:41Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:43Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001808541997888824, "error": ""}
+{"utc": "2026-11-04T17:18:43Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:45Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002584631001809612, "error": ""}
+{"utc": "2026-11-04T17:18:45Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:47Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0020465939996938687, "error": ""}
+{"utc": "2026-11-04T17:18:47Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:49Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001952516999153886, "error": ""}
+{"utc": "2026-11-04T17:18:49Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:52Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0019398740005271975, "error": ""}
+{"utc": "2026-11-04T17:18:52Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:54Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.00184774099761853, "error": ""}
+{"utc": "2026-11-04T17:18:54Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:56Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0022315309979603626, "error": ""}
+{"utc": "2026-11-04T17:18:56Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:18:58Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002138822997949319, "error": ""}
+{"utc": "2026-11-04T17:18:58Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:00Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001880912997876294, "error": ""}
+{"utc": "2026-11-04T17:19:00Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:02Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0027232559987169225, "error": ""}
+{"utc": "2026-11-04T17:19:02Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:04Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001801749000151176, "error": ""}
+{"utc": "2026-11-04T17:19:04Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:06Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0031717359997855965, "error": ""}
+{"utc": "2026-11-04T17:19:06Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:08Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002016274000197882, "error": ""}
+{"utc": "2026-11-04T17:19:08Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:10Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001748097001836868, "error": ""}
+{"utc": "2026-11-04T17:19:10Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:12Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0017986809980357066, "error": ""}
+{"utc": "2026-11-04T17:19:12Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:14Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.00195808699936606, "error": ""}
+{"utc": "2026-11-04T17:19:14Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:16Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.00816662099896348, "error": ""}
+{"utc": "2026-11-04T17:19:16Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:18Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002742946999205742, "error": ""}
+{"utc": "2026-11-04T17:19:18Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:20Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0016151700001501013, "error": ""}
+{"utc": "2026-11-04T17:19:20Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:22Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0027797260008810554, "error": ""}
+{"utc": "2026-11-04T17:19:22Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:24Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0013980119983898476, "error": ""}
+{"utc": "2026-11-04T17:19:24Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:26Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0017115170012402814, "error": ""}
+{"utc": "2026-11-04T17:19:26Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:28Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.003913069998816354, "error": ""}
+{"utc": "2026-11-04T17:19:28Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:30Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0020609769999282435, "error": ""}
+{"utc": "2026-11-04T17:19:30Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:32Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.004507025001657894, "error": ""}
+{"utc": "2026-11-04T17:19:32Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:34Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0018710959993768483, "error": ""}
+{"utc": "2026-11-04T17:19:34Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:36Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001893028002086794, "error": ""}
+{"utc": "2026-11-04T17:19:36Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:38Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0017499050009064376, "error": ""}
+{"utc": "2026-11-04T17:19:38Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:40Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001636909000808373, "error": ""}
+{"utc": "2026-11-04T17:19:40Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:42Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0034746329984045587, "error": ""}
+{"utc": "2026-11-04T17:19:42Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:44Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.00597535099950619, "error": ""}
+{"utc": "2026-11-04T17:19:44Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:46Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0017226920026587322, "error": ""}
+{"utc": "2026-11-04T17:19:46Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:48Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0059556670021265745, "error": ""}
+{"utc": "2026-11-04T17:19:48Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:50Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.003475809000519803, "error": ""}
+{"utc": "2026-11-04T17:19:50Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:52Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0016021219998947345, "error": ""}
+{"utc": "2026-11-04T17:19:52Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:54Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001706470997305587, "error": ""}
+{"utc": "2026-11-04T17:19:54Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:56Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0018763250009214971, "error": ""}
+{"utc": "2026-11-04T17:19:56Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:19:58Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0029654110003320966, "error": ""}
+{"utc": "2026-11-04T17:19:58Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:00Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0019035049990634434, "error": ""}
+{"utc": "2026-11-04T17:20:00Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:02Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.005348138001863845, "error": ""}
+{"utc": "2026-11-04T17:20:02Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:04Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001962092999747256, "error": ""}
+{"utc": "2026-11-04T17:20:04Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:06Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.005064396002126159, "error": ""}
+{"utc": "2026-11-04T17:20:06Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:08Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002154569996491773, "error": ""}
+{"utc": "2026-11-04T17:20:08Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:10Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0018513670001993887, "error": ""}
+{"utc": "2026-11-04T17:20:10Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:12Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0052691489981953055, "error": ""}
+{"utc": "2026-11-04T17:20:12Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:14Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0017662989994278178, "error": ""}
+{"utc": "2026-11-04T17:20:14Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:16Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.001921357001265278, "error": ""}
+{"utc": "2026-11-04T17:20:16Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:18Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0020015250011056196, "error": ""}
+{"utc": "2026-11-04T17:20:18Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:20Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.002942708997579757, "error": ""}
+{"utc": "2026-11-04T17:20:20Z", "event": "waiting", "label": "job 24 completion", "reason": "['RUNNING', 'RUNNING', 'RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T17:20:22Z", "event": "query", "query": "SHOW JOB 24", "success": true, "rows": 5, "elapsed_s": 0.0023762329983583186, "error": ""}
+{"utc": "2026-11-04T17:20:22Z", "event": "job_finished", "job_id": 24, "statuses": ["FINISHED", "FINISHED", "FINISHED", "FINISHED"], "elapsed_s": 182.4420991400002}
+{"utc": "2026-11-04T17:20:22Z", "event": "index_build_jobs_finished", "elapsed_s": 182.4451030019991, "note": "Run verify next; job completion and query-set visibility are separate evidence."}

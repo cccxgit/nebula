@@ -1,0 +1,23 @@
+[
+  {
+    "storage": 1,
+    "path": "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage1/logs/nebula-storaged.sch-PC.sch.log.INFO.20261105-005937.155847",
+    "ready_lines": [
+      "I20261105 01:20:21.107443 155904 TantivyManager.cpp:173] Tantivy index ready name=ft_passage_text_5m space=22 documents=5000000"
+    ]
+  },
+  {
+    "storage": 2,
+    "path": "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage2/logs/nebula-storaged.sch-PC.sch.log.INFO.20261105-005937.155974",
+    "ready_lines": [
+      "I20261105 01:20:20.899592 156112 TantivyManager.cpp:173] Tantivy index ready name=ft_passage_text_5m space=22 documents=5000000"
+    ]
+  },
+  {
+    "storage": 3,
+    "path": "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage3/logs/nebula-storaged.sch-PC.sch.log.INFO.20261105-005937.156183",
+    "ready_lines": [
+      "I20261105 01:20:20.873970 156241 TantivyManager.cpp:173] Tantivy index ready name=ft_passage_text_5m space=22 documents=5000000"
+    ]
+  }
+]

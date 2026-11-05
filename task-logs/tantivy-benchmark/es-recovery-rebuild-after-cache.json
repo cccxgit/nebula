@@ -1,0 +1,5 @@
+{
+  "utc": "2026-11-04T16:44:43.912986+00:00",
+  "job_id": 4,
+  "reason": "Repeat after old Listener metadata cache has settled to diagnose missing initial records; not performance measurement"
+}

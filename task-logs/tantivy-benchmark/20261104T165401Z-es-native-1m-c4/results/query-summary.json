@@ -1,0 +1,69 @@
+{
+  "time": "2026-11-04T16:54:03Z",
+  "kind": "measured_query_roundtrip",
+  "label": "es-native-1m-c4",
+  "space": "ft_bench_1m",
+  "concurrency": 4,
+  "scheduling": "shared_fifo_queue_dynamic_workers",
+  "requests_by_worker": {
+    "0": 149,
+    "1": 152,
+    "2": 150,
+    "3": 149
+  },
+  "warmup_cycles_excluded": 3,
+  "repeats": 200,
+  "elapsed_s": 0.997123453000313,
+  "attempted_qps": 601.7309072358281,
+  "successful_qps": 601.7309072358281,
+  "percentile_method": "nearest_rank_successful_requests_only",
+  "overall": {
+    "requests": 600,
+    "successes": 600,
+    "failures": 0,
+    "latency_success_ms": {
+      "p50": 5.539013,
+      "p95": 11.121218,
+      "p99": 14.113921,
+      "max": 17.883511
+    }
+  },
+  "queries": {
+    "term_water": {
+      "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"water\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 5.434253,
+        "p95": 11.255981,
+        "p99": 14.113921,
+        "max": 14.631461
+      }
+    },
+    "phrase_new_york": {
+      "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"\\\"New York\\\"\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 5.639101,
+        "p95": 11.089346,
+        "p99": 13.334686,
+        "max": 17.883511
+      }
+    },
+    "boolean_water_river": {
+      "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"water AND river\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 5.440092,
+        "p95": 11.113651,
+        "p99": 13.236196,
+        "max": 16.745152
+      }
+    }
+  }
+}

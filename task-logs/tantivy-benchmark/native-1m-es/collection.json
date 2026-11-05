@@ -1,0 +1,91 @@
+{
+  "utc": "2026-11-04T16:47:59Z",
+  "kind": "native_complete_hit_sets",
+  "backend": "es",
+  "space": "ft_bench_1m",
+  "index": "nebula_index_ft_passage_1m",
+  "host": "127.0.0.1",
+  "port": 29669,
+  "dataset": {
+    "rows": 1000000,
+    "normalized_jsonl_sha256": "de46025a28771d1b88e20ab78dd2aeda05ef407bf7aab002a12e7afe876a2acd",
+    "max_chars_setting": 128,
+    "max_text_bytes_setting": 0
+  },
+  "max_hits": 100000,
+  "sentinel_limit": 100001,
+  "all_queries_complete": false,
+  "queries": [
+    {
+      "name": "term_water",
+      "query_text": "water",
+      "ngql": "LOOKUP ON passage WHERE ES_QUERY(`nebula_index_ft_passage_1m`, \"water\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": false,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "-1",
+          "filter": "",
+          "orderBy": "[]",
+          "isEdge": "0",
+          "offset": "-1",
+          "schemaId": "2",
+          "searchExpr": "ES_QUERY(nebula_index_ft_passage_1m, \"water\")"
+        }
+      ],
+      "error": "ES FulltextIndexScan limit not pushed; complete collection would be unsafe",
+      "elapsed_s": 0.0031663350000599166
+    },
+    {
+      "name": "phrase_new_york",
+      "query_text": "\"New York\"",
+      "ngql": "LOOKUP ON passage WHERE ES_QUERY(`nebula_index_ft_passage_1m`, \"\\\"New York\\\"\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": false,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "-1",
+          "filter": "",
+          "orderBy": "[]",
+          "isEdge": "0",
+          "offset": "-1",
+          "schemaId": "2",
+          "searchExpr": "ES_QUERY(nebula_index_ft_passage_1m, \"\"New York\"\")"
+        }
+      ],
+      "error": "ES FulltextIndexScan limit not pushed; complete collection would be unsafe",
+      "elapsed_s": 0.00353360699955374
+    },
+    {
+      "name": "boolean_water_river",
+      "query_text": "water AND river",
+      "ngql": "LOOKUP ON passage WHERE ES_QUERY(`nebula_index_ft_passage_1m`, \"water AND river\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": false,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "-1",
+          "filter": "",
+          "orderBy": "[]",
+          "isEdge": "0",
+          "offset": "-1",
+          "schemaId": "2",
+          "searchExpr": "ES_QUERY(nebula_index_ft_passage_1m, \"water AND river\")"
+        }
+      ],
+      "error": "ES FulltextIndexScan limit not pushed; complete collection would be unsafe",
+      "elapsed_s": 0.0030600989994127303
+    }
+  ],
+  "note": "Correctness only; no concurrent writes allowed. Scores are checked for finiteness, not cross-engine equality.",
+  "finished_utc": "2026-11-04T16:47:59Z"
+}

@@ -1,0 +1,50 @@
+{
+  "utc": "2026-11-04T17:19:02.283666+00:00",
+  "kind": "final_structure_preparation",
+  "passed": true,
+  "native_es_result_sets_equal": false,
+  "native_tantivy_c4_qps": 52.71102467523947,
+  "distinct_prototype_cluster_checks": 93,
+  "slides_in_source": 8,
+  "rendered": false,
+  "service_operations": false,
+  "build_operations": false,
+  "checks": [
+    {
+      "command": [
+        "/home/sch/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "task-logs/tantivy-presentation/build-deck.mjs"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "task-logs/tantivy-presentation/render-final.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "docs/tantivy/README.md",
+        "docs/tantivy/architecture.md",
+        "docs/tantivy/demo-guide.md",
+        "docs/tantivy/speaker-notes-and-qa.md",
+        "docs/tantivy/fulltext-compatibility.md"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

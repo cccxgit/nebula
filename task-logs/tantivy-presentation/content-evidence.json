@@ -1,0 +1,25 @@
+{
+  "purpose": "presentation factual evidence, not performance measurements",
+  "reports": [
+    {
+      "suite": "main",
+      "report": "task-logs/tantivy-demo/verified-v3/report.json",
+      "passed": 39,
+      "failed": 0
+    },
+    {
+      "suite": "lifecycle",
+      "report": "task-logs/tantivy-lifecycle/verified/report.json",
+      "passed": 23,
+      "failed": 0
+    },
+    {
+      "suite": "native",
+      "report": "task-logs/tantivy-benchmark/regression-tantivy-v1.json",
+      "passed": 18,
+      "failed": 0
+    }
+  ],
+  "total_passed": 80,
+  "pptx_render_status": "pending final metrics and coordinated render"
+}

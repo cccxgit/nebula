@@ -1,0 +1,199 @@
+{
+  "utc": "2026-11-04T17:01:40.992542+00:00",
+  "kind": "offline_native_analyzer_difference_audit",
+  "source": "/home/sch/nebula-data/tantivy/msmarco-1m-128.jsonl.gz",
+  "source_manifest": "task-logs/tantivy-benchmark/msmarco-1m-128.manifest.json",
+  "normalized_jsonl_sha256": "de46025a28771d1b88e20ab78dd2aeda05ef407bf7aab002a12e7afe876a2acd",
+  "source_rows": 1000000,
+  "max_chars": 128,
+  "unique_diff_ids": 133,
+  "comparison": "task-logs/tantivy-benchmark/native-1m-comparison/comparison.json",
+  "extracted_rows": "task-logs/tantivy-query/native-analyzer-diff-source.jsonl",
+  "extracted_rows_sha256": "811f612f7cb05ce7672ad9f264366e6b1fe8f0c205ff982ed5a2279ddb1c6503",
+  "summary": [
+    {
+      "name": "term_water",
+      "difference_count": 54,
+      "observed_context_counts": {
+        "ASCII_or_curly_apostrophe_possessive": 42,
+        "dot_between_alphanumeric_words": 7,
+        "colon_between_alphanumeric_words": 2,
+        "underscore_connector": 1,
+        "soft_hyphen_U00AD_inside_word": 2
+      },
+      "ids_by_context": {
+        "ASCII_or_curly_apostrophe_possessive": [
+          "msmarco_passage_00_1561589",
+          "msmarco_passage_00_31196090",
+          "msmarco_passage_00_44385317",
+          "msmarco_passage_00_44387870",
+          "msmarco_passage_00_90253574",
+          "msmarco_passage_00_90600015",
+          "msmarco_passage_00_92946916",
+          "msmarco_passage_00_123407688",
+          "msmarco_passage_00_126447542",
+          "msmarco_passage_00_142967375",
+          "msmarco_passage_00_142974211",
+          "msmarco_passage_00_153243593",
+          "msmarco_passage_00_153566726",
+          "msmarco_passage_00_154424178",
+          "msmarco_passage_00_157043713",
+          "msmarco_passage_00_157063624",
+          "msmarco_passage_00_160741012",
+          "msmarco_passage_00_160762464",
+          "msmarco_passage_00_160823660",
+          "msmarco_passage_00_164400568",
+          "msmarco_passage_00_165805563",
+          "msmarco_passage_00_166641363",
+          "msmarco_passage_00_172863801",
+          "msmarco_passage_00_199144623",
+          "msmarco_passage_00_199470303",
+          "msmarco_passage_00_225172089",
+          "msmarco_passage_00_226400742",
+          "msmarco_passage_00_296943669",
+          "msmarco_passage_00_306381573",
+          "msmarco_passage_00_306391075",
+          "msmarco_passage_00_309982702",
+          "msmarco_passage_00_345995679",
+          "msmarco_passage_00_364326908",
+          "msmarco_passage_00_392102625",
+          "msmarco_passage_00_392113828",
+          "msmarco_passage_00_394945990",
+          "msmarco_passage_00_397791147",
+          "msmarco_passage_00_404951135",
+          "msmarco_passage_00_408273359",
+          "msmarco_passage_00_413870845",
+          "msmarco_passage_00_417210972",
+          "msmarco_passage_00_422935313"
+        ],
+        "dot_between_alphanumeric_words": [
+          "msmarco_passage_00_47980707",
+          "msmarco_passage_00_65290950",
+          "msmarco_passage_00_71521031",
+          "msmarco_passage_00_99745726",
+          "msmarco_passage_00_119954794",
+          "msmarco_passage_00_214853549",
+          "msmarco_passage_00_246821414"
+        ],
+        "colon_between_alphanumeric_words": [
+          "msmarco_passage_00_87330806",
+          "msmarco_passage_00_343596078"
+        ],
+        "underscore_connector": [
+          "msmarco_passage_00_238407174"
+        ],
+        "soft_hyphen_U00AD_inside_word": [
+          "msmarco_passage_00_401526780",
+          "msmarco_passage_00_401540692"
+        ]
+      }
+    },
+    {
+      "name": "phrase_new_york",
+      "difference_count": 77,
+      "observed_context_counts": {
+        "ASCII_or_curly_apostrophe_possessive": 76,
+        "narrow_no_break_space_U202F_after_word": 1
+      },
+      "ids_by_context": {
+        "ASCII_or_curly_apostrophe_possessive": [
+          "msmarco_passage_00_13324933",
+          "msmarco_passage_00_18858312",
+          "msmarco_passage_00_20073190",
+          "msmarco_passage_00_22915039",
+          "msmarco_passage_00_23960954",
+          "msmarco_passage_00_24419677",
+          "msmarco_passage_00_24483689",
+          "msmarco_passage_00_25220154",
+          "msmarco_passage_00_30571143",
+          "msmarco_passage_00_30659914",
+          "msmarco_passage_00_32617547",
+          "msmarco_passage_00_32618808",
+          "msmarco_passage_00_63884011",
+          "msmarco_passage_00_66956500",
+          "msmarco_passage_00_66957686",
+          "msmarco_passage_00_66958432",
+          "msmarco_passage_00_66959010",
+          "msmarco_passage_00_66960269",
+          "msmarco_passage_00_66963219",
+          "msmarco_passage_00_67763097",
+          "msmarco_passage_00_67766936",
+          "msmarco_passage_00_70986749",
+          "msmarco_passage_00_90516256",
+          "msmarco_passage_00_90668291",
+          "msmarco_passage_00_90673419",
+          "msmarco_passage_00_98646863",
+          "msmarco_passage_00_107964072",
+          "msmarco_passage_00_107991205",
+          "msmarco_passage_00_108009860",
+          "msmarco_passage_00_108029928",
+          "msmarco_passage_00_111773833",
+          "msmarco_passage_00_122003392",
+          "msmarco_passage_00_132151663",
+          "msmarco_passage_00_132307714",
+          "msmarco_passage_00_132308166",
+          "msmarco_passage_00_132321442",
+          "msmarco_passage_00_132322227",
+          "msmarco_passage_00_132578944",
+          "msmarco_passage_00_132638570",
+          "msmarco_passage_00_132670629",
+          "msmarco_passage_00_140719017",
+          "msmarco_passage_00_142308138",
+          "msmarco_passage_00_170990387",
+          "msmarco_passage_00_170990768",
+          "msmarco_passage_00_189285627",
+          "msmarco_passage_00_206658865",
+          "msmarco_passage_00_213040971",
+          "msmarco_passage_00_213402648",
+          "msmarco_passage_00_218590495",
+          "msmarco_passage_00_222630005",
+          "msmarco_passage_00_222732609",
+          "msmarco_passage_00_223640833",
+          "msmarco_passage_00_233073641",
+          "msmarco_passage_00_280054427",
+          "msmarco_passage_00_289538565",
+          "msmarco_passage_00_299474541",
+          "msmarco_passage_00_313507906",
+          "msmarco_passage_00_337270115",
+          "msmarco_passage_00_339119872",
+          "msmarco_passage_00_339643754",
+          "msmarco_passage_00_343802915",
+          "msmarco_passage_00_355517498",
+          "msmarco_passage_00_355940488",
+          "msmarco_passage_00_356324575",
+          "msmarco_passage_00_359744727",
+          "msmarco_passage_00_369375141",
+          "msmarco_passage_00_385362729",
+          "msmarco_passage_00_392027272",
+          "msmarco_passage_00_392027743",
+          "msmarco_passage_00_408192895",
+          "msmarco_passage_00_409086152",
+          "msmarco_passage_00_410271601",
+          "msmarco_passage_00_413686445",
+          "msmarco_passage_00_429336939",
+          "msmarco_passage_00_430318797",
+          "msmarco_passage_00_433535326"
+        ],
+        "narrow_no_break_space_U202F_after_word": [
+          "msmarco_passage_00_408701006"
+        ]
+      }
+    },
+    {
+      "name": "boolean_water_river",
+      "difference_count": 2,
+      "observed_context_counts": {
+        "ASCII_or_curly_apostrophe_possessive": 2
+      },
+      "ids_by_context": {
+        "ASCII_or_curly_apostrophe_possessive": [
+          "msmarco_passage_00_71533253",
+          "msmarco_passage_00_190375416"
+        ]
+      }
+    }
+  ],
+  "production_tokenizer": "src/common/plugin/fulltext/tantivy/rust/src/lib.rs:67",
+  "es_standard_reference": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analysis-standard-analyzer.html",
+  "evidence_boundary": "Actual full-result ID differences and source text are observed. Context counts are lexical inspection, not separate ES _analyze calls. Apostrophe explanation follows ES documented dog's token and actual MixedTokenizer delimiters. Other punctuation/format-character causes are inferred from Unicode-vs-alphanumeric token boundaries and need targeted analyzer parity tests; no blanket claim all 133 independently token-audited. No DB/ES connections or compiler calls in this audit."
+}

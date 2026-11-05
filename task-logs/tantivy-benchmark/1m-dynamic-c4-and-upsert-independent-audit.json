@@ -1,0 +1,119 @@
+{
+  "utc": "2026-11-04T16:26:36Z",
+  "kind": "offline_recomputation_of_existing_measurements",
+  "runs": [
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T162117Z-query-1m-c4-dynamic",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Every query percentile, count, sequence and QPS recomputed"
+      ],
+      "resources": {
+        "pids": [
+          100191,
+          100357,
+          100390,
+          100512,
+          100631
+        ],
+        "samples": 23,
+        "complete_pss_samples": 23,
+        "complete_cpu_intervals": 22,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.031,
+        "sample_interval_max_s": 1.0459999999999994,
+        "observed_peak_sum_rss_bytes": 2180993024,
+        "observed_peak_sum_pss_bytes": 2081171456,
+        "observed_peak_sum_cpu_cores": 7.82379,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "query": {
+        "rows": 800,
+        "summary_recomputed": true,
+        "successful_qps": 36.631138098503065,
+        "measured_elapsed_s": 21.83934328900068,
+        "serial_latency_sum_s": 87.00123901500001,
+        "overall": {
+          "requests": 800,
+          "successes": 800,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 75.4312,
+            "p95": 276.630581,
+            "p99": 299.961886,
+            "max": 330.782086
+          }
+        },
+        "returned_row_counts_by_query": {
+          "contains_water": [
+            10
+          ],
+          "contains_new_york": [
+            10
+          ],
+          "starts_with_the_united": [
+            10
+          ],
+          "ends_with_water": [
+            10
+          ]
+        }
+      },
+      "passed": true
+    },
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T162222Z-upsert-100k-indexed",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Import acknowledgement counts and rows/s recomputed from batches"
+      ],
+      "resources": {
+        "pids": [
+          100191,
+          100357,
+          100390,
+          100512,
+          100631
+        ],
+        "samples": 5,
+        "complete_pss_samples": 5,
+        "complete_cpu_intervals": 4,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.029,
+        "sample_interval_max_s": 1.04,
+        "observed_peak_sum_rss_bytes": 2458226688,
+        "observed_peak_sum_pss_bytes": 2359851008,
+        "observed_peak_sum_cpu_cores": 10.05861,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "passed": true
+    },
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T162247Z-visible-after-upsert-100k",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups"
+      ],
+      "resources": {
+        "pids": [
+          100191,
+          100357,
+          100390,
+          100512,
+          100631
+        ],
+        "samples": 1,
+        "complete_pss_samples": 1,
+        "complete_cpu_intervals": 0,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": null,
+        "sample_interval_max_s": null,
+        "observed_peak_sum_rss_bytes": 1793396736,
+        "observed_peak_sum_pss_bytes": 1693591552,
+        "observed_peak_sum_cpu_cores": null,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

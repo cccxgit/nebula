@@ -1,0 +1,63 @@
+{
+  "utc": "2026-11-04T16:29:38.210914+00:00",
+  "preparation_low_priority": {
+    "nice": 15,
+    "io_class": "idle",
+    "processes": 1
+  },
+  "commands": [
+    [
+      "python3",
+      "scripts/tantivy-benchmark/benchmark.py",
+      "normalize",
+      "--input",
+      "/home/sch/nebula-data/tantivy/msmarco_v2_passage.tar.partial",
+      "--output",
+      "/home/sch/nebula-data/tantivy/msmarco-5m-128.jsonl.gz",
+      "--format",
+      "msmarco",
+      "--limit",
+      "5000000",
+      "--max-chars",
+      "128",
+      "--allow-partial-download",
+      "--report",
+      "task-logs/tantivy-benchmark/msmarco-5m-128.manifest.json"
+    ],
+    [
+      "python3",
+      "scripts/tantivy-benchmark/readiness.py",
+      "oracle",
+      "--input",
+      "/home/sch/nebula-data/tantivy/msmarco-5m-128.jsonl.gz",
+      "--expect-rows",
+      "5000000",
+      "--max-query-hits",
+      "100000",
+      "--output",
+      "task-logs/tantivy-benchmark/oracle-5m-128.json"
+    ]
+  ],
+  "rows": 5000000,
+  "unique_original_ids": 5000000,
+  "manifest_hash_matches_complete_oracle": true,
+  "database_import_executed_by_this_preparation": false,
+  "queries": [
+    {
+      "name": "contains_water",
+      "expected_hits": 82845
+    },
+    {
+      "name": "contains_new_york",
+      "expected_hits": 16252
+    },
+    {
+      "name": "starts_with_the_united",
+      "expected_hits": 1062
+    },
+    {
+      "name": "ends_with_water",
+      "expected_hits": 138
+    }
+  ]
+}

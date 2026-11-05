@@ -1,0 +1,18 @@
+Performing checkout keyword...
+Performing C++ linters...
+src/common/plugin/fulltext/tantivy/tests/TantivyBridgeTest.cpp:0:  No copyright message found.  You should have a line: "Copyright [year] <Copyright Owner>"  [legal/copyright] [5]
+src/common/plugin/fulltext/tantivy/tests/TantivyBridgeTest.cpp:38:  Lines should be <= 100 characters long  [whitespace/line_length] [2]
+src/meta/processors/index/FTIndexProcessor.cpp:62:  Lines should be <= 100 characters long  [whitespace/line_length] [2]
+src/storage/admin/RebuildFTIndexTask.h:32:  Redundant blank line at the end of a code block should be deleted.  [whitespace/blank_line] [3]
+src/storage/exec/IndexTantivyScanNode.cpp:38:  If an else has a brace on one side, it should have it on both  [readability/braces] [5]
+src/storage/exec/IndexTantivyScanNode.cpp:143:  If an else has a brace on one side, it should have it on both  [readability/braces] [5]
+src/storage/fulltext/TantivyManager.cpp:287:  If an else has a brace on one side, it should have it on both  [readability/braces] [5]
+src/storage/fulltext/tests/TantivyTopKTest.cpp:16:  Do not use namespace using-directives.  Use using-declarations instead.  [build/namespaces] [5]
+Done processing src/common/plugin/fulltext/tantivy/tests/TantivyBridgeTest.cpp
+Done processing src/meta/processors/index/FTIndexProcessor.cpp
+Done processing src/storage/admin/RebuildFTIndexTask.h
+Done processing src/storage/exec/IndexTantivyScanNode.cpp
+Done processing src/storage/fulltext/TantivyManager.cpp
+Done processing src/storage/fulltext/tests/TantivyTopKTest.cpp
+Total errors found: 8
+cpplint code style check failed, please fix and recommit.

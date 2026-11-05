@@ -1,0 +1,63 @@
+{
+  "utc": "2026-11-04T17:13:18Z",
+  "kind": "offline_recomputation_of_existing_measurements",
+  "runs": [
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T170721Z-tantivy-topk-1m-c4-long",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Every query percentile, count, sequence and QPS recomputed"
+      ],
+      "resources": {
+        "pids": [
+          155648,
+          155814,
+          155847,
+          155974,
+          156183
+        ],
+        "samples": 226,
+        "complete_pss_samples": 226,
+        "complete_cpu_intervals": 225,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.0109999999999957,
+        "sample_interval_max_s": 1.0269999999999868,
+        "observed_peak_sum_rss_bytes": 811528192,
+        "observed_peak_sum_pss_bytes": 713155584,
+        "observed_peak_sum_cpu_cores": 2.0766699999999996,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "query": {
+        "rows": 12000,
+        "summary_recomputed": true,
+        "successful_qps": 52.71102467523947,
+        "measured_elapsed_s": 227.6563598210014,
+        "serial_latency_sum_s": 910.3227004100027,
+        "overall": {
+          "requests": 12000,
+          "successes": 12000,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 72.061658,
+            "p95": 119.726514,
+            "p99": 139.944073,
+            "max": 184.923793
+          }
+        },
+        "returned_row_counts_by_query": {
+          "term_water": [
+            10
+          ],
+          "phrase_new_york": [
+            10
+          ],
+          "boolean_water_river": [
+            10
+          ]
+        }
+      },
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

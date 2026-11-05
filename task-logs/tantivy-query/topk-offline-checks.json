@@ -1,0 +1,14 @@
+{
+  "time": "2026-11-04T16:18:48.495868+00:00",
+  "passed": true,
+  "checks": [
+    "Python syntax",
+    "650 unique canonical VIDs",
+    "32 known fixtures in each of 20 partitions",
+    "UTF-8 width fits FIXED_STRING(64)",
+    "PROFILE storage TopK extraction",
+    "FulltextIndexScan end-K extraction"
+  ],
+  "cpp_helper": "source written; compile/run deferred to root",
+  "live_cluster": "script written; not executed; root benchmark in progress"
+}

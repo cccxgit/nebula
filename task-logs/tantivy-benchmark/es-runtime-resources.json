@@ -1,0 +1,13 @@
+{
+  "utc": "2026-11-04T16:26:38Z",
+  "files": {
+    "date_time_zonespec.csv": {
+      "source": "/home/sch/nebula/nebula-3.6-io/resources/date_time_zonespec.csv",
+      "sha256": "0f72ef98b8402dc600fd26e2333404f84eb8af4babc4f42515c1d693488dedbc"
+    },
+    "gflags.json": {
+      "source": "/home/sch/nebula/nebula-3.6-io/resources/gflags.json",
+      "sha256": "52847f47e653ebef4d5fa5b72e63d95cc91758a1b6aad4057b3a1017f46a9368"
+    }
+  }
+}

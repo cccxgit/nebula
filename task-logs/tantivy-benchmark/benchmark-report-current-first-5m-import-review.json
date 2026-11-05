@@ -1,0 +1,8 @@
+{
+  "utc": "2026-11-04T17:20:00Z",
+  "document": "docs/tantivy/benchmark-report.md",
+  "local_link_count": 66,
+  "missing_links": [],
+  "current_stage": "5m_import_acknowledged_and_audited; index_in_progress",
+  "actions": "Read existing batch and resource logs only; no service, ETL or benchmark operations."
+}

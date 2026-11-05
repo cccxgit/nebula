@@ -1,0 +1,22 @@
+{
+  "utc": "2026-11-04T16:49:23.221692+00:00",
+  "before": {
+    "flags": [
+      {
+        "name": "enable_optimizer",
+        "value": false
+      }
+    ]
+  },
+  "put": {
+    "errCode": 0
+  },
+  "after": {
+    "flags": [
+      {
+        "name": "enable_optimizer",
+        "value": true
+      }
+    ]
+  }
+}

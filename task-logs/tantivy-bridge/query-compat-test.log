@@ -1,0 +1,23 @@
+   Compiling nebula-tantivy v0.1.0 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.05s
+     Running unittests src/lib.rs (src/common/plugin/fulltext/tantivy/rust/target/debug/deps/nebula_tantivy-efc0ae7581f55c38)
+
+running 9 tests
+test tests::filter_prefix_and_verify_before_limit ... ok
+test tests::substring_results_equal_original_case_sensitive_unicode_semantics ... ok
+test tests::partition_filter_does_not_change_text_relevance_score ... ok
+test tests::fulltext_phrase_boolean_fields_and_chinese ... ok
+test tests::query_compat_respects_keyword_case_and_escaped_wildcards ... ok
+test tests::native_query_string_regression_matrix ... ok
+test tests::readonly_transition_clear_and_schema_validation ... ok
+test tests::persistence_updates_deletes_and_binary_identity ... ok
+test tests::keyword_and_jieba_analyzers ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+   Doc-tests nebula_tantivy
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

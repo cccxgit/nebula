@@ -1,0 +1,35 @@
+{
+  "utc": "2026-11-04T16:05:42Z",
+  "kind": "conservative_estimate_from_measured_pilot_not_large_scale_result",
+  "pilot": "task-logs/tantivy-benchmark/pilot-1m-measured.json",
+  "pilot_rows": 1000000,
+  "target_rows": 100000000,
+  "checks": {
+    "pilot_error_free": true,
+    "pilot_no_oom_or_swap_storm": true,
+    "current_available_memory_at_least_8_GiB": true,
+    "pilot_peak_service_pss_at_most_half_RAM": true,
+    "disk_has_50pct_growth_margin_merge_headroom_and_40GiB_reserve": false,
+    "complete_query_hit_counts_verified": true,
+    "projected_query_hits_at_most_100k": false,
+    "projected_elapsed_fits_declared_time_budget": true
+  },
+  "passes_all_gates": false,
+  "permitted_next_stage_rows_if_passed": 5000000,
+  "measured_current_free_bytes": 264623325184,
+  "estimated_required_free_bytes": 494662050075.0,
+  "estimated_final_graph_bytes": 161757593600.0,
+  "estimated_final_index_bytes": 94143283200.0,
+  "reserved_growth_uncertainty_bytes": 126670934016.0,
+  "reserved_merge_bytes": 47071641600.0,
+  "remaining_archive_download_bytes": 19184500736,
+  "estimated_remaining_normalized_file_bytes": 5443432731.0,
+  "estimated_index_visible_hours_with_50pct_margin": 6.166666666666667,
+  "estimated_max_query_hits": 1826700.0,
+  "notes": [
+    "1m-to-100m extrapolation is not evidence of fit; repeat measurement at 5m and 10m, then increment by at most 10m.",
+    "Stop scheduling new writes if disk free <40GiB or MemAvailable <8GiB; do not kill unrelated desktop processes.",
+    "Current prototype can collect all search hits before LIMIT; high-hit queries must not run at 100m without bounded collection.",
+    "A positive outcome does not establish crash recovery, production readiness, or a 100m benchmark result."
+  ]
+}

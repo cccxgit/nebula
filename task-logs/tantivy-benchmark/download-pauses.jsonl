@@ -1,0 +1,5 @@
+{"time": 1793807113.2333992, "pid": 41672, "action": "SIGSTOP", "reason": "isolated measured benchmark; resume after timed stages"}
+{"time": 1793807381.3252156, "pid": 41672, "action": "SIGCONT", "reason": "10k measured stages completed; source recovery fix before next measurements"}
+{"utc": "2026-11-04T15:56:04Z", "pid": 41672, "action": "SIGSTOP", "reason": "million measured stages"}
+{"utc": "2026-11-04T16:23:18Z", "pid": 41672, "action": "SIGCONT", "reason": "million measured stages complete; build and five-million preparation"}
+{"utc": "2026-11-04T16:33:32.697213+00:00", "pid": 41672, "signal": "SIGSTOP", "reason": "prepare isolated million baseline measurement"}

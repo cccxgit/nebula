@@ -1,0 +1,27 @@
+{
+  "utc": "2026-11-04T17:24:30Z",
+  "finished_utc": "2026-11-04T17:24:30Z",
+  "complete": true,
+  "graph_allocated_bytes": 8452509696,
+  "index_allocated_bytes": 4489945088,
+  "sum_service_pss_bytes": 2754523136,
+  "delta": {
+    "before": "task-logs/tantivy-benchmark/disk-before-5m.json",
+    "allocated_bytes": {
+      "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage1/data/nebula": 2662064128,
+      "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage2/data/nebula": 2655969280,
+      "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage3/data/nebula": 2662776832,
+      "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage1/data/tantivy": 1496305664,
+      "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage2/data/tantivy": 1496297472,
+      "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage3/data/tantivy": 1496338432
+    },
+    "graph_allocated_bytes": 7980810240,
+    "index_allocated_bytes": 4488941568,
+    "pswpin_pages": 1255,
+    "pswpout_pages": 36855,
+    "oom_kill": 0,
+    "pswpin_bytes": 5140480,
+    "pswpout_bytes": 150958080
+  },
+  "error": null
+}

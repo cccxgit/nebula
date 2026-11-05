@@ -1,0 +1,10 @@
+[
+  {
+    "document": "docs/tantivy/benchmark-report.md",
+    "local_links_valid": true
+  },
+  {
+    "document": "docs/tantivy/native-baseline-runbook.md",
+    "local_links_valid": true
+  }
+]

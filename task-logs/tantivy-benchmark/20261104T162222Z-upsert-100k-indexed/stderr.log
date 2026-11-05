@@ -1,0 +1,4 @@
+{"acknowledged_rows": 20000, "elapsed_s": 0.943961245000537, "time": "2026-11-04T16:22:23Z", "event": "import_progress"}
+{"acknowledged_rows": 40000, "elapsed_s": 1.8518102039997757, "time": "2026-11-04T16:22:24Z", "event": "import_progress"}
+{"acknowledged_rows": 60000, "elapsed_s": 2.781963576000635, "time": "2026-11-04T16:22:25Z", "event": "import_progress"}
+{"acknowledged_rows": 80000, "elapsed_s": 3.746434828000929, "time": "2026-11-04T16:22:26Z", "event": "import_progress"}

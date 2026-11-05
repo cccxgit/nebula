@@ -1,0 +1,109 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=3,
+        output_var=b'{"colNames":["id"],"type":"DATASET","name":"__Project_3"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_2'),
+        Pair(
+            key=b'columns',
+            value=b'["id(VERTEX) AS id"]')],
+        profiles=[ProfilingStats(
+            rows=42,
+            exec_duration_in_us=215,
+            total_duration_in_us=224)],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=2,
+        output_var=(b'{"colNames":["_vid","article._tag","article.body"],"name":"__Filter_2","type'
+         b'":"DATASET"}'),
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'condition',
+            value=b'(article.body CONTAINS "Graph")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=42,
+            exec_duration_in_us=62,
+            total_duration_in_us=76)],
+        dependencies=[1]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=1,
+        output_var=(b'{"colNames":["_vid","article._tag","article.body"],"name":"__IndexScan_1","t'
+         b'ype":"DATASET"}'),
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'4'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'5'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid","_tag","body"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"filter":"(article.body CONTAINS \\"Graph\\")","fulltex'
+             b't_value":"Graph","fulltext_field":"body","fulltext_mode":1,"engine":"tantivy'
+             b'","fulltext_index":"tantivy_lifecycle_1104_234030_207620_article"}]'))],
+        profiles=[ProfilingStats(
+            rows=42,
+            exec_duration_in_us=0,
+            total_duration_in_us=3098,
+            other_stats={b'resp[0]': b'{\n  "exec": "1954(us)",\n  "host": "127.0.0.1:9779",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'7822(us)",\n    "IndexProjectionNode(projectColumn=[_vid,_tag,bod'
+                        b'y])": "7645(us)",\n    "IndexSelectionNode(expr=[(article.body CO'
+                        b'NTAINS \\"Graph\\")])": "7488(us)",\n    "TantivyIndexScanNode('
+                        b'index=tantivy_lifecycle_1104_234030_207620_article,field=body,mo'
+                        b'de=1)": "7309(us)"\n  },\n  "total": "2530(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "2322(us)",\n  "host": "127.0.0.1:9789",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'5981(us)",\n    "IndexProjectionNode(projectColumn=[_vid,_tag,bod'
+                        b'y])": "5915(us)",\n    "IndexSelectionNode(expr=[(article.body CO'
+                        b'NTAINS \\"Graph\\")])": "5843(us)",\n    "TantivyIndexScanNode('
+                        b'index=tantivy_lifecycle_1104_234030_207620_article,field=body,mo'
+                        b'de=1)": "5760(us)"\n  },\n  "total": "2796(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "1475(us)",\n  "host": "127.0.0.1:9799",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'7364(us)",\n    "IndexProjectionNode(projectColumn=[_vid,_tag,bod'
+                        b'y])": "7023(us)",\n    "IndexSelectionNode(expr=[(article.body CO'
+                        b'NTAINS \\"Graph\\")])": "6503(us)",\n    "TantivyIndexScanNode('
+                        b'index=tantivy_lifecycle_1104_234030_207620_article,field=body,mo'
+                        b'de=1)": "6027(us)"\n  },\n  "total": "2031(us)"\n}'})],
+        dependencies=[0]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=0,
+        output_var=b'{"colNames":[],"type":"DATASET","name":"__Start_0"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=1,
+            total_duration_in_us=28)])],
+    node_index_map={0: 3, 1: 2, 2: 1, 3: 0},
+    format=b'row',
+    optimize_time_in_us=350)

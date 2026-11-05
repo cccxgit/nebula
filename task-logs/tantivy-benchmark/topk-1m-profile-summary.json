@@ -1,0 +1,20 @@
+{
+  "rows": 10,
+  "fulltext_plan": [
+    {
+      "name": "FulltextIndexScan",
+      "inputVar": "",
+      "space": "0",
+      "dedup": "0",
+      "limit": "10",
+      "filter": "",
+      "orderBy": "[]",
+      "engine": "tantivy",
+      "isEdge": "0",
+      "offset": "0",
+      "schemaId": "11",
+      "searchExpr": "TEXT_SEARCH(ft_passage_text_1m, \"water\")"
+    }
+  ],
+  "storage_topk10": true
+}

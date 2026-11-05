@@ -1,0 +1,7 @@
+-- Install configuration: "Debug"
+-- Installing: /home/sch/nebula-run/3.6-tantivy/bin/nebula-storaged
+-- Up-to-date: /home/sch/nebula-run/3.6-tantivy/etc/nebula-storaged.conf.default
+-- Up-to-date: /home/sch/nebula-run/3.6-tantivy/etc/nebula-storaged.conf.production
+-- Up-to-date: /home/sch/nebula-run/3.6-tantivy/etc/nebula-storaged-listener.conf.production
+-- Up-to-date: /home/sch/nebula-run/3.6-tantivy/scripts/nebula-storaged.service
+-- Up-to-date: /home/sch/nebula-run/3.6-tantivy/scripts/nebula-storaged-listener.service

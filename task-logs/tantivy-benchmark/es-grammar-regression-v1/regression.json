@@ -1,0 +1,413 @@
+{
+  "utc": "2026-11-04T16:59:48Z",
+  "kind": "synthetic_8_row_correctness",
+  "function": "ES_QUERY",
+  "port": 29669,
+  "fixture_rows": 8,
+  "all_passed": true,
+  "cases": [
+    {
+      "name": "term",
+      "query_text": "title:quick",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "feature": "term",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:quick\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.430311999385594
+    },
+    {
+      "name": "case_normalization",
+      "query_text": "title:QUICK",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "feature": "term",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:QUICK\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.547079000985832
+    },
+    {
+      "name": "phrase",
+      "query_text": "body:\"new york\"",
+      "expected_ids": [
+        "r1",
+        "r4"
+      ],
+      "feature": "phrase",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"body:\\\"new york\\\"\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r4"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.83703399913793
+    },
+    {
+      "name": "boolean_and",
+      "query_text": "title:quick AND body:river",
+      "expected_ids": [
+        "r1"
+      ],
+      "feature": "boolean",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:quick AND body:river\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1"
+      ],
+      "returned_rows": 1,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.713123000328778
+    },
+    {
+      "name": "boolean_or",
+      "query_text": "title:fox OR title:hare",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "feature": "boolean",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:fox OR title:hare\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 13.986867999847163
+    },
+    {
+      "name": "boolean_not",
+      "query_text": "title:quick AND NOT body:jersey",
+      "expected_ids": [
+        "r1",
+        "r8"
+      ],
+      "feature": "boolean",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:quick AND NOT body:jersey\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r8"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 7.059971001581289
+    },
+    {
+      "name": "field_group",
+      "query_text": "title:(quick OR quack) AND body:new",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "feature": "field",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:(quick OR quack) AND body:new\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 7.612773999426281
+    },
+    {
+      "name": "multiple_fields",
+      "query_text": "harbor",
+      "expected_ids": [
+        "r4"
+      ],
+      "feature": "field",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"harbor\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r4"
+      ],
+      "returned_rows": 1,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 5.202905000260216
+    },
+    {
+      "name": "prefix",
+      "query_text": "title:bro*",
+      "expected_ids": [
+        "r1",
+        "r3",
+        "r4"
+      ],
+      "feature": "wildcards",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:bro*\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r3",
+        "r4"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 13.342304000616423
+    },
+    {
+      "name": "wildcard_contains",
+      "query_text": "title:*row*",
+      "expected_ids": [
+        "r1",
+        "r3"
+      ],
+      "feature": "wildcards",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:*row*\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r3"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 15.516372999627492
+    },
+    {
+      "name": "wildcard_one_char",
+      "query_text": "title:qu?ck",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "feature": "wildcards",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:qu?ck\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 6.914585999766132
+    },
+    {
+      "name": "regexp_alternation",
+      "query_text": "title:/qu(i|a)ck/",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "feature": "regular-expressions",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:/qu(i|a)ck/\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 11.036203999537975
+    },
+    {
+      "name": "regexp_contains",
+      "query_text": "title:/.*row.*/",
+      "expected_ids": [
+        "r1",
+        "r3"
+      ],
+      "feature": "regular-expressions",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:/.*row.*/\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r3"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 6.773257000531885
+    },
+    {
+      "name": "fuzzy_one_edit",
+      "query_text": "title:quik~1",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "feature": "fuzziness",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:quik~1\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 11.198796000826405
+    },
+    {
+      "name": "phrase_slop",
+      "query_text": "body:\"new york\"~1",
+      "expected_ids": [
+        "r1",
+        "r4",
+        "r8"
+      ],
+      "feature": "proximity-searches",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"body:\\\"new york\\\"~1\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 6.556751000971417
+    },
+    {
+      "name": "boost",
+      "query_text": "title:fox^4 OR title:hare",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "feature": "boosting",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:fox^4 OR title:hare\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 5.851190000612405
+    },
+    {
+      "name": "range_inclusive",
+      "query_text": "title:[blue TO brown]",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "feature": "ranges",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:[blue TO brown]\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 11.463105000075302
+    },
+    {
+      "name": "syntax_error",
+      "query_text": "title:\"unterminated",
+      "expected_ids": null,
+      "feature": "strict-syntax",
+      "expected_error": true,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE ES_QUERY(`nebula_index_ft_regression_es_v1`,\"title:\\\"unterminated\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": null,
+      "returned_rows": 0,
+      "success": false,
+      "passed": true,
+      "error": "{\"failed_shards\":[{\"reason\":{\"caused_by\":{\"caused_by\":{\"reason\":\"Lexical error at line 1, column 20.  Encountered: <EOF> after : \\\"\\\\\\\"unterminated\\\"\",\"type\":\"token_mgr_error\"},\"reason\":\"Cannot parse 'title:\\\"unterminated': Lexical error at line 1, column 20.  Encountered: <EOF> after : \\\"\\\\\\\"unterminated\\\"\",\"type\":\"parse_exception\"},\"index\":\"nebula_index_ft_regression_es_v1\",\"index_uuid\":\"1NA1A1H8S-WJDbRau0Z-Ww\",\"reason\":\"Failed to parse query [title:\\\"unterminated]\",\"type\":\"query_shard_exception\"},\"node\":\"JnDQvIX_SO2QktmKmQZkFw\",\"index\":\"nebula_index_ft_regression_es_v1\",\"shard\":0}],\"grouped\":true,\"phase\":\"query\",\"reason\":\"all shards failed\",\"type\":\"search_phase_execution_exception\",\"root_cause\":[{\"index\":\"nebula_index_ft_regression_es_v1\",\"index_uuid\":\"1NA1A1H8S-WJDbRau0Z-Ww\",\"reason\":\"Failed to parse query [title:\\\"unterminated]\",\"type\":\"query_shard_exception\"}]}",
+      "elapsed_ms": 6.43959299850394
+    }
+  ],
+  "note": "Unsupported grammar must be disclosed; successful empty/wrong results are failures, not support."
+}

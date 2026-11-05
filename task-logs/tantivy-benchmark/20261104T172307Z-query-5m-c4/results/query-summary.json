@@ -1,0 +1,81 @@
+{
+  "time": "2026-11-04T17:23:45Z",
+  "kind": "measured_query_roundtrip",
+  "label": "tantivy-5m-pushdown-on-c4",
+  "space": "ft_bench_5m",
+  "concurrency": 4,
+  "scheduling": "shared_fifo_queue_dynamic_workers",
+  "requests_by_worker": {
+    "0": 100,
+    "1": 101,
+    "2": 102,
+    "3": 97
+  },
+  "warmup_cycles_excluded": 3,
+  "repeats": 100,
+  "elapsed_s": 34.2226414450015,
+  "attempted_qps": 11.68816850805721,
+  "successful_qps": 11.68816850805721,
+  "percentile_method": "nearest_rank_successful_requests_only",
+  "overall": {
+    "requests": 400,
+    "successes": 400,
+    "failures": 0,
+    "latency_success_ms": {
+      "p50": 208.833873,
+      "p95": 938.975744,
+      "p99": 986.023291,
+      "max": 1007.911732
+    }
+  },
+  "queries": {
+    "contains_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"water\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 100,
+      "successes": 100,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 887.147699,
+        "p95": 982.207962,
+        "p99": 1007.472413,
+        "max": 1007.911732
+      }
+    },
+    "contains_new_york": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"New York\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 100,
+      "successes": 100,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 313.937753,
+        "p95": 364.028079,
+        "p99": 387.633023,
+        "max": 389.509268
+      }
+    },
+    "starts_with_the_united": {
+      "query": "MATCH (v:passage) WHERE v.passage.text STARTS WITH \"The United\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 100,
+      "successes": 100,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 83.276388,
+        "p95": 139.028488,
+        "p99": 160.371223,
+        "max": 169.204057
+      }
+    },
+    "ends_with_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text ENDS WITH \"water.\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 100,
+      "successes": 100,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 57.009668,
+        "p95": 137.447138,
+        "p99": 179.907786,
+        "max": 208.833873
+      }
+    }
+  }
+}

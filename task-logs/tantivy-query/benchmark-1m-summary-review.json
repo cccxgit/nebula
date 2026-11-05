@@ -1,0 +1,117 @@
+{
+  "utc": "2026-11-04T16:41:18.172010+00:00",
+  "kind": "read_only_summary_and_measurement_boundary_audit",
+  "report_read": "docs/tantivy/benchmark-report.md",
+  "report_edited": false,
+  "live_queries_executed": false,
+  "raw_summaries": {
+    "on": "20261104T155848Z-query-1m-c1-on/results/query-summary.json",
+    "off": "20261104T160715Z-query-1m-c1-off/results/query-summary.json",
+    "c4": "20261104T162117Z-query-1m-c4-dynamic/results/query-summary.json"
+  },
+  "same_exact_match_queries": true,
+  "same_space": "ft_bench_1m",
+  "same_verified_input_sha256": "de46025a28771d1b88e20ab78dd2aeda05ef407bf7aab002a12e7afe876a2acd",
+  "verified_source_rows": 1000000,
+  "complete_query_hits": [
+    18267,
+    3166,
+    147,
+    28
+  ],
+  "qps_ratio_on_off": 112.8832525193696,
+  "qps": {
+    "on": 11.504759571438921,
+    "off": 0.10191732887449201,
+    "c4": 36.631138098503065
+  },
+  "latency_ms": {
+    "on": {
+      "p50": 44.985874,
+      "p95": 251.595893,
+      "p99": 263.718028,
+      "max": 287.669332
+    },
+    "off": {
+      "p50": 9807.995105,
+      "p95": 9951.780946,
+      "p99": 10059.806372,
+      "max": 10059.806372
+    },
+    "c4": {
+      "p50": 75.4312,
+      "p95": 276.630581,
+      "p99": 299.961886,
+      "max": 330.782086
+    }
+  },
+  "sample_counts": {
+    "on": {
+      "total": 800,
+      "per_query": 200,
+      "warmup_cycles_excluded": 3,
+      "elapsed_s": 69.53643794399977,
+      "nearest_rank_p95_index": 760,
+      "nearest_rank_p99_index": 792,
+      "failures": 0
+    },
+    "off": {
+      "total": 80,
+      "per_query": 20,
+      "warmup_cycles_excluded": 1,
+      "elapsed_s": 784.9499283730001,
+      "nearest_rank_p95_index": 76,
+      "nearest_rank_p99_index": 80,
+      "failures": 0
+    },
+    "c4": {
+      "total": 800,
+      "per_query": 200,
+      "warmup_cycles_excluded": 3,
+      "elapsed_s": 21.83934328900068,
+      "nearest_rank_p95_index": 760,
+      "nearest_rank_p99_index": 792,
+      "failures": 0
+    }
+  },
+  "p95_reduction_percent": 97.47185057262413,
+  "p99_reduction_percent": 97.37849797254528,
+  "dynamic_c4_workers": {
+    "0": 193,
+    "1": 198,
+    "2": 203,
+    "3": 206
+  },
+  "dynamic_c4_average_inflight_from_existing_audit": 3.9836930013741716,
+  "upsert": {
+    "acknowledged_rows": 100000,
+    "elapsed_s": 4.720541585000319,
+    "rows_per_second": 21184.00996990544,
+    "index_visibility_measured": false,
+    "meaning": "100k existing VIDs with identical text, graph acknowledgements only, not index visibility or sustained changed/new writes"
+  },
+  "rebuild": {
+    "job_12_observed_s": 66.15017778400033,
+    "create_metadata_plus_rebuild_observed_s": 66.15331909899942,
+    "finished_statuses": [
+      "FINISHED",
+      "FINISHED",
+      "FINISHED",
+      "FINISHED"
+    ],
+    "meaning": "CREATE-triggered auto backfill plus explicit REBUILD and metadata/2-second polling; not isolated engine build speed or exact first-query-visible time"
+  },
+  "numeric_discrepancies_found": [],
+  "must_keep_qualifications": [
+    "112.88x is equal-mix four-query MATCH on/off in the same cluster, not ES and not every individual query speedup.",
+    "Input is a real contiguous 1m prefix projected to 128 Unicode chars; 99.308% cropped; not 100m execution/full documents/random representative sample.",
+    "On/off total samples 800/80, each query 200/20, warmup 3/1; off pooled P99 is max, on pooled P99 rank 792.",
+    "Single sequential on/off/restore trial with no cache reset/randomization/repeats/confidence interval; off retains the fulltext index and its resources.",
+    "QPS is successes divided by wall time, latency is client roundtrip, four-query pooled percentiles; LIMIT 10 output not unlimited result retrieval. Full no-LIMIT oracle validates semantic equality separately.",
+    "Dynamic c4 36.631 QPS is 800 requests/21.839s with near-four average inflight, not saturation/max throughput. Old fixed-worker 16.268 is a different scheduling experiment.",
+    "100k 21184 rows/s is 4.72s same-ID/same-text rewrite acknowledgement; matching results afterwards cannot prove event application or visibility latency.",
+    "66.15s is observed CREATE/REBUILD completion with three storage tasks, overlapping/possibly repeated auto builds and polling; later visibility checked separately.",
+    "Resource values are five-service sampled maxima from unmatched windows, not full-machine peak/cost or demonstrated machine/memory downsize.",
+    "Million figures precede subsequent TopK rebuild/restart; do not attribute these MATCH numbers to TopK, mix binary evidence with 10k, or compare them directly with different TEXT_SEARCH/ES_QUERY semantics."
+  ]
+}

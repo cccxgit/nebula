@@ -1,0 +1,37 @@
+{
+  "kind": "historical_fixed_stride_dispatch_diagnostic",
+  "run": "task-logs/tantivy-benchmark/20261104T160144Z-query-1m-c4-on",
+  "configured_concurrency": 4,
+  "effective_average_inflight_estimate": 1.5767467418855994,
+  "workers_inferred_from_original_sequence_modulo_4": {
+    "0": {
+      "requests": 200,
+      "sum_request_seconds": 49.173697671,
+      "query_names": [
+        "contains_water"
+      ]
+    },
+    "1": {
+      "requests": 200,
+      "sum_request_seconds": 14.519369125,
+      "query_names": [
+        "contains_new_york"
+      ]
+    },
+    "2": {
+      "requests": 200,
+      "sum_request_seconds": 7.040060784000001,
+      "query_names": [
+        "starts_with_the_united"
+      ]
+    },
+    "3": {
+      "requests": 200,
+      "sum_request_seconds": 6.803524091999997,
+      "query_names": [
+        "ends_with_water"
+      ]
+    }
+  },
+  "conclusion": "Fixed one-query-per-worker run, not a sustained four-worker mixed workload. Original observations retained; do not label saturation throughput."
+}

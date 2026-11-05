@@ -1,0 +1,52 @@
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_ngql", "query": "USE `ft_bench_1m`", "success": true, "elapsed_s": 0.0006978840010560816, "error": ""}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_ngql", "query": "SHOW PARTS", "success": true, "elapsed_s": 0.0014483060003840365, "error": ""}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_topology_healthy", "partition_num": 20, "replica_factor": 3}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_ngql", "query": "SIGN IN TEXT SERVICE (127.0.0.1:19200, HTTP)", "success": false, "elapsed_s": 0.0005704579998564441, "error": "Existed!"}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_es_template", "response": {"acknowledged": true}, "settings": {"number_of_shards": 1, "number_of_replicas": 0, "max_result_window": 100001}}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_ngql", "query": "ADD LISTENER ELASTICSEARCH 127.0.0.1:29879", "success": false, "elapsed_s": 0.0033672739991743583, "error": "Existed!"}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_ngql", "query": "SHOW LISTENER", "success": true, "elapsed_s": 0.0012756779997289414, "error": ""}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_listener_reused_for_retry", "space": "ft_bench_1m", "host": "127.0.0.1:29879", "partitions": 20, "original_error": "Existed!"}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_ngql", "query": "SHOW LISTENER", "success": true, "elapsed_s": 0.0011784789985540556, "error": ""}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": true, "elapsed_s": 0.1405544950011972, "error": ""}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_es_index_settings", "index": "nebula_index_ft_passage_1m", "settings": {"nebula_index_ft_passage_1m": {"settings": {"index": {"routing": {"allocation": {"include": {"_tier_preference": "data_content"}}}, "number_of_shards": "1", "provided_name": "nebula_index_ft_passage_1m", "max_result_window": "100001", "creation_date": "1793810826294", "number_of_replicas": "0", "uuid": "6kaoBPACRXG6fTQa41yNOg", "version": {"created": "7172999"}}}}}}
+{"utc": "2026-11-04T16:47:06Z", "event": "phased_metadata_time_guard_start", "listener_url": "http://127.0.0.1:39879/flags?flags=load_meta_interval_secs,heartbeat_interval_secs&format=json", "flags": {"flags": [{"name": "load_meta_interval_secs", "value": null}, {"name": "heartbeat_interval_secs", "value": 1}]}, "planned_wait_seconds": 5, "max_wait_seconds": 30, "note": "Time allowance only; does not prove Listener metadata readiness. Complete count and VID checks remain mandatory."}
+{"utc": "2026-11-04T16:47:11Z", "event": "phased_metadata_time_guard_end", "elapsed_s": 5.004168715999185, "planned_wait_seconds": 5}
+{"utc": "2026-11-04T16:47:11Z", "event": "phased_ngql", "query": "REBUILD FULLTEXT INDEX", "success": true, "elapsed_s": 0.0073080229994957335, "error": ""}
+{"utc": "2026-11-04T16:47:11Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0013597260003734846, "error": ""}
+{"utc": "2026-11-04T16:47:11Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['QUEUE']"}
+{"utc": "2026-11-04T16:47:13Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0017789049998100381, "error": ""}
+{"utc": "2026-11-04T16:47:13Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:15Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.001584766001542448, "error": ""}
+{"utc": "2026-11-04T16:47:15Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:17Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.005949626000074204, "error": ""}
+{"utc": "2026-11-04T16:47:17Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:19Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.002955723999548354, "error": ""}
+{"utc": "2026-11-04T16:47:19Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:21Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.004059000999404816, "error": ""}
+{"utc": "2026-11-04T16:47:21Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:23Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0012591689992405009, "error": ""}
+{"utc": "2026-11-04T16:47:23Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:25Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0018175469995185267, "error": ""}
+{"utc": "2026-11-04T16:47:25Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:27Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.002110528999764938, "error": ""}
+{"utc": "2026-11-04T16:47:27Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:29Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.007798415999786812, "error": ""}
+{"utc": "2026-11-04T16:47:29Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:31Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.002121890000125859, "error": ""}
+{"utc": "2026-11-04T16:47:31Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:33Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0013096239999867976, "error": ""}
+{"utc": "2026-11-04T16:47:33Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:35Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0015943489997880533, "error": ""}
+{"utc": "2026-11-04T16:47:35Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:37Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0020742759988934267, "error": ""}
+{"utc": "2026-11-04T16:47:37Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:39Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0020643469997594366, "error": ""}
+{"utc": "2026-11-04T16:47:39Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:41Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.0037613080003211508, "error": ""}
+{"utc": "2026-11-04T16:47:41Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:43Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.004731517999971402, "error": ""}
+{"utc": "2026-11-04T16:47:43Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:45Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.008781657001236454, "error": ""}
+{"utc": "2026-11-04T16:47:45Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:47:47Z", "event": "phased_ngql", "query": "SHOW JOB 5", "success": true, "elapsed_s": 0.003265897001256235, "error": ""}
+{"utc": "2026-11-04T16:47:48Z", "event": "phased_index_visible", "space": "ft_bench_1m", "index": "nebula_index_ft_passage_1m", "count": {"count": 1000000, "_shards": {"total": 1, "successful": 1, "skipped": 0, "failed": 0}}, "elapsed_s": 41.94250200300121, "metadata_time_guard_elapsed_s": 5.004168715999185, "rebuild_to_visible_elapsed_s": 36.769623549000244, "note": "Total includes Listener assignment, DDL, explicit metadata time allowance, rebuild and normal refresh. Rebuild-to-visible excludes the explicit allowance but includes job polling/refresh; neither is pure ES engine build time. Run native_compare next."}

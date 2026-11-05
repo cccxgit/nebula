@@ -1,0 +1,253 @@
+{
+  "utc": "2026-11-04T16:34:28.570384+00:00",
+  "all_seven_services_running": true,
+  "status": [
+    {
+      "name": "metad",
+      "pid": 131155,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "storage1",
+      "pid": 131408,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "storage2",
+      "pid": 131532,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "storage3",
+      "pid": 131648,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "listener",
+      "pid": 131769,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "graphd",
+      "pid": 131356,
+      "running": true,
+      "owned": true,
+      "process_state": "S"
+    },
+    {
+      "name": "elasticsearch",
+      "pid": 136093,
+      "running": true,
+      "owned": true,
+      "process_state": "S",
+      "http_ready": true,
+      "http_cluster_name": "nebula-tantivy-es-baseline",
+      "http_version": "7.17.29",
+      "http_process_ids": [
+        136093
+      ],
+      "pid_matches_http": true,
+      "ready": true
+    }
+  ],
+  "space_verified": [
+    {
+      "query": "USE ft_bench_1m",
+      "success": true,
+      "rows": [],
+      "error": ""
+    },
+    {
+      "query": "SHOW CREATE SPACE ft_bench_1m",
+      "success": true,
+      "rows": [
+        [
+          "ft_bench_1m",
+          "CREATE SPACE `ft_bench_1m` (partition_num = 20, replica_factor = 3, charset = utf8, collate = utf8_bin, vid_type = FIXED_STRING(64))"
+        ]
+      ],
+      "error": ""
+    },
+    {
+      "query": "SHOW PARTS",
+      "success": true,
+      "rows": [
+        [
+          1,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          2,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          3,
+          "127.0.0.1:29799",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          4,
+          "127.0.0.1:29789",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          5,
+          "127.0.0.1:29799",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          6,
+          "127.0.0.1:29789",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          7,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          8,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          9,
+          "127.0.0.1:29789",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          10,
+          "127.0.0.1:29789",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          11,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          12,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          13,
+          "127.0.0.1:29799",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          14,
+          "127.0.0.1:29789",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          15,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          16,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          17,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          18,
+          "127.0.0.1:29789",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          19,
+          "127.0.0.1:29789",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ],
+        [
+          20,
+          "127.0.0.1:29779",
+          "127.0.0.1:29789, 127.0.0.1:29799, 127.0.0.1:29779",
+          ""
+        ]
+      ],
+      "error": ""
+    },
+    {
+      "query": "SHOW FULLTEXT INDEXES",
+      "success": true,
+      "rows": [],
+      "error": ""
+    },
+    {
+      "query": "SHOW LISTENER",
+      "success": true,
+      "rows": [],
+      "error": ""
+    },
+    {
+      "query": "SHOW TAG INDEXES",
+      "success": true,
+      "rows": [
+        [
+          "passage_tag_lookup",
+          "passage",
+          []
+        ]
+      ],
+      "error": ""
+    }
+  ],
+  "es_health": {
+    "cluster_name": "nebula-tantivy-es-baseline",
+    "status": "green",
+    "timed_out": false,
+    "number_of_nodes": 1,
+    "number_of_data_nodes": 1,
+    "active_primary_shards": 0,
+    "active_shards": 0,
+    "relocating_shards": 0,
+    "initializing_shards": 0,
+    "unassigned_shards": 0,
+    "delayed_unassigned_shards": 0,
+    "number_of_pending_tasks": 0,
+    "number_of_in_flight_fetch": 0,
+    "task_max_waiting_in_queue_millis": 0,
+    "active_shards_percent_as_number": 100.0
+  },
+  "es_indices": [],
+  "no_data_import_started": true,
+  "old_jvm_exit_cause": "Not proven. No JVM shutdown/error stack and host oom_kill=0; process-group cleanup is a hypothesis. New launch isolates the session and verifies HTTP PID after launcher exits."
+}

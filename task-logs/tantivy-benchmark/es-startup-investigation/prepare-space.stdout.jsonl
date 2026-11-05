@@ -1,0 +1,14 @@
+{"utc": "2026-11-04T16:33:27Z", "event": "phased_ngql", "query": "SHOW HOSTS", "success": true, "elapsed_s": 0.010144243999093305, "error": ""}
+{"utc": "2026-11-04T16:33:27Z", "event": "phased_ngql", "query": "CREATE SPACE `ft_bench_1m` (partition_num=20,replica_factor=3,vid_type=FIXED_STRING(64))", "success": true, "elapsed_s": 0.004844446999413776, "error": ""}
+{"utc": "2026-11-04T16:33:27Z", "event": "phased_ngql", "query": "USE `ft_bench_1m`", "success": false, "elapsed_s": 0.0005939469992881641, "error": "SpaceNotFound: SpaceName `ft_bench_1m`"}
+{"utc": "2026-11-04T16:33:27Z", "event": "phased_wait", "label": "space metadata", "error": "SpaceNotFound: SpaceName `ft_bench_1m`"}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_ngql", "query": "USE `ft_bench_1m`", "success": true, "elapsed_s": 0.0014465750009549083, "error": ""}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_ngql", "query": "SHOW PARTS", "success": true, "elapsed_s": 0.005016236000301433, "error": ""}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_topology_healthy", "partition_num": 20, "replica_factor": 3}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_ngql", "query": "CREATE TAG passage(text string)", "success": true, "elapsed_s": 0.002563984000516939, "error": ""}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_ngql", "query": "CREATE TAG INDEX passage_tag_lookup ON passage()", "success": true, "elapsed_s": 0.0027239470000495203, "error": ""}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_ngql", "query": "DESCRIBE TAG INDEX passage_tag_lookup", "success": true, "elapsed_s": 0.001729472000079113, "error": ""}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_ngql", "query": "FETCH PROP ON passage \"__readiness_probe__\" YIELD id(vertex) AS vid", "success": false, "elapsed_s": 0.0015612219995091436, "error": "TagNotFound: TagName `passage`"}
+{"utc": "2026-11-04T16:33:29Z", "event": "phased_wait", "label": "storage tag schema", "error": "TagNotFound: TagName `passage`"}
+{"utc": "2026-11-04T16:33:31Z", "event": "phased_ngql", "query": "FETCH PROP ON passage \"__readiness_probe__\" YIELD id(vertex) AS vid", "success": true, "elapsed_s": 0.010594018998745014, "error": ""}
+{"utc": "2026-11-04T16:33:31Z", "event": "phased_space_ready", "space": "ft_bench_1m", "fulltext_created": false, "listener_assigned": false, "note": "Import graph data now; create-index performs later backfill."}

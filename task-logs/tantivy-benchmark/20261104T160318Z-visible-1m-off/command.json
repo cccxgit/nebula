@@ -1,0 +1,15 @@
+{
+  "utc": "2026-11-04T16:03:18Z",
+  "command_arguments": [
+    "verify",
+    "--space",
+    "ft_bench_1m",
+    "--oracle",
+    "task-logs/tantivy-benchmark/oracle-1m-128-safe.json",
+    "--expect-pushdown",
+    "off",
+    "--wait-seconds",
+    "600"
+  ],
+  "flag_state": "Record verified graph flag state and PROFILE separately"
+}

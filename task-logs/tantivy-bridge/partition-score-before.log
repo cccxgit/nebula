@@ -1,0 +1,24 @@
+   Compiling nebula-tantivy v0.1.0 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.33s
+     Running unittests src/lib.rs (src/common/plugin/fulltext/tantivy/rust/target/debug/deps/nebula_tantivy-b2085a9cb37fd05a)
+
+running 1 test
+test tests::partition_filter_does_not_change_text_relevance_score ... FAILED
+
+failures:
+
+---- tests::partition_filter_does_not_change_text_relevance_score stdout ----
+
+thread 'tests::partition_filter_does_not_change_text_relevance_score' (63117) panicked at src/tests.rs:210:5:
+assertion `left == right` failed
+  left: 1.89712
+ right: 1.0498221
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::partition_filter_does_not_change_text_relevance_score
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.06s
+
+error: test failed, to rerun pass `--lib`

@@ -1,0 +1,66 @@
+{
+  "time": "2026-11-04T16:57:36Z",
+  "kind": "measured_query_roundtrip",
+  "label": "es-native-1m-c1-long",
+  "space": "ft_bench_1m",
+  "concurrency": 1,
+  "scheduling": "shared_fifo_queue_dynamic_workers",
+  "requests_by_worker": {
+    "0": 12000
+  },
+  "warmup_cycles_excluded": 20,
+  "repeats": 4000,
+  "elapsed_s": 92.89179470999989,
+  "attempted_qps": 129.1825616833323,
+  "successful_qps": 129.1825616833323,
+  "percentile_method": "nearest_rank_successful_requests_only",
+  "overall": {
+    "requests": 12000,
+    "successes": 12000,
+    "failures": 0,
+    "latency_success_ms": {
+      "p50": 6.366326,
+      "p95": 14.206708,
+      "p99": 17.424609,
+      "max": 26.696596
+    }
+  },
+  "queries": {
+    "term_water": {
+      "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"water\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;",
+      "requests": 4000,
+      "successes": 4000,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 6.172865,
+        "p95": 14.002324,
+        "p99": 17.12715,
+        "max": 25.316684
+      }
+    },
+    "phrase_new_york": {
+      "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"\\\"New York\\\"\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;",
+      "requests": 4000,
+      "successes": 4000,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 6.609177,
+        "p95": 14.33447,
+        "p99": 17.833401,
+        "max": 26.696596
+      }
+    },
+    "boolean_water_river": {
+      "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"water AND river\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;",
+      "requests": 4000,
+      "successes": 4000,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 6.377226,
+        "p95": 14.412941,
+        "p99": 17.288365,
+        "max": 26.67296
+      }
+    }
+  }
+}

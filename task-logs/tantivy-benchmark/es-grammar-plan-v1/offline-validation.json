@@ -1,0 +1,76 @@
+{
+  "utc": "2026-11-04T16:41:21.075865+00:00",
+  "offline_only": true,
+  "database_connections": 0,
+  "source_fixture_rows": 8,
+  "source_case_count": 18,
+  "fixture_plan_validated": true,
+  "setup_job_parser_checks": [
+    {
+      "name": "legacy_finished",
+      "expected_completed": true,
+      "actual_completed": true,
+      "passed": true
+    },
+    {
+      "name": "legacy_running",
+      "expected_completed": false,
+      "actual_completed": false,
+      "passed": true
+    },
+    {
+      "name": "legacy_failed",
+      "expected_completed": false,
+      "actual_completed": false,
+      "passed": true
+    },
+    {
+      "name": "empty_tasks_not_success",
+      "expected_completed": false,
+      "actual_completed": false,
+      "passed": true
+    },
+    {
+      "name": "inconsistent_failure_summary",
+      "expected_completed": false,
+      "actual_completed": false,
+      "passed": true
+    }
+  ],
+  "existing_create_index_static_cases": [
+    {
+      "states": [
+        "FINISHED",
+        "FINISHED",
+        "Failed:0"
+      ],
+      "completed": true
+    },
+    {
+      "states": [
+        "RUNNING",
+        "FINISHED",
+        "Failed:0"
+      ],
+      "completed": false
+    },
+    {
+      "states": [
+        "FINISHED",
+        "Failed:0"
+      ],
+      "completed": false
+    },
+    {
+      "states": [
+        "FAILED",
+        "FAILED",
+        "Failed:1"
+      ],
+      "completed": false
+    }
+  ],
+  "old_source_file": "/home/sch/nebula/nebula-3.6-io/src/graph/executor/admin/SubmitJobExecutor.cpp",
+  "old_binary_revision_caveat": "Existing binary reports de9b3ed80; source HEAD b3457870 differs. Runtime result rows still must be archived.",
+  "all_passed": true
+}

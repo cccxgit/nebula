@@ -1,0 +1,30 @@
+[
+  {
+    "url": "https://msmarco.z22.web.core.windows.net/msmarcoranking/msmarco_v2_passage.tar",
+    "status": 200,
+    "seconds": 1.387008704999971,
+    "length": "21768192000",
+    "etag": "\"0x8DBE16684099D62\""
+  },
+  {
+    "url": "https://msmarco.blob.core.windows.net/msmarcoranking/msmarco_v2_passage.tar",
+    "error": "HTTP Error 409: Public access is not permitted on this storage account.",
+    "seconds": 2.671182726000552
+  },
+  {
+    "url": "https://msmarco.z22.web.core.windows.net/msmarcoranking/msmarco_v2_passage.tar?benchmark_probe=1",
+    "status": 200,
+    "seconds": 1.3146018309998908,
+    "length": "21768192000",
+    "etag": "\"0x8DBE16684099D62\""
+  },
+  {
+    "mode": "direct_process_only_no_proxy_changes",
+    "status": 206,
+    "bytes": 1048576,
+    "seconds": 14.771327645,
+    "etag": "\"0x8DBE16684099D62\"",
+    "content_range": "bytes 0-1048575/21768192000",
+    "conclusion": "Direct connection is slower than current aggregate parallel proxy download; keep current path"
+  }
+]

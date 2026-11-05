@@ -1,0 +1,240 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=14,
+        output_var=b'{"colNames":["id"],"type":"DATASET","name":"__Project_8"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_10'),
+        Pair(
+            key=b'columns',
+            value=b'["id($-.a) AS id"]')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=53,
+            total_duration_in_us=68)],
+        dependencies=[13]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=13,
+        output_var=b'{"colNames":["a","e","b"],"type":"DATASET","name":"__Filter_10"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_12'),
+        Pair(
+            key=b'space',
+            value=b'27'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'none_direct_dst($-.e,$-.a)'),
+        Pair(
+            key=b'props',
+            value=b'[{"props":["_tag"],"tagId":28}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'true')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=469,
+            total_duration_in_us=1339,
+            other_stats={b'resp[0]': b'{\n  "exec": "324(us)",\n  "host": "127.0.0.1:9789",\n  "total"'
+                        b': "886(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "311(us)",\n  "host": "127.0.0.1:9779",\n  "total"'
+                        b': "896(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "329(us)",\n  "host": "127.0.0.1:9799",\n  "total"'
+                        b': "734(us)"\n}',
+            b'total_rpc': b'1113(us)'})],
+        dependencies=[16]),
+    PlanNodeDescription(
+        name=b'Traverse',
+        id=16,
+        output_var=b'{"colNames":["a","e"],"type":"DATASET","name":"__Filter_12"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Dedup_2'),
+        Pair(
+            key=b'space',
+            value=b'27'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'(cites.body CONTAINS "Graph")'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'edgeTypes',
+            value=b'[]'),
+        Pair(
+            key=b'edgeDirection',
+            value=b'OUT_EDGE'),
+        Pair(
+            key=b'vertexProps',
+            value=b''),
+        Pair(
+            key=b'edgeProps',
+            value=b'[{"props":["_dst","_type","_rank"],"type":29}]'),
+        Pair(
+            key=b'statProps',
+            value=b''),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'random',
+            value=b'false'),
+        Pair(
+            key=b'steps',
+            value=b'1..1'),
+        Pair(
+            key=b'vertex filter',
+            value=b''),
+        Pair(
+            key=b'edge filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false'),
+        Pair(
+            key=b'first step filter',
+            value=b''),
+        Pair(
+            key=b'tag filter',
+            value=b'')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=182,
+            total_duration_in_us=3365,
+            other_stats={b'expandPostTaskTime': b'19(us)',
+            b'expandTaskRunTime': b'[\n  93,\n  40,\n  61\n]',
+            b'expandTime': b'220(us)',
+            b'step[1]': b'{\n  "storage": [\n    {\n      "exec": "1733(us)",\n      "host'
+                        b'": "127.0.0.1:9789",\n      "storage_detail": {\n        "Filt'
+                        b'erNode": "305(us)",\n        "GetNeighborsNode": "403(us)",\n '
+                        b'       "HashJoinNode": "252(us)",\n        "RelNode": "405(us'
+                        b')",\n        "SingleEdgeNode": "209(us)"\n      },\n      "tota'
+                        b'l": "2693(us)",\n      "vertices": 10\n    },\n    {\n      "exe'
+                        b'c": "982(us)",\n      "host": "127.0.0.1:9779",\n      "storag'
+                        b'e_detail": {\n        "FilterNode": "191(us)",\n        "GetNe'
+                        b'ighborsNode": "280(us)",\n        "HashJoinNode": "148(us)",\n'
+                        b'        "RelNode": "280(us)",\n        "SingleEdgeNode": "111(us)'
+                        b'"\n      },\n      "total": "1600(us)",\n      "vertices": 6\n  '
+                        b'  },\n    {\n      "exec": "822(us)",\n      "host": "127.0.0.1'
+                        b':9799",\n      "storage_detail": {\n        "FilterNode": "171'
+                        b'(us)",\n        "GetNeighborsNode": "221(us)",\n        "HashJ'
+                        b'oinNode": "144(us)",\n        "RelNode": "222(us)",\n        "'
+                        b'SingleEdgeNode": "119(us)"\n      },\n      "total": "1475(us)'
+                        b'",\n      "vertices": 4\n    }\n  ],\n  "total_rpc_time": "2928('
+                        b'us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Dedup',
+        id=2,
+        output_var=b'{"colNames":["_vid"],"type":"DATASET","name":"__Dedup_2"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=21,
+            total_duration_in_us=38)],
+        dependencies=[9]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=9,
+        output_var=b'{"colNames":["_vid"],"name":"__IndexScan_1","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'27'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'29'),
+        Pair(
+            key=b'isEdge',
+            value=b'true'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_src"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"filter":"(cites.body CONTAINS \\"Graph\\")","fulltext_'
+             b'field":"body","fulltext_value":"Graph","fulltext_mode":1,"fulltext_index":"t'
+             b'antivy_demo_v3_cites","engine":"tantivy"}]'))],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=0,
+            total_duration_in_us=52968,
+            other_stats={b'resp[0]': b'{\n  "exec": "51994(us)",\n  "host": "127.0.0.1:9799",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"205182(us)",\n    "IndexProjectionNode(projectColumn=[_src])": "'
+                        b'205164(us)",\n    "IndexSelectionNode(expr=[(cites.body CONTAINS '
+                        b'\\"Graph\\")])": "205146(us)",\n    "TantivyIndexScanNode(index'
+                        b'=tantivy_demo_v3_cites,field=body,mode=1,topk=0,fallback=false)"'
+                        b': "205093(us)"\n  },\n  "total": "52634(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "32935(us)",\n  "host": "127.0.0.1:9779",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"195282(us)",\n    "IndexProjectionNode(projectColumn=[_src])": "'
+                        b'195236(us)",\n    "IndexSelectionNode(expr=[(cites.body CONTAINS '
+                        b'\\"Graph\\")])": "195175(us)",\n    "TantivyIndexScanNode(index'
+                        b'=tantivy_demo_v3_cites,field=body,mode=1,topk=0,fallback=false)"'
+                        b': "195105(us)"\n  },\n  "total": "33500(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "30523(us)",\n  "host": "127.0.0.1:9789",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"272249(us)",\n    "IndexProjectionNode(projectColumn=[_src])": "'
+                        b'272106(us)",\n    "IndexSelectionNode(expr=[(cites.body CONTAINS '
+                        b'\\"Graph\\")])": "271957(us)",\n    "TantivyIndexScanNode(index'
+                        b'=tantivy_demo_v3_cites,field=body,mode=1,topk=0,fallback=false)"'
+                        b': "271719(us)"\n  },\n  "total": "31156(us)"\n}'})],
+        dependencies=[3]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=3,
+        output_var=b'{"colNames":[],"name":"__Start_3","type":"DATASET"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=1,
+            total_duration_in_us=22)])],
+    node_index_map={2: 3, 3: 5, 9: 4, 13: 1, 14: 0, 16: 2},
+    format=b'row',
+    optimize_time_in_us=1540)

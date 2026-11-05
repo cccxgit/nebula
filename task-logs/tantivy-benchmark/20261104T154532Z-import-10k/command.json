@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-04T15:45:32Z",
+  "command_arguments": [
+    "import",
+    "--space",
+    "ft_bench_10k",
+    "--input",
+    "/home/sch/nebula-data/tantivy/sample-10000-128.jsonl.gz",
+    "--concurrency",
+    "1",
+    "--batch-size",
+    "200",
+    "--batch-bytes",
+    "131072"
+  ],
+  "flag_state": "Record verified graph flag state and PROFILE separately"
+}

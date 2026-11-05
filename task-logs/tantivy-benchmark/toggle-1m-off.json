@@ -1,0 +1,13 @@
+{
+  "utc": "2026-11-04T16:03:17Z",
+  "endpoint": "http://127.0.0.1:19669/flags",
+  "flag": "enable_tantivy_pushdown",
+  "requested": "off",
+  "success": true,
+  "note": "PROFILE must be checked separately. External clients require operator coordination.",
+  "before": true,
+  "put_response": {
+    "errCode": 0
+  },
+  "after": false
+}

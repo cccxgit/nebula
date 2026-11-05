@@ -1,0 +1,12 @@
+{"time": "2026-11-04T15:00:22Z", "event": "verified_download_prefix", "bytes": 360710144}
+{"time": "2026-11-04T15:00:24Z", "event": "normalize_progress", "rows": 100000, "elapsed_s": 1.822195754999484}
+{"time": "2026-11-04T15:00:26Z", "event": "normalize_progress", "rows": 200000, "elapsed_s": 3.2686531290000858}
+{"time": "2026-11-04T15:00:27Z", "event": "normalize_progress", "rows": 300000, "elapsed_s": 4.759573248000379}
+{"time": "2026-11-04T15:00:28Z", "event": "normalize_progress", "rows": 400000, "elapsed_s": 6.220133372000419}
+{"time": "2026-11-04T15:00:30Z", "event": "normalize_progress", "rows": 500000, "elapsed_s": 8.101303082999948}
+{"time": "2026-11-04T15:00:32Z", "event": "normalize_progress", "rows": 600000, "elapsed_s": 9.596549249999953}
+{"time": "2026-11-04T15:00:33Z", "event": "normalize_progress", "rows": 700000, "elapsed_s": 11.204046528999243}
+{"time": "2026-11-04T15:00:35Z", "event": "normalize_progress", "rows": 800000, "elapsed_s": 12.67080384700057}
+{"time": "2026-11-04T15:00:36Z", "event": "normalize_progress", "rows": 900000, "elapsed_s": 14.155812003999017}
+{"time": "2026-11-04T15:00:38Z", "event": "normalize_progress", "rows": 1000000, "elapsed_s": 15.601265675999457}
+{"time": "2026-11-04T15:00:38Z", "event": "normalize_complete", "kind": "corpus_preparation", "source": "/home/sch/nebula-data/tantivy/msmarco_v2_passage.tar.partial", "source_format": "msmarco", "output": "/home/sch/nebula-data/tantivy/msmarco-1m-128.jsonl.gz", "source_rows_skipped": 0, "verified_partial_archive_prefix_bytes": 360710144, "rows": 1000000, "text_utf8_bytes": 128396899, "mean_text_utf8_bytes": 128.396899, "max_text_bytes_setting": 0, "truncated_rows": 993080, "max_chars_setting": 128, "empty_text_rows": 0, "normalized_jsonl_sha256": "de46025a28771d1b88e20ab78dd2aeda05ef407bf7aab002a12e7afe876a2acd", "output_file_bytes": 54984169, "sampling": "prefix_after_skip", "repeated_or_synthetic_rows_added": 0, "elapsed_s": 15.601762031999897}

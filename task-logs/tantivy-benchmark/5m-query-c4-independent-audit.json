@@ -1,0 +1,85 @@
+{
+  "utc": "2026-11-04T17:24:03Z",
+  "kind": "offline_recomputation_of_existing_measurements",
+  "runs": [
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T172307Z-query-5m-c4",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Every query percentile, count, sequence and QPS recomputed"
+      ],
+      "resources": {
+        "pids": [
+          155648,
+          155814,
+          155847,
+          155974,
+          156183
+        ],
+        "samples": 36,
+        "complete_pss_samples": 36,
+        "complete_cpu_intervals": 35,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.031,
+        "sample_interval_max_s": 1.0739999999999998,
+        "observed_peak_sum_rss_bytes": 3616653312,
+        "observed_peak_sum_pss_bytes": 3515549696,
+        "observed_peak_sum_cpu_cores": 10.07638,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "query": {
+        "rows": 400,
+        "summary_recomputed": true,
+        "successful_qps": 11.68816850805721,
+        "measured_elapsed_s": 34.2226414450015,
+        "serial_latency_sum_s": 135.68949450600002,
+        "overall": {
+          "requests": 400,
+          "successes": 400,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 208.833873,
+            "p95": 938.975744,
+            "p99": 986.023291,
+            "max": 1007.911732
+          }
+        },
+        "returned_row_counts_by_query": {
+          "contains_water": [
+            10
+          ],
+          "contains_new_york": [
+            10
+          ],
+          "starts_with_the_united": [
+            10
+          ],
+          "ends_with_water": [
+            10
+          ]
+        }
+      },
+      "passed": true,
+      "scheduling": {
+        "strategy": "shared_fifo_queue_dynamic_workers",
+        "requests_by_worker": {
+          "0": 100,
+          "1": 101,
+          "2": 102,
+          "3": 97
+        },
+        "worker_column_in_csv": "worker_id",
+        "independent_worker_counts": {
+          "0": 100,
+          "2": 102,
+          "3": 97,
+          "1": 101
+        },
+        "estimated_mean_inflight": 3.9649041913980776,
+        "warmup_cycles_excluded": 3,
+        "repeats": 100
+      }
+    }
+  ],
+  "all_passed": true
+}

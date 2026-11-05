@@ -1,0 +1,23 @@
+{
+  "kind": "synthetic_8_row_es_grammar_setup_plan",
+  "space": "ft_regression_es_v1",
+  "index": "nebula_index_ft_regression_es_v1",
+  "host": "127.0.0.1",
+  "port": 29669,
+  "partition_num": 20,
+  "replica_factor": 3,
+  "fixture_rows": 8,
+  "regression_cases": 18,
+  "fixture_sha256": "1758a8aa7134e054b634cc5f234e16799b2e483a7e2fa207106a26b79cd093e1",
+  "cases_sha256": "7bd7db44614365e0a68b9526a0a46c50f4c12fcefe751b4e119870a39cbb56a6",
+  "statements": [
+    "CREATE SPACE `ft_regression_es_v1` (partition_num=20,replica_factor=3,vid_type=FIXED_STRING(64))",
+    "USE `ft_regression_es_v1`",
+    "CREATE TAG ftcase(title string,body string)",
+    "ADD LISTENER ELASTICSEARCH 127.0.0.1:29879",
+    "CREATE FULLTEXT TAG INDEX `nebula_index_ft_regression_es_v1` ON ftcase(title,body) ANALYZER=\"standard\"",
+    "INSERT VERTEX ftcase(title,body) VALUES \"r1\":(\"quick brown fox\",\"new york river water\"),\"r2\":(\"quick blue hare\",\"new jersey lake\"),\"r3\":(\"slow brown fox\",\"old york river\"),\"r4\":(\"quack bronze bird\",\"new york harbor\"),\"r5\":(\"aquatic watercraft\",\"water river water\"),\"r6\":(\"beach\",\"sand dry\"),\"r7\":(\"New York\",\"quoted \\\"fox\\\" and C++\"),\"r8\":(\"the Quick hare\",\"new old york\")",
+    "REBUILD FULLTEXT INDEX"
+  ],
+  "note": "Synthetic correctness fixture, not throughput data. Rebuild ensures fixture preparation; this does not measure online-write visibility. No server start/stop or benchmark-space writes."
+}

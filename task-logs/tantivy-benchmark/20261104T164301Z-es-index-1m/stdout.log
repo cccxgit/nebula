@@ -1,0 +1,82 @@
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_ngql", "query": "USE `ft_bench_1m`", "success": true, "elapsed_s": 0.0007100919992808485, "error": ""}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_ngql", "query": "SHOW PARTS", "success": true, "elapsed_s": 0.0013984190009068698, "error": ""}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_topology_healthy", "partition_num": 20, "replica_factor": 3}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_ngql", "query": "SIGN IN TEXT SERVICE (127.0.0.1:19200, HTTP)", "success": false, "elapsed_s": 0.0005732680001528934, "error": "Existed!"}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_es_template", "response": {"acknowledged": true}, "settings": {"number_of_shards": 1, "number_of_replicas": 0, "max_result_window": 100001}}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_ngql", "query": "ADD LISTENER ELASTICSEARCH 127.0.0.1:29879", "success": false, "elapsed_s": 0.0013549329996749293, "error": "Existed!"}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_ngql", "query": "SHOW LISTENER", "success": true, "elapsed_s": 0.00794762799887394, "error": ""}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_listener_reused_for_retry", "space": "ft_bench_1m", "host": "127.0.0.1:29879", "partitions": 20, "original_error": "Existed!"}
+{"utc": "2026-11-04T16:43:01Z", "event": "phased_ngql", "query": "SHOW LISTENER", "success": true, "elapsed_s": 0.0015745099990454037, "error": ""}
+{"utc": "2026-11-04T16:43:02Z", "event": "phased_ngql", "query": "CREATE FULLTEXT TAG INDEX `nebula_index_ft_passage_1m` ON passage(text) ANALYZER=\"standard\"", "success": true, "elapsed_s": 0.14425988299990422, "error": ""}
+{"utc": "2026-11-04T16:43:02Z", "event": "phased_es_index_settings", "index": "nebula_index_ft_passage_1m", "settings": {"nebula_index_ft_passage_1m": {"settings": {"index": {"routing": {"allocation": {"include": {"_tier_preference": "data_content"}}}, "number_of_shards": "1", "provided_name": "nebula_index_ft_passage_1m", "max_result_window": "100001", "creation_date": "1793810581892", "number_of_replicas": "0", "uuid": "WKzXQtV4SCKqropGewPgYQ", "version": {"created": "7172999"}}}}}}
+{"utc": "2026-11-04T16:43:02Z", "event": "phased_ngql", "query": "REBUILD FULLTEXT INDEX", "success": true, "elapsed_s": 0.0014141530009510461, "error": ""}
+{"utc": "2026-11-04T16:43:02Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0007646330013812985, "error": ""}
+{"utc": "2026-11-04T16:43:02Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['QUEUE']"}
+{"utc": "2026-11-04T16:43:04Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0016916519998630974, "error": ""}
+{"utc": "2026-11-04T16:43:04Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:06Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.004317142000218155, "error": ""}
+{"utc": "2026-11-04T16:43:06Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:08Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0036832139994658064, "error": ""}
+{"utc": "2026-11-04T16:43:08Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:10Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0030496819999825675, "error": ""}
+{"utc": "2026-11-04T16:43:10Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:12Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0018267590003233636, "error": ""}
+{"utc": "2026-11-04T16:43:12Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:14Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.00908932700076548, "error": ""}
+{"utc": "2026-11-04T16:43:14Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:16Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0017766419987310655, "error": ""}
+{"utc": "2026-11-04T16:43:16Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:18Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.00192320899986953, "error": ""}
+{"utc": "2026-11-04T16:43:18Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:20Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.003010694999829866, "error": ""}
+{"utc": "2026-11-04T16:43:20Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:22Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0015159790000325302, "error": ""}
+{"utc": "2026-11-04T16:43:22Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:24Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0013666030008607777, "error": ""}
+{"utc": "2026-11-04T16:43:24Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:26Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0021242750008241273, "error": ""}
+{"utc": "2026-11-04T16:43:26Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:28Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.004551801001070999, "error": ""}
+{"utc": "2026-11-04T16:43:28Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:30Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.001799634001145023, "error": ""}
+{"utc": "2026-11-04T16:43:30Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:32Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0019130319997202605, "error": ""}
+{"utc": "2026-11-04T16:43:32Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:34Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.00270018099945446, "error": ""}
+{"utc": "2026-11-04T16:43:34Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:36Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0023340619991358835, "error": ""}
+{"utc": "2026-11-04T16:43:36Z", "event": "phased_wait", "label": "ES listener rebuild job completion", "error": "['RUNNING', 'RUNNING']"}
+{"utc": "2026-11-04T16:43:38Z", "event": "phased_ngql", "query": "SHOW JOB 3", "success": true, "elapsed_s": 0.0019714379996003117, "error": ""}
+{"utc": "2026-11-04T16:43:38Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:40Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:42Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:44Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:46Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:49Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:51Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:53Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:55Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:57Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:43:59Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:01Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:03Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:05Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:07Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:09Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:11Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:13Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:15Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:17Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:19Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:21Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:23Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:25Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:27Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:29Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:31Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:33Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:35Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:37Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:39Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:41Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}
+{"utc": "2026-11-04T16:44:43Z", "event": "phased_wait", "label": "ES refresh-visible complete document count", "error": "{'count': 996388, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}}"}

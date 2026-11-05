@@ -1,0 +1,3 @@
+{"name": "term_water", "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"water\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;"}
+{"name": "phrase_new_york", "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"\\\"New York\\\"\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;"}
+{"name": "boolean_water_river", "query": "LOOKUP ON passage WHERE ES_QUERY(nebula_index_ft_passage_1m, \"water AND river\") YIELD id(vertex) AS vid, score() AS score, passage.text AS text | LIMIT 10;"}

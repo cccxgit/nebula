@@ -1,0 +1,129 @@
+[  0%] Built target datetime_parser_target
+[  1%] Built target parser_target
+[  1%] Built target wkt_parser_target
+[  3%] Built target graph_thrift_generator
+[  3%] Built target common_thrift_generator
+[  3%] Built target raftex_thrift_generator
+[  3%] Built target storage_thrift_generator
+[  3%] Built target nebula_tantivy_build
+[  3%] Built target meta_thrift_generator
+[  3%] Built target common_thrift_obj
+[  3%] Built target tantivy_adapter
+[  3%] Built target meta_client_obj
+[  3%] Built target file_based_cluster_id_man_obj
+[  5%] Built target raftex_thrift_obj
+[  5%] Built target meta_client_stats_obj
+[  5%] Built target graph_thrift_obj
+[  5%] Built target storage_client_obj
+[  5%] Built target storage_client_base_obj
+[  5%] Built target internal_storage_client_obj
+[  5%] Built target storage_client_stats_obj
+[  6%] Built target time_obj
+[  6%] Built target codec_obj
+[  8%] Built target base_obj
+[  8%] Built target datetime_parser_obj
+[  8%] Built target time_utils_obj
+[  8%] Built target network_obj
+[  8%] Built target thrift_obj
+[  8%] Built target process_obj
+[  8%] Built target thread_obj
+[  8%] Built target fs_obj
+[  8%] Built target http_client_obj
+[  8%] Built target hdfs_helper_obj
+[  8%] Built target stats_obj
+[  8%] Built target charset_obj
+[ 10%] Built target conf_obj
+[ 10%] Built target nebula_algo_obj
+[ 12%] Built target datatypes_obj
+[ 12%] Built target agg_function_manager_obj
+[ 13%] Built target function_manager_obj
+[ 13%] Built target graph_obj
+[ 13%] Built target meta_obj
+[ 15%] Built target keyutils_obj
+[ 15%] Built target es_adapter_obj
+[ 15%] Built target log_str_list_iterator_obj
+[ 15%] Built target ssl_obj
+[ 15%] Built target meta_keyutils_obj
+[ 15%] Built target geo_index_obj
+[ 15%] Built target memory_obj
+[ 15%] Built target uuid_obj
+[ 17%] Built target wkt_wkb_io_obj
+[ 17%] Built target snowflake_obj
+[ 22%] Built target expression_obj
+[ 22%] Built target ws_common_obj
+[ 22%] Built target segment_id_obj
+[ 22%] Built target log_monitor_obj
+[ 22%] Built target disk_man_obj
+[ 24%] Built target meta_thrift_obj
+[ 25%] Built target kvstore_obj
+[ 29%] Built target storage_thrift_obj
+[ 29%] Built target raftex_obj
+[ 29%] Built target listener_obj
+[ 29%] Built target meta_stats_obj
+[ 29%] Built target kv_stats_obj
+[ 29%] Built target wal_obj
+[ 31%] Built target ast_match_path_obj
+[ 32%] Built target storage_common_obj
+[ 32%] Built target internal_storage_service_handler
+[ 32%] Built target storage_http_handler
+[ 32%] Building CXX object src/storage/CMakeFiles/storage_server.dir/StorageServer.cpp.o
+[ 32%] Building CXX object src/storage/CMakeFiles/tantivy_manager.dir/fulltext/TantivyManager.cpp.o
+[ 32%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o
+[ 32%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/GraphStorageServiceHandler.cpp.o
+[ 34%] Built target storage_transaction_executor
+[ 34%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o
+[ 34%] Linking CXX static library ../../lib/libtantivy_manager.a
+[ 34%] Built target tantivy_manager
+[ 34%] Built target storage_stats_obj
+[ 34%] Built target version_obj
+[ 36%] Built target ws_obj
+[ 36%] Built target meta_v2_thrift_obj
+[ 36%] Built target meta_http_handler
+[ 36%] Built target meta_data_upgrade_obj
+[ 36%] Built target graph_context_obj
+[ 37%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/FulltextIndexScanExecutor.cpp.o
+[ 37%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/index/LookupProcessor.cpp.o
+[ 46%] Built target optimizer_obj
+[ 51%] Built target planner_obj
+[ 53%] Built target plan_obj
+[ 53%] Built target scheduler_obj
+[ 55%] Built target graph_flags_obj
+[ 55%] Built target service_obj
+[ 55%] Built target query_engine_obj
+[ 56%] Built target graph_auth_obj
+[ 56%] Built target graph_session_obj
+[ 56%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o
+[ 60%] Built target storage_admin_service_handler
+[ 60%] Built target graph_stats_obj
+[ 62%] Built target util_obj
+[ 62%] Built target idgenerator_obj
+[ 65%] Built target validator_obj
+[ 67%] Built target expr_visitor_obj
+[ 67%] Built target plan_node_visitor_obj
+[ 67%] Built target gc_obj
+[ 68%] Built target parser_obj
+[ 68%] Built target mock_obj
+[ 68%] Built target fake_http_server_obj
+[ 68%] Built target storage_local_server_obj
+[ 68%] Built target meta_version_man_obj
+[ 68%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/AdminClient.cpp.o
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/index/LookupProcessor.cpp: In member function ‘nebula::ErrorOr<nebula::cpp2::ErrorCode, std::unique_ptr<nebula::storage::IndexNode> > nebula::storage::LookupProcessor::buildPlan(const nebula::storage::cpp2::LookupIndexRequest&)’:
+/home/sch/nebula/nebula-3.6-tantivy/src/storage/index/LookupProcessor.cpp:136:68: error: ‘bool apache::thrift::field_ref<T>::has_value() const [with T = const std::__cxx11::basic_string<char>&]’ is deprecated: Use is_set() method instead [-Werror=deprecated-declarations]
+  136 |                                        (!ctx.filter_ref().has_value() || ctx.get_filter().empty())
+      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from /opt/vesoft/third-party/3.3/include/thrift/lib/cpp2/gen/module_types_h.h:29,
+                 from /home/sch/nebula/nebula-3.6-tantivy/build/src/interface/gen-cpp2/storage_types.h:9,
+                 from /home/sch/nebula/nebula-3.6-tantivy/src/storage/index/LookupProcessor.h:9,
+                 from /home/sch/nebula/nebula-3.6-tantivy/src/storage/index/LookupProcessor.cpp:5:
+/opt/vesoft/third-party/3.3/include/thrift/lib/cpp2/FieldRef.h:174:66: note: declared here
+  174 |   [[deprecated("Use is_set() method instead")]] FOLLY_ERASE bool has_value()
+      |                                                                  ^~~~~~~~~
+[ 68%] Built target storage_server
+cc1plus: all warnings being treated as errors
+gmake[2]: *** [src/storage/CMakeFiles/graph_storage_service_handler.dir/build.make:272: src/storage/CMakeFiles/graph_storage_service_handler.dir/index/LookupProcessor.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:12295: src/storage/CMakeFiles/graph_storage_service_handler.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[ 79%] Built target executor_obj
+[ 94%] Built target meta_service_handler
+gmake: *** [Makefile:156: all] Error 2

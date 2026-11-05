@@ -1,0 +1,21 @@
+{
+  "utc": "2026-11-04T16:53:04Z",
+  "command_arguments": [
+    "query",
+    "--port",
+    "29669",
+    "--space",
+    "ft_bench_1m",
+    "--queries",
+    "task-logs/tantivy-benchmark/queries-es-search-1m.jsonl",
+    "--concurrency",
+    "1",
+    "--repeats",
+    "200",
+    "--warmup",
+    "3",
+    "--label",
+    "es-native-1m-c1"
+  ],
+  "flag_state": "Record verified graph flag state and PROFILE separately"
+}

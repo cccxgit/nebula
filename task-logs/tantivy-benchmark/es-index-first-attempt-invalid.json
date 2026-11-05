@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-04T16:37:08.284380+00:00",
+  "pids": [
+    138690
+  ],
+  "reason": "Old Nebula processes inherited HTTP proxy without localhost bypass; CREATE repeatedly returned non-JSON. Failed stage excluded from measured build time."
+}

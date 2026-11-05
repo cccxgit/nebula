@@ -1,0 +1,2 @@
+{"utc": "2026-11-04T16:33:05Z", "event": "es_start_requested", "detached_session": true}
+{"utc": "2026-11-04T16:33:11Z", "event": "es_ready", "name": "elasticsearch", "pid": 136093, "running": true, "owned": true, "process_state": "S", "http_ready": true, "http_cluster_name": "nebula-tantivy-es-baseline", "http_version": "7.17.29", "http_process_ids": [136093], "pid_matches_http": true, "ready": true}

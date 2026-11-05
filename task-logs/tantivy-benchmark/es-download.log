@@ -1,0 +1,43 @@
+{"time": "2026-11-04T15:01:37Z", "event": "download_start", "url": "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.29-linux-x86_64.tar.gz", "expected_bytes": 325443139}
+{"time": "2026-11-04T15:01:46Z", "event": "download_progress", "completed_chunks": 1, "total_chunks": 39, "bytes": 8388608, "bytes_per_second": 922327.9731245204}
+{"time": "2026-11-04T15:01:48Z", "event": "download_progress", "completed_chunks": 2, "total_chunks": 39, "bytes": 16777216, "bytes_per_second": 1541644.9383975305}
+{"time": "2026-11-04T15:01:54Z", "event": "download_progress", "completed_chunks": 3, "total_chunks": 39, "bytes": 25165824, "bytes_per_second": 1493060.023755372}
+{"time": "2026-11-04T15:01:55Z", "event": "download_progress", "completed_chunks": 4, "total_chunks": 39, "bytes": 33554432, "bytes_per_second": 1907898.0481096732}
+{"time": "2026-11-04T15:01:57Z", "event": "download_progress", "completed_chunks": 5, "total_chunks": 39, "bytes": 41943040, "bytes_per_second": 2147527.6238681134}
+{"time": "2026-11-04T15:01:58Z", "event": "download_progress", "completed_chunks": 6, "total_chunks": 39, "bytes": 50331648, "bytes_per_second": 2413696.875425101}
+{"time": "2026-11-04T15:01:59Z", "event": "download_progress", "completed_chunks": 7, "total_chunks": 39, "bytes": 58720256, "bytes_per_second": 2666794.103990229}
+{"time": "2026-11-04T15:02:00Z", "event": "download_progress", "completed_chunks": 8, "total_chunks": 39, "bytes": 67108864, "bytes_per_second": 2953557.593387854}
+{"time": "2026-11-04T15:02:03Z", "event": "download_progress", "completed_chunks": 9, "total_chunks": 39, "bytes": 75497472, "bytes_per_second": 2896784.4423902216}
+{"time": "2026-11-04T15:02:04Z", "event": "download_retry", "chunk": 10, "attempt": 1, "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)>"}
+{"time": "2026-11-04T15:02:05Z", "event": "download_retry", "chunk": 11, "attempt": 1, "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)>"}
+{"time": "2026-11-04T15:02:07Z", "event": "download_progress", "completed_chunks": 10, "total_chunks": 39, "bytes": 83886080, "bytes_per_second": 2761138.3606889294}
+{"time": "2026-11-04T15:02:09Z", "event": "download_progress", "completed_chunks": 11, "total_chunks": 39, "bytes": 92274688, "bytes_per_second": 2850426.952637826}
+{"time": "2026-11-04T15:02:10Z", "event": "download_progress", "completed_chunks": 12, "total_chunks": 39, "bytes": 100663296, "bytes_per_second": 3093693.961488653}
+{"time": "2026-11-04T15:02:13Z", "event": "download_progress", "completed_chunks": 13, "total_chunks": 39, "bytes": 109051904, "bytes_per_second": 3071315.3711399585}
+{"time": "2026-11-04T15:02:14Z", "event": "download_progress", "completed_chunks": 14, "total_chunks": 39, "bytes": 117440512, "bytes_per_second": 3151208.7824443374}
+{"time": "2026-11-04T15:02:15Z", "event": "download_progress", "completed_chunks": 15, "total_chunks": 39, "bytes": 125829120, "bytes_per_second": 3277454.200342546}
+{"time": "2026-11-04T15:02:17Z", "event": "download_progress", "completed_chunks": 16, "total_chunks": 39, "bytes": 134217728, "bytes_per_second": 3331166.7158694323}
+{"time": "2026-11-04T15:02:19Z", "event": "download_progress", "completed_chunks": 17, "total_chunks": 39, "bytes": 142606336, "bytes_per_second": 3397642.2773953318}
+{"time": "2026-11-04T15:02:21Z", "event": "download_progress", "completed_chunks": 18, "total_chunks": 39, "bytes": 150994944, "bytes_per_second": 3462477.076805321}
+{"time": "2026-11-04T15:02:22Z", "event": "download_progress", "completed_chunks": 19, "total_chunks": 39, "bytes": 159383552, "bytes_per_second": 3572563.533295466}
+{"time": "2026-11-04T15:02:23Z", "event": "download_progress", "completed_chunks": 20, "total_chunks": 39, "bytes": 167772160, "bytes_per_second": 3682743.1901191915}
+{"time": "2026-11-04T15:02:23Z", "event": "download_progress", "completed_chunks": 21, "total_chunks": 39, "bytes": 176160768, "bytes_per_second": 3808759.2079468896}
+{"time": "2026-11-04T15:02:25Z", "event": "download_progress", "completed_chunks": 22, "total_chunks": 39, "bytes": 184549376, "bytes_per_second": 3837489.8692036397}
+{"time": "2026-11-04T15:02:26Z", "event": "download_progress", "completed_chunks": 23, "total_chunks": 39, "bytes": 192937984, "bytes_per_second": 3925373.331539605}
+{"time": "2026-11-04T15:02:28Z", "event": "download_progress", "completed_chunks": 24, "total_chunks": 39, "bytes": 201326592, "bytes_per_second": 3963015.8290846334}
+{"time": "2026-11-04T15:02:28Z", "event": "download_progress", "completed_chunks": 25, "total_chunks": 39, "bytes": 209715200, "bytes_per_second": 4082101.9816730833}
+{"time": "2026-11-04T15:02:30Z", "event": "download_progress", "completed_chunks": 26, "total_chunks": 39, "bytes": 218103808, "bytes_per_second": 4158085.5879336083}
+{"time": "2026-11-04T15:02:31Z", "event": "download_progress", "completed_chunks": 27, "total_chunks": 39, "bytes": 226492416, "bytes_per_second": 4164217.598488401}
+{"time": "2026-11-04T15:02:33Z", "event": "download_progress", "completed_chunks": 28, "total_chunks": 39, "bytes": 234881024, "bytes_per_second": 4214209.3377634585}
+{"time": "2026-11-04T15:02:34Z", "event": "download_progress", "completed_chunks": 29, "total_chunks": 39, "bytes": 243269632, "bytes_per_second": 4298475.489781962}
+{"time": "2026-11-04T15:02:38Z", "event": "download_progress", "completed_chunks": 30, "total_chunks": 39, "bytes": 251658240, "bytes_per_second": 4140059.7827538047}
+{"time": "2026-11-04T15:02:39Z", "event": "download_progress", "completed_chunks": 31, "total_chunks": 39, "bytes": 260046848, "bytes_per_second": 4224105.253053815}
+{"time": "2026-11-04T15:02:40Z", "event": "download_progress", "completed_chunks": 32, "total_chunks": 39, "bytes": 268435456, "bytes_per_second": 4262688.74033105}
+{"time": "2026-11-04T15:02:43Z", "event": "download_progress", "completed_chunks": 33, "total_chunks": 39, "bytes": 276824064, "bytes_per_second": 4209019.437218386}
+{"time": "2026-11-04T15:02:44Z", "event": "download_progress", "completed_chunks": 34, "total_chunks": 39, "bytes": 285212672, "bytes_per_second": 4281783.524219031}
+{"time": "2026-11-04T15:02:45Z", "event": "download_progress", "completed_chunks": 35, "total_chunks": 39, "bytes": 293601280, "bytes_per_second": 4341977.988152118}
+{"time": "2026-11-04T15:02:48Z", "event": "download_progress", "completed_chunks": 36, "total_chunks": 39, "bytes": 301989888, "bytes_per_second": 4263785.044956622}
+{"time": "2026-11-04T15:02:49Z", "event": "download_progress", "completed_chunks": 37, "total_chunks": 39, "bytes": 308665923, "bytes_per_second": 4281667.905692724}
+{"time": "2026-11-04T15:02:50Z", "event": "download_progress", "completed_chunks": 38, "total_chunks": 39, "bytes": 317054531, "bytes_per_second": 4350597.589423261}
+{"time": "2026-11-04T15:02:51Z", "event": "download_progress", "completed_chunks": 39, "total_chunks": 39, "bytes": 325443139, "bytes_per_second": 4401207.362547154}
+{"time": "2026-11-04T15:01:37Z", "event": "download_complete", "url": "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.29-linux-x86_64.tar.gz", "remote": {"Content-Length": "325443139", "ETag": "\"aaeaf8fa2e09121a906359bc98d22ac1-39\"", "Last-Modified": "Tue, 24 Jun 2025 10:22:02 GMT", "Accept-Ranges": "bytes"}, "state": "complete", "chunk_bytes": 8388608, "download_mode": "parallel_ranges", "completed_chunks": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38], "downloaded_bytes": 325443139, "bytes": 325443139, "sha256": "f7175de3ac8ca16326b9dbdff4ef70bc3da6405efe624655444ba2464073ea8e", "finished_at": "2026-11-04T15:02:51Z"}

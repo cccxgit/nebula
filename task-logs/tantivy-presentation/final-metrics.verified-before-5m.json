@@ -1,0 +1,280 @@
+{
+  "utc": "2026-11-04T17:19:02.261723+00:00",
+  "status": "ready_for_final_5m_update_not_rendered",
+  "slide_count": 8,
+  "main_performance": {
+    "kind": "same_cluster_same_MATCH_pushdown_on_off",
+    "records": 1000000,
+    "c1_qps_ratio_display": 112.883,
+    "c1_on_qps": 11.5048,
+    "c1_off_qps": 0.101917,
+    "c4_on_qps": 36.6311,
+    "on_requests": 800,
+    "off_requests": 80,
+    "es_speedup": false,
+    "before_latest_topk_build": true
+  },
+  "native_absolute_observations": [
+    {
+      "source": "task-logs/tantivy-benchmark/tantivy-topk-1m-c1-long-independent-audit.json",
+      "run": "task-logs/tantivy-benchmark/20261104T170124Z-tantivy-topk-1m-c1-long",
+      "query": {
+        "rows": 12000,
+        "summary_recomputed": true,
+        "successful_qps": 36.222430840181275,
+        "measured_elapsed_s": 331.2864355499987,
+        "serial_latency_sum_s": 331.03235683499804,
+        "overall": {
+          "requests": 12000,
+          "successes": 12000,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 22.488006,
+            "p95": 55.822225,
+            "p99": 63.365034,
+            "max": 73.430354
+          }
+        },
+        "returned_row_counts_by_query": {
+          "term_water": [
+            10
+          ],
+          "phrase_new_york": [
+            10
+          ],
+          "boolean_water_river": [
+            10
+          ]
+        }
+      },
+      "resources": {
+        "pids": [
+          155648,
+          155814,
+          155847,
+          155974,
+          156183
+        ],
+        "samples": 328,
+        "complete_pss_samples": 328,
+        "complete_cpu_intervals": 327,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.009999999999991,
+        "sample_interval_max_s": 1.0330000000000155,
+        "observed_peak_sum_rss_bytes": 794898432,
+        "observed_peak_sum_pss_bytes": 696527872,
+        "observed_peak_sum_cpu_cores": 1.49173,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "pss_sampled_peak_gib": 0.6486921310424805
+    },
+    {
+      "source": "task-logs/tantivy-benchmark/tantivy-topk-1m-c4-long-independent-audit.json",
+      "run": "task-logs/tantivy-benchmark/20261104T170721Z-tantivy-topk-1m-c4-long",
+      "query": {
+        "rows": 12000,
+        "summary_recomputed": true,
+        "successful_qps": 52.71102467523947,
+        "measured_elapsed_s": 227.6563598210014,
+        "serial_latency_sum_s": 910.3227004100027,
+        "overall": {
+          "requests": 12000,
+          "successes": 12000,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 72.061658,
+            "p95": 119.726514,
+            "p99": 139.944073,
+            "max": 184.923793
+          }
+        },
+        "returned_row_counts_by_query": {
+          "term_water": [
+            10
+          ],
+          "phrase_new_york": [
+            10
+          ],
+          "boolean_water_river": [
+            10
+          ]
+        }
+      },
+      "resources": {
+        "pids": [
+          155648,
+          155814,
+          155847,
+          155974,
+          156183
+        ],
+        "samples": 226,
+        "complete_pss_samples": 226,
+        "complete_cpu_intervals": 225,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.0109999999999957,
+        "sample_interval_max_s": 1.0269999999999868,
+        "observed_peak_sum_rss_bytes": 811528192,
+        "observed_peak_sum_pss_bytes": 713155584,
+        "observed_peak_sum_cpu_cores": 2.0766699999999996,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "pss_sampled_peak_gib": 0.6641778945922852
+    },
+    {
+      "source": "task-logs/tantivy-benchmark/es-1m-long-query-independent-audit.json",
+      "run": "task-logs/tantivy-benchmark/20261104T165603Z-es-native-1m-c1-long",
+      "query": {
+        "rows": 12000,
+        "summary_recomputed": true,
+        "successful_qps": 129.1825616833323,
+        "measured_elapsed_s": 92.89179470999989,
+        "serial_latency_sum_s": 92.65582295300017,
+        "overall": {
+          "requests": 12000,
+          "successes": 12000,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 6.366326,
+            "p95": 14.206708,
+            "p99": 17.424609,
+            "max": 26.696596
+          }
+        },
+        "returned_row_counts_by_query": {
+          "term_water": [
+            10
+          ],
+          "phrase_new_york": [
+            10
+          ],
+          "boolean_water_river": [
+            10
+          ]
+        }
+      },
+      "resources": {
+        "pids": [
+          140735,
+          140860,
+          141117,
+          141250,
+          141368,
+          141494,
+          151177
+        ],
+        "samples": 91,
+        "complete_pss_samples": 91,
+        "complete_cpu_intervals": 90,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.0290000000000035,
+        "sample_interval_max_s": 1.0430000000000064,
+        "observed_peak_sum_rss_bytes": 2602545152,
+        "observed_peak_sum_pss_bytes": 2477744128,
+        "observed_peak_sum_cpu_cores": 1.3320400000000001,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "pss_sampled_peak_gib": 2.3075790405273438
+    },
+    {
+      "source": "task-logs/tantivy-benchmark/es-1m-long-query-independent-audit.json",
+      "run": "task-logs/tantivy-benchmark/20261104T165815Z-es-native-1m-c4-long",
+      "query": {
+        "rows": 12000,
+        "summary_recomputed": true,
+        "successful_qps": 662.1524111148814,
+        "measured_elapsed_s": 18.12271585599956,
+        "serial_latency_sum_s": 72.33415281200006,
+        "overall": {
+          "requests": 12000,
+          "successes": 12000,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 4.903679,
+            "p95": 10.949143,
+            "p99": 12.953404,
+            "max": 21.766055
+          }
+        },
+        "returned_row_counts_by_query": {
+          "term_water": [
+            10
+          ],
+          "phrase_new_york": [
+            10
+          ],
+          "boolean_water_river": [
+            10
+          ]
+        }
+      },
+      "resources": {
+        "pids": [
+          140735,
+          140860,
+          141117,
+          141250,
+          141368,
+          141494,
+          151177
+        ],
+        "samples": 19,
+        "complete_pss_samples": 19,
+        "complete_cpu_intervals": 18,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.032,
+        "sample_interval_max_s": 1.0439999999999996,
+        "observed_peak_sum_rss_bytes": 2606977024,
+        "observed_peak_sum_pss_bytes": 2482170880,
+        "observed_peak_sum_cpu_cores": 3.50623,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "pss_sampled_peak_gib": 2.311701774597168
+    }
+  ],
+  "five_million_final_measurements": null,
+  "demo_space_recreated": false,
+  "sources_sha256": {
+    "task-logs/tantivy-benchmark/tantivy-topk-1m-c1-long-independent-audit.json": "7ccc42ebcbf7dfc66b53f6e60eb9b45f235d83ff70bd1fc2ab7ac943479ed937",
+    "task-logs/tantivy-benchmark/tantivy-topk-1m-c4-long-independent-audit.json": "aa100baf7b21a29521df4ef00990d45bc9fb705ccbfae387555e29bf71e50db1",
+    "task-logs/tantivy-benchmark/es-1m-long-query-independent-audit.json": "649a6d4f8b54c2713367948bd7c14ca867b2132f9873fe24b5726eab5e64ff96",
+    "task-logs/tantivy-benchmark/native-1m-comparison/comparison.json": "de17118f36c2409c4eaff1c534543f4ac76bb3108e850d3be1fc284cd2eefe4e"
+  },
+  "cross_engine_result_sets": {
+    "utc": "2026-11-04T16:52:45Z",
+    "kind": "offline_native_hit_set_comparison",
+    "left": "task-logs/tantivy-benchmark/native-1m-tantivy",
+    "right": "task-logs/tantivy-benchmark/native-1m-es-v2",
+    "all_equal": false,
+    "queries": [
+      {
+        "name": "term_water",
+        "query_text": "water",
+        "left_count": 16505,
+        "right_count": 16451,
+        "only_left_count": 54,
+        "only_right_count": 0,
+        "equal": false
+      },
+      {
+        "name": "phrase_new_york",
+        "query_text": "\"New York\"",
+        "left_count": 3184,
+        "right_count": 3107,
+        "only_left_count": 77,
+        "only_right_count": 0,
+        "equal": false
+      },
+      {
+        "name": "boolean_water_river",
+        "query_text": "water AND river",
+        "left_count": 159,
+        "right_count": 157,
+        "only_left_count": 2,
+        "only_right_count": 0,
+        "equal": false
+      }
+    ]
+  },
+  "cross_engine_speed_or_resource_ratio_valid": false
+}

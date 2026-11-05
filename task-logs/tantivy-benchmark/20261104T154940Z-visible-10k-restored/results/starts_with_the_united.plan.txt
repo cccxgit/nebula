@@ -1,0 +1,154 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=6,
+        output_var=b'{"colNames":["vid"],"name":"__Project_6","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_5'),
+        Pair(
+            key=b'columns',
+            value=b'["id($v) AS vid"]')],
+        profiles=[ProfilingStats(
+            rows=15,
+            exec_duration_in_us=37,
+            total_duration_in_us=47)],
+        dependencies=[5]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=5,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Filter_5"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Project_4'),
+        Pair(
+            key=b'condition',
+            value=b'(v.passage.text STARTS WITH "The United")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=15,
+            exec_duration_in_us=29,
+            total_duration_in_us=38)],
+        dependencies=[9]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=9,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Project_4"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'space',
+            value=b'7'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'passage._tag IS NOT EMPTY'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'props',
+            value=b'[{"tagId":8,"props":["text","_tag"]}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=15,
+            exec_duration_in_us=244,
+            total_duration_in_us=673,
+            other_stats={b'resp[0]': b'{\n  "exec": "156(us)",\n  "host": "127.0.0.1:9779",\n  "total"'
+                        b': "475(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "111(us)",\n  "host": "127.0.0.1:9789",\n  "total"'
+                        b': "297(us)"\n}',
+            b'total_rpc': b'552(us)'})],
+        dependencies=[7]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=7,
+        output_var=b'{"colNames":["_vid"],"name":"__IndexScan_1","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'7'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'8'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"fulltext_value":"The United","fulltext_field":"text","fu'
+             b'lltext_mode":2,"filter":"(passage.text STARTS WITH \\"The United\\")","ful'
+             b'ltext_index":"ft_passage_text_10k","engine":"tantivy"}]'))],
+        profiles=[ProfilingStats(
+            rows=15,
+            exec_duration_in_us=0,
+            total_duration_in_us=1492,
+            other_stats={b'resp[0]': b'{\n  "exec": "1062(us)",\n  "host": "127.0.0.1:9779",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'7052(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "686'
+                        b'9(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WITH '
+                        b'\\"The United\\")])": "6615(us)",\n    "TantivyIndexScanNode(in'
+                        b'dex=ft_passage_text_10k,field=text,mode=2)": "6300(us)"\n  },'
+                        b'\n  "total": "1344(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "868(us)",\n  "host": "127.0.0.1:9789",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "3'
+                        b'263(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "3198'
+                        b'(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WI'
+                        b'TH \\"The United\\")])": "3113(us)",\n    "TantivyIndexScanNode'
+                        b'(index=ft_passage_text_10k,field=text,mode=2)": "3015(us)"\n '
+                        b' },\n  "total": "1170(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "380(us)",\n  "host": "127.0.0.1:9799",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "1'
+                        b'47(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "144(u'
+                        b's)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WITH'
+                        b' \\"The United\\")])": "145(us)",\n    "TantivyIndexScanNode(in'
+                        b'dex=ft_passage_text_10k,field=text,mode=2)": "138(us)"\n  },\n'
+                        b'  "total": "698(us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=2,
+        output_var=b'{"colNames":[],"name":"__Start_2","type":"DATASET"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=18)])],
+    node_index_map={2: 4, 5: 1, 6: 0, 7: 3, 9: 2},
+    format=b'row',
+    optimize_time_in_us=1304)

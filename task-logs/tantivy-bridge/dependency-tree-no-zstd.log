@@ -1,0 +1,806 @@
+nebula-tantivy v0.1.0 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust)
+├── jieba-rs feature "default"
+│   ├── jieba-rs v0.8.1
+│   │   ├── cedarwood feature "default"
+│   │   │   └── cedarwood v0.4.6
+│   │   │       ├── smallvec feature "default"
+│   │   │       │   └── smallvec v1.16.4
+│   │   │       └── smallvec feature "union"
+│   │   │           └── smallvec v1.16.4
+│   │   ├── include-flate feature "default"
+│   │   │   ├── include-flate v0.3.5 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust/vendor/include-flate)
+│   │   │   │   ├── include-flate-codegen v0.3.5 (proc-macro)
+│   │   │   │   │   ├── include-flate-compress v0.3.5
+│   │   │   │   │   │   └── libflate feature "default"
+│   │   │   │   │   │       ├── libflate v2.3.2
+│   │   │   │   │   │       │   ├── adler32 v1.2.0
+│   │   │   │   │   │       │   ├── crc32fast v1.5.4
+│   │   │   │   │   │       │   │   └── cfg-if feature "default"
+│   │   │   │   │   │       │   │       └── cfg-if v1.0.5
+│   │   │   │   │   │       │   ├── libflate_lz77 v2.3.0
+│   │   │   │   │   │       │   │   ├── hashbrown feature "default"
+│   │   │   │   │   │       │   │   │   ├── hashbrown v0.16.1
+│   │   │   │   │   │       │   │   │   │   ├── equivalent v1.0.3
+│   │   │   │   │   │       │   │   │   │   ├── foldhash v0.2.0
+│   │   │   │   │   │       │   │   │   │   └── allocator-api2 feature "alloc"
+│   │   │   │   │   │       │   │   │   │       └── allocator-api2 v0.2.21
+│   │   │   │   │   │       │   │   │   ├── hashbrown feature "allocator-api2"
+│   │   │   │   │   │       │   │   │   │   └── hashbrown v0.16.1 (*)
+│   │   │   │   │   │       │   │   │   ├── hashbrown feature "default-hasher"
+│   │   │   │   │   │       │   │   │   │   └── hashbrown v0.16.1 (*)
+│   │   │   │   │   │       │   │   │   ├── hashbrown feature "equivalent"
+│   │   │   │   │   │       │   │   │   │   └── hashbrown v0.16.1 (*)
+│   │   │   │   │   │       │   │   │   ├── hashbrown feature "inline-more"
+│   │   │   │   │   │       │   │   │   │   └── hashbrown v0.16.1 (*)
+│   │   │   │   │   │       │   │   │   └── hashbrown feature "raw-entry"
+│   │   │   │   │   │       │   │   │       └── hashbrown v0.16.1 (*)
+│   │   │   │   │   │       │   │   ├── no_std_io2 feature "alloc"
+│   │   │   │   │   │       │   │   │   └── no_std_io2 v0.9.4
+│   │   │   │   │   │       │   │   │       └── memchr v2.8.3
+│   │   │   │   │   │       │   │   └── rle-decode-fast feature "default"
+│   │   │   │   │   │       │   │       └── rle-decode-fast v1.0.3
+│   │   │   │   │   │       │   ├── dary_heap feature "default"
+│   │   │   │   │   │       │   │   └── dary_heap v0.3.9
+│   │   │   │   │   │       │   └── no_std_io2 feature "alloc" (*)
+│   │   │   │   │   │       └── libflate feature "std"
+│   │   │   │   │   │           ├── libflate v2.3.2 (*)
+│   │   │   │   │   │           ├── libflate_lz77 feature "std"
+│   │   │   │   │   │           │   ├── libflate_lz77 v2.3.0 (*)
+│   │   │   │   │   │           │   └── no_std_io2 feature "std"
+│   │   │   │   │   │           │       ├── no_std_io2 v0.9.4 (*)
+│   │   │   │   │   │           │       └── no_std_io2 feature "alloc" (*)
+│   │   │   │   │   │           └── no_std_io2 feature "std" (*)
+│   │   │   │   │   ├── proc-macro-error3 feature "default"
+│   │   │   │   │   │   ├── proc-macro-error3 v3.1.1
+│   │   │   │   │   │   │   ├── syn v3.0.9
+│   │   │   │   │   │   │   │   ├── proc-macro2 v1.0.107
+│   │   │   │   │   │   │   │   │   └── unicode-ident feature "default"
+│   │   │   │   │   │   │   │   │       └── unicode-ident v1.0.27
+│   │   │   │   │   │   │   │   ├── quote v1.0.47
+│   │   │   │   │   │   │   │   │   └── proc-macro2 v1.0.107 (*)
+│   │   │   │   │   │   │   │   └── unicode-ident feature "default" (*)
+│   │   │   │   │   │   │   ├── proc-macro-error-attr3 feature "default"
+│   │   │   │   │   │   │   │   └── proc-macro-error-attr3 v3.1.1 (proc-macro)
+│   │   │   │   │   │   │   │       ├── proc-macro2 feature "default"
+│   │   │   │   │   │   │   │       │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │   │   │   │   │       │   └── proc-macro2 feature "proc-macro"
+│   │   │   │   │   │   │   │       │       └── proc-macro2 v1.0.107 (*)
+│   │   │   │   │   │   │   │       └── quote feature "default"
+│   │   │   │   │   │   │   │           ├── quote v1.0.47 (*)
+│   │   │   │   │   │   │   │           └── quote feature "proc-macro"
+│   │   │   │   │   │   │   │               ├── quote v1.0.47 (*)
+│   │   │   │   │   │   │   │               └── proc-macro2 feature "proc-macro" (*)
+│   │   │   │   │   │   │   ├── proc-macro2 feature "default" (*)
+│   │   │   │   │   │   │   └── quote feature "default" (*)
+│   │   │   │   │   │   └── proc-macro-error3 feature "syn3-error"
+│   │   │   │   │   │       └── proc-macro-error3 v3.1.1 (*)
+│   │   │   │   │   ├── proc-macro2 feature "default" (*)
+│   │   │   │   │   ├── quote feature "default" (*)
+│   │   │   │   │   ├── syn feature "default"
+│   │   │   │   │   │   ├── syn v3.0.9 (*)
+│   │   │   │   │   │   ├── syn feature "clone-impls"
+│   │   │   │   │   │   │   └── syn v3.0.9 (*)
+│   │   │   │   │   │   ├── syn feature "derive"
+│   │   │   │   │   │   │   └── syn v3.0.9 (*)
+│   │   │   │   │   │   ├── syn feature "parsing"
+│   │   │   │   │   │   │   └── syn v3.0.9 (*)
+│   │   │   │   │   │   ├── syn feature "printing"
+│   │   │   │   │   │   │   └── syn v3.0.9 (*)
+│   │   │   │   │   │   └── syn feature "proc-macro"
+│   │   │   │   │   │       ├── syn v3.0.9 (*)
+│   │   │   │   │   │       ├── proc-macro2 feature "proc-macro" (*)
+│   │   │   │   │   │       └── quote feature "proc-macro" (*)
+│   │   │   │   │   └── syn feature "full"
+│   │   │   │   │       └── syn v3.0.9 (*)
+│   │   │   │   └── include-flate-compress v0.3.5 (*)
+│   │   │   └── include-flate feature "deflate"
+│   │   │       ├── include-flate v0.3.5 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust/vendor/include-flate) (*)
+│   │   │       ├── include-flate-codegen feature "deflate"
+│   │   │       │   ├── include-flate-codegen v0.3.5 (proc-macro) (*)
+│   │   │       │   └── include-flate-compress feature "deflate"
+│   │   │       │       └── include-flate-compress v0.3.5 (*)
+│   │   │       └── include-flate-compress feature "deflate" (*)
+│   │   ├── jieba-macros feature "default"
+│   │   │   └── jieba-macros v0.8.1 (proc-macro)
+│   │   │       └── phf_codegen feature "default"
+│   │   │           └── phf_codegen v0.13.1
+│   │   │               ├── phf_generator feature "default"
+│   │   │               │   └── phf_generator v0.13.1
+│   │   │               │       ├── fastrand v2.5.0
+│   │   │               │       └── phf_shared v0.13.1
+│   │   │               │           └── siphasher feature "default"
+│   │   │               │               ├── siphasher v1.0.4
+│   │   │               │               └── siphasher feature "std"
+│   │   │               │                   └── siphasher v1.0.4
+│   │   │               └── phf_shared feature "default"
+│   │   │                   ├── phf_shared v0.13.1 (*)
+│   │   │                   └── phf_shared feature "std"
+│   │   │                       └── phf_shared v0.13.1 (*)
+│   │   ├── phf feature "default"
+│   │   │   ├── phf v0.13.1
+│   │   │   │   └── phf_shared v0.13.1
+│   │   │   │       └── siphasher feature "default" (*)
+│   │   │   └── phf feature "std"
+│   │   │       ├── phf v0.13.1 (*)
+│   │   │       └── phf_shared feature "std"
+│   │   │           └── phf_shared v0.13.1 (*)
+│   │   ├── regex feature "default"
+│   │   │   ├── regex v1.13.1
+│   │   │   │   ├── aho-corasick v1.1.5
+│   │   │   │   │   └── memchr v2.8.3
+│   │   │   │   ├── memchr v2.8.3
+│   │   │   │   ├── regex-syntax v0.8.11
+│   │   │   │   ├── regex-automata feature "alloc"
+│   │   │   │   │   └── regex-automata v0.4.18
+│   │   │   │   │       ├── aho-corasick v1.1.5 (*)
+│   │   │   │   │       ├── memchr v2.8.3
+│   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   ├── regex-automata feature "meta"
+│   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   ├── regex-automata feature "nfa-pikevm"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-automata feature "nfa-thompson"
+│   │   │   │   │   │       ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │       └── regex-automata feature "alloc" (*)
+│   │   │   │   │   └── regex-automata feature "syntax"
+│   │   │   │   │       ├── regex-automata v0.4.18 (*)
+│   │   │   │   │       └── regex-automata feature "alloc" (*)
+│   │   │   │   ├── regex-automata feature "nfa-pikevm" (*)
+│   │   │   │   └── regex-automata feature "syntax" (*)
+│   │   │   ├── regex feature "perf"
+│   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   ├── regex feature "perf-backtrack"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   └── regex-automata feature "nfa-backtrack"
+│   │   │   │   │       ├── regex-automata v0.4.18 (*)
+│   │   │   │   │       └── regex-automata feature "nfa-thompson" (*)
+│   │   │   │   ├── regex feature "perf-cache"
+│   │   │   │   │   └── regex v1.13.1 (*)
+│   │   │   │   ├── regex feature "perf-dfa"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   └── regex-automata feature "hybrid"
+│   │   │   │   │       ├── regex-automata v0.4.18 (*)
+│   │   │   │   │       ├── regex-automata feature "alloc" (*)
+│   │   │   │   │       └── regex-automata feature "nfa-thompson" (*)
+│   │   │   │   ├── regex feature "perf-inline"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   └── regex-automata feature "perf-inline"
+│   │   │   │   │       └── regex-automata v0.4.18 (*)
+│   │   │   │   ├── regex feature "perf-literal"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   └── regex-automata feature "perf-literal"
+│   │   │   │   │       ├── regex-automata v0.4.18 (*)
+│   │   │   │   │       ├── regex-automata feature "perf-literal-multisubstring"
+│   │   │   │   │       │   └── regex-automata v0.4.18 (*)
+│   │   │   │   │       └── regex-automata feature "perf-literal-substring"
+│   │   │   │   │           ├── regex-automata v0.4.18 (*)
+│   │   │   │   │           └── aho-corasick feature "perf-literal"
+│   │   │   │   │               └── aho-corasick v1.1.5 (*)
+│   │   │   │   └── regex feature "perf-onepass"
+│   │   │   │       ├── regex v1.13.1 (*)
+│   │   │   │       └── regex-automata feature "dfa-onepass"
+│   │   │   │           ├── regex-automata v0.4.18 (*)
+│   │   │   │           └── regex-automata feature "nfa-thompson" (*)
+│   │   │   ├── regex feature "std"
+│   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   ├── aho-corasick feature "std"
+│   │   │   │   │   ├── aho-corasick v1.1.5 (*)
+│   │   │   │   │   └── memchr feature "std"
+│   │   │   │   │       ├── memchr v2.8.3
+│   │   │   │   │       └── memchr feature "alloc"
+│   │   │   │   │           └── memchr v2.8.3
+│   │   │   │   ├── memchr feature "std" (*)
+│   │   │   │   ├── regex-automata feature "std"
+│   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   ├── aho-corasick feature "std" (*)
+│   │   │   │   │   ├── memchr feature "std" (*)
+│   │   │   │   │   ├── regex-automata feature "alloc" (*)
+│   │   │   │   │   └── regex-syntax feature "std"
+│   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   └── regex-syntax feature "std" (*)
+│   │   │   ├── regex feature "unicode"
+│   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   ├── regex feature "unicode-age"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-age"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-syntax feature "unicode-age"
+│   │   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   │   └── regex-syntax feature "unicode-age" (*)
+│   │   │   │   ├── regex feature "unicode-bool"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-bool"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-syntax feature "unicode-bool"
+│   │   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   │   └── regex-syntax feature "unicode-bool" (*)
+│   │   │   │   ├── regex feature "unicode-case"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-case"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-syntax feature "unicode-case"
+│   │   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   │   └── regex-syntax feature "unicode-case" (*)
+│   │   │   │   ├── regex feature "unicode-gencat"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-gencat"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-syntax feature "unicode-gencat"
+│   │   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   │   └── regex-syntax feature "unicode-gencat" (*)
+│   │   │   │   ├── regex feature "unicode-perl"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-perl"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-syntax feature "unicode-perl"
+│   │   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   │   ├── regex-automata feature "unicode-word-boundary"
+│   │   │   │   │   │   └── regex-automata v0.4.18 (*)
+│   │   │   │   │   └── regex-syntax feature "unicode-perl" (*)
+│   │   │   │   ├── regex feature "unicode-script"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-script"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-syntax feature "unicode-script"
+│   │   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   │   └── regex-syntax feature "unicode-script" (*)
+│   │   │   │   ├── regex feature "unicode-segment"
+│   │   │   │   │   ├── regex v1.13.1 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-segment"
+│   │   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   │   └── regex-syntax feature "unicode-segment"
+│   │   │   │   │   │       └── regex-syntax v0.8.11
+│   │   │   │   │   └── regex-syntax feature "unicode-segment" (*)
+│   │   │   │   ├── regex-automata feature "unicode"
+│   │   │   │   │   ├── regex-automata v0.4.18 (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-age" (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-bool" (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-case" (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-gencat" (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-perl" (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-script" (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-segment" (*)
+│   │   │   │   │   ├── regex-automata feature "unicode-word-boundary" (*)
+│   │   │   │   │   └── regex-syntax feature "unicode"
+│   │   │   │   │       ├── regex-syntax v0.8.11
+│   │   │   │   │       ├── regex-syntax feature "unicode-age" (*)
+│   │   │   │   │       ├── regex-syntax feature "unicode-bool" (*)
+│   │   │   │   │       ├── regex-syntax feature "unicode-case" (*)
+│   │   │   │   │       ├── regex-syntax feature "unicode-gencat" (*)
+│   │   │   │   │       ├── regex-syntax feature "unicode-perl" (*)
+│   │   │   │   │       ├── regex-syntax feature "unicode-script" (*)
+│   │   │   │   │       └── regex-syntax feature "unicode-segment" (*)
+│   │   │   │   └── regex-syntax feature "unicode" (*)
+│   │   │   └── regex-syntax feature "default"
+│   │   │       ├── regex-syntax v0.8.11
+│   │   │       ├── regex-syntax feature "std" (*)
+│   │   │       └── regex-syntax feature "unicode" (*)
+│   │   └── rustc-hash feature "default"
+│   │       ├── rustc-hash v2.1.3
+│   │       └── rustc-hash feature "std"
+│   │           └── rustc-hash v2.1.3
+│   └── jieba-rs feature "default-dict"
+│       └── jieba-rs v0.8.1 (*)
+├── tantivy feature "lz4-compression"
+│   ├── tantivy v0.25.0
+│   │   ├── lz4_flex v0.11.6
+│   │   ├── smallvec feature "default" (*)
+│   │   ├── regex feature "std" (*)
+│   │   ├── regex feature "unicode" (*)
+│   │   ├── aho-corasick feature "default"
+│   │   │   ├── aho-corasick v1.1.5 (*)
+│   │   │   ├── aho-corasick feature "perf-literal" (*)
+│   │   │   └── aho-corasick feature "std" (*)
+│   │   ├── rustc-hash feature "default" (*)
+│   │   ├── arc-swap feature "default"
+│   │   │   └── arc-swap v1.9.3
+│   │   │       └── rustversion feature "default"
+│   │   │           └── rustversion v1.0.23 (proc-macro)
+│   │   ├── base64 feature "default"
+│   │   │   ├── base64 v0.22.1
+│   │   │   └── base64 feature "std"
+│   │   │       ├── base64 v0.22.1
+│   │   │       └── base64 feature "alloc"
+│   │   │           └── base64 v0.22.1
+│   │   ├── bitpacking feature "bitpacker4x"
+│   │   │   └── bitpacking v0.9.3
+│   │   │       └── crunchy feature "default"
+│   │   │           ├── crunchy v0.2.4
+│   │   │           └── crunchy feature "limit_128"
+│   │   │               └── crunchy v0.2.4
+│   │   ├── bon feature "default"
+│   │   │   ├── bon v3.10.3
+│   │   │   │   └── bon-macros feature "default"
+│   │   │   │       └── bon-macros v3.10.3 (proc-macro)
+│   │   │   │           ├── proc-macro2 feature "default" (*)
+│   │   │   │           ├── quote feature "default" (*)
+│   │   │   │           ├── syn feature "default" (*)
+│   │   │   │           ├── syn feature "full" (*)
+│   │   │   │           ├── syn feature "visit"
+│   │   │   │           │   └── syn v3.0.9 (*)
+│   │   │   │           ├── syn feature "visit-mut"
+│   │   │   │           │   └── syn v3.0.9 (*)
+│   │   │   │           ├── darling feature "default"
+│   │   │   │           │   ├── darling v0.24.1
+│   │   │   │           │   │   ├── darling_core feature "default"
+│   │   │   │           │   │   │   └── darling_core v0.24.1
+│   │   │   │           │   │   │       ├── proc-macro2 feature "default" (*)
+│   │   │   │           │   │   │       ├── quote feature "default" (*)
+│   │   │   │           │   │   │       ├── syn feature "default" (*)
+│   │   │   │           │   │   │       ├── syn feature "extra-traits"
+│   │   │   │           │   │   │       │   └── syn v3.0.9 (*)
+│   │   │   │           │   │   │       ├── syn feature "full" (*)
+│   │   │   │           │   │   │       ├── ident_case feature "default"
+│   │   │   │           │   │   │       │   └── ident_case v1.0.1
+│   │   │   │           │   │   │       └── strsim feature "default"
+│   │   │   │           │   │   │           └── strsim v0.11.1
+│   │   │   │           │   │   └── darling_macro feature "default"
+│   │   │   │           │   │       └── darling_macro v0.24.1 (proc-macro)
+│   │   │   │           │   │           ├── quote feature "default" (*)
+│   │   │   │           │   │           ├── syn feature "default" (*)
+│   │   │   │           │   │           └── darling_core feature "default" (*)
+│   │   │   │           │   └── darling feature "suggestions"
+│   │   │   │           │       ├── darling v0.24.1 (*)
+│   │   │   │           │       └── darling_core feature "suggestions"
+│   │   │   │           │           ├── darling_core v0.24.1 (*)
+│   │   │   │           │           └── darling_core feature "strsim"
+│   │   │   │           │               └── darling_core v0.24.1 (*)
+│   │   │   │           ├── ident_case feature "default" (*)
+│   │   │   │           └── prettyplease feature "default"
+│   │   │   │               └── prettyplease v0.3.0
+│   │   │   │                   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │                   └── syn feature "full" (*)
+│   │   │   └── bon feature "std"
+│   │   │       ├── bon v3.10.3 (*)
+│   │   │       ├── bon feature "alloc"
+│   │   │       │   ├── bon v3.10.3 (*)
+│   │   │       │   └── bon-macros feature "alloc"
+│   │   │       │       └── bon-macros v3.10.3 (proc-macro) (*)
+│   │   │       └── bon-macros feature "std"
+│   │   │           └── bon-macros v3.10.3 (proc-macro) (*)
+│   │   ├── byteorder feature "default"
+│   │   │   ├── byteorder v1.5.0
+│   │   │   └── byteorder feature "std"
+│   │   │       └── byteorder v1.5.0
+│   │   ├── census feature "default"
+│   │   │   └── census v0.4.2
+│   │   ├── crc32fast feature "default"
+│   │   │   ├── crc32fast v1.5.4
+│   │   │   │   └── cfg-if feature "default" (*)
+│   │   │   └── crc32fast feature "std"
+│   │   │       └── crc32fast v1.5.4 (*)
+│   │   ├── crossbeam-channel feature "default"
+│   │   │   ├── crossbeam-channel v0.5.17
+│   │   │   │   └── crossbeam-utils v0.8.23
+│   │   │   └── crossbeam-channel feature "std"
+│   │   │       ├── crossbeam-channel v0.5.17 (*)
+│   │   │       └── crossbeam-utils feature "std"
+│   │   │           └── crossbeam-utils v0.8.23
+│   │   ├── downcast-rs feature "default"
+│   │   │   ├── downcast-rs v2.0.2
+│   │   │   ├── downcast-rs feature "std"
+│   │   │   │   └── downcast-rs v2.0.2
+│   │   │   └── downcast-rs feature "sync"
+│   │   │       └── downcast-rs v2.0.2
+│   │   ├── fastdivide feature "default"
+│   │   │   └── fastdivide v0.4.2
+│   │   ├── fnv feature "default"
+│   │   │   ├── fnv v1.0.7
+│   │   │   └── fnv feature "std"
+│   │   │       └── fnv v1.0.7
+│   │   ├── fs4 feature "default"
+│   │   │   ├── fs4 v0.13.1
+│   │   │   │   ├── rustix feature "default"
+│   │   │   │   │   ├── rustix v1.1.6
+│   │   │   │   │   │   ├── bitflags v2.13.2
+│   │   │   │   │   │   ├── linux-raw-sys feature "auxvec"
+│   │   │   │   │   │   │   └── linux-raw-sys v0.12.1
+│   │   │   │   │   │   ├── linux-raw-sys feature "elf"
+│   │   │   │   │   │   │   └── linux-raw-sys v0.12.1
+│   │   │   │   │   │   ├── linux-raw-sys feature "errno"
+│   │   │   │   │   │   │   └── linux-raw-sys v0.12.1
+│   │   │   │   │   │   ├── linux-raw-sys feature "general"
+│   │   │   │   │   │   │   └── linux-raw-sys v0.12.1
+│   │   │   │   │   │   ├── linux-raw-sys feature "ioctl"
+│   │   │   │   │   │   │   └── linux-raw-sys v0.12.1
+│   │   │   │   │   │   └── linux-raw-sys feature "no_std"
+│   │   │   │   │   │       └── linux-raw-sys v0.12.1
+│   │   │   │   │   └── rustix feature "std"
+│   │   │   │   │       ├── rustix v1.1.6 (*)
+│   │   │   │   │       ├── rustix feature "alloc"
+│   │   │   │   │       │   └── rustix v1.1.6 (*)
+│   │   │   │   │       └── bitflags feature "std"
+│   │   │   │   │           └── bitflags v2.13.2
+│   │   │   │   └── rustix feature "fs"
+│   │   │   │       └── rustix v1.1.6 (*)
+│   │   │   └── fs4 feature "sync"
+│   │   │       └── fs4 v0.13.1 (*)
+│   │   ├── htmlescape feature "default"
+│   │   │   └── htmlescape v0.3.1
+│   │   ├── hyperloglogplus feature "const-loop"
+│   │   │   └── hyperloglogplus v0.4.1
+│   │   │       └── serde feature "derive"
+│   │   │           ├── serde v1.0.229
+│   │   │           │   ├── serde_core feature "result"
+│   │   │           │   │   └── serde_core v1.0.229
+│   │   │           │   └── serde_derive feature "default"
+│   │   │           │       └── serde_derive v1.0.229 (proc-macro)
+│   │   │           │           ├── proc-macro2 feature "proc-macro" (*)
+│   │   │           │           ├── quote feature "proc-macro" (*)
+│   │   │           │           ├── syn feature "clone-impls" (*)
+│   │   │           │           ├── syn feature "derive" (*)
+│   │   │           │           ├── syn feature "parsing" (*)
+│   │   │           │           ├── syn feature "printing" (*)
+│   │   │           │           └── syn feature "proc-macro" (*)
+│   │   │           └── serde feature "serde_derive"
+│   │   │               └── serde v1.0.229 (*)
+│   │   ├── hyperloglogplus feature "default"
+│   │   │   ├── hyperloglogplus v0.4.1 (*)
+│   │   │   └── hyperloglogplus feature "std"
+│   │   │       ├── hyperloglogplus v0.4.1 (*)
+│   │   │       ├── serde feature "derive" (*)
+│   │   │       └── serde feature "std"
+│   │   │           ├── serde v1.0.229 (*)
+│   │   │           └── serde_core feature "std"
+│   │   │               └── serde_core v1.0.229
+│   │   ├── serde feature "default"
+│   │   │   ├── serde v1.0.229 (*)
+│   │   │   └── serde feature "std" (*)
+│   │   ├── serde feature "derive" (*)
+│   │   ├── itertools feature "default"
+│   │   │   ├── itertools v0.14.0
+│   │   │   │   └── either v1.19.0
+│   │   │   └── itertools feature "use_std"
+│   │   │       ├── itertools v0.14.0 (*)
+│   │   │       ├── itertools feature "use_alloc"
+│   │   │       │   └── itertools v0.14.0 (*)
+│   │   │       └── either feature "use_std"
+│   │   │           ├── either v1.19.0
+│   │   │           └── either feature "std"
+│   │   │               └── either v1.19.0
+│   │   ├── levenshtein_automata feature "default"
+│   │   │   └── levenshtein_automata v0.2.1
+│   │   ├── log feature "default"
+│   │   │   └── log v0.4.35
+│   │   ├── lru feature "default"
+│   │   │   ├── lru v0.12.5
+│   │   │   │   └── hashbrown feature "default"
+│   │   │   │       ├── hashbrown v0.15.5
+│   │   │   │       │   ├── equivalent v1.0.3
+│   │   │   │       │   ├── foldhash v0.1.5
+│   │   │   │       │   └── allocator-api2 feature "alloc" (*)
+│   │   │   │       ├── hashbrown feature "allocator-api2"
+│   │   │   │       │   └── hashbrown v0.15.5 (*)
+│   │   │   │       ├── hashbrown feature "default-hasher"
+│   │   │   │       │   └── hashbrown v0.15.5 (*)
+│   │   │   │       ├── hashbrown feature "equivalent"
+│   │   │   │       │   └── hashbrown v0.15.5 (*)
+│   │   │   │       ├── hashbrown feature "inline-more"
+│   │   │   │       │   └── hashbrown v0.15.5 (*)
+│   │   │   │       └── hashbrown feature "raw-entry"
+│   │   │   │           └── hashbrown v0.15.5 (*)
+│   │   │   └── lru feature "hashbrown"
+│   │   │       └── lru v0.12.5 (*)
+│   │   ├── measure_time feature "default"
+│   │   │   └── measure_time v0.9.0
+│   │   │       └── log feature "default" (*)
+│   │   ├── memmap2 feature "default"
+│   │   │   └── memmap2 v0.9.12
+│   │   │       └── libc feature "default"
+│   │   │           ├── libc v0.2.191
+│   │   │           └── libc feature "std"
+│   │   │               └── libc v0.2.191
+│   │   ├── once_cell feature "default"
+│   │   │   ├── once_cell v1.21.4
+│   │   │   └── once_cell feature "std"
+│   │   │       ├── once_cell v1.21.4
+│   │   │       └── once_cell feature "alloc"
+│   │   │           ├── once_cell v1.21.4
+│   │   │           └── once_cell feature "race"
+│   │   │               └── once_cell v1.21.4
+│   │   ├── oneshot feature "default"
+│   │   │   ├── oneshot v0.1.13
+│   │   │   ├── oneshot feature "async"
+│   │   │   │   └── oneshot v0.1.13
+│   │   │   └── oneshot feature "std"
+│   │   │       └── oneshot v0.1.13
+│   │   ├── rayon feature "default"
+│   │   │   └── rayon v1.12.0
+│   │   │       ├── either v1.19.0
+│   │   │       └── rayon-core feature "default"
+│   │   │           └── rayon-core v1.13.0
+│   │   │               ├── crossbeam-utils feature "default"
+│   │   │               │   ├── crossbeam-utils v0.8.23
+│   │   │               │   └── crossbeam-utils feature "std" (*)
+│   │   │               └── crossbeam-deque feature "default"
+│   │   │                   ├── crossbeam-deque v0.8.8
+│   │   │                   │   ├── crossbeam-epoch v0.9.21
+│   │   │                   │   │   └── crossbeam-utils v0.8.23
+│   │   │                   │   └── crossbeam-utils v0.8.23
+│   │   │                   └── crossbeam-deque feature "std"
+│   │   │                       ├── crossbeam-deque v0.8.8 (*)
+│   │   │                       ├── crossbeam-utils feature "std" (*)
+│   │   │                       └── crossbeam-epoch feature "std"
+│   │   │                           ├── crossbeam-epoch v0.9.21 (*)
+│   │   │                           ├── crossbeam-utils feature "std" (*)
+│   │   │                           └── crossbeam-epoch feature "alloc"
+│   │   │                               └── crossbeam-epoch v0.9.21 (*)
+│   │   ├── rust-stemmers feature "default"
+│   │   │   └── rust-stemmers v1.2.0
+│   │   │       ├── serde feature "default" (*)
+│   │   │       └── serde_derive feature "default" (*)
+│   │   ├── serde_json feature "default"
+│   │   │   ├── serde_json v1.0.154
+│   │   │   │   ├── memchr v2.8.3
+│   │   │   │   ├── serde_core v1.0.229
+│   │   │   │   ├── itoa feature "default"
+│   │   │   │   │   └── itoa v1.0.18
+│   │   │   │   └── zmij feature "default"
+│   │   │   │       └── zmij v1.0.23
+│   │   │   └── serde_json feature "std"
+│   │   │       ├── serde_json v1.0.154 (*)
+│   │   │       ├── memchr feature "std" (*)
+│   │   │       └── serde_core feature "std" (*)
+│   │   ├── sketches-ddsketch feature "default"
+│   │   │   └── sketches-ddsketch v0.3.2
+│   │   │       ├── serde feature "default" (*)
+│   │   │       ├── serde feature "derive" (*)
+│   │   │       └── serde feature "serde_derive" (*)
+│   │   ├── sketches-ddsketch feature "use_serde"
+│   │   │   ├── sketches-ddsketch v0.3.2 (*)
+│   │   │   ├── serde feature "derive" (*)
+│   │   │   └── sketches-ddsketch feature "serde"
+│   │   │       └── sketches-ddsketch v0.3.2 (*)
+│   │   ├── tantivy-bitpacker feature "default"
+│   │   │   └── tantivy-bitpacker v0.9.0
+│   │   │       └── bitpacking feature "bitpacker1x"
+│   │   │           └── bitpacking v0.9.3 (*)
+│   │   ├── tantivy-columnar feature "default"
+│   │   │   └── tantivy-columnar v0.6.0
+│   │   │       ├── downcast-rs feature "default" (*)
+│   │   │       ├── fastdivide feature "default" (*)
+│   │   │       ├── serde feature "default" (*)
+│   │   │       ├── itertools feature "default" (*)
+│   │   │       ├── tantivy-bitpacker feature "default" (*)
+│   │   │       ├── tantivy-common feature "default"
+│   │   │       │   └── tantivy-common v0.10.0
+│   │   │       │       ├── byteorder feature "default" (*)
+│   │   │       │       ├── serde feature "default" (*)
+│   │   │       │       ├── serde feature "derive" (*)
+│   │   │       │       ├── async-trait feature "default"
+│   │   │       │       │   └── async-trait v0.1.92 (proc-macro)
+│   │   │       │       │       ├── proc-macro2 feature "default" (*)
+│   │   │       │       │       ├── quote feature "default" (*)
+│   │   │       │       │       ├── syn feature "clone-impls" (*)
+│   │   │       │       │       ├── syn feature "full" (*)
+│   │   │       │       │       ├── syn feature "parsing" (*)
+│   │   │       │       │       ├── syn feature "printing" (*)
+│   │   │       │       │       ├── syn feature "proc-macro" (*)
+│   │   │       │       │       └── syn feature "visit-mut" (*)
+│   │   │       │       ├── ownedbytes feature "default"
+│   │   │       │       │   └── ownedbytes v0.9.0
+│   │   │       │       │       └── stable_deref_trait feature "default"
+│   │   │       │       │           ├── stable_deref_trait v1.2.1
+│   │   │       │       │           └── stable_deref_trait feature "std"
+│   │   │       │       │               ├── stable_deref_trait v1.2.1
+│   │   │       │       │               └── stable_deref_trait feature "alloc"
+│   │   │       │       │                   └── stable_deref_trait v1.2.1
+│   │   │       │       ├── time feature "default"
+│   │   │       │       │   ├── time v0.3.55
+│   │   │       │       │   │   ├── powerfmt v0.2.1
+│   │   │       │       │   │   ├── serde_core v1.0.229
+│   │   │       │       │   │   ├── deranged feature "default"
+│   │   │       │       │   │   │   └── deranged v0.5.9
+│   │   │       │       │   │   │       └── serde_core v1.0.229
+│   │   │       │       │   │   ├── num-conv feature "default"
+│   │   │       │       │   │   │   └── num-conv v0.2.2
+│   │   │       │       │   │   └── time-core feature "default"
+│   │   │       │       │   │       └── time-core v0.1.9
+│   │   │       │       │   └── time feature "std"
+│   │   │       │       │       ├── time v0.3.55 (*)
+│   │   │       │       │       └── time feature "alloc"
+│   │   │       │       │           ├── time v0.3.55 (*)
+│   │   │       │       │           └── serde_core feature "alloc"
+│   │   │       │       │               └── serde_core v1.0.229
+│   │   │       │       └── time feature "serde-well-known"
+│   │   │       │           ├── time v0.3.55 (*)
+│   │   │       │           ├── time feature "formatting"
+│   │   │       │           │   ├── time v0.3.55 (*)
+│   │   │       │           │   └── time feature "std" (*)
+│   │   │       │           ├── time feature "parsing"
+│   │   │       │           │   └── time v0.3.55 (*)
+│   │   │       │           └── time feature "serde"
+│   │   │       │               ├── time v0.3.55 (*)
+│   │   │       │               └── deranged feature "serde"
+│   │   │       │                   └── deranged v0.5.9 (*)
+│   │   │       ├── tantivy-sstable feature "default"
+│   │   │       │   └── tantivy-sstable v0.6.0
+│   │   │       │       ├── itertools feature "default" (*)
+│   │   │       │       ├── tantivy-bitpacker feature "default" (*)
+│   │   │       │       ├── tantivy-common feature "default" (*)
+│   │   │       │       ├── futures-util feature "default"
+│   │   │       │       │   ├── futures-util v0.3.34
+│   │   │       │       │   │   ├── futures-core v0.3.34
+│   │   │       │       │   │   ├── futures-macro v0.3.34 (proc-macro)
+│   │   │       │       │   │   │   ├── proc-macro2 feature "default" (*)
+│   │   │       │       │   │   │   ├── quote feature "default" (*)
+│   │   │       │       │   │   │   ├── syn feature "default" (*)
+│   │   │       │       │   │   │   └── syn feature "full" (*)
+│   │   │       │       │   │   ├── futures-task v0.3.34
+│   │   │       │       │   │   ├── slab v0.4.12
+│   │   │       │       │   │   └── pin-project-lite feature "default"
+│   │   │       │       │   │       └── pin-project-lite v0.2.17
+│   │   │       │       │   ├── futures-util feature "async-await"
+│   │   │       │       │   │   └── futures-util v0.3.34 (*)
+│   │   │       │       │   ├── futures-util feature "async-await-macro"
+│   │   │       │       │   │   ├── futures-util v0.3.34 (*)
+│   │   │       │       │   │   ├── futures-util feature "async-await" (*)
+│   │   │       │       │   │   └── futures-util feature "futures-macro"
+│   │   │       │       │   │       └── futures-util v0.3.34 (*)
+│   │   │       │       │   └── futures-util feature "std"
+│   │   │       │       │       ├── futures-util v0.3.34 (*)
+│   │   │       │       │       ├── futures-util feature "alloc"
+│   │   │       │       │       │   ├── futures-util v0.3.34 (*)
+│   │   │       │       │       │   ├── futures-util feature "slab"
+│   │   │       │       │       │   │   └── futures-util v0.3.34 (*)
+│   │   │       │       │       │   ├── futures-core feature "alloc"
+│   │   │       │       │       │   │   └── futures-core v0.3.34
+│   │   │       │       │       │   └── futures-task feature "alloc"
+│   │   │       │       │       │       └── futures-task v0.3.34
+│   │   │       │       │       ├── futures-util feature "slab" (*)
+│   │   │       │       │       ├── futures-core feature "std"
+│   │   │       │       │       │   ├── futures-core v0.3.34
+│   │   │       │       │       │   └── futures-core feature "alloc" (*)
+│   │   │       │       │       ├── futures-task feature "std"
+│   │   │       │       │       │   ├── futures-task v0.3.34
+│   │   │       │       │       │   └── futures-task feature "alloc" (*)
+│   │   │       │       │       └── slab feature "std"
+│   │   │       │       │           └── slab v0.4.12
+│   │   │       │       └── tantivy-fst feature "default"
+│   │   │       │           ├── tantivy-fst v0.5.0
+│   │   │       │           │   ├── regex-syntax feature "default" (*)
+│   │   │       │           │   ├── byteorder feature "default" (*)
+│   │   │       │           │   └── utf8-ranges feature "default"
+│   │   │       │           │       └── utf8-ranges v1.0.5
+│   │   │       │           └── tantivy-fst feature "regex"
+│   │   │       │               ├── tantivy-fst v0.5.0 (*)
+│   │   │       │               └── tantivy-fst feature "regex-syntax"
+│   │   │       │                   └── tantivy-fst v0.5.0 (*)
+│   │   │       └── tantivy-stacker feature "default"
+│   │   │           └── tantivy-stacker v0.6.0
+│   │   │               ├── tantivy-common feature "default" (*)
+│   │   │               ├── murmurhash32 feature "default"
+│   │   │               │   └── murmurhash32 v0.3.1
+│   │   │               └── rand_distr feature "default"
+│   │   │                   ├── rand_distr v0.4.3
+│   │   │                   │   ├── rand v0.8.8
+│   │   │                   │   │   ├── libc v0.2.191
+│   │   │                   │   │   ├── rand_chacha v0.3.1
+│   │   │                   │   │   │   ├── ppv-lite86 feature "simd"
+│   │   │                   │   │   │   │   └── ppv-lite86 v0.2.21
+│   │   │                   │   │   │   │       ├── zerocopy feature "default"
+│   │   │                   │   │   │   │       │   └── zerocopy v0.8.63
+│   │   │                   │   │   │   │       └── zerocopy feature "simd"
+│   │   │                   │   │   │   │           └── zerocopy v0.8.63
+│   │   │                   │   │   │   └── rand_core feature "default"
+│   │   │                   │   │   │       └── rand_core v0.6.4
+│   │   │                   │   │   │           └── getrandom feature "default"
+│   │   │                   │   │   │               └── getrandom v0.2.17
+│   │   │                   │   │   │                   ├── libc v0.2.191
+│   │   │                   │   │   │                   └── cfg-if feature "default" (*)
+│   │   │                   │   │   └── rand_core feature "default" (*)
+│   │   │                   │   └── num-traits feature "libm"
+│   │   │                   │       └── num-traits v0.2.19
+│   │   │                   │           └── libm feature "default"
+│   │   │                   │               ├── libm v0.2.16
+│   │   │                   │               └── libm feature "arch"
+│   │   │                   │                   └── libm v0.2.16
+│   │   │                   │           [build-dependencies]
+│   │   │                   │           └── autocfg feature "default"
+│   │   │                   │               └── autocfg v1.5.1
+│   │   │                   └── rand_distr feature "std"
+│   │   │                       ├── rand_distr v0.4.3 (*)
+│   │   │                       ├── rand_distr feature "alloc"
+│   │   │                       │   ├── rand_distr v0.4.3 (*)
+│   │   │                       │   └── rand feature "alloc"
+│   │   │                       │       ├── rand v0.8.8 (*)
+│   │   │                       │       └── rand_core feature "alloc"
+│   │   │                       │           └── rand_core v0.6.4 (*)
+│   │   │                       └── rand feature "std"
+│   │   │                           ├── rand v0.8.8 (*)
+│   │   │                           ├── rand feature "alloc" (*)
+│   │   │                           ├── rand feature "getrandom"
+│   │   │                           │   ├── rand v0.8.8 (*)
+│   │   │                           │   └── rand_core feature "getrandom"
+│   │   │                           │       └── rand_core v0.6.4 (*)
+│   │   │                           ├── rand feature "libc"
+│   │   │                           │   └── rand v0.8.8 (*)
+│   │   │                           ├── rand feature "rand_chacha"
+│   │   │                           │   └── rand v0.8.8 (*)
+│   │   │                           ├── rand_chacha feature "std"
+│   │   │                           │   ├── rand_chacha v0.3.1 (*)
+│   │   │                           │   └── ppv-lite86 feature "std"
+│   │   │                           │       └── ppv-lite86 v0.2.21 (*)
+│   │   │                           └── rand_core feature "std"
+│   │   │                               ├── rand_core v0.6.4 (*)
+│   │   │                               ├── rand_core feature "alloc" (*)
+│   │   │                               ├── rand_core feature "getrandom" (*)
+│   │   │                               └── getrandom feature "std"
+│   │   │                                   └── getrandom v0.2.17 (*)
+│   │   ├── tantivy-common feature "default" (*)
+│   │   ├── time feature "default" (*)
+│   │   ├── time feature "serde-well-known" (*)
+│   │   ├── tantivy-fst feature "default" (*)
+│   │   ├── tantivy-stacker feature "default" (*)
+│   │   ├── tantivy-query-grammar feature "default"
+│   │   │   └── tantivy-query-grammar v0.25.0
+│   │   │       ├── serde feature "default" (*)
+│   │   │       ├── serde feature "derive" (*)
+│   │   │       ├── serde_json feature "default" (*)
+│   │   │       └── nom feature "default"
+│   │   │           ├── nom v7.1.3
+│   │   │           │   ├── memchr v2.8.3
+│   │   │           │   └── minimal-lexical v0.2.1
+│   │   │           └── nom feature "std"
+│   │   │               ├── nom v7.1.3 (*)
+│   │   │               ├── memchr feature "std" (*)
+│   │   │               ├── nom feature "alloc"
+│   │   │               │   └── nom v7.1.3 (*)
+│   │   │               └── minimal-lexical feature "std"
+│   │   │                   └── minimal-lexical v0.2.1
+│   │   ├── tantivy-tokenizer-api feature "default"
+│   │   │   └── tantivy-tokenizer-api v0.6.0
+│   │   │       ├── serde feature "default" (*)
+│   │   │       └── serde feature "derive" (*)
+│   │   ├── tempfile feature "default"
+│   │   │   ├── tempfile v3.27.0
+│   │   │   │   ├── getrandom v0.4.3
+│   │   │   │   │   ├── libc v0.2.191
+│   │   │   │   │   └── cfg-if feature "default" (*)
+│   │   │   │   ├── rustix feature "default" (*)
+│   │   │   │   ├── rustix feature "fs" (*)
+│   │   │   │   ├── once_cell feature "std" (*)
+│   │   │   │   └── fastrand feature "default"
+│   │   │   │       ├── fastrand v2.5.0
+│   │   │   │       └── fastrand feature "std"
+│   │   │   │           ├── fastrand v2.5.0
+│   │   │   │           └── fastrand feature "alloc"
+│   │   │   │               └── fastrand v2.5.0
+│   │   │   └── tempfile feature "getrandom"
+│   │   │       └── tempfile v3.27.0 (*)
+│   │   ├── thiserror feature "default"
+│   │   │   ├── thiserror v2.0.21
+│   │   │   │   └── thiserror-impl feature "default"
+│   │   │   │       └── thiserror-impl v2.0.21 (proc-macro)
+│   │   │   │           ├── proc-macro2 feature "default" (*)
+│   │   │   │           ├── quote feature "default" (*)
+│   │   │   │           └── syn feature "default" (*)
+│   │   │   └── thiserror feature "std"
+│   │   │       └── thiserror v2.0.21 (*)
+│   │   ├── uuid feature "default"
+│   │   │   ├── uuid v1.29.0
+│   │   │   │   ├── serde_core v1.0.229
+│   │   │   │   └── getrandom feature "default"
+│   │   │   │       └── getrandom v0.4.3 (*)
+│   │   │   └── uuid feature "std"
+│   │   │       └── uuid v1.29.0 (*)
+│   │   ├── uuid feature "serde"
+│   │   │   └── uuid v1.29.0 (*)
+│   │   └── uuid feature "v4"
+│   │       ├── uuid v1.29.0 (*)
+│   │       └── uuid feature "rng"
+│   │           └── uuid v1.29.0 (*)
+│   └── tantivy feature "lz4_flex"
+│       └── tantivy v0.25.0 (*)
+├── tantivy feature "mmap"
+│   ├── tantivy v0.25.0 (*)
+│   ├── tantivy feature "fs4"
+│   │   └── tantivy v0.25.0 (*)
+│   ├── tantivy feature "memmap2"
+│   │   └── tantivy v0.25.0 (*)
+│   └── tantivy feature "tempfile"
+│       └── tantivy v0.25.0 (*)
+└── tantivy feature "stopwords"
+    └── tantivy v0.25.0 (*)
+[dev-dependencies]
+└── tempfile feature "default" (*)

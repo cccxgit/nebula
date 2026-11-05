@@ -1,0 +1,19 @@
+{
+  "utc": "2026-11-04T16:01:44Z",
+  "command_arguments": [
+    "query",
+    "--space",
+    "ft_bench_1m",
+    "--queries",
+    "scripts/tantivy-benchmark/queries-transparent-match.jsonl",
+    "--label",
+    "tantivy-1m-pushdown-on-c4",
+    "--warmup",
+    "3",
+    "--repeats",
+    "200",
+    "--concurrency",
+    "4"
+  ],
+  "flag_state": "Record verified graph flag state and PROFILE separately"
+}

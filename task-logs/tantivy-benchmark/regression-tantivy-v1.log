@@ -1,0 +1,18 @@
+{"name": "term", "passed": true, "actual_ids": ["r1", "r2", "r8"], "error": ""}
+{"name": "case_normalization", "passed": true, "actual_ids": ["r1", "r2", "r8"], "error": ""}
+{"name": "phrase", "passed": true, "actual_ids": ["r1", "r4"], "error": ""}
+{"name": "boolean_and", "passed": true, "actual_ids": ["r1"], "error": ""}
+{"name": "boolean_or", "passed": true, "actual_ids": ["r1", "r2", "r3", "r8"], "error": ""}
+{"name": "boolean_not", "passed": true, "actual_ids": ["r1", "r8"], "error": ""}
+{"name": "field_group", "passed": true, "actual_ids": ["r1", "r2", "r4", "r8"], "error": ""}
+{"name": "multiple_fields", "passed": true, "actual_ids": ["r4"], "error": ""}
+{"name": "prefix", "passed": true, "actual_ids": ["r1", "r3", "r4"], "error": ""}
+{"name": "wildcard_contains", "passed": true, "actual_ids": ["r1", "r3"], "error": ""}
+{"name": "wildcard_one_char", "passed": true, "actual_ids": ["r1", "r2", "r4", "r8"], "error": ""}
+{"name": "regexp_alternation", "passed": true, "actual_ids": ["r1", "r2", "r4", "r8"], "error": ""}
+{"name": "regexp_contains", "passed": true, "actual_ids": ["r1", "r3"], "error": ""}
+{"name": "fuzzy_one_edit", "passed": true, "actual_ids": ["r1", "r2", "r8"], "error": ""}
+{"name": "phrase_slop", "passed": true, "actual_ids": ["r1", "r4", "r8"], "error": ""}
+{"name": "boost", "passed": true, "actual_ids": ["r1", "r2", "r3", "r8"], "error": ""}
+{"name": "range_inclusive", "passed": true, "actual_ids": ["r1", "r2", "r3", "r4"], "error": ""}
+{"name": "syntax_error", "passed": true, "actual_ids": null, "error": "Storage Error: part: 13, error: E_INVALID_PARM(-2009)."}

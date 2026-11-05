@@ -1,0 +1,156 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=6,
+        output_var=b'{"colNames":["vid"],"name":"__Project_6","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_5'),
+        Pair(
+            key=b'columns',
+            value=b'["id($v) AS vid"]')],
+        profiles=[ProfilingStats(
+            rows=1062,
+            exec_duration_in_us=1197,
+            total_duration_in_us=1203)],
+        dependencies=[5]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=5,
+        output_var=b'{"colNames":["v"],"name":"__Filter_5","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Project_4'),
+        Pair(
+            key=b'condition',
+            value=b'(v.passage.text STARTS WITH "The United")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=1062,
+            exec_duration_in_us=274,
+            total_duration_in_us=296)],
+        dependencies=[9]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=9,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Project_4"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'space',
+            value=b'22'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'passage._tag IS NOT EMPTY'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'props',
+            value=b'[{"props":["text","_tag"],"tagId":23}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=1062,
+            exec_duration_in_us=7328,
+            total_duration_in_us=13256,
+            other_stats={b'resp[0]': b'{\n  "exec": "2677(us)",\n  "host": "127.0.0.1:9789",\n  "total'
+                        b'": "7224(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "1574(us)",\n  "host": "127.0.0.1:9779",\n  "total'
+                        b'": "8832(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "1591(us)",\n  "host": "127.0.0.1:9799",\n  "total'
+                        b'": "7375(us)"\n}',
+            b'total_rpc': b'10755(us)'})],
+        dependencies=[7]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=7,
+        output_var=b'{"colNames":["_vid"],"type":"DATASET","name":"__IndexScan_1"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'22'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'23'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"filter":"(passage.text STARTS WITH \\"The United\\")",'
+             b'"fulltext_value":"The United","fulltext_mode":2,"fulltext_field":"text","eng'
+             b'ine":"tantivy","fulltext_index":"ft_passage_text_5m"}]'))],
+        profiles=[ProfilingStats(
+            rows=1062,
+            exec_duration_in_us=0,
+            total_duration_in_us=24549,
+            other_stats={b'resp[0]': b'{\n  "exec": "18589(us)",\n  "host": "127.0.0.1:9789",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"67049(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "6'
+                        b'6967(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WI'
+                        b'TH \\"The United\\")])": "66869(us)",\n    "TantivyIndexScanNod'
+                        b'e(index=ft_passage_text_5m,field=text,mode=2,topk=0,fallback=fal'
+                        b'se)": "66632(us)"\n  },\n  "total": "19809(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "19932(us)",\n  "host": "127.0.0.1:9779",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"86282(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "8'
+                        b'6079(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WI'
+                        b'TH \\"The United\\")])": "85821(us)",\n    "TantivyIndexScanNod'
+                        b'e(index=ft_passage_text_5m,field=text,mode=2,topk=0,fallback=fal'
+                        b'se)": "85473(us)"\n  },\n  "total": "20897(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "22633(us)",\n  "host": "127.0.0.1:9799",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"94408(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "9'
+                        b'4306(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WI'
+                        b'TH \\"The United\\")])": "94161(us)",\n    "TantivyIndexScanNod'
+                        b'e(index=ft_passage_text_5m,field=text,mode=2,topk=0,fallback=fal'
+                        b'se)": "93897(us)"\n  },\n  "total": "23821(us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=2,
+        output_var=b'{"colNames":[],"type":"DATASET","name":"__Start_2"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=19)])],
+    node_index_map={2: 4, 5: 1, 6: 0, 7: 3, 9: 2},
+    format=b'row',
+    optimize_time_in_us=1318)

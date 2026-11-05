@@ -1,0 +1,18 @@
+{
+  "time": "2026-11-04T16:22:27Z",
+  "kind": "measured_graph_write_acknowledgement",
+  "input": "/home/sch/nebula-data/tantivy/msmarco-1m-128.jsonl.gz",
+  "completed_without_error": true,
+  "space": "ft_bench_1m",
+  "tag": "passage",
+  "field": "text",
+  "acknowledged_rows": 100000,
+  "failed_rows_observed": 0,
+  "batch_requests_observed": 500,
+  "concurrency": 1,
+  "elapsed_s": 4.720541585000319,
+  "acknowledged_rows_per_second": 21184.00996990544,
+  "source_rows_skipped": 0,
+  "index_visibility_measured": false,
+  "note": "On failure, concurrent in-flight writes may have succeeded; replay fixed VIDs safely."
+}

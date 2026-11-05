@@ -1,0 +1,32 @@
+{
+  "utc": "2026-11-04T16:42:10.111204+00:00",
+  "pid": 141494,
+  "before": {
+    "flags": [
+      {
+        "name": "listener_commit_batch_size",
+        "value": 1000
+      },
+      {
+        "name": "listener_commit_interval_secs",
+        "value": 1
+      }
+    ]
+  },
+  "current_stage_excluded_from_performance": true,
+  "put": {
+    "errCode": 0
+  },
+  "after": {
+    "flags": [
+      {
+        "name": "listener_commit_batch_size",
+        "value": 1048576
+      },
+      {
+        "name": "listener_commit_interval_secs",
+        "value": 1
+      }
+    ]
+  }
+}

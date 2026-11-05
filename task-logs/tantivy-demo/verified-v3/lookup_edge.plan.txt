@@ -1,0 +1,109 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=3,
+        output_var=b'{"colNames":["id"],"type":"DATASET","name":"__Project_3"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_2'),
+        Pair(
+            key=b'columns',
+            value=b'["src(EDGE) AS id"]')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=156,
+            total_duration_in_us=185)],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=2,
+        output_var=(b'{"colNames":["cites._src","cites._dst","cites._rank","cites._type","cites.bo'
+         b'dy"],"type":"DATASET","name":"__Filter_2"}'),
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'condition',
+            value=b'(cites.body CONTAINS "Graph")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=57,
+            total_duration_in_us=72)],
+        dependencies=[1]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=1,
+        output_var=(b'{"colNames":["cites._src","cites._dst","cites._rank","cites._type","cites.bo'
+         b'dy"],"name":"__IndexScan_1","type":"DATASET"}'),
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'3'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'5'),
+        Pair(
+            key=b'isEdge',
+            value=b'true'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_src","_dst","_rank","_type","body"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"filter":"(cites.body CONTAINS \\"Graph\\")","fulltext_'
+             b'value":"Graph","fulltext_field":"body","fulltext_mode":1,"engine":"tantivy",'
+             b'"fulltext_index":"tantivy_demo_v3_cites"}]'))],
+        profiles=[ProfilingStats(
+            rows=20,
+            exec_duration_in_us=0,
+            total_duration_in_us=149718,
+            other_stats={b'resp[0]': b'{\n  "exec": "148924(us)",\n  "host": "127.0.0.1:9799",\n  "sto'
+                        b'rage_detail": {\n    "IndexLimitNode(limit=9223372036854775807)":'
+                        b' "1336999(us)",\n    "IndexProjectionNode(projectColumn=[_src,_ds'
+                        b't,_rank,_type,body])": "1336712(us)",\n    "IndexSelectionNode(ex'
+                        b'pr=[(cites.body CONTAINS \\"Graph\\")])": "1336298(us)",\n    "'
+                        b'TantivyIndexScanNode(index=tantivy_demo_v3_cites,field=body,mode'
+                        b'=1)": "1335857(us)"\n  },\n  "total": "149392(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "72923(us)",\n  "host": "127.0.0.1:9789",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"580805(us)",\n    "IndexProjectionNode(projectColumn=[_src,_dst,'
+                        b'_rank,_type,body])": "580581(us)",\n    "IndexSelectionNode(expr='
+                        b'[(cites.body CONTAINS \\"Graph\\")])": "580249(us)",\n    "Tant'
+                        b'ivyIndexScanNode(index=tantivy_demo_v3_cites,field=body,mode=1)"'
+                        b': "579912(us)"\n  },\n  "total": "73361(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "76718(us)",\n  "host": "127.0.0.1:9779",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"229482(us)",\n    "IndexProjectionNode(projectColumn=[_src,_dst,'
+                        b'_rank,_type,body])": "229475(us)",\n    "IndexSelectionNode(expr='
+                        b'[(cites.body CONTAINS \\"Graph\\")])": "229471(us)",\n    "Tant'
+                        b'ivyIndexScanNode(index=tantivy_demo_v3_cites,field=body,mode=1)"'
+                        b': "229456(us)"\n  },\n  "total": "77020(us)"\n}'})],
+        dependencies=[0]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=0,
+        output_var=b'{"colNames":[],"name":"__Start_0","type":"DATASET"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=16)])],
+    node_index_map={0: 3, 1: 2, 2: 1, 3: 0},
+    format=b'row',
+    optimize_time_in_us=241)

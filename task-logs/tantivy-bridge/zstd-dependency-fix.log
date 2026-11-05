@@ -1,0 +1,13 @@
+     Locking 1 package to latest compatible version
+    Removing cc v1.11.0
+    Removing find-msvc-tools v0.1.15
+      Adding include-flate v0.3.5 (/home/sch/nebula/nebula-3.6-tantivy/src/common/plugin/fulltext/tantivy/rust/vendor/include-flate)
+    Removing include-flate v0.3.5
+    Removing jobserver v0.1.35
+    Removing pkg-config v0.3.34
+    Removing shlex v2.0.1
+    Removing zstd v0.13.4
+    Removing zstd v0.14.3
+    Removing zstd-safe v7.4.0
+    Removing zstd-safe v8.2.0
+    Removing zstd-sys v2.1.2+zstd.1.5.7

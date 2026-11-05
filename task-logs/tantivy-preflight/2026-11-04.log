@@ -1,0 +1,35 @@
+2026-11-04 Asia/Shanghai — Tantivy embedded full-text indexing: requirements discovery
+User requested understanding the task and ten key questions before development.
+Read repository AGENTS.md. Base: NebulaGraph 3.6, branch 3.6-tantivy.
+Preserved pre-existing untracked AGENTS.md. No source changes, builds, or service operations.
+Recorded build/install target: /home/sch/nebula-run/3.6-tantivy; Debug, make -j10.
+Recorded runtime requirement: ulimit -n 65536 before starting NebulaGraph.
+Inspected ESAdapter, FulltextIndexScanExecutor, FTIndexUtils, full-text TCK, and NebulaStore listener setup.
+Parallel read-only review covered ESListener, Raft application, metadata lifecycle, and full-text rebuild.
+Findings: graphd queries Elasticsearch directly; independent Listener applies Raft logs to ES.
+Metadata create/drop and rebuild also depend on the ES/Listener path.
+Embedding Tantivy in storaged requires explicit query routing, cross-partition ranking, durability/replay, and lifecycle design.
+Consulted primary sources:
+https://github.com/quickwit-oss/tantivy
+https://docs.nebula-graph.com.cn/3.8.0/
+https://docs.nebula-graph.com.cn/3.8.0/4.deployment-and-installation/6.deploy-text-based-index/1.text-based-index-restrictions/
+https://docs.nebula-graph.com.cn/3.8.0/4.deployment-and-installation/6.deploy-text-based-index/2.deploy-es/
+https://docs.nebula-graph.com.cn/3.8.0/3.ngql-guide/15.full-text-index-statements/1.search-with-text-based-index/
+Tantivy is a Rust search library; distributed search is outside its scope.
+No performance or resource savings measured or claimed. Development awaits requirement answers.
+
+User answers received: contest tomorrow; demonstrable prototype plus performance report,
+architecture, demo scripts, and defense materials. Embed Rust/Tantivy in normal storaged.
+No ES migration; transparent native string predicate pushdown required. Local-only test:
+three storaged processes, 20 partitions, three replicas. Reliability work is lower priority.
+Public dataset must contain more than 100 million records; no such run completed yet.
+Environment read: 24 logical CPUs, 31 GiB RAM, about 267 GiB free disk; Rust exists under ~/.cargo/bin.
+User then requested implementation overview and architecture diagram before development.
+Paused all delegated implementation work. git status shows no tracked source changes.
+Proposed query path: MATCH/LOOKUP optimizer -> extended IndexQueryContext -> existing
+lookupIndex partition routing -> Tantivy candidates -> RocksDB properties -> original filter.
+Preserve case-sensitive substring semantics; analyzed terms alone cannot implement CONTAINS.
+Use all 20 partitions once via leader routing; retain global result/limit semantics.
+Proposed write path: committed Raft application -> RocksDB plus local bounded index work queue;
+all three replicas maintain local indexes, with explicit readiness/progress checks.
+Architecture remains a proposal, not a completed implementation or measured benchmark.

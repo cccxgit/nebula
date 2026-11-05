@@ -1,0 +1,92 @@
+{
+  "utc": "2026-11-04T16:22:13Z",
+  "kind": "offline_recomputation_of_existing_measurements",
+  "runs": [
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T160715Z-query-1m-c1-off",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Every query percentile, count, sequence and QPS recomputed"
+      ],
+      "resources": {
+        "pids": [
+          100191,
+          100357,
+          100390,
+          100512,
+          100631
+        ],
+        "samples": 788,
+        "complete_pss_samples": 788,
+        "complete_cpu_intervals": 787,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.027,
+        "sample_interval_max_s": 1.0949999999999136,
+        "observed_peak_sum_rss_bytes": 4465762304,
+        "observed_peak_sum_pss_bytes": 4346071040,
+        "observed_peak_sum_cpu_cores": 6.756110000000001,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "query": {
+        "rows": 80,
+        "summary_recomputed": true,
+        "successful_qps": 0.10191732887449201,
+        "measured_elapsed_s": 784.9499283730001,
+        "serial_latency_sum_s": 784.9483407749999,
+        "overall": {
+          "requests": 80,
+          "successes": 80,
+          "failures": 0,
+          "latency_success_ms": {
+            "p50": 9807.995105,
+            "p95": 9951.780946,
+            "p99": 10059.806372,
+            "max": 10059.806372
+          }
+        },
+        "returned_row_counts_by_query": {
+          "contains_water": [
+            10
+          ],
+          "contains_new_york": [
+            10
+          ],
+          "starts_with_the_united": [
+            10
+          ],
+          "ends_with_water": [
+            10
+          ]
+        }
+      },
+      "passed": true
+    },
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T162110Z-visible-1m-restored",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups"
+      ],
+      "resources": {
+        "pids": [
+          100191,
+          100357,
+          100390,
+          100512,
+          100631
+        ],
+        "samples": 1,
+        "complete_pss_samples": 1,
+        "complete_cpu_intervals": 0,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": null,
+        "sample_interval_max_s": null,
+        "observed_peak_sum_rss_bytes": 1905860608,
+        "observed_peak_sum_pss_bytes": 1806055424,
+        "observed_peak_sum_cpu_cores": null,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

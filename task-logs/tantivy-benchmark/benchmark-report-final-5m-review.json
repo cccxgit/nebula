@@ -1,0 +1,28 @@
+{
+  "utc": "2026-11-04T17:27:24Z",
+  "report": "docs/tantivy/benchmark-report.md",
+  "local_links_checked": 77,
+  "missing_links": [],
+  "headings_with_missing_blank_line": [],
+  "required_5m_metrics_present": [
+    "25,164.81",
+    "182.4451",
+    "82,845",
+    "3.9051",
+    "11.6882",
+    "7,980,810,240",
+    "4,488,941,568",
+    "150,958,080",
+    "11 / 0 / 9",
+    "7 / 6 / 7"
+  ],
+  "all_five_5m_audits_passed": true,
+  "audit_files": [
+    "5m-import-independent-audit.json",
+    "5m-index-and-visible-independent-audit.json",
+    "5m-query-c1-independent-audit.json",
+    "5m-query-c4-independent-audit.json",
+    "5m-final-capacity-independent-audit.json"
+  ],
+  "execution_scope": "Existing small measurement logs and summaries only; no database queries, service control, ETL, compilation or benchmarks."
+}

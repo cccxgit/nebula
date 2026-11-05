@@ -1,0 +1,5 @@
+2026-11-04T23:05:02.762316 Architecture approved; implementation resumed.
+Implemented native metadata lifecycle, Raft committed-mutation observer, bounded in-process index worker, per-partition Tantivy scan and RocksDB recheck.
+Rust six disk tests and C++ ABI test passed (see tantivy-bridge logs). Main Debug build ongoing, no cluster run yet.
+Public corpus: MS MARCO v2 passage, 138364198 genuine records, research-only terms; 1m first-128-character projected sample available; full archive still downloading.
+2026-11-04T23:06:02.144883 User requires Nebula build parallelism <=5 to avoid host overload. Stopped -j10 process group and resumed incremental build with -j5; applies to every subsequent build.

@@ -1,0 +1,22 @@
+{
+  "utc": "2026-11-04T17:21:43Z",
+  "read_scope": "Final at most 256 KiB per storage INFO log; no full-file rescans",
+  "observations": [
+    {
+      "path": "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage1/logs/nebula-storaged.INFO",
+      "bytes_read": 262144,
+      "matching_lines": []
+    },
+    {
+      "path": "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage2/logs/nebula-storaged.INFO",
+      "bytes_read": 262144,
+      "matching_lines": []
+    },
+    {
+      "path": "/home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage3/logs/nebula-storaged.INFO",
+      "bytes_read": 262144,
+      "matching_lines": []
+    }
+  ],
+  "all_three_have_ready_5m": false
+}

@@ -1,0 +1,184 @@
+[  0%] Built target datetime_parser_target
+[  0%] Built target wkt_parser_target
+[  1%] Built target graph_thrift_generator
+[  1%] Built target nebula_tantivy_build
+[  1%] Built target common_thrift_generator
+[  3%] Built target meta_thrift_generator
+[  3%] Built target storage_thrift_generator
+[  5%] Built target parser_target
+[  5%] Built target raftex_thrift_generator
+[  5%] Building CXX object src/common/plugin/fulltext/tantivy/CMakeFiles/tantivy_adapter.dir/TantivyIndex.cpp.o
+[  5%] Building CXX object src/mock/CMakeFiles/mock_obj.dir/MockData.cpp.o
+[  5%] Building CXX object src/mock/CMakeFiles/fake_http_server_obj.dir/FakeHttpServer.cpp.o
+[  5%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/GraphScanner.cpp.o
+[  5%] Building CXX object src/mock/CMakeFiles/mock_obj.dir/MockCluster.cpp.o
+[  5%] Building CXX object src/mock/CMakeFiles/mock_obj.dir/AdHocIndexManager.cpp.o
+[  5%] Building CXX object src/storage/CMakeFiles/storage_local_server_obj.dir/GraphStorageLocalServer.cpp.o
+[  5%] Built target common_thrift_obj
+[  5%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/GraphParser.cpp.o
+[  5%] Built target graph_thrift_obj
+[  6%] Built target meta_thrift_obj
+[  6%] Built target meta_client_obj
+[  6%] Built target file_based_cluster_id_man_obj
+[  8%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/Clauses.cpp.o
+[  8%] Built target meta_client_stats_obj
+[  8%] Built target storage_client_obj
+[  8%] Building CXX object src/mock/CMakeFiles/mock_obj.dir/AdHocSchemaManager.cpp.o
+[  8%] Linking CXX static library ../../../../../lib/libtantivy_adapter.a
+[  8%] Built target tantivy_adapter
+[  8%] Built target storage_client_base_obj
+[  8%] Built target internal_storage_client_obj
+[  8%] Built target storage_client_stats_obj
+[  8%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/EdgeKey.cpp.o
+[  8%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/SequentialSentences.cpp.o
+[  8%] Built target fake_http_server_obj
+[  8%] Built target codec_obj
+[ 10%] Built target base_obj
+[ 11%] Built target time_obj
+[ 11%] Built target time_utils_obj
+[ 11%] Built target datetime_parser_obj
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/MaintainSentences.cpp.o
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/TraverseSentences.cpp.o
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/MutateSentences.cpp.o
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/AdminSentences.cpp.o
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/UserSentences.cpp.o
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/ProcessControlSentences.cpp.o
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/ExplainSentence.cpp.o
+[ 11%] Building CXX object src/parser/CMakeFiles/parser_obj.dir/MatchSentence.cpp.o
+[ 11%] Built target network_obj
+[ 11%] Built target thrift_obj
+[ 11%] Built target fs_obj
+[ 11%] Built target thread_obj
+[ 11%] Built target process_obj
+[ 11%] Built target hdfs_helper_obj
+[ 11%] Built target http_client_obj
+[ 11%] Built target stats_obj
+[ 11%] Built target charset_obj
+[ 11%] Built target nebula_algo_obj
+[ 13%] Built target datatypes_obj
+[ 15%] Built target conf_obj
+[ 15%] Built target meta_obj
+[ 16%] Built target function_manager_obj
+[ 22%] Built target expression_obj
+[ 22%] Built target agg_function_manager_obj
+[ 22%] Built target graph_obj
+[ 22%] Built target es_adapter_obj
+[ 22%] Built target meta_keyutils_obj
+[ 23%] Built target keyutils_obj
+[ 23%] Built target log_str_list_iterator_obj
+[ 23%] Built target ssl_obj
+[ 23%] Built target geo_index_obj
+[ 25%] Built target wkt_wkb_io_obj
+[ 25%] Built target memory_obj
+[ 25%] Built target snowflake_obj
+[ 25%] Built target uuid_obj
+[ 25%] Built target log_monitor_obj
+[ 27%] Built target segment_id_obj
+[ 27%] Built target ws_common_obj
+[ 28%] Built target raftex_thrift_obj
+[ 30%] Built target kvstore_obj
+[ 32%] Built target storage_thrift_obj
+[ 32%] Built target disk_man_obj
+[ 32%] Built target listener_obj
+[ 32%] Built target raftex_obj
+[ 32%] Built target wal_obj
+[ 32%] Built target kv_stats_obj
+[ 32%] Built target meta_stats_obj
+[ 33%] Built target ast_match_path_obj
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_common_obj.dir/CommonUtils.cpp.o
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/StorageAdminServiceHandler.cpp.o
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/CreateCheckpointProcessor.cpp.o
+[ 33%] Built target mock_obj
+[ 33%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/GraphStorageServiceHandler.cpp.o
+[ 33%] Building CXX object src/storage/CMakeFiles/internal_storage_service_handler.dir/InternalStorageServiceHandler.cpp.o
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/DropCheckpointProcessor.cpp.o
+[ 33%] Built target storage_http_handler
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/TransactionManager.cpp.o
+[ 33%] Built target storage_local_server_obj
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_server.dir/fulltext/TantivyManager.cpp.o
+[ 33%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ConsistUtil.cpp.o
+[ 33%] Built target parser_obj
+[ 33%] Built target storage_stats_obj
+[ 33%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/context/StorageExpressionContext.cpp.o
+[ 35%] Built target storage_common_obj
+[ 35%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/AddVerticesProcessor.cpp.o
+[ 35%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/SendBlockSignProcessor.cpp.o
+[ 35%] Built target internal_storage_service_handler
+[ 35%] Built target version_obj
+[ 37%] Built target ws_obj
+[ 37%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/AdminTaskProcessor.cpp.o
+[ 37%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/StopAdminTaskProcessor.cpp.o
+[ 37%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/DeleteVerticesProcessor.cpp.o
+[ 37%] Built target storage_server
+[ 37%] Built target meta_v2_thrift_obj
+[ 37%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/DeleteTagsProcessor.cpp.o
+[ 37%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/AdminTaskManager.cpp.o
+[ 37%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/AdminTask.cpp.o
+[ 37%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/AddEdgesProcessor.cpp.o
+[ 40%] Built target storage_transaction_executor
+[ 40%] Built target meta_http_handler
+[ 40%] Built target meta_data_upgrade_obj
+[ 42%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/DeleteEdgesProcessor.cpp.o
+[ 42%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/UpdateVertexProcessor.cpp.o
+[ 42%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/UpdateEdgeProcessor.cpp.o
+[ 42%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/query/GetNeighborsProcessor.cpp.o
+[ 42%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/CompactTask.cpp.o
+[ 42%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/FlushTask.cpp.o
+[ 42%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o
+[ 44%] Built target graph_context_obj
+[ 44%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/UnwindExecutor.cpp.o
+[ 44%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushLimitDownGetNeighborsRule.cpp.o
+[ 44%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushLimitDownGetVerticesRule.cpp.o
+[ 44%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushLimitDownGetEdgesRule.cpp.o
+[ 44%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushLimitDownFulltextIndexScanRule.cpp.o
+[ 44%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/SortExecutor.cpp.o
+[ 44%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/match/MatchPathPlanner.cpp.o
+[ 44%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/match/ShortestPathPlanner.cpp.o
+[ 45%] Built target storage_admin_service_handler
+[ 45%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/match/VariableVertexIdSeek.cpp.o
+[ 47%] Built target graph_storage_service_handler
+[ 49%] Built target plan_obj
+[ 49%] Built target scheduler_obj
+[ 49%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushLimitDownFulltextIndexScanRule2.cpp.o
+[ 49%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushLimitDownExpandAllRule.cpp.o
+[ 49%] Built target graph_flags_obj
+[ 50%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushStepSampleDownGetNeighborsRule.cpp.o
+[ 52%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/TopNExecutor.cpp.o
+[ 52%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushStepLimitDownGetNeighborsRule.cpp.o
+[ 52%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/IndexScanExecutor.cpp.o
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/match/VariablePropIndexSeek.cpp.o
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/PathPlanner.cpp.o
+[ 52%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/TopNRule.cpp.o
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/GoPlanner.cpp.o
+[ 52%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushEFilterDownRule.cpp.o
+[ 52%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownAggregateRule.cpp.o
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/SubgraphPlanner.cpp.o
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/LookupPlanner.cpp.o
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/FetchVerticesPlanner.cpp.o
+[ 52%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/SetExecutor.cpp.o
+[ 52%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/FetchEdgesPlanner.cpp.o
+[ 54%] Building CXX object src/graph/planner/CMakeFiles/planner_obj.dir/ngql/MaintainPlanner.cpp.o
+[ 54%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownProjectRule.cpp.o
+[ 54%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/UnionExecutor.cpp.o
+[ 54%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownExpandAllRule.cpp.o
+[ 54%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownAllPathsRule.cpp.o
+[ 54%] Built target service_obj
+[ 54%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/UnionAllVersionVarExecutor.cpp.o
+[ 54%] Built target query_engine_obj
+[ 54%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownHashInnerJoinRule.cpp.o
+[ 54%] Building CXX object src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownHashLeftJoinRule.cpp.o
+[ 54%] Building CXX object src/graph/executor/CMakeFiles/executor_obj.dir/query/DataCollectExecutor.cpp.o
+gmake[2]: *** [src/graph/executor/CMakeFiles/executor_obj.dir/build.make:426: src/graph/executor/CMakeFiles/executor_obj.dir/query/UnionAllVersionVarExecutor.cpp.o] Interrupt
+gmake[2]: *** [src/graph/optimizer/CMakeFiles/optimizer_obj.dir/build.make:482: src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownHashInnerJoinRule.cpp.o] Interrupt
+gmake[2]: *** [src/graph/executor/CMakeFiles/executor_obj.dir/build.make:412: src/graph/executor/CMakeFiles/executor_obj.dir/query/UnionExecutor.cpp.o] Interrupt
+gmake[2]: *** [src/graph/optimizer/CMakeFiles/optimizer_obj.dir/build.make:440: src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownProjectRule.cpp.o] Interrupt
+gmake[2]: *** [src/graph/optimizer/CMakeFiles/optimizer_obj.dir/build.make:454: src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownExpandAllRule.cpp.o] Interrupt
+gmake[2]: *** [src/graph/optimizer/CMakeFiles/optimizer_obj.dir/build.make:468: src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownAllPathsRule.cpp.o] Interrupt
+gmake[2]: *** [src/graph/optimizer/CMakeFiles/optimizer_obj.dir/build.make:496: src/graph/optimizer/CMakeFiles/optimizer_obj.dir/rule/PushFilterDownHashLeftJoinRule.cpp.o] Interrupt
+gmake[2]: *** [src/graph/planner/CMakeFiles/planner_obj.dir/build.make:496: src/graph/planner/CMakeFiles/planner_obj.dir/ngql/MaintainPlanner.cpp.o] Interrupt
+gmake[2]: *** [src/graph/executor/CMakeFiles/executor_obj.dir/build.make:440: src/graph/executor/CMakeFiles/executor_obj.dir/query/DataCollectExecutor.cpp.o] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:7170: src/graph/optimizer/CMakeFiles/optimizer_obj.dir/all] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:7060: src/graph/executor/CMakeFiles/executor_obj.dir/all] Interrupt
+gmake[2]: *** [src/graph/planner/CMakeFiles/planner_obj.dir/build.make:482: src/graph/planner/CMakeFiles/planner_obj.dir/ngql/FetchEdgesPlanner.cpp.o] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:7277: src/graph/planner/CMakeFiles/planner_obj.dir/all] Interrupt
+gmake: *** [Makefile:156: all] Interrupt

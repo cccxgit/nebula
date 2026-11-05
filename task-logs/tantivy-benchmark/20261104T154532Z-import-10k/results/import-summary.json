@@ -1,0 +1,18 @@
+{
+  "time": "2026-11-04T15:45:32Z",
+  "kind": "measured_graph_write_acknowledgement",
+  "input": "/home/sch/nebula-data/tantivy/sample-10000-128.jsonl.gz",
+  "completed_without_error": true,
+  "space": "ft_bench_10k",
+  "tag": "passage",
+  "field": "text",
+  "acknowledged_rows": 10000,
+  "failed_rows_observed": 0,
+  "batch_requests_observed": 50,
+  "concurrency": 1,
+  "elapsed_s": 0.4091681089994381,
+  "acknowledged_rows_per_second": 24439.832381984914,
+  "source_rows_skipped": 0,
+  "index_visibility_measured": false,
+  "note": "On failure, concurrent in-flight writes may have succeeded; replay fixed VIDs safely."
+}

@@ -1,0 +1,342 @@
+{
+  "utc": "2026-11-04T16:47:59.186952+00:00",
+  "source": "task-logs/tantivy-benchmark/20261104T164301Z-es-index-1m/stdout.log",
+  "count_observations": [
+    {
+      "utc": "2026-11-04T16:43:38Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:40Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:42Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:44Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:46Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:49Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:51Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:53Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:55Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:57Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:43:59Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:01Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:03Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:05Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:07Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:09Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:11Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:13Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:15Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:17Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:19Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:21Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:23Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:25Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:27Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:29Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:31Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:33Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:35Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:37Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:39Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:41Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "utc": "2026-11-04T16:44:43Z",
+      "count": 996388,
+      "shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    }
+  ],
+  "expected_rows": 1000000,
+  "last_count": 996388,
+  "missing_rows": 3612,
+  "complete_visible_event_present": false,
+  "valid_for_build_performance": false,
+  "root_cause_status": "Metadata cache lag is consistent with old source; no per-record cache-state trace proves the causal chain."
+}

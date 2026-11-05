@@ -1,0 +1,14 @@
+(root@nebula) [(none)]> SHOW SPACES; DROP SPACE ft_bench_1m; SHOW SPACES;
++------+
+| Name |
++------+
++------+
+Empty set (time spent 1.495ms/5.933932ms)
+
+Thu, 05 Nov 2026 01:12:53 CST
+
+
+
+Bye root!
+Thu, 05 Nov 2026 01:12:53 CST
+

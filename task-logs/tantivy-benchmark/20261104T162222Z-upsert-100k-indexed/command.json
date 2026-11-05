@@ -1,0 +1,19 @@
+{
+  "utc": "2026-11-04T16:22:22Z",
+  "command_arguments": [
+    "import",
+    "--space",
+    "ft_bench_1m",
+    "--input",
+    "/home/sch/nebula-data/tantivy/msmarco-1m-128.jsonl.gz",
+    "--limit",
+    "100000",
+    "--concurrency",
+    "1",
+    "--batch-size",
+    "200",
+    "--batch-bytes",
+    "131072"
+  ],
+  "flag_state": "Record verified graph flag state and PROFILE separately"
+}

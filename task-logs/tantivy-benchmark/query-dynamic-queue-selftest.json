@@ -1,0 +1,58 @@
+{
+  "kind": "offline_variable_latency_mock",
+  "database_connections": 0,
+  "simulated_slow_seconds": 0.015,
+  "simulated_fast_seconds": 0.002,
+  "checks": [
+    {
+      "concurrency": 4,
+      "observed_max_active": 4,
+      "completed": 48,
+      "missing_or_duplicate": false,
+      "query_names_by_worker": {
+        "0": [
+          "fast_a",
+          "fast_b",
+          "fast_c",
+          "slow"
+        ],
+        "1": [
+          "fast_a",
+          "fast_b",
+          "fast_c",
+          "slow"
+        ],
+        "2": [
+          "fast_a",
+          "fast_b",
+          "fast_c",
+          "slow"
+        ],
+        "3": [
+          "fast_a",
+          "fast_b",
+          "fast_c",
+          "slow"
+        ]
+      },
+      "scheduling": "shared_fifo_queue_dynamic_workers",
+      "passed": true
+    },
+    {
+      "concurrency": 1,
+      "observed_max_active": 1,
+      "completed": 48,
+      "missing_or_duplicate": false,
+      "query_names_by_worker": {
+        "0": [
+          "fast_a",
+          "fast_b",
+          "fast_c",
+          "slow"
+        ]
+      },
+      "scheduling": "shared_fifo_queue_dynamic_workers",
+      "passed": true
+    }
+  ]
+}

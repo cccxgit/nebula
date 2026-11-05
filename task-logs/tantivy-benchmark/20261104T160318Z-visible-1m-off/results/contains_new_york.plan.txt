@@ -1,0 +1,148 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=6,
+        output_var=b'{"colNames":["vid"],"type":"DATASET","name":"__Project_6"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_5'),
+        Pair(
+            key=b'columns',
+            value=b'["id($v) AS vid"]')],
+        profiles=[ProfilingStats(
+            rows=3166,
+            exec_duration_in_us=8157,
+            total_duration_in_us=8169)],
+        dependencies=[5]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=5,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Filter_5"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Project_4'),
+        Pair(
+            key=b'condition',
+            value=b'(v.passage.text CONTAINS "New York")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=3166,
+            exec_duration_in_us=708088,
+            total_duration_in_us=708120)],
+        dependencies=[8]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=8,
+        output_var=b'{"colNames":["v"],"name":"__Project_4","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'passage._tag IS NOT EMPTY'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'props',
+            value=b'[{"props":["text","_tag"],"tagId":11}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=1000000,
+            exec_duration_in_us=4566900,
+            total_duration_in_us=7746318,
+            other_stats={b'resp[0]': b'{\n  "exec": "556744(us)",\n  "host": "127.0.0.1:9789",\n  "tot'
+                        b'al": "2037279(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "1080096(us)",\n  "host": "127.0.0.1:9779",\n  "to'
+                        b'tal": "4311350(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "348365(us)",\n  "host": "127.0.0.1:9799",\n  "tot'
+                        b'al": "601967(us)"\n}',
+            b'total_rpc': b'5457359(us)'})],
+        dependencies=[1]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=1,
+        output_var=b'{"colNames":["_vid"],"type":"DATASET","name":"__IndexScan_1"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'11'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid"]'),
+        Pair(
+            key=b'indexCtx',
+            value=b'[{"columnHints":[],"index_id":12,"filter":""}]')],
+        profiles=[ProfilingStats(
+            rows=1000000,
+            exec_duration_in_us=0,
+            total_duration_in_us=1380517,
+            other_stats={b'resp[0]': b'{\n  "exec": "313553(us)",\n  "host": "127.0.0.1:9789",\n  "sto'
+                        b'rage_detail": {\n    "IndexLimitNode(limit=9223372036854775807)":'
+                        b' "1098752(us)",\n    "IndexProjectionNode(projectColumn=[_vid])":'
+                        b' "1098673(us)",\n    "IndexVertexScanNode(IndexID=12, Path=())": '
+                        b'"1098533(us)"\n  },\n  "total": "672538(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "406587(us)",\n  "host": "127.0.0.1:9779",\n  "sto'
+                        b'rage_detail": {\n    "IndexLimitNode(limit=9223372036854775807)":'
+                        b' "2450771(us)",\n    "IndexProjectionNode(projectColumn=[_vid])":'
+                        b' "2450353(us)",\n    "IndexVertexScanNode(IndexID=12, Path=())": '
+                        b'"2449773(us)"\n  },\n  "total": "1177469(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "188796(us)",\n  "host": "127.0.0.1:9799",\n  "sto'
+                        b'rage_detail": {\n    "IndexLimitNode(limit=9223372036854775807)":'
+                        b' "168544(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": '
+                        b'"168541(us)",\n    "IndexVertexScanNode(IndexID=12, Path=())": "1'
+                        b'68537(us)"\n  },\n  "total": "254988(us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=2,
+        output_var=b'{"colNames":[],"name":"__Start_2","type":"DATASET"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=29)])],
+    node_index_map={1: 3, 2: 4, 5: 1, 6: 0, 8: 2},
+    format=b'row',
+    optimize_time_in_us=1654)

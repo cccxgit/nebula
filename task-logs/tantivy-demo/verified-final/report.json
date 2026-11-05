@@ -1,0 +1,389 @@
+{
+  "started_at": "2026-11-04T17:24:55.020933+00:00",
+  "space": "tantivy_demo_v3",
+  "partitions": 20,
+  "replicas": 3,
+  "dataset": "synthetic multilingual semantic regression, not performance data",
+  "checks": [
+    {
+      "name": "lookup_contains_case_sensitive",
+      "passed": true,
+      "rows": 80,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_contains_case_sensitive",
+      "passed": true,
+      "rows": 80,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_contains_lowercase",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_contains_lowercase",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_contains_chinese",
+      "passed": true,
+      "rows": 80,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_contains_chinese",
+      "passed": true,
+      "rows": 80,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_contains_one_character",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_contains_one_character",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_contains_inside_token",
+      "passed": true,
+      "rows": 120,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_contains_inside_token",
+      "passed": true,
+      "rows": 120,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_contains_literal_regex_characters",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_contains_literal_regex_characters",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_contains_empty",
+      "passed": true,
+      "rows": 220,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_contains_empty",
+      "passed": true,
+      "rows": 220,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_starts_with",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_starts_with",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_ends_with",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_ends_with",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_multi_field",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_multi_field",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "lookup_and_residual",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_and_residual",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "global_limit",
+      "passed": true,
+      "rows": 7
+    },
+    {
+      "name": "lookup_edge",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "match_edge",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_term",
+      "passed": true,
+      "rows": 100,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_phrase",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_boolean_and",
+      "passed": true,
+      "rows": 40,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_boolean_or",
+      "passed": true,
+      "rows": 120,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_boolean_not",
+      "passed": true,
+      "rows": 60,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_multiple_fields",
+      "passed": true,
+      "rows": 80,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_chinese_phrase",
+      "passed": true,
+      "rows": 80,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "text_search_score",
+      "passed": true,
+      "rows": 100,
+      "max_score": 1.078843593597412,
+      "min_score": 0.6607986092567444
+    },
+    {
+      "name": "text_search_global_offset_limit",
+      "passed": true,
+      "rows": 11
+    },
+    {
+      "name": "text_search_edge",
+      "passed": true,
+      "rows": 20,
+      "tantivy_profile_verified": true
+    },
+    {
+      "name": "vertex_update_removes_old_terms",
+      "passed": true,
+      "rows": 79,
+      "tantivy_profile_verified": false
+    },
+    {
+      "name": "vertex_update_adds_new_terms",
+      "passed": true,
+      "rows": 1,
+      "tantivy_profile_verified": false
+    },
+    {
+      "name": "vertex_delete",
+      "passed": true,
+      "rows": 0,
+      "tantivy_profile_verified": false
+    },
+    {
+      "name": "edge_delete",
+      "passed": true,
+      "rows": 19,
+      "tantivy_profile_verified": false
+    }
+  ],
+  "topology": [
+    [
+      1,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      2,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      3,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      4,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      5,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      6,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      7,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      8,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      9,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      10,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      11,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      12,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      13,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      14,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      15,
+      "127.0.0.1:9799",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      16,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      17,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      18,
+      "127.0.0.1:9779",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      19,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ],
+    [
+      20,
+      "127.0.0.1:9789",
+      "127.0.0.1:9799, 127.0.0.1:9789, 127.0.0.1:9779",
+      ""
+    ]
+  ],
+  "fixture_rows": 240,
+  "fixture_rows_by_partition": {
+    "1": 12,
+    "2": 12,
+    "3": 12,
+    "4": 12,
+    "5": 12,
+    "6": 12,
+    "7": 12,
+    "8": 12,
+    "9": 12,
+    "10": 12,
+    "11": 12,
+    "12": 12,
+    "13": 12,
+    "14": 12,
+    "15": 12,
+    "16": 12,
+    "17": 12,
+    "18": 12,
+    "19": 12,
+    "20": 12
+  },
+  "passed": true,
+  "finished_at": "2026-11-04T17:25:21.538342+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "utc": "2026-11-04T15:57:09Z",
+  "command_arguments": [
+    "index",
+    "--space",
+    "ft_bench_1m",
+    "--index",
+    "ft_passage_text_1m",
+    "--wait-seconds",
+    "3600"
+  ],
+  "flag_state": "Record verified graph flag state and PROFILE separately"
+}

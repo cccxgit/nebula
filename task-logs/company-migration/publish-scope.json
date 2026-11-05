@@ -1,0 +1,32 @@
+{
+  "time_utc": "2026-11-05T01:22:16Z",
+  "source_commit": "964f1730b59c1cb7483336a99df0ec8587ea020c",
+  "branch": "3.6-tantivy",
+  "prebuilt_bundle_bytes": 29404414,
+  "prebuilt_bundle_sha256": "a003c4957cc2107ad2d8649d1daf3c6004fdccdfe38dc8539341e7c7f6c22894",
+  "prebuilt_archive_sha256": "e58256ae876dfbfc6c613832c4a65ba152906536b3a24898e8c0143f930eb13f",
+  "verified": {
+    "cmake_no_cargo_prebuilt_configure": true,
+    "rust_archive_checksum_match": true,
+    "cpp_rust_bridge_test": true,
+    "nebula_metad_storaged_graphd_j5_build": true,
+    "topk_standalone_test": true,
+    "git_diff_check": true
+  },
+  "logs": [
+    "task-logs/tantivy-build/company-prebuilt-final-configure.log",
+    "task-logs/tantivy-build/company-prebuilt-final-ctest.log",
+    "task-logs/tantivy-build/company-source-final-j5.log",
+    "task-logs/tantivy-build/company-source-braces-j5.log",
+    "task-logs/tantivy-build/company-topk-test.log"
+  ],
+  "excluded_from_git": [
+    "build/ and local build-company-prebuilt-check/",
+    "runtime databases under /home/sch/nebula-run/",
+    "raw MS MARCO archive and projections under /home/sch/nebula-data/",
+    "task-logs/tantivy-bridge/tantivy-bridge-test",
+    "task-logs/tantivy-query/native-analyzer-diff-source.jsonl",
+    "old draft PPTs",
+    "local unrelated close-chatgpt.log and codex.txt"
+  ]
+}

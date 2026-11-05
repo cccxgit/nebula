@@ -1,0 +1,13 @@
+{"time": "2026-11-04T15:30:28.644240+00:00", "space": "tantivy_demo_verified", "event": "query", "query": "SHOW HOSTS", "rows": 3, "elapsed_ms": 1.1012389986717608}
+{"time": "2026-11-04T15:30:28.645952+00:00", "space": "tantivy_demo_verified", "event": "query", "query": "CREATE SPACE `tantivy_demo_verified` (partition_num=20, replica_factor=3, vid_type=FIXED_STRING(64))", "rows": 0, "elapsed_ms": 1.566855999044492}
+{"time": "2026-11-04T15:30:28.646446+00:00", "space": "tantivy_demo_verified", "event": "query_failed", "query": "USE `tantivy_demo_verified`", "error": "SpaceNotFound: SpaceName `tantivy_demo_verified`", "elapsed_ms": 0.40429300133837387}
+{"time": "2026-11-04T15:30:29.648556+00:00", "space": "tantivy_demo_verified", "event": "query_failed", "query": "USE `tantivy_demo_verified`", "error": "SpaceNotFound: SpaceName `tantivy_demo_verified`", "elapsed_ms": 0.9904309990815818}
+{"time": "2026-11-04T15:30:30.653710+00:00", "space": "tantivy_demo_verified", "event": "query_failed", "query": "USE `tantivy_demo_verified`", "error": "SpaceNotFound: SpaceName `tantivy_demo_verified`", "elapsed_ms": 4.646080000384245}
+{"time": "2026-11-04T15:30:31.658717+00:00", "space": "tantivy_demo_verified", "event": "query_failed", "query": "USE `tantivy_demo_verified`", "error": "SpaceNotFound: SpaceName `tantivy_demo_verified`", "elapsed_ms": 3.6535890012601158}
+{"time": "2026-11-04T15:30:32.661392+00:00", "space": "tantivy_demo_verified", "event": "query", "query": "USE `tantivy_demo_verified`", "rows": 0, "elapsed_ms": 1.8004849989665672}
+{"time": "2026-11-04T15:30:32.663304+00:00", "space": "tantivy_demo_verified", "event": "query", "query": "CREATE TAG article(title string, body string, category int)", "rows": 0, "elapsed_ms": 1.7117899988079444}
+{"time": "2026-11-04T15:30:32.664492+00:00", "space": "tantivy_demo_verified", "event": "query", "query": "CREATE EDGE cites(body string)", "rows": 0, "elapsed_ms": 1.068049001332838}
+{"time": "2026-11-04T15:30:32.665460+00:00", "space": "tantivy_demo_verified", "event": "query", "query": "DESCRIBE TAG article", "rows": 3, "elapsed_ms": 0.8798920007393463}
+{"time": "2026-11-04T15:30:32.666325+00:00", "space": "tantivy_demo_verified", "event": "query", "query": "DESCRIBE EDGE cites", "rows": 1, "elapsed_ms": 0.7765810005366802}
+{"time": "2026-11-04T15:30:32.666708+00:00", "space": "tantivy_demo_verified", "event": "query_failed", "query": "CREATE FULLTEXT TAG INDEX tantivy_demo_verified_article ON article(title, body)", "error": "TagNotFound: TagName `article`", "elapsed_ms": 0.2966049996757647}
+{"time": "2026-11-04T15:30:32.666784+00:00", "space": "tantivy_demo_verified", "event": "demo_failed", "error": "TagNotFound: TagName `article`"}

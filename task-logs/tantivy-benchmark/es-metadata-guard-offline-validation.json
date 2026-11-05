@@ -1,0 +1,45 @@
+{
+  "utc": "2026-11-04T16:46:37.192764+00:00",
+  "offline_only": true,
+  "connections": 0,
+  "sleeps_executed": 0,
+  "checks": [
+    {
+      "heartbeat": 1,
+      "load_meta_interval": null,
+      "expected_seconds_or_reject": 5,
+      "actual": 5
+    },
+    {
+      "heartbeat": 10,
+      "load_meta_interval": null,
+      "expected_seconds_or_reject": 22,
+      "actual": 22
+    },
+    {
+      "heartbeat": 14,
+      "load_meta_interval": null,
+      "expected_seconds_or_reject": 30,
+      "actual": 30
+    },
+    {
+      "heartbeat": 15,
+      "load_meta_interval": null,
+      "expected_seconds_or_reject": null,
+      "actual": null
+    },
+    {
+      "heartbeat": null,
+      "load_meta_interval": null,
+      "expected_seconds_or_reject": null,
+      "actual": null
+    },
+    {
+      "heartbeat": 1,
+      "load_meta_interval": 6,
+      "expected_seconds_or_reject": 14,
+      "actual": 14
+    }
+  ],
+  "all_passed": true
+}

@@ -1,0 +1,70 @@
+{
+  "utc": "2026-11-04T16:33:54.701122+00:00",
+  "health": {
+    "cluster_name": "nebula-tantivy-es-baseline",
+    "status": "green",
+    "timed_out": false,
+    "number_of_nodes": 1,
+    "number_of_data_nodes": 1,
+    "active_primary_shards": 0,
+    "active_shards": 0,
+    "relocating_shards": 0,
+    "initializing_shards": 0,
+    "unassigned_shards": 0,
+    "delayed_unassigned_shards": 0,
+    "number_of_pending_tasks": 0,
+    "number_of_in_flight_fetch": 0,
+    "task_max_waiting_in_queue_millis": 0,
+    "active_shards_percent_as_number": 100.0
+  },
+  "indices": [],
+  "process": {
+    "_nodes": {
+      "total": 1,
+      "successful": 1,
+      "failed": 0
+    },
+    "cluster_name": "nebula-tantivy-es-baseline",
+    "nodes": {
+      "JnDQvIX_SO2QktmKmQZkFw": {
+        "name": "es-baseline-local",
+        "transport_address": "127.0.0.1:19300",
+        "host": "127.0.0.1",
+        "ip": "127.0.0.1",
+        "version": "7.17.29",
+        "build_flavor": "default",
+        "build_type": "tar",
+        "build_hash": "580aff1a0064ce4c93293aaab6fcc55e22c10d1c",
+        "roles": [
+          "data",
+          "data_cold",
+          "data_content",
+          "data_frozen",
+          "data_hot",
+          "data_warm",
+          "ingest",
+          "master",
+          "remote_cluster_client",
+          "transform"
+        ],
+        "attributes": {
+          "xpack.installed": "true",
+          "transform.node": "true"
+        },
+        "process": {
+          "refresh_interval_in_millis": 1000,
+          "id": 136093,
+          "mlockall": false
+        }
+      }
+    }
+  },
+  "proc_process_ids": {
+    "136093": {
+      "ppid": 1035,
+      "pgrp": 135892,
+      "session": 135892,
+      "open_files_limit": "Max open files            65536                65536                files     "
+    }
+  }
+}

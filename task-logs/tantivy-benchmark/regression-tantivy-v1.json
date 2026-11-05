@@ -1,0 +1,413 @@
+{
+  "utc": "2026-11-04T15:41:58Z",
+  "kind": "synthetic_8_row_correctness",
+  "function": "TEXT_SEARCH",
+  "port": 9669,
+  "fixture_rows": 8,
+  "all_passed": true,
+  "cases": [
+    {
+      "name": "term",
+      "query_text": "title:quick",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "feature": "term",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:quick\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.924793998725363
+    },
+    {
+      "name": "case_normalization",
+      "query_text": "title:QUICK",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "feature": "term",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:QUICK\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.337181000664714
+    },
+    {
+      "name": "phrase",
+      "query_text": "body:\"new york\"",
+      "expected_ids": [
+        "r1",
+        "r4"
+      ],
+      "feature": "phrase",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"body:\\\"new york\\\"\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r4"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.502999001488206
+    },
+    {
+      "name": "boolean_and",
+      "query_text": "title:quick AND body:river",
+      "expected_ids": [
+        "r1"
+      ],
+      "feature": "boolean",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:quick AND body:river\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1"
+      ],
+      "returned_rows": 1,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.087495999556268
+    },
+    {
+      "name": "boolean_or",
+      "query_text": "title:fox OR title:hare",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "feature": "boolean",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:fox OR title:hare\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.933158999847365
+    },
+    {
+      "name": "boolean_not",
+      "query_text": "title:quick AND NOT body:jersey",
+      "expected_ids": [
+        "r1",
+        "r8"
+      ],
+      "feature": "boolean",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:quick AND NOT body:jersey\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r8"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 6.257193001147243
+    },
+    {
+      "name": "field_group",
+      "query_text": "title:(quick OR quack) AND body:new",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "feature": "field",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:(quick OR quack) AND body:new\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 8.215088999349973
+    },
+    {
+      "name": "multiple_fields",
+      "query_text": "harbor",
+      "expected_ids": [
+        "r4"
+      ],
+      "feature": "field",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"harbor\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r4"
+      ],
+      "returned_rows": 1,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 5.630289999317029
+    },
+    {
+      "name": "prefix",
+      "query_text": "title:bro*",
+      "expected_ids": [
+        "r1",
+        "r3",
+        "r4"
+      ],
+      "feature": "wildcards",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:bro*\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r3",
+        "r4"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 6.234278000192717
+    },
+    {
+      "name": "wildcard_contains",
+      "query_text": "title:*row*",
+      "expected_ids": [
+        "r1",
+        "r3"
+      ],
+      "feature": "wildcards",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:*row*\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r3"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 16.141009000421036
+    },
+    {
+      "name": "wildcard_one_char",
+      "query_text": "title:qu?ck",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "feature": "wildcards",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:qu?ck\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 11.57805899856612
+    },
+    {
+      "name": "regexp_alternation",
+      "query_text": "title:/qu(i|a)ck/",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "feature": "regular-expressions",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:/qu(i|a)ck/\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.063952999786125
+    },
+    {
+      "name": "regexp_contains",
+      "query_text": "title:/.*row.*/",
+      "expected_ids": [
+        "r1",
+        "r3"
+      ],
+      "feature": "regular-expressions",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:/.*row.*/\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r3"
+      ],
+      "returned_rows": 2,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 18.81204799974512
+    },
+    {
+      "name": "fuzzy_one_edit",
+      "query_text": "title:quik~1",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "feature": "fuzziness",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:quik~1\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.9340780005877605
+    },
+    {
+      "name": "phrase_slop",
+      "query_text": "body:\"new york\"~1",
+      "expected_ids": [
+        "r1",
+        "r4",
+        "r8"
+      ],
+      "feature": "proximity-searches",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"body:\\\"new york\\\"~1\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r4",
+        "r8"
+      ],
+      "returned_rows": 3,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 8.440531999440282
+    },
+    {
+      "name": "boost",
+      "query_text": "title:fox^4 OR title:hare",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "feature": "boosting",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:fox^4 OR title:hare\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r8"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 4.404145000080462
+    },
+    {
+      "name": "range_inclusive",
+      "query_text": "title:[blue TO brown]",
+      "expected_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "feature": "ranges",
+      "expected_error": false,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:[blue TO brown]\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "returned_rows": 4,
+      "success": true,
+      "passed": true,
+      "error": "",
+      "elapsed_ms": 3.3629389999987325
+    },
+    {
+      "name": "syntax_error",
+      "query_text": "title:\"unterminated",
+      "expected_ids": null,
+      "feature": "strict-syntax",
+      "expected_error": true,
+      "source": "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html",
+      "ngql": "LOOKUP ON ftcase WHERE TEXT_SEARCH(`ftcase_native_v1`,\"title:\\\"unterminated\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100;",
+      "actual_ids": null,
+      "returned_rows": 0,
+      "success": false,
+      "passed": true,
+      "error": "Storage Error: part: 13, error: E_INVALID_PARM(-2009).",
+      "elapsed_ms": 2.6258939997205744
+    }
+  ],
+  "note": "Unsupported grammar must be disclosed; successful empty/wrong results are failures, not support."
+}

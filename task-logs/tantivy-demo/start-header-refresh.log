@@ -1,0 +1,6 @@
+{"time": "2026-11-04T15:39:31.478083+00:00", "event": "started", "service": "metad", "pid": 87787, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:31.744899+00:00", "event": "started", "service": "graphd", "pid": 87994, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:31.791047+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": []}
+{"time": "2026-11-04T15:39:32.059450+00:00", "event": "started", "service": "storage1", "pid": 88029, "port": 9779, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:32.326350+00:00", "event": "started", "service": "storage2", "pid": 88188, "port": 9789, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:32.593428+00:00", "event": "started", "service": "storage3", "pid": 88346, "port": 9799, "open_files_limit": 65536}

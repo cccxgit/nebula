@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-04T16:45:28.008939+00:00",
+  "url": "http://127.0.0.1:39879/flags?flags=load_meta_interval_secs,heartbeat_interval_secs&format=json",
+  "method": "GET",
+  "response": {
+    "flags": [
+      {
+        "name": "load_meta_interval_secs",
+        "value": null
+      },
+      {
+        "name": "heartbeat_interval_secs",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "time": "2026-11-04T15:59:58Z",
+  "kind": "measured_query_roundtrip",
+  "label": "tantivy-1m-pushdown-on-c1",
+  "space": "ft_bench_1m",
+  "concurrency": 1,
+  "warmup_cycles_excluded": 3,
+  "repeats": 200,
+  "elapsed_s": 69.53643794399977,
+  "attempted_qps": 11.504759571438921,
+  "successful_qps": 11.504759571438921,
+  "percentile_method": "nearest_rank_successful_requests_only",
+  "overall": {
+    "requests": 800,
+    "successes": 800,
+    "failures": 0,
+    "latency_success_ms": {
+      "p50": 44.985874,
+      "p95": 251.595893,
+      "p99": 263.718028,
+      "max": 287.669332
+    }
+  },
+  "queries": {
+    "contains_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"water\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 243.224835,
+        "p95": 262.0582,
+        "p99": 280.492937,
+        "max": 287.669332
+      }
+    },
+    "contains_new_york": {
+      "query": "MATCH (v:passage) WHERE v.passage.text CONTAINS \"New York\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 62.275496,
+        "p95": 77.314314,
+        "p99": 80.821262,
+        "max": 87.587533
+      }
+    },
+    "starts_with_the_united": {
+      "query": "MATCH (v:passage) WHERE v.passage.text STARTS WITH \"The United\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 19.411634,
+        "p95": 27.45875,
+        "p99": 30.365127,
+        "max": 35.545837
+      }
+    },
+    "ends_with_water": {
+      "query": "MATCH (v:passage) WHERE v.passage.text ENDS WITH \"water.\" RETURN id(v) AS vid, v.passage.text AS text LIMIT 10;",
+      "requests": 200,
+      "successes": 200,
+      "failures": 0,
+      "latency_success_ms": {
+        "p50": 20.225475,
+        "p95": 31.107578,
+        "p99": 37.91889,
+        "max": 44.985874
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "utc": "2026-11-04T16:45:18.107571+00:00",
+  "job_rows": [
+    [
+      4,
+      "REBUILD_FULLTEXT_INDEX",
+      "RUNNING",
+      "utc datetime: 2026-11-04T16:44:43.000000, timezone_offset: 0",
+      null,
+      "E_JOB_SUBMITTED"
+    ],
+    [
+      0,
+      "127.0.0.1",
+      "RUNNING",
+      "utc datetime: 2026-11-04T16:44:43.000000, timezone_offset: 0",
+      null,
+      ""
+    ],
+    [
+      "Total:1",
+      "Succeeded:0",
+      "Failed:0",
+      "In Progress:1",
+      "",
+      ""
+    ]
+  ],
+  "count": {
+    "count": 1000000,
+    "_shards": {
+      "total": 1,
+      "successful": 1,
+      "skipped": 0,
+      "failed": 0
+    }
+  }
+}

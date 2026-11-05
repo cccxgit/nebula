@@ -1,0 +1,156 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=6,
+        output_var=b'{"colNames":["vid"],"type":"DATASET","name":"__Project_6"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_5'),
+        Pair(
+            key=b'columns',
+            value=b'["id($v) AS vid"]')],
+        profiles=[ProfilingStats(
+            rows=147,
+            exec_duration_in_us=248,
+            total_duration_in_us=260)],
+        dependencies=[5]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=5,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Filter_5"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Project_4'),
+        Pair(
+            key=b'condition',
+            value=b'(v.passage.text STARTS WITH "The United")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=147,
+            exec_duration_in_us=44,
+            total_duration_in_us=50)],
+        dependencies=[9]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=9,
+        output_var=b'{"colNames":["v"],"type":"DATASET","name":"__Project_4"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'passage._tag IS NOT EMPTY'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'props',
+            value=b'[{"tagId":11,"props":["text","_tag"]}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=147,
+            exec_duration_in_us=844,
+            total_duration_in_us=2305,
+            other_stats={b'resp[0]': b'{\n  "exec": "384(us)",\n  "host": "127.0.0.1:9789",\n  "total"'
+                        b': "1015(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "562(us)",\n  "host": "127.0.0.1:9779",\n  "total"'
+                        b': "1661(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "315(us)",\n  "host": "127.0.0.1:9799",\n  "total"'
+                        b': "619(us)"\n}',
+            b'total_rpc': b'1944(us)'})],
+        dependencies=[7]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=7,
+        output_var=b'{"colNames":["_vid"],"type":"DATASET","name":"__IndexScan_1"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'10'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'11'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"fulltext_value":"The United","filter":"(passage.text STA'
+             b'RTS WITH \\"The United\\")","fulltext_field":"text","fulltext_mode":2,"ful'
+             b'ltext_index":"ft_passage_text_1m","engine":"tantivy"}]'))],
+        profiles=[ProfilingStats(
+            rows=147,
+            exec_duration_in_us=0,
+            total_duration_in_us=15358,
+            other_stats={b'resp[0]': b'{\n  "exec": "7761(us)",\n  "host": "127.0.0.1:9789",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'25160(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "25'
+                        b'001(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WIT'
+                        b'H \\"The United\\")])": "24853(us)",\n    "TantivyIndexScanNode'
+                        b'(index=ft_passage_text_1m,field=text,mode=2)": "24673(us)"\n '
+                        b' },\n  "total": "8498(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "14413(us)",\n  "host": "127.0.0.1:9779",\n  "stor'
+                        b'age_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": '
+                        b'"108454(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "'
+                        b'107867(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS '
+                        b'WITH \\"The United\\")])": "106982(us)",\n    "TantivyIndexScan'
+                        b'Node(index=ft_passage_text_1m,field=text,mode=2)": "105918(us)"\n'
+                        b'  },\n  "total": "15094(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "1661(us)",\n  "host": "127.0.0.1:9799",\n  "stora'
+                        b'ge_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "'
+                        b'1386(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "138'
+                        b'1(us)",\n    "IndexSelectionNode(expr=[(passage.text STARTS WITH '
+                        b'\\"The United\\")])": "1378(us)",\n    "TantivyIndexScanNode(in'
+                        b'dex=ft_passage_text_1m,field=text,mode=2)": "1371(us)"\n  },\n'
+                        b'  "total": "2120(us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=2,
+        output_var=b'{"colNames":[],"type":"DATASET","name":"__Start_2"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=15)])],
+    node_index_map={2: 4, 5: 1, 6: 0, 7: 3, 9: 2},
+    format=b'row',
+    optimize_time_in_us=1341)

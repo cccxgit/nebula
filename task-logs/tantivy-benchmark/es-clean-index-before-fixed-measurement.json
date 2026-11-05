@@ -1,0 +1,44 @@
+{
+  "utc": "2026-11-04T16:43:01.760826+00:00",
+  "events": [
+    {
+      "query": "USE ft_bench_1m",
+      "rows": []
+    },
+    {
+      "query": "SHOW JOB 2",
+      "rows": [
+        [
+          2,
+          "REBUILD_FULLTEXT_INDEX",
+          "FINISHED",
+          "utc datetime: 2026-11-04T16:39:04.000000, timezone_offset: 0",
+          "utc datetime: 2026-11-04T16:42:49.000000, timezone_offset: 0",
+          "SUCCEEDED"
+        ],
+        [
+          0,
+          "127.0.0.1",
+          "FINISHED",
+          "utc datetime: 2026-11-04T16:39:04.000000, timezone_offset: 0",
+          "utc datetime: 2026-11-04T16:42:49.000000, timezone_offset: 0",
+          "SUCCEEDED"
+        ],
+        [
+          "Total:1",
+          "Succeeded:1",
+          "Failed:0",
+          "In Progress:0",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "query": "SHOW FULLTEXT INDEXES",
+      "rows": []
+    }
+  ],
+  "es_indices": [],
+  "note": "Previous DROP succeeded; evidence serialization was retried with DateTime string conversion."
+}

@@ -1,0 +1,10 @@
+Verifying and extracting bundled Tantivy archive (Rust not required)
+Linux x86_64, glibc 2.35
+Verified Tantivy archive: /home/sch/nebula/nebula-3.6-tantivy/build-company-prebuilt-check/tantivy-rust-target/release/libnebula_tantivy.a
+Built target nebula_tantivy_build
+Building CXX object src/common/plugin/fulltext/tantivy/CMakeFiles/tantivy_adapter.dir/TantivyIndex.cpp.o
+Linking CXX static library ../../../../../lib/libtantivy_adapter.a
+Built target tantivy_adapter
+Building CXX object src/common/plugin/fulltext/tantivy/CMakeFiles/tantivy_bridge_test.dir/tests/TantivyBridgeTest.cpp.o
+Linking CXX executable ../../../../../bin/tantivy_bridge_test
+Built target tantivy_bridge_test

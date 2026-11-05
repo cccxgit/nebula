@@ -1,0 +1,5 @@
+{
+  "rows": 1000000,
+  "unique_ids": 1000000,
+  "validated_duplicate_free": true
+}

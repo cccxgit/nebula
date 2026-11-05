@@ -1,0 +1,106 @@
+{
+  "utc": "2026-11-04T17:00:45Z",
+  "kind": "native_complete_hit_sets",
+  "backend": "tantivy",
+  "space": "ft_bench_1m",
+  "index": "ft_passage_text_1m",
+  "host": "127.0.0.1",
+  "port": 9669,
+  "dataset": {
+    "rows": 1000000,
+    "normalized_jsonl_sha256": "de46025a28771d1b88e20ab78dd2aeda05ef407bf7aab002a12e7afe876a2acd",
+    "max_chars_setting": 128,
+    "max_text_bytes_setting": 0
+  },
+  "max_hits": 100000,
+  "sentinel_limit": 100001,
+  "all_queries_complete": true,
+  "queries": [
+    {
+      "name": "term_water",
+      "query_text": "water",
+      "ngql": "LOOKUP ON passage WHERE TEXT_SEARCH(`ft_passage_text_1m`, \"water\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": true,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "100001",
+          "filter": "",
+          "orderBy": "[]",
+          "engine": "tantivy",
+          "isEdge": "0",
+          "offset": "0",
+          "schemaId": "11",
+          "searchExpr": "TEXT_SEARCH(ft_passage_text_1m, \"water\")"
+        }
+      ],
+      "error_code": 0,
+      "returned_rows": 16505,
+      "unique_ids": 16505,
+      "ids_file": "term_water.ids.jsonl",
+      "ids_sha256": "64d0594d427b9c3eca20ca74adf686bd68270bea42569a9ce1111676abef8fdb",
+      "elapsed_s": 0.5642056930009858
+    },
+    {
+      "name": "phrase_new_york",
+      "query_text": "\"New York\"",
+      "ngql": "LOOKUP ON passage WHERE TEXT_SEARCH(`ft_passage_text_1m`, \"\\\"New York\\\"\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": true,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "100001",
+          "filter": "",
+          "orderBy": "[]",
+          "engine": "tantivy",
+          "isEdge": "0",
+          "offset": "0",
+          "schemaId": "11",
+          "searchExpr": "TEXT_SEARCH(ft_passage_text_1m, \"\"New York\"\")"
+        }
+      ],
+      "error_code": 0,
+      "returned_rows": 3184,
+      "unique_ids": 3184,
+      "ids_file": "phrase_new_york.ids.jsonl",
+      "ids_sha256": "4e06c858c1b8a534d7f29c1bb0d6eadb5c5af1a3d6979b552ab8ac9e391a0904",
+      "elapsed_s": 0.12524629200015625
+    },
+    {
+      "name": "boolean_water_river",
+      "query_text": "water AND river",
+      "ngql": "LOOKUP ON passage WHERE TEXT_SEARCH(`ft_passage_text_1m`, \"water AND river\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": true,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "100001",
+          "filter": "",
+          "orderBy": "[]",
+          "engine": "tantivy",
+          "isEdge": "0",
+          "offset": "0",
+          "schemaId": "11",
+          "searchExpr": "TEXT_SEARCH(ft_passage_text_1m, \"water AND river\")"
+        }
+      ],
+      "error_code": 0,
+      "returned_rows": 159,
+      "unique_ids": 159,
+      "ids_file": "boolean_water_river.ids.jsonl",
+      "ids_sha256": "031e658dea108171528c849ef58053afd60a777800e1714105dd0241a8f7beaf",
+      "elapsed_s": 0.020676023999840254
+    }
+  ],
+  "note": "Correctness only; no concurrent writes allowed. Scores are checked for finiteness, not cross-engine equality.",
+  "finished_utc": "2026-11-04T17:00:45Z"
+}

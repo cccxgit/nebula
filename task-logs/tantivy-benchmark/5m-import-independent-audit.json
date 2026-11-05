@@ -1,0 +1,56 @@
+{
+  "utc": "2026-11-04T17:18:46Z",
+  "kind": "offline_recomputation_of_existing_measurements",
+  "runs": [
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T171336Z-import-5m",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Import acknowledgement counts and rows/s recomputed from batches",
+        "Batch sequence 0..24999 verified with no duplicates, missing entries or failure; exactly 200 rows per batch"
+      ],
+      "resources": {
+        "pids": [
+          155648,
+          155814,
+          155847,
+          155974,
+          156183
+        ],
+        "samples": 195,
+        "complete_pss_samples": 195,
+        "complete_cpu_intervals": 194,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.01,
+        "sample_interval_max_s": 1.0330000000000013,
+        "observed_peak_sum_rss_bytes": 1570136064,
+        "observed_peak_sum_pss_bytes": 1471273984,
+        "observed_peak_sum_cpu_cores": 5.29176,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "passed": true,
+      "import": {
+        "time": "2026-11-04T17:16:55Z",
+        "kind": "measured_graph_write_acknowledgement",
+        "input": "/home/sch/nebula-data/tantivy/msmarco-5m-128.jsonl.gz",
+        "completed_without_error": true,
+        "space": "ft_bench_5m",
+        "tag": "passage",
+        "field": "text",
+        "acknowledged_rows": 5000000,
+        "failed_rows_observed": 0,
+        "batch_requests_observed": 25000,
+        "concurrency": 1,
+        "elapsed_s": 198.69012730399845,
+        "acknowledged_rows_per_second": 25164.813510587446,
+        "source_rows_skipped": 0,
+        "index_visibility_measured": false,
+        "note": "On failure, concurrent in-flight writes may have succeeded; replay fixed VIDs safely.",
+        "batch_sequences_complete_and_unique": true,
+        "success_batches": 25000,
+        "batch_size": 200
+      }
+    }
+  ],
+  "all_passed": true
+}

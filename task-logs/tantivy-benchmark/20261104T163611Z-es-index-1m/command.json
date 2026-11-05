@@ -1,0 +1,28 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "scripts/tantivy-benchmark/es_baseline.py",
+    "create-index",
+    "--space",
+    "ft_bench_1m",
+    "--index",
+    "nebula_index_ft_passage_1m",
+    "--expected-rows",
+    "1000000",
+    "--analyzer",
+    "standard",
+    "--result-window",
+    "100001",
+    "--wait-seconds",
+    "3600"
+  ],
+  "pids": [
+    131155,
+    131356,
+    131408,
+    131532,
+    131648,
+    131769,
+    136093
+  ]
+}

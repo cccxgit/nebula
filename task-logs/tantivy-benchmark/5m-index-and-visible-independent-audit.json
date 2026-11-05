@@ -1,0 +1,153 @@
+{
+  "utc": "2026-11-04T17:21:20Z",
+  "kind": "offline_recomputation_of_existing_measurements",
+  "runs": [
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T171707Z-index-5m",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Saved events: jobs 23/24 all FINISHED and no failed queries; timing scope reviewed"
+      ],
+      "resources": {
+        "pids": [
+          155648,
+          155814,
+          155847,
+          155974,
+          156183
+        ],
+        "samples": 189,
+        "complete_pss_samples": 189,
+        "complete_cpu_intervals": 188,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.0219999999999985,
+        "sample_interval_max_s": 1.0719999999999885,
+        "observed_peak_sum_rss_bytes": 6064050176,
+        "observed_peak_sum_pss_bytes": 5979797504,
+        "observed_peak_sum_cpu_cores": 9.545399999999999,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "passed": true,
+      "index_events": {
+        "job_completions": [
+          {
+            "utc": "2026-11-04T17:17:19Z",
+            "event": "job_finished",
+            "job_id": 23,
+            "statuses": [
+              "FINISHED",
+              "FINISHED",
+              "FINISHED"
+            ],
+            "elapsed_s": 12.033216650997929
+          },
+          {
+            "utc": "2026-11-04T17:20:22Z",
+            "event": "job_finished",
+            "job_id": 24,
+            "statuses": [
+              "FINISHED",
+              "FINISHED",
+              "FINISHED",
+              "FINISHED"
+            ],
+            "elapsed_s": 182.4420991400002
+          }
+        ],
+        "create_to_jobs_finished": {
+          "utc": "2026-11-04T17:20:22Z",
+          "event": "index_build_jobs_finished",
+          "elapsed_s": 182.4451030019991,
+          "note": "Run verify next; job completion and query-set visibility are separate evidence."
+        },
+        "failed_query_events": 0,
+        "timing_note": "Fulltext CREATE to REBUILD observed completion; excludes prior Tag rebuild and later oracle verification. Auto-backfill may overlap explicit REBUILD."
+      }
+    },
+    {
+      "run": "task-logs/tantivy-benchmark/20261104T172054Z-visible-5m",
+      "checks": [
+        "Resource maxima recomputed from simultaneous sample groups",
+        "Saved visibility test success checked against oracle source hash, all four counts, no-LIMIT query text and unique expected IDs; topology and leader balance checked"
+      ],
+      "resources": {
+        "pids": [
+          155648,
+          155814,
+          155847,
+          155974,
+          156183
+        ],
+        "samples": 3,
+        "complete_pss_samples": 3,
+        "complete_cpu_intervals": 2,
+        "all_observed_processes_alive": true,
+        "sample_interval_min_s": 1.031,
+        "sample_interval_max_s": 1.034,
+        "observed_peak_sum_rss_bytes": 3014758400,
+        "observed_peak_sum_pss_bytes": 2913209344,
+        "observed_peak_sum_cpu_cores": 3.0073700000000003,
+        "warning": "Sampled maximum, not exact peak; includes setup/warmup. Missing CPU intervals mean unmeasured, not zero."
+      },
+      "passed": true,
+      "visibility": {
+        "utc": "2026-11-04T17:20:56Z",
+        "space": "ft_bench_5m",
+        "source_rows": 5000000,
+        "source_jsonl_sha256": "95864ebf78c175cf6090518d9e2222ad318a7b547b63d6d0681299cf2807775a",
+        "all_checks_passed": true,
+        "query_set_visible_seconds_since_verification_start": 2.1374120640030014,
+        "checks": [
+          {
+            "name": "contains_water",
+            "expected_hits": 82845,
+            "actual_hits": 82845,
+            "passed": true,
+            "tantivy_plan": true
+          },
+          {
+            "name": "contains_new_york",
+            "expected_hits": 16252,
+            "actual_hits": 16252,
+            "passed": true,
+            "tantivy_plan": true
+          },
+          {
+            "name": "starts_with_the_united",
+            "expected_hits": 1062,
+            "actual_hits": 1062,
+            "passed": true,
+            "tantivy_plan": true
+          },
+          {
+            "name": "ends_with_water",
+            "expected_hits": 138,
+            "actual_hits": 138,
+            "passed": true,
+            "tantivy_plan": true
+          }
+        ],
+        "note": "Not import-to-visible time; combine import/index timestamps.",
+        "oracle_counts_and_hash_checked": true,
+        "full_set_test_implementation": "readiness.py verify asserts no duplicate VID and actual set == oracle expected set before writing success; actual DB IDs not independently recollected in this offline audit."
+      }
+    }
+  ],
+  "all_passed": true,
+  "leader_balance": {
+    "evidence": "task-logs/tantivy-benchmark/leader-balance-5m.jsonl",
+    "before": {
+      "127.0.0.1:9779": 11,
+      "127.0.0.1:9789": 0,
+      "127.0.0.1:9799": 9
+    },
+    "after": {
+      "127.0.0.1:9779": 7,
+      "127.0.0.1:9789": 6,
+      "127.0.0.1:9799": 7
+    },
+    "job": 25,
+    "job_status": "FINISHED",
+    "note": "Change before query phase; do not compute 1m to 5m scaling ratios."
+  }
+}

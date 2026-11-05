@@ -1,0 +1,74 @@
+{
+  "utc": "2026-11-04T16:44:31.365574+00:00",
+  "kind": "static_listener_batch_unit_audit",
+  "default_batch_limit_bytes": 1000,
+  "configured_batch_limit_bytes": 1048576,
+  "configured_interval_seconds": 1,
+  "unit_confirmed": "key/value string bytes, not row count",
+  "strict_memory_limit": false,
+  "service_changes_by_this_audit": false,
+  "source_files": [
+    {
+      "path": "/home/sch/nebula/nebula-3.6-io/src/kvstore/listener/elasticsearch/ESListener.cpp",
+      "sha256": "49397bd8ea9d17b9c0aad89bdfe123091b360d9895e6627a98f55d2a2b682380",
+      "excerpts": [
+        {
+          "line": 13,
+          "text": "DEFINE_int32(listener_commit_batch_size, 1000, \"Max batch size when listener commit\");"
+        },
+        {
+          "line": 232,
+          "text": "void ESListener::processLogs() {\n  std::unique_ptr<LogIterator> iter;\n  {\n    std::lock_guard<std::mutex> guard(raftLock_);\n    if (lastApplyLogId_ >= committedLogId_) {\n      return;\n    }\n    iter = wal_->iterator(lastApplyLogId_ + 1, committedLogId_);\n  }"
+        },
+        {
+          "line": 315,
+          "text": "    }\n\n    if (static_cast<int32_t>(batch.size()) > FLAGS_listener_commit_batch_size) {\n      break;\n    }\n    ++(*iter);\n  }\n\n  // apply to state machine\n  if (lastApplyId != -1 && apply(batch)) {\n    std::lock_guard<std::mutex> guard(raftLock_);\n    lastApplyLogId_ = lastApplyId;\n    persist(committedLogId_, term_, lastApplyLogId_);\n    VLOG(2) << idStr_ << \"Listener succeeded apply log to \" << lastApplyLogId_;\n  }\n}"
+        },
+        {
+          "line": 332,
+          "text": "std::tuple<nebula::cpp2::ErrorCode, int64_t, int64_t> ESListener::commitSnapshot(\n    const std::vector<std::string>& rows,\n    LogID committedLogId,\n    TermID committedLogTerm,\n    bool finished) {\n  VLOG(2) << idStr_ << \"Listener is committing snapshot.\";\n  int64_t count = 0;\n  int64_t size = 0;\n  BatchHolder batch;\n  for (const auto& row : rows) {\n    count++;\n    size += row.size();\n    auto kv = decodeKV(row);\n    batch.put(kv.first.toString(), kv.second.toString());\n  }\n  if (!apply(batch)) {\n    LOG(INFO) << idStr_ << \"Failed to apply data while committing snapshot.\";\n    return {\n        nebula::cpp2::ErrorCode::E_RAFT_PERSIST_SNAPSHOT_FAILED, kNoSnapshotCount, kNoSnapshotSize};\n  }\n  if (finished) {\n    CHECK(!raftLock_.try_lock());\n    leaderCommitId_ = committedLogId;\n    lastApplyLogId_ = committedLogId;\n    persist(committedLogId, committedLogTerm, lastApplyLogId_);\n    LOG(INFO) << folly::sformat(\n        \"Commit snapshot to : committedLogId={},\"\n        \"committedLogTerm={}, lastApplyLogId_={}\",\n        committedLogId,\n        committedLogTerm,\n        lastApplyLogId_);\n  }\n  return {nebula::cpp2::ErrorCode::SUCCEEDED, count, size};\n}"
+        }
+      ]
+    },
+    {
+      "path": "/home/sch/nebula/nebula-3.6-io/src/kvstore/LogEncoder.h",
+      "sha256": "4108b7e79d4cdc423bb8e36b9a289fbe9802985de960af864cdc4688814a98dd",
+      "excerpts": [
+        {
+          "line": 157,
+          "text": "   * @param val Value to put\n   */\n  void put(std::string&& key, std::string&& val) {\n    size_ += key.size() + val.size();\n    auto op = std::make_tuple(\n        BatchLogType::OP_BATCH_PUT, std::forward<std::string>(key), std::forward<std::string>(val));\n    batch_.emplace_back(std::move(op));"
+        },
+        {
+          "line": 207,
+          "text": "  /**\n   * @brief size of key in operation of the batch, in bytes\n   */\n  size_t size() {\n    return size_;\n  }\n\n private:\n  std::vector<std::tuple<BatchLogType, std::string, std::string>> batch_;\n  size_t size_{0};\n};"
+        }
+      ]
+    },
+    {
+      "path": "/home/sch/nebula/nebula-3.6-io/src/kvstore/listener/Listener.cpp",
+      "sha256": "1f0584237e5b6b9ca87282ca9d54fca0f3c86cb455ac982ab606748307b8fe03",
+      "excerpts": [
+        {
+          "line": 12,
+          "text": "DEFINE_int32(listener_commit_interval_secs, 1, \"Listener commit interval\");\nDEFINE_uint32(ft_request_retry_times, 3, \"Retry times if fulltext request failed\");\nDEFINE_int32(ft_bulk_batch_size, 100, \"Max batch size when bulk insert\");"
+        },
+        {
+          "line": 145,
+          "text": "void Listener::doApply() {\n  while (!isStopped()) {\n    if (needToCleanupSnapshot()) {\n      cleanupSnapshot();\n    }\n    // todo(doodle): only put is handled, all remove is ignored for now\n    processLogs();\n    sleep(FLAGS_listener_commit_interval_secs);\n  }"
+        }
+      ]
+    },
+    {
+      "path": "/home/sch/nebula/nebula-3.6-io/src/storage/admin/RebuildFTIndexTask.cpp",
+      "sha256": "da34b0222340fc48169b6a79f4ea9c2432023ddac7ba9b6896707a65bf019f81",
+      "excerpts": [
+        {
+          "line": 60,
+          "text": "nebula::cpp2::ErrorCode RebuildFTIndexTask::taskByPart(nebula::kvstore::Listener* listener) {\n  auto part = listener->partitionId();\n  listener->resetListener();\n  while (true) {\n    sleep(FLAGS_raft_heartbeat_interval_secs);\n    if (listener->pursueLeaderDone()) {\n      return nebula::cpp2::ErrorCode::SUCCEEDED;\n    }\n    VLOG(1) << folly::sformat(\"Processing fulltext rebuild subtask, part={}, rebuild_log={}\",\n                              part,\n                              listener->getApplyId());\n  }\n  return nebula::cpp2::ErrorCode::SUCCEEDED;\n}\n"
+        }
+      ]
+    }
+  ],
+  "excluded_stage": "20261104T163904Z-es-index-1m",
+  "note": "Old source HEAD differs from the already-built binary revision; preserve live flag readback and fresh rebuild observations separately."
+}

@@ -1,0 +1,25 @@
+{
+  "utc": "2026-11-04T17:25:18Z",
+  "pid": 41672,
+  "action": "stop owned paused dataset downloader; preserve resumable partial archive",
+  "verified_argv": [
+    "python3",
+    "scripts/tantivy-benchmark/benchmark.py",
+    "fetch",
+    "--url",
+    "https://msmarco.z22.web.core.windows.net/msmarcoranking/msmarco_v2_passage.tar",
+    "--output",
+    "/home/sch/nebula-data/tantivy/msmarco_v2_passage.tar",
+    "--connections",
+    "8",
+    "--chunk-mib",
+    "8",
+    ""
+  ],
+  "status_before": [
+    "Name:\tpython3",
+    "Umask:\t0002",
+    "State:\tT (stopped)"
+  ],
+  "still_present": false
+}

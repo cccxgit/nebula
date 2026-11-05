@@ -1,0 +1,55 @@
+{
+  "utc": "2026-11-04T15:51:27Z",
+  "collection_timing": "post-run read-only audit; config files are not an immutable pre-run snapshot",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "logical_cpus": 24,
+  "cpu_model": "13th Gen Intel(R) Core(TM) i7-13700K",
+  "memory": "MemTotal:       32594448 kB",
+  "service_configs": {
+    "graphd": [
+      "--accept_partial_success=false",
+      "--port=9669",
+      "--num_netio_threads=2",
+      "--num_worker_threads=4",
+      "--ws_http_port=19669"
+    ],
+    "metad": [
+      "--port=9559",
+      "--ws_http_port=19559",
+      "--heartbeat_interval_secs=1"
+    ],
+    "storage1": [
+      "--port=9779",
+      "--ws_http_port=19779",
+      "--heartbeat_interval_secs=1",
+      "--raft_heartbeat_interval_secs=5",
+      "--wal_ttl=3600",
+      "--rocksdb_block_cache=64",
+      "--rocksdb_compression=lz4",
+      "--num_io_threads=2",
+      "--num_worker_threads=4"
+    ],
+    "storage2": [
+      "--port=9789",
+      "--ws_http_port=19789",
+      "--heartbeat_interval_secs=1",
+      "--raft_heartbeat_interval_secs=5",
+      "--wal_ttl=3600",
+      "--rocksdb_block_cache=64",
+      "--rocksdb_compression=lz4",
+      "--num_io_threads=2",
+      "--num_worker_threads=4"
+    ],
+    "storage3": [
+      "--port=9799",
+      "--ws_http_port=19799",
+      "--heartbeat_interval_secs=1",
+      "--raft_heartbeat_interval_secs=5",
+      "--wal_ttl=3600",
+      "--rocksdb_block_cache=64",
+      "--rocksdb_compression=lz4",
+      "--num_io_threads=2",
+      "--num_worker_threads=4"
+    ]
+  }
+}

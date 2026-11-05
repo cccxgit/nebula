@@ -1,0 +1,18 @@
+{
+  "measured_rows": 1000000,
+  "graph_delta_bytes": 1617575936,
+  "index_delta_bytes": 941432832,
+  "normalized_file_bytes": 54984169,
+  "index_visible_seconds": 148,
+  "peak_service_pss_bytes": 2210478080,
+  "max_verified_query_hits": 18267,
+  "all_query_hit_counts_verified": true,
+  "error_free": true,
+  "no_oom_or_swap_storm": true,
+  "notes": [
+    "All graph/index deltas sum all 3 storage processes exactly once.",
+    "148 seconds is observed first import timestamp 15:56:08 UTC to full oracle completion 15:58:36 UTC, inclusive of operator gaps, not precise index latency.",
+    "Snapshot 16:02:54 vs 15:56:08: no OOM, no swapout; 83,578,880 bytes historical swap-in during 406 s; available RAM about 26 GiB.",
+    "Directory sizes include RocksDB/WAL, ordinary Tag index and retained allocations. Extrapolation is conservative, not a 100m result."
+  ]
+}

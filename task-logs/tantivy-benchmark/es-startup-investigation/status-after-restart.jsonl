@@ -1,0 +1,7 @@
+{"name": "metad", "pid": 131155, "running": true, "owned": true, "process_state": "S"}
+{"name": "storage1", "pid": 131408, "running": true, "owned": true, "process_state": "S"}
+{"name": "storage2", "pid": 131532, "running": true, "owned": true, "process_state": "S"}
+{"name": "storage3", "pid": 131648, "running": true, "owned": true, "process_state": "S"}
+{"name": "listener", "pid": 131769, "running": true, "owned": true, "process_state": "S"}
+{"name": "graphd", "pid": 131356, "running": true, "owned": true, "process_state": "S"}
+{"name": "elasticsearch", "pid": 136093, "running": true, "owned": true, "process_state": "S", "http_ready": true, "http_cluster_name": "nebula-tantivy-es-baseline", "http_version": "7.17.29", "http_process_ids": [136093], "pid_matches_http": true, "ready": true}

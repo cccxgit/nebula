@@ -1,0 +1,35 @@
+{
+  "kind": "offline_mock_only",
+  "database_connections": 0,
+  "http_requests": 0,
+  "checks": [
+    {
+      "case": "tantivy",
+      "passed": true
+    },
+    {
+      "case": "es",
+      "passed": true
+    },
+    {
+      "case": "offline_equal_sets",
+      "passed": true
+    },
+    {
+      "case": "duplicate",
+      "passed": true
+    },
+    {
+      "case": "sentinel",
+      "passed": true
+    },
+    {
+      "case": "query_failure",
+      "passed": true
+    },
+    {
+      "case": "incomplete_collection_never_compares_equal",
+      "passed": true
+    }
+  ]
+}

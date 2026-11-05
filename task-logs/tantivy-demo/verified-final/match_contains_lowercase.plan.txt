@@ -1,0 +1,156 @@
+PlanDescription(
+    plan_node_descs=[PlanNodeDescription(
+        name=b'Project',
+        id=6,
+        output_var=b'{"colNames":["id"],"name":"__Project_6","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Filter_5'),
+        Pair(
+            key=b'columns',
+            value=b'["id($v) AS id"]')],
+        profiles=[ProfilingStats(
+            rows=40,
+            exec_duration_in_us=159,
+            total_duration_in_us=168)],
+        dependencies=[5]),
+    PlanNodeDescription(
+        name=b'Filter',
+        id=5,
+        output_var=b'{"colNames":["v"],"name":"__Filter_5","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__Project_4'),
+        Pair(
+            key=b'condition',
+            value=b'(v.article.body CONTAINS "graph")'),
+        Pair(
+            key=b'isStable',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=40,
+            exec_duration_in_us=50,
+            total_duration_in_us=66)],
+        dependencies=[9]),
+    PlanNodeDescription(
+        name=b'AppendVertices',
+        id=9,
+        output_var=b'{"colNames":["v"],"name":"__Project_4","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b'__IndexScan_1'),
+        Pair(
+            key=b'space',
+            value=b'27'),
+        Pair(
+            key=b'dedup',
+            value=b'1'),
+        Pair(
+            key=b'limit',
+            value=b'-1'),
+        Pair(
+            key=b'filter',
+            value=b'article._tag IS NOT EMPTY'),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'src',
+            value=b'$_vid'),
+        Pair(
+            key=b'props',
+            value=b'[{"tagId":28,"props":["body","_tag"]}]'),
+        Pair(
+            key=b'exprs',
+            value=b''),
+        Pair(
+            key=b'vertex_filter',
+            value=b''),
+        Pair(
+            key=b'if_track_previous_path',
+            value=b'false')],
+        profiles=[ProfilingStats(
+            rows=40,
+            exec_duration_in_us=568,
+            total_duration_in_us=3847,
+            other_stats={b'resp[0]': b'{\n  "exec": "266(us)",\n  "host": "127.0.0.1:9799",\n  "total"'
+                        b': "3303(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "397(us)",\n  "host": "127.0.0.1:9779",\n  "total"'
+                        b': "690(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "340(us)",\n  "host": "127.0.0.1:9789",\n  "total"'
+                        b': "3237(us)"\n}',
+            b'total_rpc': b'3459(us)'})],
+        dependencies=[7]),
+    PlanNodeDescription(
+        name=b'IndexScan',
+        id=7,
+        output_var=b'{"colNames":["_vid"],"name":"__IndexScan_1","type":"DATASET"}',
+        description=[Pair(
+            key=b'inputVar',
+            value=b''),
+        Pair(
+            key=b'space',
+            value=b'27'),
+        Pair(
+            key=b'dedup',
+            value=b'0'),
+        Pair(
+            key=b'limit',
+            value=b'9223372036854775807'),
+        Pair(
+            key=b'filter',
+            value=b''),
+        Pair(
+            key=b'orderBy',
+            value=b'[]'),
+        Pair(
+            key=b'schemaId',
+            value=b'28'),
+        Pair(
+            key=b'isEdge',
+            value=b'false'),
+        Pair(
+            key=b'returnCols',
+            value=b'["_vid"]'),
+        Pair(
+            key=b'indexCtx',
+            value=(b'[{"columnHints":[],"fulltext_value":"graph","fulltext_field":"body","filter"'
+             b':"(article.body CONTAINS \\"graph\\")","fulltext_mode":1,"fulltext_index":'
+             b'"tantivy_demo_v3_article","engine":"tantivy"}]'))],
+        profiles=[ProfilingStats(
+            rows=40,
+            exec_duration_in_us=0,
+            total_duration_in_us=1253,
+            other_stats={b'resp[0]': b'{\n  "exec": "327(us)",\n  "host": "127.0.0.1:9799",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "6'
+                        b'49(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "628(u'
+                        b's)",\n    "IndexSelectionNode(expr=[(article.body CONTAINS \\"'
+                        b'graph\\")])": "609(us)",\n    "TantivyIndexScanNode(index=tant'
+                        b'ivy_demo_v3_article,field=body,mode=1,topk=0,fallback=false)": "'
+                        b'581(us)"\n  },\n  "total": "567(us)"\n}',
+            b'resp[1]': b'{\n  "exec": "629(us)",\n  "host": "127.0.0.1:9779",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "1'
+                        b'604(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "1484'
+                        b'(us)",\n    "IndexSelectionNode(expr=[(article.body CONTAINS '
+                        b'\\"graph\\")])": "1296(us)",\n    "TantivyIndexScanNode(index=t'
+                        b'antivy_demo_v3_article,field=body,mode=1,topk=0,fallback=false)"'
+                        b': "1073(us)"\n  },\n  "total": "859(us)"\n}',
+            b'resp[2]': b'{\n  "exec": "917(us)",\n  "host": "127.0.0.1:9789",\n  "storag'
+                        b'e_detail": {\n    "IndexLimitNode(limit=9223372036854775807)": "4'
+                        b'496(us)",\n    "IndexProjectionNode(projectColumn=[_vid])": "4127'
+                        b'(us)",\n    "IndexSelectionNode(expr=[(article.body CONTAINS '
+                        b'\\"graph\\")])": "3652(us)",\n    "TantivyIndexScanNode(index=t'
+                        b'antivy_demo_v3_article,field=body,mode=1,topk=0,fallback=false)"'
+                        b': "3169(us)"\n  },\n  "total": "1098(us)"\n}'})],
+        dependencies=[2]),
+    PlanNodeDescription(
+        name=b'Start',
+        id=2,
+        output_var=b'{"colNames":[],"type":"DATASET","name":"__Start_2"}',
+        profiles=[ProfilingStats(
+            rows=0,
+            exec_duration_in_us=0,
+            total_duration_in_us=11)])],
+    node_index_map={2: 4, 5: 1, 6: 0, 7: 3, 9: 2},
+    format=b'row',
+    optimize_time_in_us=1331)

@@ -1,0 +1,131 @@
+{
+  "took": 1,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 8,
+      "relation": "eq"
+    },
+    "max_score": 1.0,
+    "hits": [
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "FOLCECKOLGIFFCIGCJBDNGACMPPDGNOLEMKPMBIKEGMPNOKDJDLELMBMGJBHKGGJ",
+        "_score": 1.0,
+        "_source": {
+          "title": "aquatic watercraft",
+          "body": "water river water",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r5"
+        }
+      },
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "ICPDOJMGJFNMGLINBLBBIBINFHABJBJOCIGNOINEHPHMDOLDBAAMEIFPHJOFHICI",
+        "_score": 1.0,
+        "_source": {
+          "title": "quick brown fox",
+          "body": "new york river water",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r1"
+        }
+      },
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "KCOMIKNKMHPNCELELHKIONNIJNAGJJAFHJPGBCDPFHCEKBELEHOOELNNPLCLKFHC",
+        "_score": 1.0,
+        "_source": {
+          "title": "quack bronze bird",
+          "body": "new york harbor",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r4"
+        }
+      },
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "OEJNGDLCKIKHIPAEILKPMELEFJAACJGADKFKEBGFOOILPJIKPBFNGCPCEMNIDEHJ",
+        "_score": 1.0,
+        "_source": {
+          "title": "slow brown fox",
+          "body": "old york river",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r3"
+        }
+      },
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "CFPBMHJAPBGPECDNCPJECLHADHIONAHFJHCKLAKPPLPDPDFPBCOABFMBDPCJEAGP",
+        "_score": 1.0,
+        "_source": {
+          "title": "beach",
+          "body": "sand dry",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r6"
+        }
+      },
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "NLLHLCJEOHIPBMEHNEKBANBGAEECPLGKCHGOKAOONNJMKHMHCAGHDBPCJCFHLFBB",
+        "_score": 1.0,
+        "_source": {
+          "title": "New York",
+          "body": "quoted \"fox\" and C++",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r7"
+        }
+      },
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "JJMGGLIOONNGBPMECEHHJFMEFIIAEBNLMALAHDOKAPDDCPHNBGFCIPHAGKKFCIKA",
+        "_score": 1.0,
+        "_source": {
+          "title": "the Quick hare",
+          "body": "new old york",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r8"
+        }
+      },
+      {
+        "_index": "nebula_index_ft_regression_es_v1",
+        "_type": "_doc",
+        "_id": "NLHHPNABKPJFHCCBKEJIJLGELDHHAKIDKDMFGAGIEAFLJPAOJEAIPOKOFHPNBHOE",
+        "_score": 1.0,
+        "_source": {
+          "title": "quick blue hare",
+          "body": "new jersey lake",
+          "rank": 0,
+          "dst": "",
+          "src": "",
+          "vid": "r2"
+        }
+      }
+    ]
+  }
+}

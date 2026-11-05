@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/sch/nebula/nebula-3.6-tantivy/scripts/tantivy-benchmark/readiness.py", line 230, in <module>
+    main()
+  File "/home/sch/nebula/nebula-3.6-tantivy/scripts/tantivy-benchmark/readiness.py", line 226, in main
+    Runner(args).run()
+  File "/home/sch/nebula/nebula-3.6-tantivy/scripts/tantivy-benchmark/readiness.py", line 65, in __init__
+    raise ValueError('Use a fresh output directory to preserve earlier evidence')
+ValueError: Use a fresh output directory to preserve earlier evidence

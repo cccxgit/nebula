@@ -1,0 +1,37 @@
+{"time": 1793806847.9803088, "query": "CREATE SPACE ft_regression_v1 (partition_num=20,replica_factor=3,vid_type=FIXED_STRING(64))", "success": true, "error": ""}
+{"time": 1793806847.9807425, "query": "USE ft_regression_v1", "success": false, "error": "SpaceNotFound: SpaceName `ft_regression_v1`"}
+{"time": 1793806848.9866543, "query": "USE ft_regression_v1", "success": false, "error": "SpaceNotFound: SpaceName `ft_regression_v1`"}
+{"time": 1793806849.9897716, "query": "USE ft_regression_v1", "success": false, "error": "SpaceNotFound: SpaceName `ft_regression_v1`"}
+{"time": 1793806850.9907737, "query": "USE ft_regression_v1", "success": false, "error": "SpaceNotFound: SpaceName `ft_regression_v1`"}
+{"time": 1793806851.9925814, "query": "USE ft_regression_v1", "success": true, "error": ""}
+{"time": 1793806851.9939914, "query": "CREATE TAG ftcase(title string,body string)", "success": true, "error": ""}
+{"time": 1793806851.9943528, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806852.9957464, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806853.9967873, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806854.9978206, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806855.998954, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806857.0007777, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806858.0039167, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806859.0048172, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806860.0088766, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806861.0097868, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": false, "error": "TagNotFound: TagName `ftcase`"}
+{"time": 1793806862.0118263, "query": "CREATE FULLTEXT TAG INDEX ftcase_native_v1 ON ftcase(title,body) ANALYZER=\"standard\"", "success": true, "error": ""}
+{"time": 1793806862.0132573, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r1\":(\"quick brown fox\",\"new york river water\")", "success": true, "error": ""}
+{"time": 1793806862.0144086, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r2\":(\"quick blue hare\",\"new jersey lake\")", "success": true, "error": ""}
+{"time": 1793806862.0155642, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r3\":(\"slow brown fox\",\"old york river\")", "success": true, "error": ""}
+{"time": 1793806862.0167327, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r4\":(\"quack bronze bird\",\"new york harbor\")", "success": true, "error": ""}
+{"time": 1793806862.0178585, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r5\":(\"aquatic watercraft\",\"water river water\")", "success": true, "error": ""}
+{"time": 1793806862.0188894, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r6\":(\"beach\",\"sand dry\")", "success": true, "error": ""}
+{"time": 1793806862.0199845, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r7\":(\"New York\",\"quoted \\\"fox\\\" and C++\")", "success": true, "error": ""}
+{"time": 1793806862.021062, "query": "INSERT VERTEX ftcase(title,body) VALUES \"r8\":(\"the Quick hare\",\"new old york\")", "success": true, "error": ""}
+{"time": 1793806862.0214245, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806863.0230298, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806864.024877, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806865.025875, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806866.0268378, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806867.0282104, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806868.0299315, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806869.0308762, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806870.0348368, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806871.0393941, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": false, "error": "IndexNotFound: "}
+{"time": 1793806872.0450983, "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"quick\") YIELD id(vertex) AS vid", "success": true, "error": ""}

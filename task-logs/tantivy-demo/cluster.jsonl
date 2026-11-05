@@ -1,0 +1,112 @@
+{"time": "2026-11-04T15:01:43.800987+00:00", "event": "initialized", "runtime": "/home/sch/nebula/nebula-3.6-tantivy/task-logs/tantivy-query/cluster-config-check-mpx4sloj", "storaged_processes": 3, "partition_count": 20, "replica_factor": 3}
+{"time": "2026-11-04T15:20:59.978160+00:00", "event": "initialized", "runtime": "/home/sch/nebula-run/3.6-tantivy", "storaged_processes": 3, "partition_count": 20, "replica_factor": 3}
+{"time": "2026-11-04T15:24:20.106401+00:00", "event": "started", "service": "metad", "pid": 74784, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T15:24:20.366861+00:00", "event": "started", "service": "graphd", "pid": 74953, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T15:24:20.454021+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]]}
+{"time": "2026-11-04T15:25:20.673502+00:00", "event": "error", "action": "start", "error": "storage1 did not listen on 9779; inspect /home/sch/nebula-run/3.6-tantivy/tantivy-demo/storage1/logs"}
+{"time": "2026-11-04T15:25:52.562966+00:00", "event": "status", "service": "metad", "running": true, "pid": 74784, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T15:25:52.563117+00:00", "event": "status", "service": "storage1", "running": false, "pid": null, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T15:25:52.563169+00:00", "event": "status", "service": "storage2", "running": false, "pid": null, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T15:25:52.563214+00:00", "event": "status", "service": "storage3", "running": false, "pid": null, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T15:25:52.563346+00:00", "event": "status", "service": "graphd", "running": true, "pid": 74953, "port": 9669, "http_port": 19669}
+{"time": "2026-11-04T15:27:16.852473+00:00", "event": "stopped", "service": "graphd", "pid": 74953}
+{"time": "2026-11-04T15:27:16.852600+00:00", "event": "already_stopped", "service": "storage3"}
+{"time": "2026-11-04T15:27:16.852639+00:00", "event": "already_stopped", "service": "storage2"}
+{"time": "2026-11-04T15:27:16.852686+00:00", "event": "already_stopped", "service": "storage1"}
+{"time": "2026-11-04T15:27:17.104198+00:00", "event": "stopped", "service": "metad", "pid": 74784}
+{"time": "2026-11-04T15:30:21.557364+00:00", "event": "started", "service": "metad", "pid": 79398, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T15:30:21.834727+00:00", "event": "started", "service": "graphd", "pid": 79605, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T15:30:21.905238+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": []}
+{"time": "2026-11-04T15:30:22.172166+00:00", "event": "started", "service": "storage1", "pid": 79638, "port": 9779, "open_files_limit": 65536}
+{"time": "2026-11-04T15:30:22.445189+00:00", "event": "started", "service": "storage2", "pid": 79741, "port": 9789, "open_files_limit": 65536}
+{"time": "2026-11-04T15:30:22.721454+00:00", "event": "started", "service": "storage3", "pid": 79844, "port": 9799, "open_files_limit": 65536}
+{"time": "2026-11-04T15:31:09.106271+00:00", "event": "status", "service": "metad", "running": true, "pid": 79398, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T15:31:09.106465+00:00", "event": "status", "service": "storage1", "running": true, "pid": 79638, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T15:31:09.106597+00:00", "event": "status", "service": "storage2", "running": true, "pid": 79741, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T15:31:09.106713+00:00", "event": "status", "service": "storage3", "running": true, "pid": 79844, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T15:31:09.106823+00:00", "event": "status", "service": "graphd", "running": true, "pid": 79605, "port": 9669, "http_port": 19669}
+{"time": "2026-11-04T15:32:21.861576+00:00", "event": "status", "service": "metad", "running": true, "pid": 79398, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T15:32:21.861752+00:00", "event": "status", "service": "storage1", "running": false, "pid": null, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T15:32:21.861831+00:00", "event": "status", "service": "storage2", "running": false, "pid": null, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T15:32:21.861895+00:00", "event": "status", "service": "storage3", "running": false, "pid": null, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T15:32:21.862077+00:00", "event": "status", "service": "graphd", "running": true, "pid": 79605, "port": 9669, "http_port": 19669}
+{"time": "2026-11-04T15:32:38.664993+00:00", "event": "stopped", "service": "graphd", "pid": 79605}
+{"time": "2026-11-04T15:32:38.665227+00:00", "event": "already_stopped", "service": "storage3"}
+{"time": "2026-11-04T15:32:38.665325+00:00", "event": "already_stopped", "service": "storage2"}
+{"time": "2026-11-04T15:32:38.665405+00:00", "event": "already_stopped", "service": "storage1"}
+{"time": "2026-11-04T15:32:38.917290+00:00", "event": "stopped", "service": "metad", "pid": 79398}
+{"time": "2026-11-04T15:39:31.478083+00:00", "event": "started", "service": "metad", "pid": 87787, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:31.744899+00:00", "event": "started", "service": "graphd", "pid": 87994, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:31.791047+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": []}
+{"time": "2026-11-04T15:39:32.059450+00:00", "event": "started", "service": "storage1", "pid": 88029, "port": 9779, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:32.326350+00:00", "event": "started", "service": "storage2", "pid": 88188, "port": 9789, "open_files_limit": 65536}
+{"time": "2026-11-04T15:39:32.593428+00:00", "event": "started", "service": "storage3", "pid": 88346, "port": 9799, "open_files_limit": 65536}
+{"time": "2026-11-04T15:44:11.828948+00:00", "event": "stopped", "service": "graphd", "pid": 87994}
+{"time": "2026-11-04T15:44:12.330213+00:00", "event": "stopped", "service": "storage3", "pid": 88346}
+{"time": "2026-11-04T15:44:12.584228+00:00", "event": "stopped", "service": "storage2", "pid": 88188}
+{"time": "2026-11-04T15:44:13.085890+00:00", "event": "stopped", "service": "storage1", "pid": 88029}
+{"time": "2026-11-04T15:44:13.336744+00:00", "event": "stopped", "service": "metad", "pid": 87787}
+{"time": "2026-11-04T15:44:14.683508+00:00", "event": "started", "service": "metad", "pid": 92995, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T15:44:15.052353+00:00", "event": "started", "service": "graphd", "pid": 93161, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T15:44:15.125307+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": []}
+{"time": "2026-11-04T15:44:15.394572+00:00", "event": "started", "service": "storage1", "pid": 93220, "port": 9779, "open_files_limit": 65536}
+{"time": "2026-11-04T15:44:15.663618+00:00", "event": "started", "service": "storage2", "pid": 93418, "port": 9789, "open_files_limit": 65536}
+{"time": "2026-11-04T15:44:15.932463+00:00", "event": "started", "service": "storage3", "pid": 93655, "port": 9799, "open_files_limit": 65536}
+{"time": "2026-11-04T15:44:22.820847+00:00", "event": "status", "service": "metad", "running": true, "pid": 92995, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T15:44:22.821061+00:00", "event": "status", "service": "storage1", "running": true, "pid": 93220, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T15:44:22.821198+00:00", "event": "status", "service": "storage2", "running": true, "pid": 93418, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T15:44:22.821320+00:00", "event": "status", "service": "storage3", "running": true, "pid": 93655, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T15:44:22.821442+00:00", "event": "status", "service": "graphd", "running": true, "pid": 93161, "port": 9669, "http_port": 19669}
+{"time": "2026-11-04T15:55:07.315795+00:00", "event": "stopped", "service": "graphd", "pid": 93161}
+{"time": "2026-11-04T15:55:07.566531+00:00", "event": "stopped", "service": "storage3", "pid": 93655}
+{"time": "2026-11-04T15:55:07.817225+00:00", "event": "stopped", "service": "storage2", "pid": 93418}
+{"time": "2026-11-04T15:55:08.067978+00:00", "event": "stopped", "service": "storage1", "pid": 93220}
+{"time": "2026-11-04T15:55:08.321192+00:00", "event": "stopped", "service": "metad", "pid": 92995}
+{"time": "2026-11-04T15:55:22.839595+00:00", "event": "started", "service": "metad", "pid": 100191, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T15:55:23.111412+00:00", "event": "started", "service": "graphd", "pid": 100357, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T15:55:23.158626+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": []}
+{"time": "2026-11-04T15:55:23.426077+00:00", "event": "started", "service": "storage1", "pid": 100390, "port": 9779, "open_files_limit": 65536}
+{"time": "2026-11-04T15:55:23.688206+00:00", "event": "started", "service": "storage2", "pid": 100512, "port": 9789, "open_files_limit": 65536}
+{"time": "2026-11-04T15:55:23.957010+00:00", "event": "started", "service": "storage3", "pid": 100631, "port": 9799, "open_files_limit": 65536}
+{"time": "2026-11-04T16:23:39.812189+00:00", "event": "stopped", "service": "graphd", "pid": 100357}
+{"time": "2026-11-04T16:23:40.062949+00:00", "event": "stopped", "service": "storage3", "pid": 100631}
+{"time": "2026-11-04T16:23:40.313588+00:00", "event": "stopped", "service": "storage2", "pid": 100512}
+{"time": "2026-11-04T16:23:40.564233+00:00", "event": "stopped", "service": "storage1", "pid": 100390}
+{"time": "2026-11-04T16:23:40.817196+00:00", "event": "stopped", "service": "metad", "pid": 100191}
+{"time": "2026-11-04T16:27:41.387147+00:00", "event": "started", "service": "metad", "pid": 130373, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T16:27:41.654690+00:00", "event": "started", "service": "graphd", "pid": 130580, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T16:27:41.722379+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": []}
+{"time": "2026-11-04T16:27:42.245382+00:00", "event": "started", "service": "storage1", "pid": 130617, "port": 9779, "open_files_limit": 65536}
+{"time": "2026-11-04T16:27:42.767545+00:00", "event": "started", "service": "storage2", "pid": 130746, "port": 9789, "open_files_limit": 65536}
+{"time": "2026-11-04T16:27:43.287639+00:00", "event": "started", "service": "storage3", "pid": 130891, "port": 9799, "open_files_limit": 65536}
+{"time": "2026-11-04T16:31:05.885968+00:00", "event": "status", "service": "metad", "running": true, "pid": 130373, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T16:31:05.886184+00:00", "event": "status", "service": "storage1", "running": true, "pid": 130617, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T16:31:05.886324+00:00", "event": "status", "service": "storage2", "running": true, "pid": 130746, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T16:31:05.886439+00:00", "event": "status", "service": "storage3", "running": true, "pid": 130891, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T16:31:05.886551+00:00", "event": "status", "service": "graphd", "running": true, "pid": 130580, "port": 9669, "http_port": 19669}
+{"time": "2026-11-04T16:35:18.287808+00:00", "event": "stopped", "service": "graphd", "pid": 130580}
+{"time": "2026-11-04T16:35:18.538617+00:00", "event": "stopped", "service": "storage3", "pid": 130891}
+{"time": "2026-11-04T16:35:19.039669+00:00", "event": "stopped", "service": "storage2", "pid": 130746}
+{"time": "2026-11-04T16:35:19.291601+00:00", "event": "stopped", "service": "storage1", "pid": 130617}
+{"time": "2026-11-04T16:35:19.542244+00:00", "event": "stopped", "service": "metad", "pid": 130373}
+{"time": "2026-11-04T16:59:36.982132+00:00", "event": "started", "service": "metad", "pid": 155648, "port": 9559, "open_files_limit": 65536}
+{"time": "2026-11-04T16:59:37.244323+00:00", "event": "started", "service": "graphd", "pid": 155814, "port": 9669, "open_files_limit": 65536}
+{"time": "2026-11-04T16:59:37.286020+00:00", "event": "hosts_registered", "hosts": [["127.0.0.1", 9779], ["127.0.0.1", 9789], ["127.0.0.1", 9799]], "newly_registered": []}
+{"time": "2026-11-04T16:59:37.555300+00:00", "event": "started", "service": "storage1", "pid": 155847, "port": 9779, "open_files_limit": 65536}
+{"time": "2026-11-04T16:59:37.821876+00:00", "event": "started", "service": "storage2", "pid": 155974, "port": 9789, "open_files_limit": 65536}
+{"time": "2026-11-04T16:59:38.088539+00:00", "event": "started", "service": "storage3", "pid": 156183, "port": 9799, "open_files_limit": 65536}
+{"time": "2026-11-04T17:00:19.090866+00:00", "event": "status", "service": "metad", "running": true, "pid": 155648, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T17:00:19.091051+00:00", "event": "status", "service": "storage1", "running": true, "pid": 155847, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T17:00:19.091159+00:00", "event": "status", "service": "storage2", "running": true, "pid": 155974, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T17:00:19.091257+00:00", "event": "status", "service": "storage3", "running": true, "pid": 156183, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T17:00:19.091349+00:00", "event": "status", "service": "graphd", "running": true, "pid": 155814, "port": 9669, "http_port": 19669}
+{"time": "2026-11-04T17:12:57.331151+00:00", "event": "status", "service": "metad", "running": true, "pid": 155648, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T17:12:57.331320+00:00", "event": "status", "service": "storage1", "running": true, "pid": 155847, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T17:12:57.331439+00:00", "event": "status", "service": "storage2", "running": true, "pid": 155974, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T17:12:57.331543+00:00", "event": "status", "service": "storage3", "running": true, "pid": 156183, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T17:12:57.331636+00:00", "event": "status", "service": "graphd", "running": true, "pid": 155814, "port": 9669, "http_port": 19669}
+{"time": "2026-11-04T17:32:05.953288+00:00", "event": "status", "service": "metad", "running": true, "pid": 155648, "port": 9559, "http_port": 19559}
+{"time": "2026-11-04T17:32:05.953457+00:00", "event": "status", "service": "storage1", "running": true, "pid": 155847, "port": 9779, "http_port": 19779}
+{"time": "2026-11-04T17:32:05.953569+00:00", "event": "status", "service": "storage2", "running": true, "pid": 155974, "port": 9789, "http_port": 19789}
+{"time": "2026-11-04T17:32:05.953671+00:00", "event": "status", "service": "storage3", "running": true, "pid": 156183, "port": 9799, "http_port": 19799}
+{"time": "2026-11-04T17:32:05.953774+00:00", "event": "status", "service": "graphd", "running": true, "pid": 155814, "port": 9669, "http_port": 19669}

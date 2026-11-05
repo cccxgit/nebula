@@ -1,0 +1,39 @@
+{
+  "utc": "2026-11-04T15:41:41Z",
+  "checks": {
+    "no_active_compiler_processes": false,
+    "no_active_dataset_downloads": false,
+    "disk_free": true,
+    "memory_available": true
+  },
+  "passed": false,
+  "compiler_processes": [
+    {
+      "pid": 90882,
+      "name": "cc1plus"
+    },
+    {
+      "pid": 90888,
+      "name": "cc1plus"
+    },
+    {
+      "pid": 90942,
+      "name": "cc1plus"
+    },
+    {
+      "pid": 90984,
+      "name": "cc1plus"
+    },
+    {
+      "pid": 91009,
+      "name": "cc1plus"
+    }
+  ],
+  "dataset_download_pids": [
+    41672
+  ],
+  "paused_dataset_download_pids": [],
+  "mem_available_bytes": 20130770944,
+  "disk_free_bytes": 266515857408,
+  "note": "This is a point-in-time preflight, not a guarantee against later resource spikes."
+}

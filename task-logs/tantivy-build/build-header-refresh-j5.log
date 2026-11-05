@@ -1,0 +1,373 @@
+>>>> Options of Nebula Graph <<<<
+-- ENABLE_ASAN                     : OFF (Build with AddressSanitizer)
+-- ENABLE_BREAKPAD                 : OFF (Whether to enable breakpad)
+-- ENABLE_CCACHE                   : ON (Use ccache to speed up compiling)
+-- ENABLE_CLANG_TIDY               : OFF (Enable clang-tidy if present)
+-- ENABLE_COMPILER_LAUNCHER        : ON (Using compiler launcher if available)
+-- ENABLE_COMPRESSED_DEBUG_INFO    : ON (Compress debug info to reduce binary size)
+-- ENABLE_CONSOLE_COMPILATION      : OFF (Enable nebula-console compilation)
+-- ENABLE_COVERAGE                 : OFF (Build with coverage report)
+-- ENABLE_CREATE_GIT_HOOKS         : ON (Enable create git hooks.)
+-- ENABLE_FRAME_POINTER            : OFF (Build with frame pointer)
+-- ENABLE_FUZZY_TESTING            : OFF (Enable Fuzzy tests)
+-- ENABLE_GDB_SCRIPT_SECTION       : OFF (Add .debug_gdb_scripts section)
+-- ENABLE_INCLUDE_WHAT_YOU_USE     : OFF (Enable include-what-you-use find  nouse include files)
+-- ENABLE_JEMALLOC                 : ON (Use jemalloc as memory allocator)
+-- ENABLE_MEMORY_TRACKER           : ON (Enable memory tracker)
+-- ENABLE_PACKAGE_TAR              : OFF (Enable package artifacts to tar.)
+-- ENABLE_PACK_ONE                 : ON (Whether to package into one)
+-- ENABLE_PIC                      : OFF (Build with -fPIC)
+-- ENABLE_STANDALONE_VERSION       : OFF (Enable standalone version build)
+-- ENABLE_STATIC_ASAN              : OFF (Statically link against libasan)
+-- ENABLE_STATIC_UBSAN             : OFF (Statically link against libubsan)
+-- ENABLE_STRICT_ALIASING          : OFF (Build with -fstrict-aliasing)
+-- ENABLE_TESTING                  : OFF (Build unit tests)
+-- ENABLE_TSAN                     : OFF (Build with ThreadSanitizer)
+-- ENABLE_UBSAN                    : OFF (Build with UndefinedBehaviourSanitizer)
+-- ENABLE_VERBOSE_BISON            : OFF (Enable Bison to report state)
+-- ENABLE_WERROR                   : ON (Regard warnings as errors)
+-- CMAKE_BUILD_TYPE                : Debug (Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel ...)
+-- CMAKE_INSTALL_PREFIX            : /home/sch/nebula-run/3.6-tantivy (Install path prefix, prepended onto install directories.)
+-- CMAKE_CXX_STANDARD              : 17
+-- CMAKE_CXX_COMPILER              : /usr/bin/c++ (CXX compiler)
+-- CMAKE_CXX_COMPILER_ID           : GNU
+-- NEBULA_USE_LINKER               : bfd (Linker to be used)
+CMake Warning at cmake/nebula/CompilerLauncher.cmake:28 (message):
+  ccache is enabled but was not found.  Not using it
+Call Stack (most recent call first):
+  CMakeLists.txt:48 (include)
+
+
+>>>> Configuring third party for 'Nebula Graph' <<<<
+-- NEBULA_THIRDPARTY_ROOT          : /opt/vesoft/third-party/3.3
+-- Build info of nebula third party:
+Package         : Nebula Third Party
+Version         : 3.3
+Date            : Thu Feb  2 10:42:13 UTC 2023
+glibc           : 2.34
+Arch            : x86_64
+Compiler        : GCC 11.2.0
+C++ ABI         : 11
+Vendor          : VEsoft Inc.
+
+-- CMAKE_INCLUDE_PATH              : /opt/vesoft/third-party/3.3/include
+-- CMAKE_LIBRARY_PATH              : /opt/vesoft/third-party/3.3/lib64;/opt/vesoft/third-party/3.3/lib
+-- CMAKE_PROGRAM_PATH              : /opt/vesoft/third-party/3.3/bin
+-- GLIBC_VERSION                   : 2.35
+
+>>>> Configuring third party for 'Nebula Graph' done <<<<
+-- Create the pre-commit hook
+-- Creating pre-commit hook done
+-- MemoryTracker is ENABLED
+-- NEBULA_BUILD_VERSION            : 
+-- HOST_SYSTEM_NAME                : Ubuntu
+-- HOST_SYSTEM_VER                 : ubuntu2204
+-- CPACK_GENERATOR                 : DEB
+-- CMAKE_HOST_SYSTEM_PROCESSOR     : amd64
+-- Configuring done (0.2s)
+-- Generating done (0.7s)
+-- Build files have been written to: /home/sch/nebula/nebula-3.6-tantivy/build
+[  1%] Built target parser_target
+[  1%] Built target datetime_parser_target
+[  1%] Built target wkt_parser_target
+[  3%] Built target graph_thrift_generator
+[  3%] Built target common_thrift_generator
+[  3%] Built target raftex_thrift_generator
+[  3%] Built target meta_thrift_generator
+[  3%] Built target storage_thrift_generator
+[  3%] Built target nebula_tantivy_build
+[  3%] Built target common_thrift_obj
+[  5%] Built target raftex_thrift_obj
+[  5%] Built target graph_thrift_obj
+[  6%] Built target meta_thrift_obj
+[  6%] Built target disk_man_obj
+[  6%] Building CXX object src/kvstore/CMakeFiles/kvstore_obj.dir/Part.cpp.o
+[  6%] Built target kv_stats_obj
+[  6%] Built target wal_obj
+[  6%] Building CXX object src/kvstore/CMakeFiles/kvstore_obj.dir/RocksEngine.cpp.o
+[  6%] Building CXX object src/kvstore/listener/CMakeFiles/listener_obj.dir/Listener.cpp.o
+[  6%] Built target meta_stats_obj
+[  6%] Building CXX object src/kvstore/raftex/CMakeFiles/raftex_obj.dir/RaftPart.cpp.o
+[  6%] Building CXX object src/kvstore/raftex/CMakeFiles/raftex_obj.dir/RaftexService.cpp.o
+[  6%] Building CXX object src/kvstore/listener/CMakeFiles/listener_obj.dir/elasticsearch/ESListener.cpp.o
+[  8%] Building CXX object src/kvstore/CMakeFiles/kvstore_obj.dir/NebulaStore.cpp.o
+[  8%] Building CXX object src/kvstore/CMakeFiles/kvstore_obj.dir/NebulaSnapshotManager.cpp.o
+[  8%] Building CXX object src/kvstore/raftex/CMakeFiles/raftex_obj.dir/Host.cpp.o
+[  8%] Building CXX object src/kvstore/raftex/CMakeFiles/raftex_obj.dir/SnapshotManager.cpp.o
+[  8%] Built target listener_obj
+[ 10%] Built target ast_match_path_obj
+[ 12%] Building CXX object src/storage/CMakeFiles/storage_common_obj.dir/CommonUtils.cpp.o
+[ 12%] Building CXX object src/kvstore/raftex/CMakeFiles/raftex_obj.dir/__/LogEncoder.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/StorageAdminServiceHandler.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/GraphStorageServiceHandler.cpp.o
+[ 13%] Built target raftex_obj
+[ 13%] Building CXX object src/storage/CMakeFiles/internal_storage_service_handler.dir/InternalStorageServiceHandler.cpp.o
+[ 13%] Built target kvstore_obj
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_http_handler.dir/http/StorageHttpAdminHandler.cpp.o
+[ 13%] Built target storage_common_obj
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/TransactionManager.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/CreateCheckpointProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/context/StorageExpressionContext.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_http_handler.dir/http/StorageHttpPropertyHandler.cpp.o
+[ 13%] Built target internal_storage_service_handler
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_server.dir/StorageServer.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ConsistUtil.cpp.o
+[ 13%] Built target storage_http_handler
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainUpdateEdgeLocalProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/AddVerticesProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/DropCheckpointProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/SendBlockSignProcessor.cpp.o
+[ 13%] Built target storage_server
+[ 13%] Built target storage_stats_obj
+[ 13%] Built target version_obj
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainUpdateEdgeRemoteProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/DeleteVerticesProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainAddEdgesGroupProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainAddEdgesLocalProcessor.cpp.o
+[ 13%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/AdminTaskProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainAddEdgesRemoteProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainResumeAddPrimeProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/DeleteTagsProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainResumeAddDoublePrimeProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainResumeUpdatePrimeProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainResumeUpdateDoublePrimeProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/AddEdgesProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/StopAdminTaskProcessor.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainProcessorFactory.cpp.o
+[ 15%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainDeleteEdgesGroupProcessor.cpp.o
+[ 17%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/DeleteEdgesProcessor.cpp.o
+[ 18%] Built target ws_obj
+[ 18%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/UpdateVertexProcessor.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/AdminTaskManager.cpp.o
+[ 18%] Built target meta_v2_thrift_obj
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/AdminTask.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainDeleteEdgesLocalProcessor.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/mutate/UpdateEdgeProcessor.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainDeleteEdgesRemoteProcessor.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/CompactTask.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/FlushTask.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/DownloadTask.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainDeleteEdgesResumeProcessor.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/query/GetNeighborsProcessor.cpp.o
+[ 18%] Building CXX object src/storage/CMakeFiles/storage_transaction_executor.dir/transaction/ChainDeleteEdgesResumeRemoteProcessor.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/IngestTask.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildIndexTask.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildTagIndexTask.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/query/GetDstBySrcProcessor.cpp.o
+[ 20%] Built target storage_transaction_executor
+[ 20%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/query/GetPropProcessor.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/query/ScanVertexProcessor.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildEdgeIndexTask.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/query/ScanEdgeProcessor.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/index/LookupProcessor.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTantivyScanNode.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/RebuildFTIndexTask.cpp.o
+[ 20%] Building CXX object src/meta/http/CMakeFiles/meta_http_handler.dir/MetaHttpReplaceHostHandler.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/StatsTask.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexNode.cpp.o
+[ 20%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/GetLeaderProcessor.cpp.o
+[ 20%] Built target meta_http_handler
+[ 20%] Building CXX object src/meta/upgrade/CMakeFiles/meta_data_upgrade_obj.dir/MetaDataUpgrade.cpp.o
+[ 22%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexDedupNode.cpp.o
+[ 22%] Building CXX object src/storage/CMakeFiles/storage_admin_service_handler.dir/admin/ClearSpaceProcessor.cpp.o
+[ 22%] Building CXX object src/meta/upgrade/CMakeFiles/meta_data_upgrade_obj.dir/v2/MetaServiceUtilsV2.cpp.o
+[ 22%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexEdgeScanNode.cpp.o
+[ 22%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexLimitNode.cpp.o
+[ 22%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexAggregateNode.cpp.o
+[ 22%] Built target meta_data_upgrade_obj
+[ 22%] Built target graph_context_obj
+[ 34%] Built target executor_obj
+[ 43%] Built target optimizer_obj
+[ 48%] Built target planner_obj
+[ 50%] Built target plan_obj
+[ 50%] Built target scheduler_obj
+[ 51%] Built target graph_flags_obj
+[ 51%] Built target service_obj
+[ 51%] Built target query_engine_obj
+[ 53%] Built target graph_auth_obj
+[ 53%] Built target graph_session_obj
+[ 53%] Built target graph_stats_obj
+[ 55%] Built target util_obj
+[ 55%] Built target idgenerator_obj
+[ 58%] Built target validator_obj
+[ 60%] Built target expr_visitor_obj
+[ 60%] Built target plan_node_visitor_obj
+[ 60%] Built target gc_obj
+[ 62%] Built target parser_obj
+[ 62%] Building CXX object src/mock/CMakeFiles/mock_obj.dir/MockCluster.cpp.o
+[ 62%] Built target storage_admin_service_handler
+[ 62%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexProjectionNode.cpp.o
+[ 62%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexScanNode.cpp.o
+[ 62%] Built target fake_http_server_obj
+[ 62%] Building CXX object src/storage/CMakeFiles/storage_local_server_obj.dir/GraphStorageLocalServer.cpp.o
+[ 62%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexSelectionNode.cpp.o
+[ 62%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexVertexScanNode.cpp.o
+[ 62%] Built target mock_obj
+[ 62%] Built target meta_client_obj
+[ 62%] Built target file_based_cluster_id_man_obj
+[ 62%] Built target meta_client_stats_obj
+[ 62%] Built target storage_client_obj
+[ 62%] Built target storage_client_base_obj
+[ 62%] Built target internal_storage_client_obj
+[ 62%] Built target storage_client_stats_obj
+[ 62%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/exec/IndexTopNNode.cpp.o
+[ 62%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/kv/PutProcessor.cpp.o
+[ 62%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/kv/GetProcessor.cpp.o
+[ 62%] Built target storage_local_server_obj
+[ 62%] Built target codec_obj
+[ 63%] Built target base_obj
+[ 65%] Built target time_obj
+[ 65%] Built target time_utils_obj
+[ 65%] Built target datetime_parser_obj
+[ 65%] Built target network_obj
+[ 65%] Built target thrift_obj
+[ 65%] Built target fs_obj
+[ 65%] Built target thread_obj
+[ 65%] Building CXX object src/storage/CMakeFiles/graph_storage_service_handler.dir/kv/RemoveProcessor.cpp.o
+[ 65%] Built target process_obj
+[ 65%] Built target hdfs_helper_obj
+[ 65%] Built target http_client_obj
+[ 65%] Built target stats_obj
+[ 65%] Built target charset_obj
+[ 65%] Built target nebula_algo_obj
+[ 67%] Built target datatypes_obj
+[ 68%] Built target conf_obj
+[ 68%] Built target meta_obj
+[ 74%] Built target expression_obj
+[ 75%] Built target function_manager_obj
+[ 75%] Built target agg_function_manager_obj
+[ 75%] Built target graph_obj
+[ 75%] Built target es_adapter_obj
+[ 75%] Built target tantivy_adapter
+[ 77%] Built target keyutils_obj
+[ 77%] Building CXX object src/common/utils/CMakeFiles/meta_keyutils_obj.dir/MetaKeyUtils.cpp.o
+[ 77%] Built target log_str_list_iterator_obj
+[ 77%] Built target ssl_obj
+[ 77%] Built target geo_index_obj
+[ 79%] Built target wkt_wkb_io_obj
+[ 79%] Built target memory_obj
+[ 79%] Built target snowflake_obj
+[ 79%] Built target uuid_obj
+[ 79%] Built target segment_id_obj
+[ 79%] Built target log_monitor_obj
+[ 79%] Built target ws_common_obj
+[ 82%] Built target storage_thrift_obj
+[ 82%] Building CXX object src/storage/CMakeFiles/tantivy_manager.dir/fulltext/TantivyManager.cpp.o
+[ 82%] Building CXX object src/meta/CMakeFiles/meta_version_man_obj.dir/MetaVersionMan.cpp.o
+[ 82%] Built target nebula-graphd
+[ 82%] Built target graph_storage_service_handler
+[ 82%] Built target meta_keyutils_obj
+[ 82%] Linking CXX static library ../../lib/libtantivy_manager.a
+[ 82%] Built target tantivy_manager
+[ 82%] Building CXX object src/daemons/CMakeFiles/nebula-storaged.dir/StorageDaemon.cpp.o
+[ 82%] Built target meta_version_man_obj
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/MetaServiceHandler.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/MetaServiceUtils.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/ActiveHostsMan.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/ListHostsProcessor.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/ListPartsProcessor.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/CreateSpaceProcessor.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/CreateSpaceAsProcessor.cpp.o
+[ 84%] Linking CXX executable ../../bin/nebula-storaged
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/GetSpaceProcessor.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/ListSpacesProcessor.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/DropSpaceProcessor.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/GetPartsAllocProcessor.cpp.o
+[ 84%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/parts/AlterSpaceProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/CreateTagProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/AlterTagProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/GetTagProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/ListTagsProcessor.cpp.o
+[ 86%] Built target nebula-storaged
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/DropTagProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/CreateEdgeProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/AlterEdgeProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/GetEdgeProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/ListEdgesProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/DropEdgeProcessor.cpp.o
+[ 86%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/schema/SchemaUtil.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/id/GetWorkerIdProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/CreateTagIndexProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/DropTagIndexProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/GetTagIndexProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/ListTagIndexesProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/CreateEdgeIndexProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/DropEdgeIndexProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/GetEdgeIndexProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/ListEdgeIndexesProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/service/ServiceProcessor.cpp.o
+[ 87%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/index/FTIndexProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/HBProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/AgentHBProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/ClearSpaceProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/user/AuthenticationProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/CreateSnapshotProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/DropSnapshotProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/ListSnapshotsProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/AdminClient.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/SnapShot.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/CreateBackupProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/RestoreProcessor.cpp.o
+[ 89%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/ListClusterInfoProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/GetMetaDirInfoProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/VerifyClientVersionProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/admin/SaveGraphVersionProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/config/RegConfigProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/config/GetConfigProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/config/ListConfigsProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/config/SetConfigProcessor.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/JobManager.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/JobDescription.cpp.o
+[ 91%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/TaskDescription.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/AdminJobProcessor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/ReportTaskProcessor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/StorageJobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/JobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/MetaJobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/SimpleConcurrentJobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/CompactJobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/FlushJobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/DownloadJobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/IngestJobExecutor.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/BalancePlan.cpp.o
+[ 93%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/BalanceTask.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/BalanceJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/ZoneBalanceJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/DataBalanceJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/LeaderBalanceJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/RebuildJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/RebuildTagJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/RebuildEdgeJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/RebuildFTJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/StatsJobExecutor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/GetStatsProcessor.cpp.o
+[ 94%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/ListTagIndexStatusProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/job/ListEdgeIndexStatusProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/AddHostsProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/AddHostsIntoZoneProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/DropHostsProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/DropZoneProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/RenameZoneProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/GetZoneProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/MergeZoneProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/DivideZoneProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/zone/ListZonesProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/listener/ListenerProcessor.cpp.o
+[ 96%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/session/SessionManagerProcessor.cpp.o
+[ 98%] Building CXX object src/meta/CMakeFiles/meta_service_handler.dir/processors/id/GetSegmentIdProcessor.cpp.o
+[ 98%] Built target meta_service_handler
+[ 98%] Building CXX object src/tools/meta-dump/CMakeFiles/meta_dump.dir/MetaDumpTool.cpp.o
+[ 98%] Building CXX object src/tools/db-dump/CMakeFiles/db_dump.dir/DbDumpTool.cpp.o
+[ 98%] Building CXX object src/tools/db-dump/CMakeFiles/db_dump.dir/DbDumper.cpp.o
+[ 98%] Building CXX object src/daemons/CMakeFiles/nebula-metad.dir/MetaDaemon.cpp.o
+[ 98%] Building CXX object src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/DbUpgraderTool.cpp.o
+[ 98%] Building CXX object src/daemons/CMakeFiles/nebula-metad.dir/MetaDaemonInit.cpp.o
+[ 98%] Linking CXX executable ../../../bin/db_dump
+[ 98%] Building CXX object src/tools/db-upgrade/CMakeFiles/db_upgrader.dir/DbUpgrader.cpp.o
+[ 98%] Linking CXX executable ../../../bin/meta_dump
+[ 98%] Linking CXX executable ../../../bin/db_upgrader
+[ 98%] Linking CXX executable ../../bin/nebula-metad
+[ 98%] Built target db_dump
+[ 98%] Built target meta_dump
+[100%] Built target nebula-metad
+[100%] Built target db_upgrader

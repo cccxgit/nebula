@@ -1,0 +1,157 @@
+{
+  "utc": "2026-11-04T16:52:29Z",
+  "kind": "native_complete_hit_sets",
+  "backend": "es",
+  "space": "ft_bench_1m",
+  "index": "nebula_index_ft_passage_1m",
+  "host": "127.0.0.1",
+  "port": 29669,
+  "dataset": {
+    "rows": 1000000,
+    "normalized_jsonl_sha256": "de46025a28771d1b88e20ab78dd2aeda05ef407bf7aab002a12e7afe876a2acd",
+    "max_chars_setting": 128,
+    "max_text_bytes_setting": 0
+  },
+  "max_hits": 100000,
+  "sentinel_limit": 100001,
+  "all_queries_complete": true,
+  "queries": [
+    {
+      "name": "term_water",
+      "query_text": "water",
+      "ngql": "LOOKUP ON passage WHERE ES_QUERY(`nebula_index_ft_passage_1m`, \"water\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": true,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "100001",
+          "filter": "",
+          "orderBy": "[]",
+          "isEdge": "0",
+          "offset": "0",
+          "schemaId": "2",
+          "searchExpr": "ES_QUERY(nebula_index_ft_passage_1m, \"water\")"
+        }
+      ],
+      "es_count_before": {
+        "count": 16451,
+        "_shards": {
+          "total": 1,
+          "successful": 1,
+          "skipped": 0,
+          "failed": 0
+        }
+      },
+      "error_code": 0,
+      "returned_rows": 16451,
+      "unique_ids": 16451,
+      "ids_file": "term_water.ids.jsonl",
+      "ids_sha256": "38422bb402f809e380305133867706d7332ab0e7815a26f2238953622998d7e2",
+      "es_count_after": {
+        "count": 16451,
+        "_shards": {
+          "total": 1,
+          "successful": 1,
+          "skipped": 0,
+          "failed": 0
+        }
+      },
+      "elapsed_s": 0.9951009169999452
+    },
+    {
+      "name": "phrase_new_york",
+      "query_text": "\"New York\"",
+      "ngql": "LOOKUP ON passage WHERE ES_QUERY(`nebula_index_ft_passage_1m`, \"\\\"New York\\\"\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": true,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "100001",
+          "filter": "",
+          "orderBy": "[]",
+          "isEdge": "0",
+          "offset": "0",
+          "schemaId": "2",
+          "searchExpr": "ES_QUERY(nebula_index_ft_passage_1m, \"\"New York\"\")"
+        }
+      ],
+      "es_count_before": {
+        "count": 3107,
+        "_shards": {
+          "total": 1,
+          "successful": 1,
+          "skipped": 0,
+          "failed": 0
+        }
+      },
+      "error_code": 0,
+      "returned_rows": 3107,
+      "unique_ids": 3107,
+      "ids_file": "phrase_new_york.ids.jsonl",
+      "ids_sha256": "0816acef56e1b759adf1e299932bdfc39ef45f703389fe201982760686527a1c",
+      "es_count_after": {
+        "count": 3107,
+        "_shards": {
+          "total": 1,
+          "successful": 1,
+          "skipped": 0,
+          "failed": 0
+        }
+      },
+      "elapsed_s": 0.21777420100079325
+    },
+    {
+      "name": "boolean_water_river",
+      "query_text": "water AND river",
+      "ngql": "LOOKUP ON passage WHERE ES_QUERY(`nebula_index_ft_passage_1m`, \"water AND river\") YIELD id(vertex) AS vid, score() AS score | LIMIT 100001;",
+      "complete": true,
+      "fulltext_plan": [
+        {
+          "name": "FulltextIndexScan",
+          "inputVar": "",
+          "space": "0",
+          "dedup": "0",
+          "limit": "100001",
+          "filter": "",
+          "orderBy": "[]",
+          "isEdge": "0",
+          "offset": "0",
+          "schemaId": "2",
+          "searchExpr": "ES_QUERY(nebula_index_ft_passage_1m, \"water AND river\")"
+        }
+      ],
+      "es_count_before": {
+        "count": 157,
+        "_shards": {
+          "total": 1,
+          "successful": 1,
+          "skipped": 0,
+          "failed": 0
+        }
+      },
+      "error_code": 0,
+      "returned_rows": 157,
+      "unique_ids": 157,
+      "ids_file": "boolean_water_river.ids.jsonl",
+      "ids_sha256": "020bd6f402b1d5b9fdd8d11d78322eb1a92113ae3031fde7e5a49e9b9a635667",
+      "es_count_after": {
+        "count": 157,
+        "_shards": {
+          "total": 1,
+          "successful": 1,
+          "skipped": 0,
+          "failed": 0
+        }
+      },
+      "elapsed_s": 0.04395797699908144
+    }
+  ],
+  "note": "Correctness only; no concurrent writes allowed. Scores are checked for finiteness, not cross-engine equality.",
+  "finished_utc": "2026-11-04T16:52:30Z"
+}

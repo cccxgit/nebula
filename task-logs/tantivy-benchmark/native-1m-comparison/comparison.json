@@ -1,0 +1,36 @@
+{
+  "utc": "2026-11-04T16:52:45Z",
+  "kind": "offline_native_hit_set_comparison",
+  "left": "task-logs/tantivy-benchmark/native-1m-tantivy",
+  "right": "task-logs/tantivy-benchmark/native-1m-es-v2",
+  "all_equal": false,
+  "queries": [
+    {
+      "name": "term_water",
+      "query_text": "water",
+      "left_count": 16505,
+      "right_count": 16451,
+      "only_left_count": 54,
+      "only_right_count": 0,
+      "equal": false
+    },
+    {
+      "name": "phrase_new_york",
+      "query_text": "\"New York\"",
+      "left_count": 3184,
+      "right_count": 3107,
+      "only_left_count": 77,
+      "only_right_count": 0,
+      "equal": false
+    },
+    {
+      "name": "boolean_water_river",
+      "query_text": "water AND river",
+      "left_count": 159,
+      "right_count": 157,
+      "only_left_count": 2,
+      "only_right_count": 0,
+      "equal": false
+    }
+  ]
+}

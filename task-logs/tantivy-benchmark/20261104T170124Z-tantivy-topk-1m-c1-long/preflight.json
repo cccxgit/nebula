@@ -1,0 +1,18 @@
+{
+  "utc": "2026-11-04T17:01:24Z",
+  "checks": {
+    "no_active_compiler_processes": true,
+    "no_active_dataset_downloads": true,
+    "disk_free": true,
+    "memory_available": true
+  },
+  "passed": true,
+  "compiler_processes": [],
+  "dataset_download_pids": [],
+  "paused_dataset_download_pids": [
+    41672
+  ],
+  "mem_available_bytes": 28407848960,
+  "disk_free_bytes": 261610971136,
+  "note": "This is a point-in-time preflight, not a guarantee against later resource spikes."
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "synthetic_8_row_correctness",
+  "fixture_path": "scripts/tantivy-benchmark/fulltext-regression-fixture.jsonl",
+  "fixture_sha256": "1758a8aa7134e054b634cc5f234e16799b2e483a7e2fa207106a26b79cd093e1",
+  "cases_path": "scripts/tantivy-benchmark/fulltext-regression-cases.jsonl",
+  "cases_sha256": "7bd7db44614365e0a68b9526a0a46c50f4c12fcefe751b4e119870a39cbb56a6",
+  "fixture_rows": 8,
+  "case_count": 18,
+  "case_sources": [
+    "https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-dsl-query-string-query.html"
+  ],
+  "note": "Artificial grammar regression; not public corpus or performance evidence."
+}

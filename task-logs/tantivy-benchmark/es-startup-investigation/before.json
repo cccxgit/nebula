@@ -1,0 +1,9 @@
+{
+  "oom_kill": "0",
+  "pswpin": "200802",
+  "pswpout": "1276687",
+  "es_http": "<urlopen error [Errno 111] Connection refused>",
+  "utc": "2026-11-04T16:32:14Z",
+  "jvm_pidfile": "130330",
+  "jvm_proc_exists": false
+}

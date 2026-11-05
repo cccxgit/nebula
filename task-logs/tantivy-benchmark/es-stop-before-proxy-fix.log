@@ -1,0 +1,14 @@
+{"utc": "2026-11-04T16:37:17Z", "event": "stop_sent", "name": "graphd", "pid": 131356}
+{"utc": "2026-11-04T16:37:17Z", "event": "stop_sent", "name": "listener", "pid": 131769}
+{"utc": "2026-11-04T16:37:17Z", "event": "stop_sent", "name": "storage3", "pid": 131648}
+{"utc": "2026-11-04T16:37:17Z", "event": "stop_sent", "name": "storage2", "pid": 131532}
+{"utc": "2026-11-04T16:37:17Z", "event": "stop_sent", "name": "storage1", "pid": 131408}
+{"utc": "2026-11-04T16:37:17Z", "event": "stop_sent", "name": "metad", "pid": 131155}
+{"utc": "2026-11-04T16:37:17Z", "event": "stop_sent", "name": "elasticsearch", "pid": 136093}
+{"utc": "2026-11-04T16:37:18Z", "event": "node_stopped", "name": "graphd", "pid": 131356}
+{"utc": "2026-11-04T16:37:18Z", "event": "node_stopped", "name": "storage3", "pid": 131648}
+{"utc": "2026-11-04T16:37:18Z", "event": "node_stopped", "name": "storage2", "pid": 131532}
+{"utc": "2026-11-04T16:37:18Z", "event": "node_stopped", "name": "storage1", "pid": 131408}
+{"utc": "2026-11-04T16:37:18Z", "event": "node_stopped", "name": "metad", "pid": 131155}
+{"utc": "2026-11-04T16:37:18Z", "event": "node_stopped", "name": "elasticsearch", "pid": 136093}
+{"utc": "2026-11-04T16:37:28Z", "event": "node_stopped", "name": "listener", "pid": 131769}

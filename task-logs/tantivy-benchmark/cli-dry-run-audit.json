@@ -1,0 +1,63 @@
+{
+  "utc": "2026-11-04T15:41:02Z",
+  "kind": "offline_cli_and_fixture_checks",
+  "database_connections": 0,
+  "checks": [
+    {
+      "name": "benchmark.py help",
+      "passed": true
+    },
+    {
+      "name": "es_baseline.py help",
+      "passed": true
+    },
+    {
+      "name": "readiness.py help",
+      "passed": true
+    },
+    {
+      "name": "regression.py help",
+      "passed": true
+    },
+    {
+      "name": "preflight.py help",
+      "passed": true
+    },
+    {
+      "name": "capacity_gate.py help",
+      "passed": true
+    },
+    {
+      "name": "monitor.py help",
+      "passed": true
+    },
+    {
+      "name": "queries-text-search.jsonl nested string literals",
+      "passed": true
+    },
+    {
+      "name": "queries-es-example.jsonl nested string literals",
+      "passed": true
+    },
+    {
+      "name": "regression grammar fixture literal strings",
+      "passed": true,
+      "cases": 18
+    },
+    {
+      "name": "readiness waits for graph local tag cache before dependent DDL",
+      "passed": true
+    },
+    {
+      "name": "toggle_pushdown help and compile only; no HTTP mutation performed",
+      "passed": true
+    },
+    {
+      "name": "measured wrapper shell syntax and index/verify dispatch",
+      "passed": true
+    }
+  ],
+  "resource_preflight": "dry-run-resource-preflight.json",
+  "resource_preflight_expected_refusal": "five active cc1plus processes and active dataset downloader; no measured stage started",
+  "finished_utc": "2026-11-04T15:42:08Z"
+}

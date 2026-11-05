@@ -1,0 +1,21 @@
+{
+  "time": 1793807073.9034617,
+  "kind": "clean_restart_readback",
+  "checks": [
+    {
+      "space": "tantivy_demo_v3",
+      "query": "MATCH (v:article) WHERE v.article.body CONTAINS \"Graph\" RETURN id(v) AS id",
+      "expected": 79,
+      "actual": 79,
+      "passed": true
+    },
+    {
+      "space": "ft_regression_v1",
+      "query": "LOOKUP ON ftcase WHERE TEXT_SEARCH(ftcase_native_v1,\"title:quik~1\") YIELD id(vertex) AS id",
+      "expected": 3,
+      "actual": 3,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
